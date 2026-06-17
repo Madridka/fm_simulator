@@ -31,19 +31,19 @@ const reset = (): void => {
   >
     <header
       v-if="hasGame"
-      class="border-b border-white/15 bg-[linear-gradient(135deg,rgba(11,93,70,0.98),rgba(19,31,36,0.98)),#0f2f2c] shadow-[0_18px_40px_rgba(15,47,44,0.2)]"
+      class="sticky top-0 z-30 border-b border-emerald-950/30 bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-900 shadow-[0_18px_40px_rgba(15,47,44,0.24)]"
     >
       <div
         class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between"
       >
         <RouterLink
           to="/dashboard"
-          class="flex w-fit items-center gap-3 rounded-lg px-2 py-1 transition hover:-translate-y-px hover:bg-white/10"
+          class="flex w-fit items-center gap-3 rounded-lg px-2 py-1 transition hover:-translate-y-px hover:bg-white/15"
           @click="settingsOpen = false"
         >
           <ClubBadge v-if="gameStore.selectedClub" :club="gameStore.selectedClub" />
           <div>
-            <div class="text-sm text-white/70">Сезон {{ gameStore.game?.season }}</div>
+            <div class="text-sm font-medium text-emerald-50/80">Сезон {{ gameStore.game?.season }}</div>
             <div class="font-semibold text-white">{{ gameStore.selectedClub?.name }}</div>
           </div>
         </RouterLink>
@@ -54,8 +54,8 @@ const reset = (): void => {
               v-for="item in navItems"
               :key="item.to"
               :to="item.to"
-              class="rounded-md px-3 py-2 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
-              active-class="bg-lime-200 text-[#18312b] hover:bg-lime-200 hover:text-[#18312b]"
+              class="rounded-md px-3 py-2 text-sm font-semibold text-emerald-50/90 transition hover:bg-white/15 hover:text-white"
+              active-class="bg-lime-300 text-emerald-950 shadow-sm hover:bg-lime-300 hover:text-emerald-950"
               @click="settingsOpen = false"
             >
               {{ item.label }}
@@ -65,14 +65,16 @@ const reset = (): void => {
           <div class="relative">
             <button
               type="button"
-              class="inline-grid h-[42px] w-[42px] place-items-center rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15"
+              class="inline-grid h-10 w-10 place-items-center rounded-lg border border-emerald-50/30 bg-white/10 text-emerald-50 shadow-sm hover:bg-white/20"
               aria-label="Настройки"
               :aria-expanded="settingsOpen"
               @click="settingsOpen = !settingsOpen"
             >
-              <span class="block h-0.5 w-[18px] rounded-full bg-current"></span>
-              <span class="block h-0.5 w-[18px] rounded-full bg-current"></span>
-              <span class="block h-0.5 w-[18px] rounded-full bg-current"></span>
+              <span class="flex flex-col gap-1">
+                <span class="block h-0.5 w-4 rounded-full bg-current"></span>
+                <span class="block h-0.5 w-4 rounded-full bg-current"></span>
+                <span class="block h-0.5 w-4 rounded-full bg-current"></span>
+              </span>
             </button>
             <div
               v-if="settingsOpen"
