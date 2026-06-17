@@ -1,0 +1,94 @@
+import { gameConfig } from '@/config/gameConfig'
+import type { Club, Match } from '@/types/football'
+
+export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24]
+
+interface Pairing {
+  homeClubId: string
+  awayClubId: string
+}
+
+const rotateTeams = (teams: readonly string[]): string[] => {
+  const fixed = teams[0]
+  if (!fixed) {
+    return []
+  }
+  const tail = teams.slice(1)
+  const last = tail[tail.length - 1]
+  const middle = tail.slice(0, -1)
+
+  return last ? [fixed, last, ...middle] : [fixed]
+}
+
+export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][] => {
+  if (clubIds.length !== gameConfig.clubsPerDivision) {
+    throw new Error(`Expected ${gameConfig.clubsPerDivision} clubs per division`)
+  }
+
+  let teams = [...clubIds]
+  const rounds: Pairing[][] = []
+  const roundsCount = teams.length - 1
+
+  for (let roundIndex = 0; roundIndex < roundsCount; roundIndex += 1) {
+    const pairings: Pairing[] = []
+    const half = teams.length / 2
+
+    for (let index = 0; index < half; index += 1) {
+      const left = teams[index]
+      const right = teams[teams.length - 1 - index]
+      if (!left || !right) {
+        throw new Error('Invalid round-robin state')
+      }
+
+      const swapHome = (roundIndex + index) % 2 === 1
+      pairings.push({
+        homeClubId: swapHome ? right : left,
+        awayClubId: swapHome ? left : right,
+      })
+    }
+
+    rounds.push(pairings)
+    teams = rotateTeams(teams)
+  }
+
+  const reverseRounds = rounds.map((round) =>
+    round.map((pairing) => ({
+      homeClubId: pairing.awayClubId,
+      awayClubId: pairing.homeClubId,
+    })),
+  )
+
+  return [...rounds, ...reverseRounds]
+}
+
+export const generateLeagueSchedule = (clubs: readonly Club[], season: number): Match[] => {
+  const matches: Match[] = []
+
+  for (let divisionId = 1; divisionId <= gameConfig.divisionsCount; divisionId += 1) {
+    const divisionClubIds = clubs
+      .filter((club) => club.divisionId === divisionId)
+      .map((club) => club.id)
+      .sort((left, right) => left.localeCompare(right))
+
+    const rounds = generateDivisionPairings(divisionClubIds)
+
+    rounds.forEach((round, roundIndex) => {
+      round.forEach((pairing, matchIndex) => {
+        matches.push({
+          id: `s${season}-d${divisionId}-r${roundIndex + 1}-m${matchIndex + 1}`,
+          season,
+          type: 'league',
+          order: leagueRoundOrders[roundIndex] ?? roundIndex + 1,
+          round: roundIndex + 1,
+          divisionId,
+          homeClubId: pairing.homeClubId,
+          awayClubId: pairing.awayClubId,
+          neutralVenue: false,
+          status: 'scheduled',
+        })
+      })
+    })
+  }
+
+  return matches
+}

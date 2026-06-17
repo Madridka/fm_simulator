@@ -1,0 +1,178 @@
+export type PlayerPosition =
+  | 'GK'
+  | 'LB'
+  | 'CB'
+  | 'RB'
+  | 'CDM'
+  | 'CM'
+  | 'CAM'
+  | 'LW'
+  | 'RW'
+  | 'ST'
+
+export interface Player {
+  id: string
+  firstName: string
+  lastName: string
+  age: number
+  position: PlayerPosition
+  rating: number
+  potential: number
+  fitness: number
+  form: number
+  value: number
+  salary: number
+  isInjured: boolean
+}
+
+export interface Club {
+  id: string
+  name: string
+  shortName: string
+  city: string
+  divisionId: number
+  rating: number
+  attackRating: number
+  midfieldRating: number
+  defenseRating: number
+  budget: number
+  primaryColor: string
+  secondaryColor: string
+  squad: Player[]
+}
+
+export type Formation = '4-4-2' | '4-3-3' | '4-2-3-1' | '3-5-2' | '4-5-1'
+
+export type TacticalStyle = 'defensive' | 'balanced' | 'attacking'
+
+export interface FormationSlot {
+  id: string
+  label: string
+  position: PlayerPosition
+  x: number
+  y: number
+}
+
+export interface ClubLineup {
+  formation: Formation
+  tacticalStyle: TacticalStyle
+  starters: Record<string, string | null>
+  substitutes: string[]
+}
+
+export interface PlayedLineup {
+  formation: Formation
+  tacticalStyle: TacticalStyle
+  starters: string[]
+}
+
+export interface MatchLineups {
+  home: PlayedLineup
+  away: PlayedLineup
+}
+
+export type MatchType = 'league' | 'cup'
+
+export type MatchStatus = 'scheduled' | 'played'
+
+export interface GoalEvent {
+  minute: number
+  clubId: string
+  playerId: string
+  playerName: string
+}
+
+export interface MatchTeamStats {
+  possession: number
+  shots: number
+  shotsOnTarget: number
+  yellowCards: number
+}
+
+export interface MatchResult {
+  homeGoals: number
+  awayGoals: number
+  winnerClubId?: string
+  penaltyWinnerClubId?: string
+  goals: GoalEvent[]
+  stats: {
+    home: MatchTeamStats
+    away: MatchTeamStats
+  }
+  bestPlayerId: string
+}
+
+export interface Match {
+  id: string
+  season: number
+  type: MatchType
+  order: number
+  round: number
+  divisionId?: number
+  cupRoundId?: string
+  homeClubId: string
+  awayClubId: string
+  neutralVenue: boolean
+  status: MatchStatus
+  result?: MatchResult
+  lineups?: MatchLineups
+}
+
+export interface LeagueTableRow {
+  clubId: string
+  divisionId: number
+  played: number
+  wins: number
+  draws: number
+  losses: number
+  goalsFor: number
+  goalsAgainst: number
+  goalDifference: number
+  points: number
+  position: number
+}
+
+export type CupRoundStatus = 'scheduled' | 'completed'
+
+export interface CupTie {
+  id: string
+  matchId?: string
+  homeClubId?: string
+  awayClubId?: string
+  winnerClubId?: string
+}
+
+export interface CupRound {
+  id: string
+  name: string
+  order: number
+  status: CupRoundStatus
+  byes: string[]
+  ties: CupTie[]
+}
+
+export interface CupState {
+  season: number
+  rounds: CupRound[]
+  championClubId?: string
+}
+
+export interface PlayerStats {
+  appearances: number
+  goals: number
+  yellowCards: number
+  averageRating: number
+  matchesRated: number
+}
+
+export interface GameState {
+  selectedClubId: string
+  season: number
+  clubs: Club[]
+  matches: Match[]
+  leagueTables: Record<number, LeagueTableRow[]>
+  cup: CupState
+  lineups: Record<string, ClubLineup>
+  playerStats: Record<string, PlayerStats>
+  lastCompletedOrder: number
+}
