@@ -156,6 +156,12 @@ const isNextMatch = (match: Match): boolean => gameStore.nextMatch?.id === match
 
 const canOpenMatch = (match: Match): boolean => match.status === 'played' || isNextMatch(match)
 
+const openMatch = (match: Match): void => {
+  if (canOpenMatch(match)) {
+    gameStore.openMatch(match.id)
+  }
+}
+
 const matchTypeLabel = (match: Match): string =>
   match.type === 'league' ? `Тур ${match.round}` : 'Кубок'
 
@@ -170,7 +176,7 @@ const homeAwayLabel = (match: Match): string => {
 
 <template>
   <section v-if="gameStore.game" class="space-y-5">
-    <div class="page-heading">
+    <div class="border-l-4 border-l-emerald-700 pl-3.5">
       <h1 class="text-2xl font-bold text-slate-950">Календарь</h1>
       <p class="mt-1 text-sm text-slate-600">
         Сезон начинается в сентябре. Матчи идут по субботам, следующий доступный матч подсвечен.
@@ -181,36 +187,43 @@ const homeAwayLabel = (match: Match): string => {
       <article
         v-for="month in calendarMonths"
         :key="month.key"
-        class="calendar-month surface overflow-hidden"
+        class="overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >
-        <div class="calendar-month-title">
+        <div class="bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50">
           {{ month.title }}
         </div>
-        <div class="calendar-weekdays">
-          <div v-for="day in weekDays" :key="day">{{ day }}</div>
+        <div class="grid grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef]">
+          <div
+            v-for="day in weekDays"
+            :key="day"
+            class="px-2 py-2 text-center text-xs font-extrabold uppercase text-[#3f5f51]"
+          >
+            {{ day }}
+          </div>
         </div>
-        <div class="calendar-grid">
+        <div class="grid grid-cols-7">
           <div
             v-for="cell in month.cells"
             :key="cell.key"
-            class="calendar-cell"
+            class="min-h-28 border-b border-r border-[#e2ebe5] bg-white/70 p-2 [&:nth-child(7n)]:border-r-0"
             :class="{
-              'calendar-cell-empty': !cell.dayNumber,
-              'calendar-cell-match': cell.matches.length,
+              'bg-[#e2ece5]/45': !cell.dayNumber,
+              'bg-[#fbfdf9]': cell.matches.length,
             }"
           >
-            <div v-if="cell.dayNumber" class="calendar-day-number">{{ cell.dayNumber }}</div>
+            <div v-if="cell.dayNumber" class="mb-1.5 text-xs font-extrabold text-slate-700">{{ cell.dayNumber }}</div>
 
-            <div v-for="match in cell.matches" :key="match.id" class="calendar-match">
+            <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
               <component
                 :is="canOpenMatch(match) ? RouterLink : 'div'"
-                :to="canOpenMatch(match) ? `/match/${match.id}` : undefined"
-                class="calendar-match-link"
+                :to="canOpenMatch(match) ? '/match' : undefined"
+                class="flex min-w-0 items-center gap-2 rounded-lg border border-[#dce8dd] bg-white p-[7px] text-[#18312b] transition hover:-translate-y-px hover:border-emerald-300 hover:shadow-[0_10px_22px_rgba(22,101,52,0.12)]"
                 :class="{
-                  'calendar-match-played': match.status === 'played',
-                  'calendar-match-next': isNextMatch(match),
-                  'calendar-match-locked': !canOpenMatch(match),
+                  'bg-slate-50 text-slate-600': match.status === 'played',
+                  'border-emerald-500 bg-emerald-50': isNextMatch(match),
+                  'cursor-not-allowed bg-slate-100 text-slate-400 hover:translate-y-0 hover:border-[#dce8dd] hover:shadow-none': !canOpenMatch(match),
                 }"
+                @click="openMatch(match)"
               >
                 <ClubBadge :club="opponentClub(match)" size="sm" />
                 <div class="min-w-0">

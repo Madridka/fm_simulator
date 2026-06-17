@@ -57,8 +57,8 @@ const clubName = (clubId?: string): string => {
     </div>
 
     <div v-if="activeTab === 'league'" class="grid gap-5 xl:grid-cols-2">
-      <article v-for="divisionId in divisions" :key="divisionId" class="surface p-5">
-        <h2 class="section-title">{{ divisionNames[divisionId] }}</h2>
+      <article v-for="divisionId in divisions" :key="divisionId" class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">{{ divisionNames[divisionId] }}</h2>
         <LeagueTable
           class="mt-4"
           :rows="competitionStore.leagueTables[divisionId] ?? []"
@@ -69,7 +69,7 @@ const clubName = (clubId?: string): string => {
     </div>
 
     <div v-else class="grid gap-4 xl:grid-cols-3">
-      <article v-for="round in competitionStore.cup?.rounds" :key="round.id" class="surface p-4">
+      <article v-for="round in competitionStore.cup?.rounds" :key="round.id" class="rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
         <div class="flex items-center justify-between gap-3">
           <h2 class="font-semibold text-slate-950">{{ round.name }}</h2>
           <span

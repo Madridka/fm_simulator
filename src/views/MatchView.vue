@@ -12,10 +12,6 @@ import { useClubStore } from '@/stores/clubStore'
 import { useGameStore } from '@/stores/gameStore'
 import type { Club, ClubLineup, MatchResult, PlayedLineup, Player } from '@/types/football'
 
-const props = defineProps<{
-  matchId: string
-}>()
-
 type MatchSnapshot = MatchTimeline['minutes'][number]
 
 const router = useRouter()
@@ -25,9 +21,7 @@ const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
 
-const match = computed(() =>
-  gameStore.game?.matches.find((candidate) => candidate.id === props.matchId),
-)
+const match = computed(() => gameStore.activeMatch)
 const homeClub = computed(() =>
   match.value ? clubStore.getClubById(match.value.homeClubId) : undefined,
 )
@@ -136,14 +130,6 @@ const canSimulate = computed(() =>
   Boolean(isUserMatch.value && isPlayableMatch.value && userValidation.value.valid),
 )
 
-const nextUserMatchAfterThis = computed(() => {
-  const nextMatch = gameStore.nextMatch
-  if (!nextMatch || nextMatch.id === props.matchId) {
-    return undefined
-  }
-  return nextMatch
-})
-
 const currentResult = computed<MatchResult | undefined>(() => {
   if (match.value?.result) {
     return match.value.result
@@ -223,8 +209,9 @@ const clearTimer = (): void => {
 
 const finish = (result: MatchResult): void => {
   clearTimer()
-  if (match.value?.status === 'scheduled' && isPlayableMatch.value) {
-    gameStore.completeMatch(props.matchId, result)
+  const currentMatch = match.value
+  if (currentMatch?.status === 'scheduled' && isPlayableMatch.value) {
+    gameStore.completeMatch(currentMatch.id, result)
   }
 }
 
@@ -264,19 +251,12 @@ const instantResult = (): void => {
 }
 
 const goBack = (): void => {
+  gameStore.clearActiveMatch()
   void router.push('/dashboard')
 }
 
-const goNextMatch = (): void => {
-  if (nextUserMatchAfterThis.value) {
-    void router.push(`/match/${nextUserMatchAfterThis.value.id}`)
-    return
-  }
-  goBack()
-}
-
 watch(
-  () => props.matchId,
+  () => match.value?.id,
   () => {
     clearTimer()
     timeline.value = null
@@ -301,7 +281,7 @@ onBeforeUnmount(clearTimer)
 
 <template>
   <section v-if="match && homeClub && awayClub" class="space-y-5">
-    <div class="match-hero surface p-5">
+    <div class="rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
       <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
         <div class="flex items-center gap-3">
           <ClubBadge :club="homeClub" size="lg" />
@@ -311,7 +291,7 @@ onBeforeUnmount(clearTimer)
           </div>
         </div>
         <div class="text-center">
-          <div class="scoreboard">
+          <div class="min-w-[156px] rounded-lg bg-[linear-gradient(135deg,#10251f,#17603d)] px-5 py-2.5 text-[2.75rem] font-black leading-none text-emerald-50 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
             {{ match.result?.homeGoals ?? visibleSnapshot.homeGoals }}:{{
               match.result?.awayGoals ?? visibleSnapshot.awayGoals
             }}
@@ -319,26 +299,26 @@ onBeforeUnmount(clearTimer)
           <div class="mt-1 text-sm font-semibold text-slate-500">
             {{ match.status === 'played' ? 'Матч завершен' : `${visibleSnapshot.minute}'` }}
           </div>
-          <div class="match-action-panel">
+          <div class="mt-3 grid min-w-[220px] justify-items-center gap-2">
             <template v-if="match.status === 'scheduled' && isPlayableMatch">
-              <div v-if="canSimulate" class="match-action-status">Симуляция идет автоматически</div>
+              <div v-if="canSimulate" class="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-extrabold text-emerald-800">Симуляция идет автоматически</div>
               <Button
-                class="match-action-button"
+                class="min-w-[220px]"
                 :disabled="!canSimulate"
                 severity="success"
                 label="Мгновенный расчет"
                 @click="instantResult"
               />
               <RouterLink v-if="!userValidation.valid" to="/squad">
-                <Button class="match-action-button" severity="danger" label="Исправить состав" />
+                <Button class="min-w-[220px]" severity="danger" label="Исправить состав" />
               </RouterLink>
             </template>
             <template v-else-if="match.status === 'played'">
-              <div class="match-action-status match-action-status-finished">Матч завершен</div>
+              <div class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-extrabold text-slate-700">Матч завершен</div>
               <Button
-                class="match-action-button"
-                :label="nextUserMatchAfterThis ? 'Следующий матч' : 'Назад к обзору'"
-                @click="goNextMatch"
+                class="min-w-[220px]"
+                label="Назад к обзору"
+                @click="goBack"
               />
             </template>
           </div>
@@ -374,8 +354,8 @@ onBeforeUnmount(clearTimer)
     </div>
 
     <div class="grid gap-5 lg:grid-cols-2">
-      <div class="surface p-5">
-        <h2 class="section-title">Составы</h2>
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">Составы</h2>
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           <div>
             <div class="mb-2 font-semibold text-slate-950">
@@ -408,8 +388,8 @@ onBeforeUnmount(clearTimer)
         </div>
       </div>
 
-      <div class="surface p-5">
-        <h2 class="section-title">Статистика</h2>
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">Статистика</h2>
         <div class="mt-4 space-y-3">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
             <span class="text-right font-semibold"
@@ -461,8 +441,8 @@ onBeforeUnmount(clearTimer)
       </div>
     </div>
 
-    <div class="surface p-5">
-      <h2 class="section-title">Голы</h2>
+    <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+      <h2 class="text-lg font-semibold text-slate-950">Голы</h2>
       <div v-if="(match.result?.goals ?? visibleSnapshot.goals).length" class="mt-3 space-y-2">
         <div
           v-for="goal in match.result?.goals ?? visibleSnapshot.goals"
@@ -483,5 +463,5 @@ onBeforeUnmount(clearTimer)
       </div>
     </div>
   </section>
-  <section v-else class="surface p-5">Матч не найден.</section>
+  <section v-else class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">Матч не найден.</section>
 </template>

@@ -39,15 +39,18 @@ const routes: RouteRecordRaw[] = [
     component: CalendarView,
   },
   {
-    path: '/match/:matchId',
+    path: '/match',
     name: 'match',
     component: MatchView,
-    props: true,
   },
   {
     path: '/transfers',
     name: 'transfers',
     component: TransfersView,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: () => (gameSaveRepository.load() ? '/dashboard' : '/select-club'),
   },
 ]
 

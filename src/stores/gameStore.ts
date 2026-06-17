@@ -14,6 +14,7 @@ import type { Club, ClubLineup, GameState, Match, MatchResult } from '@/types/fo
 
 export const useGameStore = defineStore('game', () => {
   const game = ref<GameState | null>(gameSaveRepository.load())
+  const activeMatchId = ref<string | null>(null)
 
   const selectedClub = computed<Club | undefined>(() => {
     if (!game.value) {
@@ -26,6 +27,33 @@ export const useGameStore = defineStore('game', () => {
     game.value ? getNextUserMatch(game.value) : undefined,
   )
 
+  const canOpenMatch = (match: Match): boolean => {
+    const state = game.value
+    if (!state) {
+      return false
+    }
+
+    const isUserMatch = match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId
+    return isUserMatch && (match.status === 'played' || nextMatch.value?.id === match.id)
+  }
+
+  const activeMatch = computed<Match | undefined>(() => {
+    const state = game.value
+    if (!state) {
+      return undefined
+    }
+
+    const selected = activeMatchId.value
+      ? state.matches.find((match) => match.id === activeMatchId.value)
+      : undefined
+
+    if (selected && canOpenMatch(selected)) {
+      return selected
+    }
+
+    return nextMatch.value
+  })
+
   const seasonCanFinish = computed<boolean>(() =>
     game.value ? isSeasonReadyToFinish(game.value) : false,
   )
@@ -37,13 +65,29 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const startNewGame = (clubId: string): void => {
+    activeMatchId.value = null
     game.value = createInitialGameState(clubId)
     save()
   }
 
   const resetGame = (): void => {
+    activeMatchId.value = null
     game.value = null
     gameSaveRepository.clear()
+  }
+
+  const openMatch = (matchId: string): boolean => {
+    const match = game.value?.matches.find((candidate) => candidate.id === matchId)
+    if (!match || !canOpenMatch(match)) {
+      return false
+    }
+
+    activeMatchId.value = match.id
+    return true
+  }
+
+  const clearActiveMatch = (): void => {
+    activeMatchId.value = null
   }
 
   const updateGame = (nextState: GameState): void => {
@@ -106,9 +150,12 @@ export const useGameStore = defineStore('game', () => {
     game,
     selectedClub,
     nextMatch,
+    activeMatch,
     seasonCanFinish,
     startNewGame,
     resetGame,
+    openMatch,
+    clearActiveMatch,
     updateGame,
     updateLineup,
     replaceClubs,

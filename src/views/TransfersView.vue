@@ -96,8 +96,8 @@ const userSquad = computed(() => gameStore.selectedClub?.squad ?? [])
     </div>
 
     <div class="grid gap-5 xl:grid-cols-[1.25fr_0.75fr]">
-      <div class="surface p-5">
-        <h2 class="section-title">Рынок игроков</h2>
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">Рынок игроков</h2>
         <div class="mt-4 max-h-[680px] overflow-auto rounded-md border border-slate-200">
           <div
             v-for="item in transferStore.marketPlayers"
@@ -128,8 +128,8 @@ const userSquad = computed(() => gameStore.selectedClub?.squad ?? [])
         </div>
       </div>
 
-      <div class="surface p-5">
-        <h2 class="section-title">Продажа игроков</h2>
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">Продажа игроков</h2>
         <div class="mt-4 space-y-2">
           <div
             v-for="player in userSquad"

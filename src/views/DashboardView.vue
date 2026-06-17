@@ -69,12 +69,18 @@ const matchTitle = (match: Match): string => {
 const finishSeason = (): void => {
   gameStore.finishCurrentSeason()
 }
+
+const openNextMatch = (): void => {
+  if (nextMatch.value) {
+    gameStore.openMatch(nextMatch.value.id)
+  }
+}
 </script>
 
 <template>
   <section v-if="club && gameStore.game" class="space-y-5">
     <div class="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="surface p-5">
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div class="flex items-center gap-4">
             <ClubBadge :club="club" size="lg" />
@@ -88,19 +94,19 @@ const finishSeason = (): void => {
           </div>
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="rounded-md bg-slate-50 px-3 py-2">
-              <div class="meta-label">Место</div>
+              <div class="text-xs font-medium uppercase tracking-wide text-slate-500">Место</div>
               <div class="mt-1 text-lg font-bold text-slate-950">
                 {{ competitionStore.selectedClubRow?.position ?? '-' }}
               </div>
             </div>
             <div class="rounded-md bg-slate-50 px-3 py-2">
-              <div class="meta-label">Бюджет</div>
+              <div class="text-xs font-medium uppercase tracking-wide text-slate-500">Бюджет</div>
               <div class="mt-1 text-lg font-bold text-slate-950">
                 {{ formatMoney(club.budget) }}
               </div>
             </div>
             <div class="rounded-md bg-slate-50 px-3 py-2">
-              <div class="meta-label">Кубок</div>
+              <div class="text-xs font-medium uppercase tracking-wide text-slate-500">Кубок</div>
               <div class="mt-1 text-sm font-semibold text-slate-950">
                 {{ competitionStore.cupProgress }}
               </div>
@@ -109,8 +115,8 @@ const finishSeason = (): void => {
         </div>
       </div>
 
-      <div class="surface p-5">
-        <h2 class="section-title">Следующий матч</h2>
+      <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+        <h2 class="text-lg font-semibold text-slate-950">Следующий матч</h2>
         <div v-if="nextMatch && opponent" class="mt-4 flex items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <ClubBadge :club="opponent" />
@@ -122,7 +128,7 @@ const finishSeason = (): void => {
               </div>
             </div>
           </div>
-          <RouterLink :to="`/match/${nextMatch.id}`">
+          <RouterLink to="/match" @click="openNextMatch">
             <Button label="Матч" />
           </RouterLink>
         </div>
@@ -137,8 +143,8 @@ const finishSeason = (): void => {
       </div>
     </div>
 
-    <div class="surface p-5">
-      <h2 class="section-title">Последние результаты</h2>
+    <div class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+      <h2 class="text-lg font-semibold text-slate-950">Последние результаты</h2>
       <div v-if="recentResults.length" class="mt-4 grid gap-2 md:grid-cols-5">
         <div
           v-for="match in recentResults"

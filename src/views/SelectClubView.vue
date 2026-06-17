@@ -70,7 +70,7 @@ const selectClub = (clubId: string): void => {
     </div>
 
     <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-      <article v-for="club in filteredClubs" :key="club.id" class="surface p-4">
+      <article v-for="club in filteredClubs" :key="club.id" class="rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3">
             <ClubBadge :club="club" size="lg" />
@@ -89,15 +89,15 @@ const selectClub = (clubId: string): void => {
 
         <dl class="mt-4 grid grid-cols-3 gap-2 text-sm">
           <div class="rounded-md bg-slate-50 p-2">
-            <dt class="meta-label">Дивизион</dt>
+            <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Дивизион</dt>
             <dd class="mt-1 font-semibold text-slate-800">{{ divisionNames[club.divisionId] }}</dd>
           </div>
           <div class="rounded-md bg-slate-50 p-2">
-            <dt class="meta-label">Рейтинг</dt>
+            <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Рейтинг</dt>
             <dd class="mt-1 font-semibold text-slate-800">{{ club.rating }}</dd>
           </div>
           <div class="rounded-md bg-slate-50 p-2">
-            <dt class="meta-label">Бюджет</dt>
+            <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Бюджет</dt>
             <dd class="mt-1 font-semibold text-slate-800">{{ formatMoney(club.budget) }}</dd>
           </div>
         </dl>

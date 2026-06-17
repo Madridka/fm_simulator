@@ -16,14 +16,14 @@ const clubName = (clubId: string): string =>
     <table class="min-w-full border-collapse text-left">
       <thead>
         <tr class="border-b border-slate-200 text-xs uppercase text-slate-500">
-          <th class="table-cell">#</th>
-          <th class="table-cell">Клуб</th>
-          <th class="table-cell text-right">И</th>
-          <th class="table-cell text-right">В</th>
-          <th class="table-cell text-right">Н</th>
-          <th class="table-cell text-right">П</th>
-          <th class="table-cell text-right">М</th>
-          <th class="table-cell text-right">О</th>
+          <th class="whitespace-nowrap px-3 py-2 text-sm">#</th>
+          <th class="whitespace-nowrap px-3 py-2 text-sm">Клуб</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">И</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">В</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">Н</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">П</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">М</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">О</th>
         </tr>
       </thead>
       <tbody>
@@ -37,14 +37,14 @@ const clubName = (clubId: string): string =>
               : 'text-slate-700'
           "
         >
-          <td class="table-cell">{{ row.position }}</td>
-          <td class="table-cell">{{ clubName(row.clubId) }}</td>
-          <td class="table-cell text-right">{{ row.played }}</td>
-          <td class="table-cell text-right">{{ row.wins }}</td>
-          <td class="table-cell text-right">{{ row.draws }}</td>
-          <td class="table-cell text-right">{{ row.losses }}</td>
-          <td class="table-cell text-right">{{ row.goalsFor }}:{{ row.goalsAgainst }}</td>
-          <td class="table-cell text-right font-semibold">{{ row.points }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-sm">{{ row.position }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-sm">{{ clubName(row.clubId) }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ row.played }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ row.wins }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ row.draws }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ row.losses }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ row.goalsFor }}:{{ row.goalsAgainst }}</td>
+          <td class="whitespace-nowrap px-3 py-2 text-right text-sm font-semibold">{{ row.points }}</td>
         </tr>
       </tbody>
     </table>
