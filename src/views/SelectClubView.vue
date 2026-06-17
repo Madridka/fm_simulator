@@ -21,7 +21,9 @@ const divisions = [
 ]
 
 const filteredClubs = computed(() => {
-  return clubs.filter((club) => divisionFilter.value === 'all' || club.divisionId === divisionFilter.value)
+  return clubs.filter(
+    (club) => divisionFilter.value === 'all' || club.divisionId === divisionFilter.value,
+  )
 })
 
 const difficulty = (club: Club): { label: string; className: string } => {
@@ -52,8 +54,15 @@ const selectClub = (clubId: string): void => {
       </div>
       <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
         Дивизион
-        <select v-model="divisionFilter" class="h-10 rounded-md border border-slate-300 bg-white px-3">
-          <option v-for="division in divisions" :key="String(division.value)" :value="division.value">
+        <select
+          v-model="divisionFilter"
+          class="h-10 rounded-md border border-slate-300 bg-white px-3"
+        >
+          <option
+            v-for="division in divisions"
+            :key="String(division.value)"
+            :value="division.value"
+          >
             {{ division.label }}
           </option>
         </select>
@@ -70,7 +79,10 @@ const selectClub = (clubId: string): void => {
               <div class="text-sm text-slate-500">{{ club.city }}</div>
             </div>
           </div>
-          <span class="rounded-full px-2 py-1 text-xs font-semibold" :class="difficulty(club).className">
+          <span
+            class="rounded-full px-2 py-1 text-xs font-semibold"
+            :class="difficulty(club).className"
+          >
             {{ difficulty(club).label }}
           </span>
         </div>

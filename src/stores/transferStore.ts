@@ -33,7 +33,9 @@ export const useTransferStore = defineStore('transfers', () => {
           player,
         })),
       )
-      .filter((item) => positionFilter.value === 'all' || item.player.position === positionFilter.value)
+      .filter(
+        (item) => positionFilter.value === 'all' || item.player.position === positionFilter.value,
+      )
       .sort((left, right) => {
         if (sortKey.value === 'age') {
           return left.player.age - right.player.age

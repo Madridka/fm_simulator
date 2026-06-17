@@ -3,4 +3,5 @@ export const formatMoney = (value: number): string => {
   return `${millions.toFixed(millions >= 10 ? 0 : 1)} млн`
 }
 
-export const formatPlayerName = (firstName: string, lastName: string): string => `${firstName} ${lastName}`
+export const formatPlayerName = (firstName: string, lastName: string): string =>
+  `${firstName} ${lastName}`

@@ -7,7 +7,8 @@ const props = defineProps<{
   selectedClubId?: string
 }>()
 
-const clubName = (clubId: string): string => props.clubs.find((club) => club.id === clubId)?.name ?? clubId
+const clubName = (clubId: string): string =>
+  props.clubs.find((club) => club.id === clubId)?.name ?? clubId
 </script>
 
 <template>
@@ -30,7 +31,11 @@ const clubName = (clubId: string): string => props.clubs.find((club) => club.id 
           v-for="row in rows"
           :key="row.clubId"
           class="border-b border-slate-100"
-          :class="row.clubId === selectedClubId ? 'bg-emerald-50 font-semibold text-emerald-900' : 'text-slate-700'"
+          :class="
+            row.clubId === selectedClubId
+              ? 'bg-emerald-50 font-semibold text-emerald-900'
+              : 'text-slate-700'
+          "
         >
           <td class="table-cell">{{ row.position }}</td>
           <td class="table-cell">{{ clubName(row.clubId) }}</td>

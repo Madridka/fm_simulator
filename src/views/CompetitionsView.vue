@@ -72,35 +72,72 @@ const clubName = (clubId?: string): string => {
       <article v-for="round in competitionStore.cup?.rounds" :key="round.id" class="surface p-4">
         <div class="flex items-center justify-between gap-3">
           <h2 class="font-semibold text-slate-950">{{ round.name }}</h2>
-          <span class="rounded-full px-2 py-1 text-xs font-semibold" :class="round.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'">
+          <span
+            class="rounded-full px-2 py-1 text-xs font-semibold"
+            :class="
+              round.status === 'completed'
+                ? 'bg-emerald-100 text-emerald-800'
+                : 'bg-slate-100 text-slate-600'
+            "
+          >
             {{ round.status === 'completed' ? 'сыграно' : 'ожидает' }}
           </span>
         </div>
 
-        <div v-if="round.byes.length" class="mt-3 rounded-md bg-slate-50 p-3 text-sm text-slate-600">
-          Пропуск: {{ round.byes.map((clubId) => clubStore.getClubById(clubId)?.shortName ?? clubId).join(', ') }}
+        <div
+          v-if="round.byes.length"
+          class="mt-3 rounded-md bg-slate-50 p-3 text-sm text-slate-600"
+        >
+          Пропуск:
+          {{
+            round.byes
+              .map((clubId) => clubStore.getClubById(clubId)?.shortName ?? clubId)
+              .join(', ')
+          }}
         </div>
 
         <div class="mt-3 space-y-2">
-          <div v-if="!round.ties.length" class="rounded-md border border-dashed border-slate-200 p-3 text-sm text-slate-500">
+          <div
+            v-if="!round.ties.length"
+            class="rounded-md border border-dashed border-slate-200 p-3 text-sm text-slate-500"
+          >
             Пары появятся после предыдущей стадии.
           </div>
-          <div v-for="tie in round.ties" :key="tie.id" class="rounded-md border border-slate-200 p-3">
+          <div
+            v-for="tie in round.ties"
+            :key="tie.id"
+            class="rounded-md border border-slate-200 p-3"
+          >
             <div class="grid grid-cols-[1fr_auto] items-center gap-2 text-sm">
-              <span :class="tie.winnerClubId === tie.homeClubId ? 'font-bold text-emerald-800' : 'text-slate-700'">
+              <span
+                :class="
+                  tie.winnerClubId === tie.homeClubId
+                    ? 'font-bold text-emerald-800'
+                    : 'text-slate-700'
+                "
+              >
                 {{ clubName(tie.homeClubId) }}
               </span>
               <span class="font-semibold text-slate-950">
                 {{ matchById(tie.matchId)?.result?.homeGoals ?? '-' }}
               </span>
-              <span :class="tie.winnerClubId === tie.awayClubId ? 'font-bold text-emerald-800' : 'text-slate-700'">
+              <span
+                :class="
+                  tie.winnerClubId === tie.awayClubId
+                    ? 'font-bold text-emerald-800'
+                    : 'text-slate-700'
+                "
+              >
                 {{ clubName(tie.awayClubId) }}
               </span>
               <span class="font-semibold text-slate-950">
                 {{ matchById(tie.matchId)?.result?.awayGoals ?? '-' }}
               </span>
             </div>
-            <div v-if="matchById(tie.matchId)?.result?.penaltyWinnerClubId" class="mt-2 text-xs text-slate-500">
+            <div
+              v-if="matchById(tie.matchId)?.result?.penaltyWinnerClubId"
+              class="mt-2 text-xs text-slate-500"
+            >
               Пенальти: {{ clubName(matchById(tie.matchId)?.result?.penaltyWinnerClubId) }}
             </div>
           </div>

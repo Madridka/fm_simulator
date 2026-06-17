@@ -18,10 +18,17 @@ const createClub = (id: string): Club => ({
   squad: [],
 })
 
-const createMatch = (id: string, homeClubId: string, awayClubId: string, homeGoals: number, awayGoals: number): Match => ({
+const createMatch = (
+  id: string,
+  homeClubId: string,
+  awayClubId: string,
+  homeGoals: number,
+  awayGoals: number,
+): Match => ({
   id,
   season: 1,
   type: 'league',
+  date: '2026-09-05',
   order: 1,
   round: 1,
   divisionId: 1,
@@ -32,7 +39,8 @@ const createMatch = (id: string, homeClubId: string, awayClubId: string, homeGoa
   result: {
     homeGoals,
     awayGoals,
-    winnerClubId: homeGoals > awayGoals ? homeClubId : awayGoals > homeGoals ? awayClubId : undefined,
+    winnerClubId:
+      homeGoals > awayGoals ? homeClubId : awayGoals > homeGoals ? awayClubId : undefined,
     goals: [],
     stats: {
       home: { possession: 50, shots: 1, shotsOnTarget: 1, yellowCards: 0 },

@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import ClubBadge from '@/components/ClubBadge.vue'
 import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
-import { autoSelectLineup, getFormationSlots, validateLineup } from '@/domain/season/squadSelectionService'
+import {
+  autoSelectLineup,
+  getFormationSlots,
+  validateLineup,
+} from '@/domain/season/squadSelectionService'
 import { useClubStore } from '@/stores/clubStore'
 import { useGameStore } from '@/stores/gameStore'
 import type { Club, ClubLineup, MatchResult, PlayedLineup, Player } from '@/types/football'
@@ -12,6 +16,8 @@ const props = defineProps<{
   matchId: string
 }>()
 
+type MatchSnapshot = MatchTimeline['minutes'][number]
+
 const router = useRouter()
 const gameStore = useGameStore()
 const clubStore = useClubStore()
@@ -19,9 +25,15 @@ const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
 
-const match = computed(() => gameStore.game?.matches.find((candidate) => candidate.id === props.matchId))
-const homeClub = computed(() => (match.value ? clubStore.getClubById(match.value.homeClubId) : undefined))
-const awayClub = computed(() => (match.value ? clubStore.getClubById(match.value.awayClubId) : undefined))
+const match = computed(() =>
+  gameStore.game?.matches.find((candidate) => candidate.id === props.matchId),
+)
+const homeClub = computed(() =>
+  match.value ? clubStore.getClubById(match.value.homeClubId) : undefined,
+)
+const awayClub = computed(() =>
+  match.value ? clubStore.getClubById(match.value.awayClubId) : undefined,
+)
 
 const hashString = (value: string): number => {
   let hash = 0
@@ -62,12 +74,22 @@ const preparedLineups = computed(() => {
     return currentMatch.lineups
   }
 
-  const homeLineup = currentMatch.homeClubId === game.selectedClubId
-    ? game.lineups[currentMatch.homeClubId]
-    : autoSelectLineup(home, game.lineups[currentMatch.homeClubId]?.formation ?? '4-4-2', game.lineups[currentMatch.homeClubId]?.tacticalStyle ?? 'balanced')
-  const awayLineup = currentMatch.awayClubId === game.selectedClubId
-    ? game.lineups[currentMatch.awayClubId]
-    : autoSelectLineup(away, game.lineups[currentMatch.awayClubId]?.formation ?? '4-4-2', game.lineups[currentMatch.awayClubId]?.tacticalStyle ?? 'balanced')
+  const homeLineup =
+    currentMatch.homeClubId === game.selectedClubId
+      ? game.lineups[currentMatch.homeClubId]
+      : autoSelectLineup(
+          home,
+          game.lineups[currentMatch.homeClubId]?.formation ?? '4-4-2',
+          game.lineups[currentMatch.homeClubId]?.tacticalStyle ?? 'balanced',
+        )
+  const awayLineup =
+    currentMatch.awayClubId === game.selectedClubId
+      ? game.lineups[currentMatch.awayClubId]
+      : autoSelectLineup(
+          away,
+          game.lineups[currentMatch.awayClubId]?.formation ?? '4-4-2',
+          game.lineups[currentMatch.awayClubId]?.tacticalStyle ?? 'balanced',
+        )
 
   if (!homeLineup || !awayLineup) {
     return undefined
@@ -98,30 +120,57 @@ const userValidation = computed(() => {
 const isUserMatch = computed(() => {
   const game = gameStore.game
   const currentMatch = match.value
-  return Boolean(game && currentMatch && (currentMatch.homeClubId === game.selectedClubId || currentMatch.awayClubId === game.selectedClubId))
+  return Boolean(
+    game &&
+    currentMatch &&
+    (currentMatch.homeClubId === game.selectedClubId ||
+      currentMatch.awayClubId === game.selectedClubId),
+  )
+})
+
+const isPlayableMatch = computed(
+  () => match.value?.status === 'scheduled' && gameStore.nextMatch?.id === match.value.id,
+)
+
+const canSimulate = computed(() =>
+  Boolean(isUserMatch.value && isPlayableMatch.value && userValidation.value.valid),
+)
+
+const nextUserMatchAfterThis = computed(() => {
+  const nextMatch = gameStore.nextMatch
+  if (!nextMatch || nextMatch.id === props.matchId) {
+    return undefined
+  }
+  return nextMatch
 })
 
 const currentResult = computed<MatchResult | undefined>(() => {
   if (match.value?.result) {
     return match.value.result
   }
-  return timeline.value?.finalResult
+  return currentMinute.value >= 90 ? timeline.value?.finalResult : undefined
 })
 
-const visibleSnapshot = computed(() => {
+const emptySnapshot = (): MatchSnapshot => ({
+  minute: 0,
+  homeGoals: 0,
+  awayGoals: 0,
+  goals: [],
+  stats: {
+    home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+    away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+  },
+})
+
+const visibleSnapshot = computed<MatchSnapshot>(() => {
   if (!timeline.value || currentMinute.value === 0) {
-    return {
-      minute: 0,
-      homeGoals: 0,
-      awayGoals: 0,
-      goals: [],
-      stats: {
-        home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
-        away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
-      },
-    }
+    return emptySnapshot()
   }
-  return timeline.value.minutes[currentMinute.value - 1] ?? timeline.value.minutes[timeline.value.minutes.length - 1]
+  return (
+    timeline.value.minutes[currentMinute.value - 1] ??
+    timeline.value.minutes[timeline.value.minutes.length - 1] ??
+    emptySnapshot()
+  )
 })
 
 const allPlayers = computed<Player[]>(() => {
@@ -174,7 +223,7 @@ const clearTimer = (): void => {
 
 const finish = (result: MatchResult): void => {
   clearTimer()
-  if (match.value?.status === 'scheduled') {
+  if (match.value?.status === 'scheduled' && isPlayableMatch.value) {
     gameStore.completeMatch(props.matchId, result)
   }
 }
@@ -191,9 +240,8 @@ const nextMinute = (): void => {
   }
 }
 
-const toggleAuto = (): void => {
-  if (timerId.value !== null) {
-    clearTimer()
+const startSimulation = (): void => {
+  if (!canSimulate.value || timerId.value !== null || currentMinute.value >= 90) {
     return
   }
 
@@ -204,6 +252,9 @@ const toggleAuto = (): void => {
 }
 
 const instantResult = (): void => {
+  if (!canSimulate.value) {
+    return
+  }
   const currentTimeline = ensureTimeline()
   if (!currentTimeline) {
     return
@@ -216,12 +267,41 @@ const goBack = (): void => {
   void router.push('/dashboard')
 }
 
+const goNextMatch = (): void => {
+  if (nextUserMatchAfterThis.value) {
+    void router.push(`/match/${nextUserMatchAfterThis.value.id}`)
+    return
+  }
+  goBack()
+}
+
+watch(
+  () => props.matchId,
+  () => {
+    clearTimer()
+    timeline.value = null
+    currentMinute.value = 0
+  },
+)
+
+watch(
+  canSimulate,
+  (ready) => {
+    if (ready) {
+      startSimulation()
+    } else {
+      clearTimer()
+    }
+  },
+  { immediate: true },
+)
+
 onBeforeUnmount(clearTimer)
 </script>
 
 <template>
   <section v-if="match && homeClub && awayClub" class="space-y-5">
-    <div class="surface p-5">
+    <div class="match-hero surface p-5">
       <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
         <div class="flex items-center gap-3">
           <ClubBadge :club="homeClub" size="lg" />
@@ -231,11 +311,36 @@ onBeforeUnmount(clearTimer)
           </div>
         </div>
         <div class="text-center">
-          <div class="text-4xl font-black text-slate-950">
-            {{ match.result?.homeGoals ?? visibleSnapshot.homeGoals }}:{{ match.result?.awayGoals ?? visibleSnapshot.awayGoals }}
+          <div class="scoreboard">
+            {{ match.result?.homeGoals ?? visibleSnapshot.homeGoals }}:{{
+              match.result?.awayGoals ?? visibleSnapshot.awayGoals
+            }}
           </div>
           <div class="mt-1 text-sm font-semibold text-slate-500">
             {{ match.status === 'played' ? 'Матч завершен' : `${visibleSnapshot.minute}'` }}
+          </div>
+          <div class="match-action-panel">
+            <template v-if="match.status === 'scheduled' && isPlayableMatch">
+              <div v-if="canSimulate" class="match-action-status">Симуляция идет автоматически</div>
+              <Button
+                class="match-action-button"
+                :disabled="!canSimulate"
+                severity="success"
+                label="Мгновенный расчет"
+                @click="instantResult"
+              />
+              <RouterLink v-if="!userValidation.valid" to="/squad">
+                <Button class="match-action-button" severity="danger" label="Исправить состав" />
+              </RouterLink>
+            </template>
+            <template v-else-if="match.status === 'played'">
+              <div class="match-action-status match-action-status-finished">Матч завершен</div>
+              <Button
+                class="match-action-button"
+                :label="nextUserMatchAfterThis ? 'Следующий матч' : 'Назад к обзору'"
+                @click="goNextMatch"
+              />
+            </template>
           </div>
         </div>
         <div class="flex items-center gap-3 md:justify-end">
@@ -247,20 +352,25 @@ onBeforeUnmount(clearTimer)
         </div>
       </div>
 
-      <div v-if="match.status === 'scheduled' && isUserMatch" class="mt-5 flex flex-wrap gap-2">
-        <Button :disabled="!userValidation.valid" label="Следующая минута" @click="nextMinute" />
-        <Button :disabled="!userValidation.valid" severity="secondary" :label="timerId ? 'Пауза' : 'Автосимуляция'" @click="toggleAuto" />
-        <Button :disabled="!userValidation.valid" severity="success" label="Мгновенный расчет" @click="instantResult" />
-        <RouterLink to="/squad" v-if="!userValidation.valid">
-          <Button severity="danger" label="Исправить состав" />
-        </RouterLink>
+      <div
+        v-if="match.status === 'scheduled' && isUserMatch && !isPlayableMatch"
+        class="mt-5 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+      >
+        Этот матч еще не доступен. Сначала сыграйте ближайший матч сезона.
       </div>
-      <div v-if="!userValidation.valid && match.status === 'scheduled' && isUserMatch" class="mt-4 space-y-2">
-        <div v-for="error in userValidation.errors" :key="error" class="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-800">
+
+      <div
+        v-if="!userValidation.valid && match.status === 'scheduled' && isUserMatch"
+        class="mt-4 space-y-2"
+      >
+        <div
+          v-for="error in userValidation.errors"
+          :key="error"
+          class="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-800"
+        >
           {{ error }}
         </div>
       </div>
-      <Button v-if="match.status === 'played'" class="mt-5" severity="secondary" label="Назад" @click="goBack" />
     </div>
 
     <div class="grid gap-5 lg:grid-cols-2">
@@ -268,17 +378,29 @@ onBeforeUnmount(clearTimer)
         <h2 class="section-title">Составы</h2>
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           <div>
-            <div class="mb-2 font-semibold text-slate-950">{{ homeClub.shortName }} · {{ preparedLineups?.home.formation }}</div>
+            <div class="mb-2 font-semibold text-slate-950">
+              {{ homeClub.shortName }} · {{ preparedLineups?.home.formation }}
+            </div>
             <div class="space-y-1 text-sm text-slate-700">
-              <div v-for="playerId in preparedLineups?.home.starters" :key="playerId" class="rounded bg-slate-50 px-2 py-1">
+              <div
+                v-for="playerId in preparedLineups?.home.starters"
+                :key="playerId"
+                class="rounded bg-slate-50 px-2 py-1"
+              >
                 {{ playerName(playerId) }}
               </div>
             </div>
           </div>
           <div>
-            <div class="mb-2 font-semibold text-slate-950">{{ awayClub.shortName }} · {{ preparedLineups?.away.formation }}</div>
+            <div class="mb-2 font-semibold text-slate-950">
+              {{ awayClub.shortName }} · {{ preparedLineups?.away.formation }}
+            </div>
             <div class="space-y-1 text-sm text-slate-700">
-              <div v-for="playerId in preparedLineups?.away.starters" :key="playerId" class="rounded bg-slate-50 px-2 py-1">
+              <div
+                v-for="playerId in preparedLineups?.away.starters"
+                :key="playerId"
+                class="rounded bg-slate-50 px-2 py-1"
+              >
                 {{ playerName(playerId) }}
               </div>
             </div>
@@ -290,28 +412,51 @@ onBeforeUnmount(clearTimer)
         <h2 class="section-title">Статистика</h2>
         <div class="mt-4 space-y-3">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession }}%</span>
+            <span class="text-right font-semibold"
+              >{{
+                match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
+              }}%</span
+            >
             <span class="text-slate-500">Владение</span>
-            <span class="font-semibold">{{ match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession }}%</span>
+            <span class="font-semibold"
+              >{{
+                match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
+              }}%</span
+            >
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
+            }}</span>
             <span class="text-slate-500">Удары</span>
-            <span class="font-semibold">{{ match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
+            }}</span>
             <span class="text-slate-500">В створ</span>
-            <span class="font-semibold">{{ match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
+            }}</span>
             <span class="text-slate-500">Желтые</span>
-            <span class="font-semibold">{{ match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
+            }}</span>
           </div>
         </div>
         <div v-if="currentResult" class="mt-5 rounded-md bg-slate-50 p-3 text-sm">
-          Лучший игрок: <span class="font-semibold text-slate-950">{{ playerName(currentResult.bestPlayerId) }}</span>
+          Лучший игрок:
+          <span class="font-semibold text-slate-950">{{
+            playerName(currentResult.bestPlayerId)
+          }}</span>
         </div>
       </div>
     </div>
@@ -319,17 +464,24 @@ onBeforeUnmount(clearTimer)
     <div class="surface p-5">
       <h2 class="section-title">Голы</h2>
       <div v-if="(match.result?.goals ?? visibleSnapshot.goals).length" class="mt-3 space-y-2">
-        <div v-for="goal in match.result?.goals ?? visibleSnapshot.goals" :key="`${goal.minute}-${goal.playerId}`" class="rounded-md bg-slate-50 px-3 py-2 text-sm">
-          {{ goal.minute }}' · {{ goal.playerName }} · {{ clubStore.getClubById(goal.clubId)?.name }}
+        <div
+          v-for="goal in match.result?.goals ?? visibleSnapshot.goals"
+          :key="`${goal.minute}-${goal.playerId}`"
+          class="rounded-md bg-slate-50 px-3 py-2 text-sm"
+        >
+          {{ goal.minute }}' · {{ goal.playerName }} ·
+          {{ clubStore.getClubById(goal.clubId)?.name }}
         </div>
       </div>
       <div v-else class="mt-3 text-sm text-slate-600">Голов пока нет.</div>
-      <div v-if="match.result?.penaltyWinnerClubId" class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800">
-        Победитель серии пенальти: {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+      <div
+        v-if="match.result?.penaltyWinnerClubId"
+        class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
+      >
+        Победитель серии пенальти:
+        {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
       </div>
     </div>
   </section>
-  <section v-else class="surface p-5">
-    Матч не найден.
-  </section>
+  <section v-else class="surface p-5">Матч не найден.</section>
 </template>

@@ -16,9 +16,11 @@ export const useClubStore = defineStore('clubs', () => {
     }, {})
   })
 
-  const getClubById = (clubId: string): Club | undefined => clubs.value.find((club) => club.id === clubId)
+  const getClubById = (clubId: string): Club | undefined =>
+    clubs.value.find((club) => club.id === clubId)
 
-  const getDivisionName = (divisionId: number): string => divisionNames[divisionId] ?? `Дивизион ${divisionId}`
+  const getDivisionName = (divisionId: number): string =>
+    divisionNames[divisionId] ?? `Дивизион ${divisionId}`
 
   return {
     clubs,

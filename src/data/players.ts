@@ -182,7 +182,9 @@ export const buildSquad = (
   const random = createSeededRandom(10_000 + clubIndex * 97)
 
   return squadPositions.map((position, index): Player => {
-    const name = realPlayerNames[(clubIndex * 17 + index * 5) % realPlayerNames.length] as RealPlayerName
+    const name = realPlayerNames[
+      (clubIndex * 17 + index * 5) % realPlayerNames.length
+    ] as RealPlayerName
     const lineRating = getLineRating(position, attackRating, midfieldRating, defenseRating)
     const rotationPenalty = index > 16 ? random.int(4, 11) : random.int(0, 7)
     const rating = clamp(lineRating + random.int(-4, 4) - rotationPenalty, 35, 96)

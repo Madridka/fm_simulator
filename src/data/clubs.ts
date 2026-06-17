@@ -18,7 +18,13 @@ interface ClubConfig {
 
 const createClub = (config: ClubConfig, index: number): Club => ({
   ...config,
-  squad: buildSquad(config.id, index, config.attackRating, config.midfieldRating, config.defenseRating),
+  squad: buildSquad(
+    config.id,
+    index,
+    config.attackRating,
+    config.midfieldRating,
+    config.defenseRating,
+  ),
 })
 
 const clubConfigs: ClubConfig[] = [

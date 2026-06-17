@@ -1,14 +1,4 @@
-export type PlayerPosition =
-  | 'GK'
-  | 'LB'
-  | 'CB'
-  | 'RB'
-  | 'CDM'
-  | 'CM'
-  | 'CAM'
-  | 'LW'
-  | 'RW'
-  | 'ST'
+export type PlayerPosition = 'GK' | 'LB' | 'CB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'LW' | 'RW' | 'ST'
 
 export interface Player {
   id: string
@@ -106,6 +96,7 @@ export interface Match {
   id: string
   season: number
   type: MatchType
+  date: string
   order: number
   round: number
   divisionId?: number

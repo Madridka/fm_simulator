@@ -1,8 +1,16 @@
 import { cupRoundNames, cupRoundOrders } from '@/config/gameConfig'
+import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
 import { createSeededRandom } from '@/utils/random'
 
-export const cupRoundIds = ['preliminary', 'round_of_32', 'round_of_16', 'quarter_final', 'semi_final', 'final'] as const
+export const cupRoundIds = [
+  'preliminary',
+  'round_of_32',
+  'round_of_16',
+  'quarter_final',
+  'semi_final',
+  'final',
+] as const
 
 const highestPowerOfTwoAtMost = (value: number): number => {
   let power = 1
@@ -29,7 +37,13 @@ const shuffle = <T>(items: readonly T[], seed: number): T[] => {
   return result
 }
 
-const createTie = (season: number, roundId: string, tieIndex: number, homeClubId: string, awayClubId: string): CupTie => ({
+const createTie = (
+  season: number,
+  roundId: string,
+  tieIndex: number,
+  homeClubId: string,
+  awayClubId: string,
+): CupTie => ({
   id: `s${season}-cup-${roundId}-t${tieIndex + 1}`,
   matchId: `s${season}-cup-${roundId}-m${tieIndex + 1}`,
   homeClubId,
@@ -45,6 +59,7 @@ const createMatchFromTie = (season: number, roundId: string, round: number, tie:
     id: tie.matchId,
     season,
     type: 'cup',
+    date: getSeasonMatchDate(season, cupRoundOrders[roundId] ?? round),
     order: cupRoundOrders[roundId] ?? round,
     round,
     cupRoundId: roundId,
@@ -55,7 +70,12 @@ const createMatchFromTie = (season: number, roundId: string, round: number, tie:
   }
 }
 
-const createRound = (id: string, season: number, participants: readonly string[], round: number): { round: CupRound; matches: Match[] } => {
+const createRound = (
+  id: string,
+  season: number,
+  participants: readonly string[],
+  round: number,
+): { round: CupRound; matches: Match[] } => {
   const ties: CupTie[] = []
   const matches: Match[] = []
 
@@ -93,7 +113,10 @@ const createEmptyRound = (id: string): CupRound => ({
   ties: [],
 })
 
-export const initializeCup = (clubs: readonly Club[], season: number): { cup: CupState; matches: Match[] } => {
+export const initializeCup = (
+  clubs: readonly Club[],
+  season: number,
+): { cup: CupState; matches: Match[] } => {
   const bracketSize = highestPowerOfTwoAtMost(clubs.length)
   const preliminaryTeamsCount = (clubs.length - bracketSize) * 2
   const sortedClubs = [...clubs].sort((left, right) => {
@@ -157,7 +180,9 @@ export const advanceCupIfPossible = (
     ties: round.ties.map((tie) => ({ ...tie })),
   }))
 
-  const currentRoundIndex = rounds.findIndex((round) => round.status === 'scheduled' && round.ties.length > 0)
+  const currentRoundIndex = rounds.findIndex(
+    (round) => round.status === 'scheduled' && round.ties.length > 0,
+  )
   if (currentRoundIndex === -1) {
     return { cup: { ...cup, rounds }, newMatches: [] }
   }
@@ -202,7 +227,10 @@ export const advanceCupIfPossible = (
     return { cup: { ...cup, rounds }, newMatches: [], completedRoundId: currentRound.id }
   }
 
-  const participants = shuffle([...winners, ...currentRound.byes], cup.season * 313 + nextRoundIndex * 19)
+  const participants = shuffle(
+    [...winners, ...currentRound.byes],
+    cup.season * 313 + nextRoundIndex * 19,
+  )
   const created = createRound(nextRound.id, cup.season, participants, nextRoundIndex + 1)
   rounds[nextRoundIndex] = created.round
 
@@ -225,17 +253,23 @@ export const getClubCupProgress = (cup: CupState, clubId: string): string => {
     return 'Победитель кубка'
   }
 
-  const latestRound = [...cup.rounds]
-    .reverse()
-    .find((round) => {
-      return round.byes.includes(clubId) || round.ties.some((tie) => tie.homeClubId === clubId || tie.awayClubId === clubId || tie.winnerClubId === clubId)
-    })
+  const latestRound = [...cup.rounds].reverse().find((round) => {
+    return (
+      round.byes.includes(clubId) ||
+      round.ties.some(
+        (tie) =>
+          tie.homeClubId === clubId || tie.awayClubId === clubId || tie.winnerClubId === clubId,
+      )
+    )
+  })
 
   if (!latestRound) {
     return 'Не стартовал'
   }
 
-  const tie = latestRound.ties.find((candidate) => candidate.homeClubId === clubId || candidate.awayClubId === clubId)
+  const tie = latestRound.ties.find(
+    (candidate) => candidate.homeClubId === clubId || candidate.awayClubId === clubId,
+  )
   if (tie?.winnerClubId && tie.winnerClubId !== clubId) {
     return `Выбыл: ${latestRound.name}`
   }

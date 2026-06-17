@@ -1,5 +1,14 @@
 import { gameConfig } from '@/config/gameConfig'
-import type { Club, GoalEvent, MatchResult, MatchTeamStats, PlayedLineup, Player, PlayerPosition, TacticalStyle } from '@/types/football'
+import type {
+  Club,
+  GoalEvent,
+  MatchResult,
+  MatchTeamStats,
+  PlayedLineup,
+  Player,
+  PlayerPosition,
+  TacticalStyle,
+} from '@/types/football'
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
 import { formatPlayerName } from '@/utils/format'
 
@@ -61,7 +70,10 @@ const positionLine: Record<PlayerPosition, 'attack' | 'midfield' | 'defense'> = 
   ST: 'attack',
 }
 
-const tacticalModifiers: Record<TacticalStyle, { attack: number; midfield: number; defense: number }> = {
+const tacticalModifiers: Record<
+  TacticalStyle,
+  { attack: number; midfield: number; defense: number }
+> = {
   defensive: { attack: -5, midfield: 1, defense: 6 },
   balanced: { attack: 0, midfield: 0, defense: 0 },
   attacking: { attack: 6, midfield: 1, defense: -5 },
@@ -88,7 +100,11 @@ const average = (values: readonly number[], fallback: number): number => {
   return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
-const getLineAverage = (players: readonly Player[], line: 'attack' | 'midfield' | 'defense', fallback: number): number => {
+const getLineAverage = (
+  players: readonly Player[],
+  line: 'attack' | 'midfield' | 'defense',
+  fallback: number,
+): number => {
   const ratings = players
     .filter((player) => positionLine[player.position] === line)
     .map(playerEffectiveRating)
@@ -98,7 +114,9 @@ const getLineAverage = (players: readonly Player[], line: 'attack' | 'midfield' 
 
 const getLineupPlayers = (club: Club, lineup: PlayedLineup): Player[] => {
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
-  const players = lineup.starters.map((playerId) => playersById.get(playerId)).filter((player): player is Player => Boolean(player))
+  const players = lineup.starters
+    .map((playerId) => playersById.get(playerId))
+    .filter((player): player is Player => Boolean(player))
 
   if (players.length !== 11) {
     throw new Error(`Lineup for ${club.name} must contain 11 existing players`)
@@ -107,13 +125,21 @@ const getLineupPlayers = (club: Club, lineup: PlayedLineup): Player[] => {
   return players
 }
 
-const createTeamMetrics = (club: Club, lineup: PlayedLineup, isHome: boolean, neutralVenue: boolean): TeamMetrics => {
+const createTeamMetrics = (
+  club: Club,
+  lineup: PlayedLineup,
+  isHome: boolean,
+  neutralVenue: boolean,
+): TeamMetrics => {
   const players = getLineupPlayers(club, lineup)
   const modifiers = tacticalModifiers[lineup.tacticalStyle]
   const homeBonus = isHome && !neutralVenue ? gameConfig.homeAdvantage : 0
-  const attack = getLineAverage(players, 'attack', club.attackRating) + modifiers.attack + homeBonus * 0.45
-  const midfield = getLineAverage(players, 'midfield', club.midfieldRating) + modifiers.midfield + homeBonus * 0.25
-  const defense = getLineAverage(players, 'defense', club.defenseRating) + modifiers.defense + homeBonus * 0.3
+  const attack =
+    getLineAverage(players, 'attack', club.attackRating) + modifiers.attack + homeBonus * 0.45
+  const midfield =
+    getLineAverage(players, 'midfield', club.midfieldRating) + modifiers.midfield + homeBonus * 0.25
+  const defense =
+    getLineAverage(players, 'defense', club.defenseRating) + modifiers.defense + homeBonus * 0.3
 
   return {
     attack: clamp(attack, 1, 110),
@@ -125,9 +151,15 @@ const createTeamMetrics = (club: Club, lineup: PlayedLineup, isHome: boolean, ne
   }
 }
 
-const initializeRunningState = (home: TeamMetrics, away: TeamMetrics, random: RandomGenerator): RunningState => {
+const initializeRunningState = (
+  home: TeamMetrics,
+  away: TeamMetrics,
+  random: RandomGenerator,
+): RunningState => {
   const midfieldDifference = home.midfield - away.midfield
-  const homePossession = Math.round(clamp(50 + midfieldDifference * 0.42 + random.int(-4, 4), 35, 65))
+  const homePossession = Math.round(
+    clamp(50 + midfieldDifference * 0.42 + random.int(-4, 4), 35, 65),
+  )
 
   const playerScores = new Map<string, number>()
   for (const player of [...home.players, ...away.players]) {
@@ -214,7 +246,11 @@ const processAttack = (
 ): void => {
   const edge = attacking.attack - defending.defense
   const randomness = (random.next() - 0.5) * gameConfig.randomnessFactor
-  const shotChance = clamp(0.062 + attacking.attack * 0.00042 + edge * 0.0012 + randomness * 0.035, 0.035, 0.22)
+  const shotChance = clamp(
+    0.062 + attacking.attack * 0.00042 + edge * 0.0012 + randomness * 0.035,
+    0.035,
+    0.22,
+  )
 
   if (!random.chance(shotChance)) {
     return
@@ -244,7 +280,12 @@ const processAttack = (
   })
 }
 
-const processDiscipline = (team: TeamMetrics, stats: MatchTeamStats, state: RunningState, random: RandomGenerator): void => {
+const processDiscipline = (
+  team: TeamMetrics,
+  stats: MatchTeamStats,
+  state: RunningState,
+  random: RandomGenerator,
+): void => {
   const defensiveStylePenalty = team.lineup.tacticalStyle === 'defensive' ? 0.006 : 0
   const chance = clamp(0.014 + defensiveStylePenalty + (100 - team.defense) * 0.00008, 0.008, 0.035)
   if (!random.chance(chance)) {
@@ -322,13 +363,17 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
   }
 
   if (state.awayGoals === 0) {
-    for (const player of home.players.filter((candidate) => positionLine[candidate.position] === 'defense')) {
+    for (const player of home.players.filter(
+      (candidate) => positionLine[candidate.position] === 'defense',
+    )) {
       addPlayerScore(state.playerScores, player.id, state.homeGoals === 0 ? 8 : 2)
     }
   }
 
   if (state.homeGoals === 0) {
-    for (const player of away.players.filter((candidate) => positionLine[candidate.position] === 'defense')) {
+    for (const player of away.players.filter(
+      (candidate) => positionLine[candidate.position] === 'defense',
+    )) {
       addPlayerScore(state.playerScores, player.id, state.awayGoals === 0 ? 8 : 2)
     }
   }
@@ -336,7 +381,12 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
   const result: MatchResult = {
     homeGoals: state.homeGoals,
     awayGoals: state.awayGoals,
-    winnerClubId: state.homeGoals > state.awayGoals ? input.homeClub.id : state.awayGoals > state.homeGoals ? input.awayClub.id : undefined,
+    winnerClubId:
+      state.homeGoals > state.awayGoals
+        ? input.homeClub.id
+        : state.awayGoals > state.homeGoals
+          ? input.awayClub.id
+          : undefined,
     goals: [...state.goals],
     stats: {
       home: cloneStats(state.homeStats),
@@ -357,4 +407,5 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
   }
 }
 
-export const simulateMatch = (input: MatchSimulationInput): MatchResult => createMatchTimeline(input).finalResult
+export const simulateMatch = (input: MatchSimulationInput): MatchResult =>
+  createMatchTimeline(input).finalResult

@@ -4,8 +4,22 @@ import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupSer
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
 import { simulateMatch } from '@/domain/match/matchSimulator'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
-import { autoSelectLineup, getFormationSlots, getStarterIds } from '@/domain/season/squadSelectionService'
-import type { Club, ClubLineup, GameState, Match, MatchLineups, MatchResult, PlayedLineup, Player, PlayerStats } from '@/types/football'
+import {
+  autoSelectLineup,
+  getFormationSlots,
+  getStarterIds,
+} from '@/domain/season/squadSelectionService'
+import type {
+  Club,
+  ClubLineup,
+  GameState,
+  Match,
+  MatchLineups,
+  MatchResult,
+  PlayedLineup,
+  Player,
+  PlayerStats,
+} from '@/types/football'
 import { clamp, createSeededRandom } from '@/utils/random'
 
 const clonePlayer = (player: Player): Player => ({ ...player })
@@ -53,7 +67,11 @@ export const createDefaultLineups = (
 ): Record<string, ClubLineup> => {
   return clubs.reduce<Record<string, ClubLineup>>((result, club) => {
     const existing = existingLineups[club.id]
-    result[club.id] = autoSelectLineup(club, existing?.formation ?? '4-4-2', existing?.tacticalStyle ?? 'balanced')
+    result[club.id] = autoSelectLineup(
+      club,
+      existing?.formation ?? '4-4-2',
+      existing?.tacticalStyle ?? 'balanced',
+    )
     return result
   }, {})
 }
@@ -62,7 +80,9 @@ export const createInitialGameState = (selectedClubId: string): GameState => {
   const clubs = initialClubs.map(cloneClub)
   const leagueMatches = generateLeagueSchedule(clubs, 1)
   const cup = initializeCup(clubs, 1)
-  const matches = [...leagueMatches, ...cup.matches].sort((left, right) => left.order - right.order || left.id.localeCompare(right.id))
+  const matches = [...leagueMatches, ...cup.matches].sort(
+    (left, right) => left.order - right.order || left.id.localeCompare(right.id),
+  )
 
   return {
     selectedClubId,
@@ -106,12 +126,22 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
 const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
   const homeClub = getClub(state.clubs, match.homeClubId)
   const awayClub = getClub(state.clubs, match.awayClubId)
-  const homeLineup = match.homeClubId === state.selectedClubId
-    ? state.lineups[match.homeClubId]
-    : autoSelectLineup(homeClub, state.lineups[match.homeClubId]?.formation ?? '4-4-2', state.lineups[match.homeClubId]?.tacticalStyle ?? 'balanced')
-  const awayLineup = match.awayClubId === state.selectedClubId
-    ? state.lineups[match.awayClubId]
-    : autoSelectLineup(awayClub, state.lineups[match.awayClubId]?.formation ?? '4-4-2', state.lineups[match.awayClubId]?.tacticalStyle ?? 'balanced')
+  const homeLineup =
+    match.homeClubId === state.selectedClubId
+      ? state.lineups[match.homeClubId]
+      : autoSelectLineup(
+          homeClub,
+          state.lineups[match.homeClubId]?.formation ?? '4-4-2',
+          state.lineups[match.homeClubId]?.tacticalStyle ?? 'balanced',
+        )
+  const awayLineup =
+    match.awayClubId === state.selectedClubId
+      ? state.lineups[match.awayClubId]
+      : autoSelectLineup(
+          awayClub,
+          state.lineups[match.awayClubId]?.formation ?? '4-4-2',
+          state.lineups[match.awayClubId]?.tacticalStyle ?? 'balanced',
+        )
 
   return {
     home: getPlayedLineup(homeClub, homeLineup),
@@ -119,7 +149,11 @@ const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
   }
 }
 
-const updatePlayerById = (clubs: Club[], playerId: string, update: (player: Player) => Player): void => {
+const updatePlayerById = (
+  clubs: Club[],
+  playerId: string,
+  update: (player: Player) => Player,
+): void => {
   for (const club of clubs) {
     const playerIndex = club.squad.findIndex((player) => player.id === playerId)
     if (playerIndex !== -1) {
@@ -146,11 +180,18 @@ const updatePlayerStats = (
     goals: current.goals + goals,
     yellowCards: current.yellowCards + yellowCards,
     matchesRated: ratedMatches,
-    averageRating: Number(((current.averageRating * current.matchesRated + rating) / ratedMatches).toFixed(2)),
+    averageRating: Number(
+      ((current.averageRating * current.matchesRated + rating) / ratedMatches).toFixed(2),
+    ),
   }
 }
 
-const applyMatchEffects = (state: GameState, match: Match, result: MatchResult, lineups: MatchLineups): GameState => {
+const applyMatchEffects = (
+  state: GameState,
+  match: Match,
+  result: MatchResult,
+  lineups: MatchLineups,
+): GameState => {
   const clubs = state.clubs.map(cloneClub)
   const playerStats = { ...state.playerStats }
   const random = createSeededRandom(hashString(match.id) + state.season * 1_000)
@@ -181,15 +222,33 @@ const applyMatchEffects = (state: GameState, match: Match, result: MatchResult, 
   for (const playerId of allStarterIds) {
     const isHomePlayer = lineups.home.starters.includes(playerId)
     const teamWon = isHomePlayer ? homeWon : awayWon
-    const teamLost = isHomePlayer ? awayWon && result.homeGoals !== result.awayGoals : homeWon && result.homeGoals !== result.awayGoals
+    const teamLost = isHomePlayer
+      ? awayWon && result.homeGoals !== result.awayGoals
+      : homeWon && result.homeGoals !== result.awayGoals
     const goals = goalCounts[playerId] ?? 0
     const yellowCards = bookingCounts[playerId] ?? 0
-    const matchRating = clamp(6 + goals * 0.8 + (teamWon ? 0.5 : 0) - (teamLost ? 0.35 : 0) - yellowCards * 0.25 + random.int(-4, 5) / 10, 3, 10)
+    const matchRating = clamp(
+      6 +
+        goals * 0.8 +
+        (teamWon ? 0.5 : 0) -
+        (teamLost ? 0.35 : 0) -
+        yellowCards * 0.25 +
+        random.int(-4, 5) / 10,
+      3,
+      10,
+    )
 
     updatePlayerById(clubs, playerId, (player) => ({
       ...player,
       fitness: clamp(player.fitness - random.int(6, 14), 1, 100),
-      form: clamp(player.form + goals * 3 - yellowCards + (teamWon ? random.int(1, 4) : teamLost ? random.int(-4, 0) : random.int(-1, 2)), 1, 100),
+      form: clamp(
+        player.form +
+          goals * 3 -
+          yellowCards +
+          (teamWon ? random.int(1, 4) : teamLost ? random.int(-4, 0) : random.int(-1, 2)),
+        1,
+        100,
+      ),
     }))
 
     updatePlayerStats(playerStats, playerId, goals, yellowCards, matchRating)
@@ -202,7 +261,12 @@ const applyMatchEffects = (state: GameState, match: Match, result: MatchResult, 
   }
 }
 
-const completeMatch = (state: GameState, match: Match, result: MatchResult, lineups: MatchLineups): GameState => {
+const completeMatch = (
+  state: GameState,
+  match: Match,
+  result: MatchResult,
+  lineups: MatchLineups,
+): GameState => {
   const updatedMatches = state.matches.map((candidate) => {
     if (candidate.id !== match.id) {
       return candidate
@@ -228,7 +292,10 @@ const completeMatch = (state: GameState, match: Match, result: MatchResult, line
   )
 }
 
-const simulateScheduledMatch = (state: GameState, match: Match): { result: MatchResult; lineups: MatchLineups } => {
+const simulateScheduledMatch = (
+  state: GameState,
+  match: Match,
+): { result: MatchResult; lineups: MatchLineups } => {
   const homeClub = getClub(state.clubs, match.homeClubId)
   const awayClub = getClub(state.clubs, match.awayClubId)
   const lineups = getLineupsForMatch(state, match)
@@ -259,7 +326,11 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
     return state
   }
 
-  const winnerIds = new Set(completedRound.ties.map((tie) => tie.winnerClubId).filter((clubId): clubId is string => typeof clubId === 'string'))
+  const winnerIds = new Set(
+    completedRound.ties
+      .map((tie) => tie.winnerClubId)
+      .filter((clubId): clubId is string => typeof clubId === 'string'),
+  )
 
   const extraWinnerReward = completedRoundId === 'final' ? gameConfig.cupWinnerReward : 0
 
@@ -267,14 +338,18 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
     ...state,
     clubs: state.clubs.map((club) => {
       const cloned = cloneClub(club)
-      return winnerIds.has(club.id) ? { ...cloned, budget: cloned.budget + reward + extraWinnerReward } : cloned
+      return winnerIds.has(club.id)
+        ? { ...cloned, budget: cloned.budget + reward + extraWinnerReward }
+        : cloned
     }),
   }
 }
 
 const advanceCupAndRefreshTables = (state: GameState): GameState => {
   const advanced = advanceCupIfPossible(state.cup, state.matches)
-  const matches = [...state.matches, ...advanced.newMatches].sort((left, right) => left.order - right.order || left.id.localeCompare(right.id))
+  const matches = [...state.matches, ...advanced.newMatches].sort(
+    (left, right) => left.order - right.order || left.id.localeCompare(right.id),
+  )
   let nextState: GameState = {
     ...state,
     cup: advanced.cup,
@@ -292,9 +367,15 @@ const advanceCupAndRefreshTables = (state: GameState): GameState => {
   }
 }
 
-const simulateOrder = (state: GameState, order: number, userResult?: { matchId: string; result: MatchResult }): GameState => {
+const simulateOrder = (
+  state: GameState,
+  order: number,
+  userResult?: { matchId: string; result: MatchResult },
+): GameState => {
   let nextState = state
-  const matchesForOrder = nextState.matches.filter((match) => match.order === order && match.status === 'scheduled')
+  const matchesForOrder = nextState.matches.filter(
+    (match) => match.order === order && match.status === 'scheduled',
+  )
 
   for (const match of matchesForOrder) {
     const lineups = getLineupsForMatch(nextState, match)
@@ -319,7 +400,11 @@ export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState 
     const nextUserOrder = nextUserMatch?.order ?? Number.POSITIVE_INFINITY
     const aiOnlyOrder = nextState.matches
       .filter((match) => match.status === 'scheduled' && match.order < nextUserOrder)
-      .filter((match) => match.homeClubId !== nextState.selectedClubId && match.awayClubId !== nextState.selectedClubId)
+      .filter(
+        (match) =>
+          match.homeClubId !== nextState.selectedClubId &&
+          match.awayClubId !== nextState.selectedClubId,
+      )
       .map((match) => match.order)
       .sort((left, right) => left - right)[0]
 
@@ -333,7 +418,11 @@ export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState 
   return nextState
 }
 
-export const completeUserMatchDay = (state: GameState, matchId: string, result: MatchResult): GameState => {
+export const completeUserMatchDay = (
+  state: GameState,
+  matchId: string,
+  result: MatchResult,
+): GameState => {
   const match = state.matches.find((candidate) => candidate.id === matchId)
   if (!match) {
     throw new Error(`Match not found: ${matchId}`)
@@ -345,12 +434,18 @@ export const completeUserMatchDay = (state: GameState, matchId: string, result: 
 
 export const getNextUserMatch = (state: GameState): Match | undefined => {
   return state.matches
-    .filter((match) => match.status === 'scheduled' && (match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId))
+    .filter(
+      (match) =>
+        match.status === 'scheduled' &&
+        (match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId),
+    )
     .sort((left, right) => left.order - right.order || left.id.localeCompare(right.id))[0]
 }
 
 export const isSeasonReadyToFinish = (state: GameState): boolean => {
-  const leagueFinished = state.matches.every((match) => match.type !== 'league' || match.status === 'played')
+  const leagueFinished = state.matches.every(
+    (match) => match.type !== 'league' || match.status === 'played',
+  )
   const cupFinished = Boolean(state.cup.championClubId)
   return leagueFinished && cupFinished
 }
@@ -385,7 +480,10 @@ export const getNextDivisionId = (divisionId: number, position: number): number 
     return divisionId - 1
   }
 
-  if (position > gameConfig.clubsPerDivision - gameConfig.relegatedClubsCount && divisionId < gameConfig.divisionsCount) {
+  if (
+    position > gameConfig.clubsPerDivision - gameConfig.relegatedClubsCount &&
+    divisionId < gameConfig.divisionsCount
+  ) {
     return divisionId + 1
   }
 
@@ -420,10 +518,14 @@ export const finishSeason = (state: GameState): GameState => {
     leagueTables: calculateLeagueTables(state.clubs, state.matches),
   })
   const nextSeason = state.season + 1
-  const progressedClubs = rewardedAndMoved.map((club) => progressPlayersForNewSeason(club, nextSeason))
+  const progressedClubs = rewardedAndMoved.map((club) =>
+    progressPlayersForNewSeason(club, nextSeason),
+  )
   const leagueMatches = generateLeagueSchedule(progressedClubs, nextSeason)
   const cup = initializeCup(progressedClubs, nextSeason)
-  const matches = [...leagueMatches, ...cup.matches].sort((left, right) => left.order - right.order || left.id.localeCompare(right.id))
+  const matches = [...leagueMatches, ...cup.matches].sort(
+    (left, right) => left.order - right.order || left.id.localeCompare(right.id),
+  )
 
   return {
     selectedClubId: state.selectedClubId,
@@ -448,10 +550,19 @@ export const refreshLineupsAfterSquadChange = (state: GameState): Record<string,
 
     const availableIds = new Set(club.squad.map((player) => player.id))
     const starters = Object.fromEntries(
-      Object.entries(existing.starters).map(([slotId, playerId]) => [slotId, playerId && availableIds.has(playerId) ? playerId : null]),
+      Object.entries(existing.starters).map(([slotId, playerId]) => [
+        slotId,
+        playerId && availableIds.has(playerId) ? playerId : null,
+      ]),
     ) as Record<string, string | null>
-    const selectedIds = new Set(Object.values(starters).filter((playerId): playerId is string => typeof playerId === 'string'))
-    const substitutes = existing.substitutes.filter((playerId) => availableIds.has(playerId) && !selectedIds.has(playerId)).slice(0, 7)
+    const selectedIds = new Set(
+      Object.values(starters).filter(
+        (playerId): playerId is string => typeof playerId === 'string',
+      ),
+    )
+    const substitutes = existing.substitutes
+      .filter((playerId) => availableIds.has(playerId) && !selectedIds.has(playerId))
+      .slice(0, 7)
 
     result[club.id] = {
       formation: existing.formation,

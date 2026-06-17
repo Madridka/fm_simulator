@@ -8,7 +8,9 @@ import type { CupState, LeagueTableRow } from '@/types/football'
 export const useCompetitionStore = defineStore('competitions', () => {
   const gameStore = useGameStore()
 
-  const leagueTables = computed<Record<number, LeagueTableRow[]>>(() => gameStore.game?.leagueTables ?? {})
+  const leagueTables = computed<Record<number, LeagueTableRow[]>>(
+    () => gameStore.game?.leagueTables ?? {},
+  )
 
   const cup = computed<CupState | undefined>(() => gameStore.game?.cup)
 

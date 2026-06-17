@@ -33,7 +33,11 @@ const recentResults = computed<Match[]>(() => {
   }
 
   return game.matches
-    .filter((match) => match.status === 'played' && (match.homeClubId === game.selectedClubId || match.awayClubId === game.selectedClubId))
+    .filter(
+      (match) =>
+        match.status === 'played' &&
+        (match.homeClubId === game.selectedClubId || match.awayClubId === game.selectedClubId),
+    )
     .sort((left, right) => right.order - left.order)
     .slice(0, 5)
 })
@@ -77,21 +81,29 @@ const finishSeason = (): void => {
             <div>
               <div class="text-sm text-slate-500">Сезон {{ gameStore.game.season }}</div>
               <h1 class="text-2xl font-bold text-slate-950">{{ club.name }}</h1>
-              <div class="text-sm text-slate-600">{{ club.city }} · {{ divisionNames[club.divisionId] }}</div>
+              <div class="text-sm text-slate-600">
+                {{ club.city }} · {{ divisionNames[club.divisionId] }}
+              </div>
             </div>
           </div>
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="rounded-md bg-slate-50 px-3 py-2">
               <div class="meta-label">Место</div>
-              <div class="mt-1 text-lg font-bold text-slate-950">{{ competitionStore.selectedClubRow?.position ?? '-' }}</div>
+              <div class="mt-1 text-lg font-bold text-slate-950">
+                {{ competitionStore.selectedClubRow?.position ?? '-' }}
+              </div>
             </div>
             <div class="rounded-md bg-slate-50 px-3 py-2">
               <div class="meta-label">Бюджет</div>
-              <div class="mt-1 text-lg font-bold text-slate-950">{{ formatMoney(club.budget) }}</div>
+              <div class="mt-1 text-lg font-bold text-slate-950">
+                {{ formatMoney(club.budget) }}
+              </div>
             </div>
             <div class="rounded-md bg-slate-50 px-3 py-2">
               <div class="meta-label">Кубок</div>
-              <div class="mt-1 text-sm font-semibold text-slate-950">{{ competitionStore.cupProgress }}</div>
+              <div class="mt-1 text-sm font-semibold text-slate-950">
+                {{ competitionStore.cupProgress }}
+              </div>
             </div>
           </div>
         </div>
@@ -114,9 +126,7 @@ const finishSeason = (): void => {
             <Button label="Матч" />
           </RouterLink>
         </div>
-        <div v-else class="mt-4 text-sm text-slate-600">
-          Матчей не осталось.
-        </div>
+        <div v-else class="mt-4 text-sm text-slate-600">Матчей не осталось.</div>
         <Button
           v-if="gameStore.seasonCanFinish"
           class="mt-4 w-full"
@@ -130,7 +140,11 @@ const finishSeason = (): void => {
     <div class="surface p-5">
       <h2 class="section-title">Последние результаты</h2>
       <div v-if="recentResults.length" class="mt-4 grid gap-2 md:grid-cols-5">
-        <div v-for="match in recentResults" :key="match.id" class="rounded-md border border-slate-200 p-3">
+        <div
+          v-for="match in recentResults"
+          :key="match.id"
+          class="rounded-md border border-slate-200 p-3"
+        >
           <div
             class="mb-2 inline-flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold"
             :class="{
@@ -142,7 +156,9 @@ const finishSeason = (): void => {
             {{ resultBadge(match) }}
           </div>
           <div class="font-semibold text-slate-950">{{ matchTitle(match) }}</div>
-          <div class="text-sm text-slate-500">{{ match.type === 'league' ? `Тур ${match.round}` : 'Кубок' }}</div>
+          <div class="text-sm text-slate-500">
+            {{ match.type === 'league' ? `Тур ${match.round}` : 'Кубок' }}
+          </div>
         </div>
       </div>
       <div v-else class="mt-3 text-sm text-slate-600">Сезон только начинается.</div>

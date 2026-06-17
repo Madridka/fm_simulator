@@ -1,11 +1,25 @@
-import type { Club, ClubLineup, Formation, FormationSlot, Player, PlayerPosition, TacticalStyle } from '@/types/football'
+import type {
+  Club,
+  ClubLineup,
+  Formation,
+  FormationSlot,
+  Player,
+  PlayerPosition,
+  TacticalStyle,
+} from '@/types/football'
 
 export interface LineupValidationResult {
   valid: boolean
   errors: string[]
 }
 
-const createSlot = (id: string, label: string, position: PlayerPosition, x: number, y: number): FormationSlot => ({
+const createSlot = (
+  id: string,
+  label: string,
+  position: PlayerPosition,
+  x: number,
+  y: number,
+): FormationSlot => ({
   id,
   label,
   position,
@@ -95,23 +109,29 @@ const adjacentPositions: Record<PlayerPosition, PlayerPosition[]> = {
 }
 
 const starterIds = (lineup: ClubLineup): string[] => {
-  return Object.values(lineup.starters).filter((playerId): playerId is string => typeof playerId === 'string')
+  return Object.values(lineup.starters).filter(
+    (playerId): playerId is string => typeof playerId === 'string',
+  )
 }
 
 export const formations = Object.keys(formationSlots) as Formation[]
 
 export const tacticalStyles: TacticalStyle[] = ['defensive', 'balanced', 'attacking']
 
-export const getFormationSlots = (formation: Formation): FormationSlot[] => formationSlots[formation]
+export const getFormationSlots = (formation: Formation): FormationSlot[] =>
+  formationSlots[formation]
 
 export const createEmptyLineup = (
   formation: Formation = '4-4-2',
   tacticalStyle: TacticalStyle = 'balanced',
 ): ClubLineup => {
-  const starters = getFormationSlots(formation).reduce<Record<string, string | null>>((result, slot) => {
-    result[slot.id] = null
-    return result
-  }, {})
+  const starters = getFormationSlots(formation).reduce<Record<string, string | null>>(
+    (result, slot) => {
+      result[slot.id] = null
+      return result
+    },
+    {},
+  )
 
   return {
     formation,
@@ -123,7 +143,9 @@ export const createEmptyLineup = (
 
 export const getPlayersByIds = (club: Club, playerIds: readonly string[]): Player[] => {
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
-  return playerIds.map((playerId) => playersById.get(playerId)).filter((player): player is Player => Boolean(player))
+  return playerIds
+    .map((playerId) => playersById.get(playerId))
+    .filter((player): player is Player => Boolean(player))
 }
 
 export const getStarterIds = starterIds
@@ -173,11 +195,20 @@ const pickBestPlayerForSlot = (
   slotPosition: PlayerPosition,
 ): Player => {
   const available = squad.filter((player) => !usedPlayerIds.has(player.id) && !player.isInjured)
-  const candidates = available.length > 0 ? available : squad.filter((player) => !usedPlayerIds.has(player.id))
+  const candidates =
+    available.length > 0 ? available : squad.filter((player) => !usedPlayerIds.has(player.id))
 
   const sorted = [...candidates].sort((left, right) => {
-    const leftScore = left.rating + left.form * 0.08 + left.fitness * 0.05 - positionPenalty(slotPosition, left.position)
-    const rightScore = right.rating + right.form * 0.08 + right.fitness * 0.05 - positionPenalty(slotPosition, right.position)
+    const leftScore =
+      left.rating +
+      left.form * 0.08 +
+      left.fitness * 0.05 -
+      positionPenalty(slotPosition, left.position)
+    const rightScore =
+      right.rating +
+      right.form * 0.08 +
+      right.fitness * 0.05 -
+      positionPenalty(slotPosition, right.position)
     return rightScore - leftScore
   })
 

@@ -16,9 +16,13 @@ const replaceClub = (clubs: readonly Club[], updatedClub: Club): Club[] => {
   return clubs.map((club) => (club.id === updatedClub.id ? updatedClub : cloneClub(club)))
 }
 
-const findClub = (clubs: readonly Club[], clubId: string): Club | undefined => clubs.find((club) => club.id === clubId)
+const findClub = (clubs: readonly Club[], clubId: string): Club | undefined =>
+  clubs.find((club) => club.id === clubId)
 
-const findPlayerOwner = (clubs: readonly Club[], playerId: string): { club: Club; player: Player } | undefined => {
+const findPlayerOwner = (
+  clubs: readonly Club[],
+  playerId: string,
+): { club: Club; player: Player } | undefined => {
   for (const club of clubs) {
     const player = club.squad.find((candidate) => candidate.id === playerId)
     if (player) {
@@ -41,15 +45,27 @@ export const buyPlayer = (
   }
 
   if (playerOwner.club.id === buyerClubId) {
-    return { success: false, message: 'Игрок уже находится в вашем клубе.', clubs: clubs.map(cloneClub) }
+    return {
+      success: false,
+      message: 'Игрок уже находится в вашем клубе.',
+      clubs: clubs.map(cloneClub),
+    }
   }
 
   if (buyerSource.squad.length >= gameConfig.maximumSquadSize) {
-    return { success: false, message: 'В составе уже максимальное количество игроков.', clubs: clubs.map(cloneClub) }
+    return {
+      success: false,
+      message: 'В составе уже максимальное количество игроков.',
+      clubs: clubs.map(cloneClub),
+    }
   }
 
   if (buyerSource.budget < playerOwner.player.value) {
-    return { success: false, message: 'Недостаточно бюджета для покупки.', clubs: clubs.map(cloneClub) }
+    return {
+      success: false,
+      message: 'Недостаточно бюджета для покупки.',
+      clubs: clubs.map(cloneClub),
+    }
   }
 
   const buyer = cloneClub(buyerSource)
@@ -89,9 +105,18 @@ const canSellPlayer = (club: Club, player: Player): string | undefined => {
   return undefined
 }
 
-const findMarketBuyer = (clubs: readonly Club[], sellerClubId: string, price: number): Club | undefined => {
+const findMarketBuyer = (
+  clubs: readonly Club[],
+  sellerClubId: string,
+  price: number,
+): Club | undefined => {
   return [...clubs]
-    .filter((club) => club.id !== sellerClubId && club.squad.length < gameConfig.maximumSquadSize && club.budget >= price)
+    .filter(
+      (club) =>
+        club.id !== sellerClubId &&
+        club.squad.length < gameConfig.maximumSquadSize &&
+        club.budget >= price,
+    )
     .sort((left, right) => right.budget - left.budget)[0]
 }
 
@@ -116,7 +141,11 @@ export const sellPlayer = (
   const buyerSource = findMarketBuyer(clubs, sellerClubId, price)
 
   if (!buyerSource) {
-    return { success: false, message: 'На рынке нет клуба с бюджетом для покупки.', clubs: clubs.map(cloneClub) }
+    return {
+      success: false,
+      message: 'На рынке нет клуба с бюджетом для покупки.',
+      clubs: clubs.map(cloneClub),
+    }
   }
 
   const seller = cloneClub(sellerSource)

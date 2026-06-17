@@ -55,7 +55,10 @@ export const sortLeagueRows = (rows: readonly LeagueTableRow[]): LeagueTableRow[
     }))
 }
 
-export const calculateLeagueTables = (clubs: readonly Club[], matches: readonly Match[]): Record<number, LeagueTableRow[]> => {
+export const calculateLeagueTables = (
+  clubs: readonly Club[],
+  matches: readonly Match[],
+): Record<number, LeagueTableRow[]> => {
   const tables: Record<number, LeagueTableRow[]> = {}
 
   for (let divisionId = 1; divisionId <= gameConfig.divisionsCount; divisionId += 1) {
@@ -68,7 +71,13 @@ export const calculateLeagueTables = (clubs: readonly Club[], matches: readonly 
       })
 
     matches
-      .filter((match) => match.type === 'league' && match.divisionId === divisionId && match.status === 'played' && match.result)
+      .filter(
+        (match) =>
+          match.type === 'league' &&
+          match.divisionId === divisionId &&
+          match.status === 'played' &&
+          match.result,
+      )
       .forEach((match) => {
         const homeRow = rows.get(match.homeClubId)
         const awayRow = rows.get(match.awayClubId)
@@ -86,7 +95,10 @@ export const calculateLeagueTables = (clubs: readonly Club[], matches: readonly 
   return tables
 }
 
-export const getClubPosition = (tables: Record<number, LeagueTableRow[]>, clubId: string): LeagueTableRow | undefined => {
+export const getClubPosition = (
+  tables: Record<number, LeagueTableRow[]>,
+  clubId: string,
+): LeagueTableRow | undefined => {
   return Object.values(tables)
     .flat()
     .find((row) => row.clubId === clubId)

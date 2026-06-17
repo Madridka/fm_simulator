@@ -1,8 +1,17 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import { autoSelectLineup, createEmptyLineup, formations, getFormationSlots, tacticalStyles, validateLineup } from '@/domain/season/squadSelectionService'
+import {
+  autoSelectLineup,
+  createEmptyLineup,
+  formations,
+  getFormationSlots,
+  tacticalStyles,
+  validateLineup,
+} from '@/domain/season/squadSelectionService'
 import { useGameStore } from '@/stores/gameStore'
 import type { ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
+
+type PlayerMoveSource = 'starter' | 'substitute' | 'reserve'
 
 export const useSquadStore = defineStore('squad', () => {
   const gameStore = useGameStore()
@@ -17,7 +26,9 @@ export const useSquadStore = defineStore('squad', () => {
     return game.lineups[game.selectedClubId]
   })
 
-  const slots = computed<FormationSlot[]>(() => (lineup.value ? getFormationSlots(lineup.value.formation) : []))
+  const slots = computed<FormationSlot[]>(() =>
+    lineup.value ? getFormationSlots(lineup.value.formation) : [],
+  )
 
   const validation = computed(() => {
     if (!club.value || !lineup.value) {
@@ -76,7 +87,9 @@ export const useSquadStore = defineStore('squad', () => {
       return
     }
 
-    const starters = new Set(Object.values(lineup.value.starters).filter((id): id is string => typeof id === 'string'))
+    const starters = new Set(
+      Object.values(lineup.value.starters).filter((id): id is string => typeof id === 'string'),
+    )
     if (starters.has(playerId)) {
       return
     }
@@ -89,6 +102,116 @@ export const useSquadStore = defineStore('squad', () => {
     saveLineup({
       ...lineup.value,
       substitutes,
+    })
+  }
+
+  const insertSubstitute = (substitutes: string[], playerId: string, index?: number): string[] => {
+    const result = substitutes.filter((id) => id !== playerId)
+    result.splice(index ?? result.length, 0, playerId)
+    return result.slice(0, 7)
+  }
+
+  const movePlayerToSlot = (
+    slotId: string,
+    playerId: string,
+    source: PlayerMoveSource,
+    sourceSlotId?: string,
+  ): void => {
+    if (!lineup.value) {
+      return
+    }
+
+    const starters = { ...lineup.value.starters }
+    const targetPlayerId = starters[slotId] ?? null
+    const currentStarterSlot =
+      sourceSlotId ??
+      Object.entries(starters).find(([, currentPlayerId]) => currentPlayerId === playerId)?.[0]
+    const substituteIndex = lineup.value.substitutes.indexOf(playerId)
+    let substitutes = lineup.value.substitutes.filter((id) => id !== playerId)
+
+    if (currentStarterSlot) {
+      starters[currentStarterSlot] = null
+    }
+
+    starters[slotId] = playerId
+
+    if (targetPlayerId && targetPlayerId !== playerId) {
+      if (currentStarterSlot) {
+        starters[currentStarterSlot] = targetPlayerId
+      } else if (source === 'substitute') {
+        substitutes = insertSubstitute(
+          substitutes,
+          targetPlayerId,
+          substituteIndex === -1 ? undefined : substituteIndex,
+        )
+      }
+    }
+
+    saveLineup({
+      ...lineup.value,
+      starters,
+      substitutes,
+    })
+  }
+
+  const swapSubstituteWithReserve = (substituteId: string, reserveId: string): void => {
+    if (!lineup.value) {
+      return
+    }
+
+    const substituteIndex = lineup.value.substitutes.indexOf(substituteId)
+    if (substituteIndex === -1) {
+      return
+    }
+
+    const substitutes = [...lineup.value.substitutes]
+    substitutes[substituteIndex] = reserveId
+
+    saveLineup({
+      ...lineup.value,
+      substitutes,
+    })
+  }
+
+  const movePlayerToSubstitutes = (playerId: string): void => {
+    if (!lineup.value) {
+      return
+    }
+
+    const starters = Object.fromEntries(
+      Object.entries(lineup.value.starters).map(([slotId, currentPlayerId]) => [
+        slotId,
+        currentPlayerId === playerId ? null : currentPlayerId,
+      ]),
+    ) as Record<string, string | null>
+
+    const substitutes = lineup.value.substitutes.includes(playerId)
+      ? lineup.value.substitutes
+      : [...lineup.value.substitutes, playerId].slice(0, 7)
+
+    saveLineup({
+      ...lineup.value,
+      starters,
+      substitutes,
+    })
+  }
+
+  const movePlayerToReserve = (playerId: string): void => {
+    if (!lineup.value) {
+      return
+    }
+
+    const starters = Object.fromEntries(
+      Object.entries(lineup.value.starters).map(([slotId, currentPlayerId]) => [
+        slotId,
+        currentPlayerId === playerId ? null : currentPlayerId,
+      ]),
+    ) as Record<string, string | null>
+
+    saveLineup({
+      ...lineup.value,
+      starters,
+      substitutes: lineup.value.substitutes.filter((id) => id !== playerId),
     })
   }
 
@@ -110,7 +233,11 @@ export const useSquadStore = defineStore('squad', () => {
     setFormation,
     setTacticalStyle,
     assignPlayerToSlot,
+    movePlayerToSlot,
     toggleSubstitute,
+    swapSubstituteWithReserve,
+    movePlayerToSubstitutes,
+    movePlayerToReserve,
     resetLineup,
   }
 })

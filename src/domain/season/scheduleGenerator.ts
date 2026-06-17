@@ -3,6 +3,24 @@ import type { Club, Match } from '@/types/football'
 
 export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24]
 
+const seasonBaseYear = 2026
+const septemberMonthIndex = 8
+
+const toIsoDate = (date: Date): string => date.toISOString().slice(0, 10)
+
+const getFirstSaturdayOfSeptember = (season: number): Date => {
+  const date = new Date(Date.UTC(seasonBaseYear + season - 1, septemberMonthIndex, 1))
+  const daysUntilSaturday = (6 - date.getUTCDay() + 7) % 7
+  date.setUTCDate(date.getUTCDate() + daysUntilSaturday)
+  return date
+}
+
+export const getSeasonMatchDate = (season: number, order: number): string => {
+  const date = getFirstSaturdayOfSeptember(season)
+  date.setUTCDate(date.getUTCDate() + Math.max(0, order - 1) * 7)
+  return toIsoDate(date)
+}
+
 interface Pairing {
   homeClubId: string
   awayClubId: string
@@ -78,6 +96,7 @@ export const generateLeagueSchedule = (clubs: readonly Club[], season: number): 
           id: `s${season}-d${divisionId}-r${roundIndex + 1}-m${matchIndex + 1}`,
           season,
           type: 'league',
+          date: getSeasonMatchDate(season, leagueRoundOrders[roundIndex] ?? roundIndex + 1),
           order: leagueRoundOrders[roundIndex] ?? roundIndex + 1,
           round: roundIndex + 1,
           divisionId,
