@@ -14,9 +14,23 @@ export type TransferSortKey = 'rating' | 'age' | 'value'
 
 export const useTransferStore = defineStore('transfers', () => {
   const gameStore = useGameStore()
-  const positionFilter = ref<PlayerPosition | 'all'>('all')
-  const sortKey = ref<TransferSortKey>('rating')
+  const marketPositionFilter = ref<PlayerPosition | 'all'>('all')
+  const marketSortKey = ref<TransferSortKey>('rating')
+  const squadPositionFilter = ref<PlayerPosition | 'all'>('all')
+  const squadSortKey = ref<TransferSortKey>('rating')
   const message = ref('')
+  const messageId = ref(0)
+
+  const sortPlayers = <T extends { player: Player }>(players: T[], sortKey: TransferSortKey): T[] =>
+    [...players].sort((left, right) => {
+      if (sortKey === 'age') {
+        return left.player.age - right.player.age
+      }
+      if (sortKey === 'value') {
+        return right.player.value - left.player.value
+      }
+      return right.player.rating - left.player.rating
+    })
 
   const marketPlayers = computed<MarketPlayer[]>(() => {
     const game = gameStore.game
@@ -24,7 +38,7 @@ export const useTransferStore = defineStore('transfers', () => {
       return []
     }
 
-    return game.clubs
+    const players = game.clubs
       .filter((club) => club.id !== game.selectedClubId)
       .flatMap((club) =>
         club.squad.map((player) => ({
@@ -34,17 +48,24 @@ export const useTransferStore = defineStore('transfers', () => {
         })),
       )
       .filter(
-        (item) => positionFilter.value === 'all' || item.player.position === positionFilter.value,
+        (item) =>
+          marketPositionFilter.value === 'all' ||
+          item.player.position === marketPositionFilter.value,
       )
-      .sort((left, right) => {
-        if (sortKey.value === 'age') {
-          return left.player.age - right.player.age
-        }
-        if (sortKey.value === 'value') {
-          return right.player.value - left.player.value
-        }
-        return right.player.rating - left.player.rating
-      })
+
+    return sortPlayers(players, marketSortKey.value)
+  })
+
+  const squadPlayers = computed<Player[]>(() => {
+    const players =
+      gameStore.selectedClub?.squad
+        .filter(
+          (player) =>
+            squadPositionFilter.value === 'all' || player.position === squadPositionFilter.value,
+        )
+        .map((player) => ({ player })) ?? []
+
+    return sortPlayers(players, squadSortKey.value).map((item) => item.player)
   })
 
   const buy = (playerId: string): void => {
@@ -54,6 +75,7 @@ export const useTransferStore = defineStore('transfers', () => {
     }
     const result = buyPlayer(game.clubs, game.selectedClubId, playerId)
     message.value = result.message
+    messageId.value += 1
     if (result.success) {
       gameStore.replaceClubs(result.clubs)
     }
@@ -66,16 +88,21 @@ export const useTransferStore = defineStore('transfers', () => {
     }
     const result = sellPlayer(game.clubs, game.selectedClubId, playerId)
     message.value = result.message
+    messageId.value += 1
     if (result.success) {
       gameStore.replaceClubs(result.clubs)
     }
   }
 
   return {
-    positionFilter,
-    sortKey,
+    marketPositionFilter,
+    marketSortKey,
+    squadPositionFilter,
+    squadSortKey,
     message,
+    messageId,
     marketPlayers,
+    squadPlayers,
     buy,
     sell,
   }

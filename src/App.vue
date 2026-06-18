@@ -11,7 +11,7 @@ const settingsOpen = ref(false)
 const navItems = [
   { to: '/dashboard', label: 'Обзор' },
   { to: '/squad', label: 'Состав' },
-  { to: '/competitions', label: 'Турниры' },
+  { to: '/competitions', label: 'Таблицы' },
   { to: '/calendar', label: 'Календарь' },
   { to: '/transfers', label: 'Трансферы' },
 ]
@@ -43,7 +43,9 @@ const reset = (): void => {
         >
           <ClubBadge v-if="gameStore.selectedClub" :club="gameStore.selectedClub" />
           <div>
-            <div class="text-sm font-medium text-emerald-50/80">Сезон {{ gameStore.game?.season }}</div>
+            <div class="text-sm font-medium text-emerald-50/80">
+              Сезон {{ gameStore.game?.season }}
+            </div>
             <div class="font-semibold text-white">{{ gameStore.selectedClub?.name }}</div>
           </div>
         </RouterLink>
@@ -94,7 +96,7 @@ const reset = (): void => {
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 py-6">
+    <main class="mx-auto min-h-[calc(100dvh-73px)] max-w-7xl px-4 py-6">
       <RouterView />
     </main>
   </div>
