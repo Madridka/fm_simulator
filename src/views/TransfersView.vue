@@ -71,7 +71,10 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
 </script>
 
 <template>
-  <section v-if="gameStore.selectedClub" class="flex h-[calc(100dvh-120px)] min-h-[640px] flex-col gap-5">
+  <section
+    v-if="gameStore.selectedClub"
+    class="flex h-[calc(100dvh-120px)] min-h-[640px] flex-col gap-5"
+  >
     <div class="flex shrink-0 flex-col gap-1">
       <div>
         <h1 class="text-2xl font-bold text-slate-950">Трансферы</h1>
@@ -89,27 +92,31 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
       {{ toastMessage }}
     </div>
 
-    <div class="grid min-h-0 flex-1 auto-rows-fr gap-5 xl:auto-rows-auto xl:grid-cols-[1.25fr_0.75fr]">
-      <div class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
+    <div
+      class="grid min-h-0 flex-1 auto-rows-fr gap-5 xl:auto-rows-auto xl:grid-cols-[1.1fr_0.9fr]"
+    >
+      <div
+        class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+      >
         <div class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <h2 class="text-lg font-semibold text-slate-950">Рынок игроков</h2>
-          <div class="flex flex-wrap gap-2">
-            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:w-auto">
+            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
               Позиция
               <select
                 v-model="transferStore.marketPositionFilter"
-                class="h-10 rounded-md border border-slate-300 bg-white px-3"
+                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
               >
                 <option v-for="position in positions" :key="position" :value="position">
                   {{ positionLabel(position) }}
                 </option>
               </select>
             </label>
-            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
               Сортировка
               <select
                 v-model="transferStore.marketSortKey"
-                class="h-10 rounded-md border border-slate-300 bg-white px-3"
+                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
               >
                 <option v-for="sort in sortOptions" :key="sort" :value="sort">
                   {{ sortLabel(sort) }}
@@ -148,26 +155,28 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
         </div>
       </div>
 
-      <div class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
-        <div class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div
+        class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+      >
+        <div class="flex shrink-0 flex-col gap-3 2xl:flex-row 2xl:items-end 2xl:justify-between">
           <h2 class="text-lg font-semibold text-slate-950">Продажа игроков</h2>
-          <div class="flex flex-wrap gap-2">
-            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 2xl:w-auto">
+            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
               Позиция
               <select
                 v-model="transferStore.squadPositionFilter"
-                class="h-10 rounded-md border border-slate-300 bg-white px-3"
+                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
               >
                 <option v-for="position in positions" :key="position" :value="position">
                   {{ positionLabel(position) }}
                 </option>
               </select>
             </label>
-            <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
               Сортировка
               <select
                 v-model="transferStore.squadSortKey"
-                class="h-10 rounded-md border border-slate-300 bg-white px-3"
+                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
               >
                 <option v-for="sort in sortOptions" :key="sort" :value="sort">
                   {{ sortLabel(sort) }}
