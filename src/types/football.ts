@@ -1,5 +1,7 @@
 export type PlayerPosition = 'GK' | 'LB' | 'CB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'LW' | 'RW' | 'ST'
 
+export type ChampionshipId = 'russia' | 'spain'
+
 export interface Player {
   id: string
   firstName: string
@@ -157,6 +159,7 @@ export interface PlayerStats {
 }
 
 export interface GameState {
+  championshipId: ChampionshipId
   selectedClubId: string
   season: number
   clubs: Club[]

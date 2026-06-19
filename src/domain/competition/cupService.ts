@@ -5,6 +5,7 @@ import { createSeededRandom } from '@/utils/random'
 
 export const cupRoundIds = [
   'preliminary',
+  'round_of_64',
   'round_of_32',
   'round_of_16',
   'quarter_final',
@@ -131,7 +132,10 @@ export const initializeCup = (
   const preliminaryParticipants = shuffle(preliminaryClubs, season * 101 + 7)
   const initial = createRound('preliminary', season, preliminaryParticipants, 1)
 
-  const rounds: CupRound[] = cupRoundIds.map((roundId) => createEmptyRound(roundId))
+  const firstMainRoundId = bracketSize >= 64 ? 'round_of_64' : 'round_of_32'
+  const firstMainRoundIndex = cupRoundIds.indexOf(firstMainRoundId)
+  const activeRoundIds = [cupRoundIds[0], ...cupRoundIds.slice(firstMainRoundIndex)]
+  const rounds: CupRound[] = activeRoundIds.map((roundId) => createEmptyRound(roundId))
   rounds[0] = {
     ...initial.round,
     byes,

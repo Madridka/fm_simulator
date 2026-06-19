@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import LeagueTable from '@/components/LeagueTable.vue'
-import { divisionNames } from '@/config/gameConfig'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitionStore'
 import { useGameStore } from '@/stores/gameStore'
@@ -12,7 +11,8 @@ const competitionStore = useCompetitionStore()
 
 const playerDivisionId = computed(() => gameStore.selectedClub?.divisionId ?? 1)
 const selectedDivisionId = ref(playerDivisionId.value)
-const divisions = [1, 2, 3, 4]
+const divisions = computed(() => Object.keys(competitionStore.leagueTables).map(Number))
+const divisionName = (divisionId: number): string => clubStore.getDivisionName(divisionId)
 
 const selectedRows = computed(() => competitionStore.leagueTables[selectedDivisionId.value] ?? [])
 
@@ -24,7 +24,7 @@ const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivis
     <header class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-          Чемпионат России
+          Чемпионат: {{ gameStore.championship?.name }}
         </div>
         <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">Таблица лиги</h1>
         <p class="mt-1 text-sm text-slate-600">По умолчанию открыт дивизион вашей команды.</p>
@@ -47,7 +47,7 @@ const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivis
             "
             @click="selectedDivisionId = divisionId"
           >
-            {{ divisionNames[divisionId] }}
+            {{ divisionName(divisionId) }}
             <span
               v-if="divisionId === playerDivisionId"
               class="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400"
@@ -67,7 +67,7 @@ const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivis
         <div>
           <div class="flex items-center gap-2">
             <h2 class="text-lg font-black text-slate-950">
-              {{ divisionNames[selectedDivisionId] }}
+              {{ divisionName(selectedDivisionId) }}
             </h2>
             <span
               v-if="isPlayerDivision"

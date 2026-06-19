@@ -1,7 +1,20 @@
-import { gameConfig } from '@/config/gameConfig'
 import type { Club, Match } from '@/types/football'
 
 export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24]
+
+const cupOrders = new Set([3, 7, 11, 15, 19, 23, 27])
+
+const getLeagueRoundOrder = (roundIndex: number): number => {
+  if (leagueRoundOrders[roundIndex] !== undefined) return leagueRoundOrders[roundIndex]
+
+  let order = leagueRoundOrders.at(-1) ?? 0
+  let missingIndex = roundIndex - leagueRoundOrders.length
+  do {
+    order += 1
+    if (!cupOrders.has(order)) missingIndex -= 1
+  } while (missingIndex >= 0)
+  return order
+}
 
 const seasonBaseYear = 2026
 const septemberMonthIndex = 8
@@ -39,8 +52,8 @@ const rotateTeams = (teams: readonly string[]): string[] => {
 }
 
 export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][] => {
-  if (clubIds.length !== gameConfig.clubsPerDivision) {
-    throw new Error(`Expected ${gameConfig.clubsPerDivision} clubs per division`)
+  if (clubIds.length < 2 || clubIds.length % 2 !== 0) {
+    throw new Error('A division must contain an even number of at least two clubs')
   }
 
   let teams = [...clubIds]
@@ -81,8 +94,11 @@ export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][
 
 export const generateLeagueSchedule = (clubs: readonly Club[], season: number): Match[] => {
   const matches: Match[] = []
+  const divisionIds = [...new Set(clubs.map((club) => club.divisionId))].sort(
+    (left, right) => left - right,
+  )
 
-  for (let divisionId = 1; divisionId <= gameConfig.divisionsCount; divisionId += 1) {
+  for (const divisionId of divisionIds) {
     const divisionClubIds = clubs
       .filter((club) => club.divisionId === divisionId)
       .map((club) => club.id)
@@ -96,8 +112,8 @@ export const generateLeagueSchedule = (clubs: readonly Club[], season: number): 
           id: `s${season}-d${divisionId}-r${roundIndex + 1}-m${matchIndex + 1}`,
           season,
           type: 'league',
-          date: getSeasonMatchDate(season, leagueRoundOrders[roundIndex] ?? roundIndex + 1),
-          order: leagueRoundOrders[roundIndex] ?? roundIndex + 1,
+          date: getSeasonMatchDate(season, getLeagueRoundOrder(roundIndex)),
+          order: getLeagueRoundOrder(roundIndex),
           round: roundIndex + 1,
           divisionId,
           homeClubId: pairing.homeClubId,

@@ -1,5 +1,5 @@
 import { gameConfig } from '@/config/gameConfig'
-import { clubs as initialClubs } from '@/data/clubs'
+import { getChampionshipClubs } from '@/data/clubs'
 import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupService'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
 import { simulateMatch } from '@/domain/match/matchSimulator'
@@ -10,6 +10,7 @@ import {
   getStarterIds,
 } from '@/domain/season/squadSelectionService'
 import type {
+  ChampionshipId,
   Club,
   ClubLineup,
   GameState,
@@ -76,8 +77,14 @@ export const createDefaultLineups = (
   }, {})
 }
 
-export const createInitialGameState = (selectedClubId: string): GameState => {
-  const clubs = initialClubs.map(cloneClub)
+export const createInitialGameState = (
+  championshipId: ChampionshipId,
+  selectedClubId: string,
+): GameState => {
+  const clubs = getChampionshipClubs(championshipId).map(cloneClub)
+  if (!clubs.some((club) => club.id === selectedClubId)) {
+    throw new Error(`Club ${selectedClubId} does not belong to ${championshipId}`)
+  }
   const leagueMatches = generateLeagueSchedule(clubs, 1)
   const cup = initializeCup(clubs, 1)
   const matches = [...leagueMatches, ...cup.matches].sort(
@@ -85,6 +92,7 @@ export const createInitialGameState = (selectedClubId: string): GameState => {
   )
 
   return {
+    championshipId,
     selectedClubId,
     season: 1,
     clubs,
@@ -475,14 +483,19 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
   }
 }
 
-export const getNextDivisionId = (divisionId: number, position: number): number => {
+export const getNextDivisionId = (
+  divisionId: number,
+  position: number,
+  clubsInDivision = gameConfig.clubsPerDivision,
+  divisionsCount = gameConfig.divisionsCount,
+): number => {
   if (position <= gameConfig.promotedClubsCount && divisionId > 1) {
     return divisionId - 1
   }
 
   if (
-    position > gameConfig.clubsPerDivision - gameConfig.relegatedClubsCount &&
-    divisionId < gameConfig.divisionsCount
+    position > clubsInDivision - gameConfig.relegatedClubsCount &&
+    divisionId < divisionsCount
   ) {
     return divisionId + 1
   }
@@ -493,6 +506,11 @@ export const getNextDivisionId = (divisionId: number, position: number): number 
 const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
   const tableRows = Object.values(state.leagueTables).flat()
   const rowByClubId = new Map(tableRows.map((row) => [row.clubId, row]))
+  const divisionSizes = state.clubs.reduce<Record<number, number>>((sizes, club) => {
+    sizes[club.divisionId] = (sizes[club.divisionId] ?? 0) + 1
+    return sizes
+  }, {})
+  const divisionsCount = Math.max(...Object.keys(divisionSizes).map(Number))
 
   return state.clubs.map((club) => {
     const row = rowByClubId.get(club.id)
@@ -501,7 +519,12 @@ const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
     }
 
     const reward = gameConfig.seasonRewards[club.divisionId]?.[row.position - 1] ?? 0
-    const divisionId = getNextDivisionId(club.divisionId, row.position)
+    const divisionId = getNextDivisionId(
+      club.divisionId,
+      row.position,
+      divisionSizes[club.divisionId],
+      divisionsCount,
+    )
     const promoted = divisionId < club.divisionId
 
     return {
@@ -528,6 +551,7 @@ export const finishSeason = (state: GameState): GameState => {
   )
 
   return {
+    championshipId: state.championshipId,
     selectedClubId: state.selectedClubId,
     season: nextSeason,
     clubs: progressedClubs,

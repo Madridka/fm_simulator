@@ -84,7 +84,7 @@ const difficulty = (club: Club): { label: string; className: string } => {
 }
 
 const selectClub = (clubId: string): void => {
-  gameStore.startNewGame(clubId)
+  gameStore.startNewGame(selectedChampionship.value, clubId)
   void router.push('/dashboard')
 }
 </script>

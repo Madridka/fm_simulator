@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import ClubBadge from '@/components/ClubBadge.vue'
-import { divisionNames } from '@/config/gameConfig'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitionStore'
 import { useGameStore } from '@/stores/gameStore'
@@ -14,6 +13,9 @@ const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 
 const club = computed(() => gameStore.selectedClub)
+const divisionName = computed(() =>
+  club.value ? clubStore.getDivisionName(club.value.divisionId) : '',
+)
 const leagueRows = computed(() =>
   club.value ? (competitionStore.leagueTables[club.value.divisionId] ?? []) : [],
 )
@@ -104,7 +106,7 @@ const openMatch = (match: Match): void => {
             <div
               class="mb-2 flex flex-wrap items-center gap-2 text-[11px] font-black uppercase tracking-[0.14em] text-emerald-200/70"
             >
-              <span>{{ divisionNames[club.divisionId] }}</span
+              <span>{{ divisionName }}</span
               ><span class="h-1 w-1 rounded-full bg-emerald-300/50"></span
               ><span>{{ club.city }}</span>
             </div>
@@ -169,7 +171,7 @@ const openMatch = (match: Match): void => {
         <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
           <div>
             <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-              {{ divisionNames[club.divisionId] }}
+              {{ divisionName }}
             </div>
             <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">Таблица лиги</h2>
           </div>

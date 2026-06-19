@@ -5,7 +5,7 @@ import { createMemoryStorage, gameSaveRepository } from '@/repositories/gameSave
 describe('gameSaveRepository', () => {
   it('saves and restores a complete game state', () => {
     const storage = createMemoryStorage()
-    const state = createInitialGameState('zenit')
+    const state = createInitialGameState('russia', 'zenit')
 
     gameSaveRepository.save(state, storage)
 

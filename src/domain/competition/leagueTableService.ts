@@ -1,4 +1,3 @@
-import { gameConfig } from '@/config/gameConfig'
 import type { Club, LeagueTableRow, Match } from '@/types/football'
 
 const createEmptyRow = (clubId: string, divisionId: number): LeagueTableRow => ({
@@ -60,8 +59,11 @@ export const calculateLeagueTables = (
   matches: readonly Match[],
 ): Record<number, LeagueTableRow[]> => {
   const tables: Record<number, LeagueTableRow[]> = {}
+  const divisionIds = [...new Set(clubs.map((club) => club.divisionId))].sort(
+    (left, right) => left - right,
+  )
 
-  for (let divisionId = 1; divisionId <= gameConfig.divisionsCount; divisionId += 1) {
+  for (const divisionId of divisionIds) {
     const rows = new Map<string, LeagueTableRow>()
 
     clubs

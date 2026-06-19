@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import { divisionNames } from '@/config/gameConfig'
 import { useGameStore } from '@/stores/gameStore'
 import type { Club } from '@/types/football'
 
@@ -20,7 +19,7 @@ export const useClubStore = defineStore('clubs', () => {
     clubs.value.find((club) => club.id === clubId)
 
   const getDivisionName = (divisionId: number): string =>
-    divisionNames[divisionId] ?? `Дивизион ${divisionId}`
+    gameStore.championship?.divisionNames[divisionId] ?? `Дивизион ${divisionId}`
 
   return {
     clubs,

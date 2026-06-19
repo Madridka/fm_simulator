@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
+import { getChampionship } from '@/data/clubs'
 import {
   completeUserMatchDay,
   createInitialGameState,
@@ -10,7 +11,7 @@ import {
   refreshLineupsAfterSquadChange,
 } from '@/domain/season/seasonService'
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
-import type { Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
+import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
 
 export const useGameStore = defineStore('game', () => {
   const game = ref<GameState | null>(gameSaveRepository.load())
@@ -54,6 +55,10 @@ export const useGameStore = defineStore('game', () => {
     return nextMatch.value
   })
 
+  const championship = computed(() =>
+    game.value ? getChampionship(game.value.championshipId) : undefined,
+  )
+
   const seasonCanFinish = computed<boolean>(() =>
     game.value ? isSeasonReadyToFinish(game.value) : false,
   )
@@ -64,9 +69,9 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
-  const startNewGame = (clubId: string): void => {
+  const startNewGame = (championshipId: ChampionshipId, clubId: string): void => {
     activeMatchId.value = null
-    game.value = createInitialGameState(clubId)
+    game.value = createInitialGameState(championshipId, clubId)
     save()
   }
 
@@ -148,6 +153,7 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     game,
+    championship,
     selectedClub,
     nextMatch,
     activeMatch,

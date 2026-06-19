@@ -10,7 +10,13 @@ const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 const activeCupTab = ref<'main' | 'preliminary'>('main')
 type BracketSide = 'left' | 'right'
-const mainBracketRoundIds = ['round_of_32', 'round_of_16', 'quarter_final', 'semi_final'] as const
+const mainBracketRoundIds = [
+  'round_of_64',
+  'round_of_32',
+  'round_of_16',
+  'quarter_final',
+  'semi_final',
+] as const
 type MainBracketRoundId = (typeof mainBracketRoundIds)[number]
 
 interface BracketColumn {
@@ -21,8 +27,11 @@ interface BracketColumn {
   expectedTieSlots: number
 }
 
-const mainBracketSideSlots = 8
+const mainBracketSideSlots = computed(() =>
+  mainBracketRounds.value.some((round) => round.id === 'round_of_64') ? 16 : 8,
+)
 const expectedSideTieSlots: Record<MainBracketRoundId, number> = {
+  round_of_64: 16,
   round_of_32: 8,
   round_of_16: 4,
   quarter_final: 2,
@@ -31,6 +40,7 @@ const expectedSideTieSlots: Record<MainBracketRoundId, number> = {
 
 const cupRoundLabels: Record<string, string> = {
   preliminary: 'Отбор',
+  round_of_64: '1/32',
   round_of_32: '1/16',
   round_of_16: '1/8',
   quarter_final: '1/4',
@@ -158,11 +168,11 @@ const penaltyWinnerName = (tie: CupTie): string | undefined => {
 }
 
 const bracketGridStyle = (): Record<string, string> => ({
-  gridTemplateRows: `repeat(${mainBracketSideSlots}, minmax(0, 1fr))`,
+  gridTemplateRows: `repeat(${mainBracketSideSlots.value}, minmax(0, 1fr))`,
 })
 
 const tieSlotStyle = (column: BracketColumn, index: number): Record<string, string> => {
-  const rowSpan = Math.max(1, mainBracketSideSlots / column.expectedTieSlots)
+  const rowSpan = Math.max(1, mainBracketSideSlots.value / column.expectedTieSlots)
   return {
     gridRow: `${Math.floor(index * rowSpan) + 1} / span ${rowSpan}`,
   }
@@ -177,7 +187,7 @@ const emptyColumnStyle = (): Record<string, string> => ({
   <section v-if="gameStore.game" class="space-y-3">
     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 class="text-xl font-bold text-slate-950">Кубок России</h1>
+        <h1 class="text-xl font-bold text-slate-950">Кубок: {{ gameStore.championship?.name }}</h1>
         <p class="mt-0.5 text-sm text-slate-600">Все стадии национального кубка.</p>
       </div>
     </div>

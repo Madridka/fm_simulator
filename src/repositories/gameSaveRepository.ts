@@ -1,4 +1,5 @@
 import type { GameState } from '@/types/football'
+import { championships } from '@/data/clubs'
 
 const SAVE_KEY = 'football-manager-mvp-save'
 
@@ -41,7 +42,15 @@ export const gameSaveRepository = {
     }
 
     try {
-      return JSON.parse(raw) as GameState
+      const state = JSON.parse(raw) as GameState
+      if (!state.championshipId) {
+        state.championshipId = championships.spain.clubConfigs.some(
+          (club) => club.id === state.selectedClubId,
+        )
+          ? 'spain'
+          : 'russia'
+      }
+      return state
     } catch {
       storage.removeItem(SAVE_KEY)
       return null
