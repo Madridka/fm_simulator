@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import LeagueTable from '@/components/LeagueTable.vue'
-import { divisionNames } from '@/config/gameConfig'
 import { useClubStore } from '@/stores/clubStore'
 import { useCompetitionStore } from '@/stores/competitionStore'
 import { useGameStore } from '@/stores/gameStore'
@@ -10,10 +8,7 @@ import type { CupRound, CupTie, Match } from '@/types/football'
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
-const activeTab = ref<'league' | 'cup'>('league')
 const activeCupTab = ref<'main' | 'preliminary'>('main')
-
-const divisions = computed(() => [1, 2, 3, 4])
 type BracketSide = 'left' | 'right'
 const mainBracketRoundIds = ['round_of_32', 'round_of_16', 'quarter_final', 'semi_final'] as const
 type MainBracketRoundId = (typeof mainBracketRoundIds)[number]
@@ -73,11 +68,7 @@ const createBracketColumn = (
 
 const leftBracketColumns = computed<BracketColumn[]>(() =>
   mainBracketRounds.value.map((round) =>
-    createBracketColumn(
-      round,
-      'left',
-      expectedSideTieSlots[round.id as MainBracketRoundId] ?? 1,
-    ),
+    createBracketColumn(round, 'left', expectedSideTieSlots[round.id as MainBracketRoundId] ?? 1),
   ),
 )
 
@@ -186,46 +177,17 @@ const emptyColumnStyle = (): Record<string, string> => ({
   <section v-if="gameStore.game" class="space-y-3">
     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 class="text-xl font-bold text-slate-950">Турниры</h1>
-        <p class="mt-0.5 text-sm text-slate-600">Чемпионат и национальный кубок.</p>
+        <h1 class="text-xl font-bold text-slate-950">Кубок России</h1>
+        <p class="mt-0.5 text-sm text-slate-600">Все стадии национального кубка.</p>
       </div>
-      <div class="inline-flex rounded-md border border-slate-200 bg-white p-1">
-        <button
-          type="button"
-          class="rounded px-4 py-2 text-sm font-semibold"
-          :class="activeTab === 'league' ? 'bg-slate-950 text-white' : 'text-slate-600'"
-          @click="activeTab = 'league'"
-        >
-          Чемпионат
-        </button>
-        <button
-          type="button"
-          class="rounded px-4 py-2 text-sm font-semibold"
-          :class="activeTab === 'cup' ? 'bg-slate-950 text-white' : 'text-slate-600'"
-          @click="activeTab = 'cup'"
-        >
-          Кубок
-        </button>
-      </div>
-    </div>
-
-    <div v-if="activeTab === 'league'" class="grid gap-5 xl:grid-cols-2">
-      <article v-for="divisionId in divisions" :key="divisionId" class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]">
-        <h2 class="text-lg font-semibold text-slate-950">{{ divisionNames[divisionId] }}</h2>
-        <LeagueTable
-          class="mt-4"
-          :rows="competitionStore.leagueTables[divisionId] ?? []"
-          :clubs="clubStore.clubs"
-          :selected-club-id="gameStore.game.selectedClubId"
-        />
-      </article>
     </div>
 
     <article
-      v-else
       class="overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
     >
-      <div class="flex flex-col gap-2 border-b border-slate-200/80 px-4 py-3 lg:flex-row lg:items-end lg:justify-between">
+      <div
+        class="flex flex-col gap-2 border-b border-slate-200/80 px-4 py-3 lg:flex-row lg:items-end lg:justify-between"
+      >
         <div>
           <h2 class="text-base font-semibold text-slate-950">
             {{ activeCupTab === 'main' ? 'Кубковая сетка' : 'Предварительный раунд' }}
@@ -270,27 +232,34 @@ const emptyColumnStyle = (): Record<string, string> => ({
         v-if="activeCupTab === 'main'"
         class="overflow-hidden bg-[linear-gradient(90deg,#14313b,#53657f_18%,#93a4a8_50%,#53657f_82%,#14313b)] p-2"
       >
-        <div class="grid h-[calc(100dvh-315px)] min-h-[430px] max-h-[540px] grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.92fr)_minmax(0,0.86fr)_minmax(118px,1.05fr)_minmax(0,0.86fr)_minmax(0,0.92fr)_minmax(0,1fr)_minmax(0,1.15fr)] gap-1.5">
+        <div
+          class="grid h-[calc(100dvh-315px)] min-h-[430px] max-h-[540px] grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.92fr)_minmax(0,0.86fr)_minmax(118px,1.05fr)_minmax(0,0.86fr)_minmax(0,0.92fr)_minmax(0,1fr)_minmax(0,1.15fr)] gap-1.5"
+        >
           <section
             v-for="column in leftBracketColumns"
             :key="column.key"
             class="relative grid min-h-0 grid-rows-[28px_minmax(0,1fr)]"
           >
-            <div class="flex min-h-[28px] items-center justify-between gap-1 rounded bg-white/20 px-1.5 py-1 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
+            <div
+              class="flex min-h-[28px] items-center justify-between gap-1 rounded bg-white/20 px-1.5 py-1 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+            >
               <span class="text-xs font-black uppercase">{{ roundLabel(column.round) }}</span>
-              <span class="rounded-full px-1.5 py-0.5 text-[0.55rem] font-bold leading-none" :class="roundStatusClass(column.round)">
+              <span
+                class="rounded-full px-1.5 py-0.5 text-[0.55rem] font-bold leading-none"
+                :class="roundStatusClass(column.round)"
+              >
                 {{ roundStatusLabel(column.round) }}
               </span>
             </div>
 
-            <div class="pointer-events-none absolute bottom-3 right-[-0.25rem] top-10 border-r border-white/25"></div>
+            <div
+              class="pointer-events-none absolute bottom-3 right-[-0.25rem] top-10 border-r border-white/25"
+            ></div>
             <div class="grid min-h-0 gap-1 pt-1" :style="bracketGridStyle()">
-              <div
-                v-if="!column.ties.length"
-                class="flex items-center"
-                :style="emptyColumnStyle()"
-              >
-                <div class="rounded border border-dashed border-white/40 bg-white/20 p-1.5 text-[0.62rem] font-semibold text-white/75">
+              <div v-if="!column.ties.length" class="flex items-center" :style="emptyColumnStyle()">
+                <div
+                  class="rounded border border-dashed border-white/40 bg-white/20 p-1.5 text-[0.62rem] font-semibold text-white/75"
+                >
                   Пары появятся после предыдущей стадии.
                 </div>
               </div>
@@ -301,28 +270,47 @@ const emptyColumnStyle = (): Record<string, string> => ({
                 class="flex items-center"
                 :style="tieSlotStyle(column, tieIndex)"
               >
-                <div class="w-full rounded border border-slate-300 bg-slate-50/95 p-0.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]">
+                <div
+                  class="w-full rounded border border-slate-300 bg-slate-50/95 p-0.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]"
+                >
                   <div class="space-y-0.5 text-[0.6rem]">
                     <div :class="teamRowClass(tie, tie.homeClubId)">
-                      <span class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black" :style="clubBadgeStyle(tie.homeClubId)">
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black"
+                        :style="clubBadgeStyle(tie.homeClubId)"
+                      >
                         {{ clubShortName(tie.homeClubId) }}
                       </span>
-                      <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                      <span
+                        class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                      >
                         {{ clubShortName(tie.homeClubId) }}
                       </span>
-                      <span class="text-[0.68rem] font-black text-slate-950">{{ teamScore(tie, 'home') }}</span>
+                      <span class="text-[0.68rem] font-black text-slate-950">{{
+                        teamScore(tie, 'home')
+                      }}</span>
                     </div>
                     <div :class="teamRowClass(tie, tie.awayClubId)">
-                      <span class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black" :style="clubBadgeStyle(tie.awayClubId)">
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black"
+                        :style="clubBadgeStyle(tie.awayClubId)"
+                      >
                         {{ clubShortName(tie.awayClubId) }}
                       </span>
-                      <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                      <span
+                        class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                      >
                         {{ clubShortName(tie.awayClubId) }}
                       </span>
-                      <span class="text-[0.68rem] font-black text-slate-950">{{ teamScore(tie, 'away') }}</span>
+                      <span class="text-[0.68rem] font-black text-slate-950">{{
+                        teamScore(tie, 'away')
+                      }}</span>
                     </div>
                   </div>
-                  <div v-if="penaltyWinnerName(tie)" class="mt-0.5 truncate text-[0.55rem] font-semibold leading-tight text-slate-500">
+                  <div
+                    v-if="penaltyWinnerName(tie)"
+                    class="mt-0.5 truncate text-[0.55rem] font-semibold leading-tight text-slate-500"
+                  >
                     Пенальти: {{ penaltyWinnerName(tie) }}
                   </div>
                 </div>
@@ -330,47 +318,81 @@ const emptyColumnStyle = (): Record<string, string> => ({
             </div>
           </section>
 
-          <section class="relative grid min-h-0 grid-rows-[28px_minmax(0,1fr)] rounded-md border border-white/25 bg-white/20 p-1.5 text-center text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
+          <section
+            class="relative grid min-h-0 grid-rows-[28px_minmax(0,1fr)] rounded-md border border-white/25 bg-white/20 p-1.5 text-center text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+          >
             <div class="mx-auto rounded-full bg-white/20 px-2.5 py-1 text-xs font-black uppercase">
               {{ finalRound ? roundLabel(finalRound) : 'Финал' }}
             </div>
 
             <div class="flex min-h-0 flex-col items-center justify-center">
               <div class="relative h-20 w-20">
-                <div class="absolute left-1/2 top-1 h-10 w-14 -translate-x-1/2 rounded-b-[1.4rem] rounded-t border-[3px] border-slate-100 bg-[linear-gradient(135deg,#f8fafc,#94a3b8)] shadow-[0_10px_22px_rgba(15,23,42,0.24)]"></div>
-                <div class="absolute left-0 top-5 h-7 w-7 rounded-l-full border-[3px] border-r-0 border-slate-100"></div>
-                <div class="absolute right-0 top-5 h-7 w-7 rounded-r-full border-[3px] border-l-0 border-slate-100"></div>
-                <div class="absolute left-1/2 top-[46px] h-5 w-4 -translate-x-1/2 bg-[linear-gradient(135deg,#e2e8f0,#94a3b8)]"></div>
-                <div class="absolute bottom-3 left-1/2 h-3 w-11 -translate-x-1/2 rounded-t bg-[linear-gradient(135deg,#f8fafc,#94a3b8)]"></div>
-                <div class="absolute bottom-0 left-1/2 h-3 w-16 -translate-x-1/2 rounded bg-slate-100 shadow-[0_8px_18px_rgba(15,23,42,0.2)]"></div>
+                <div
+                  class="absolute left-1/2 top-1 h-10 w-14 -translate-x-1/2 rounded-b-[1.4rem] rounded-t border-[3px] border-slate-100 bg-[linear-gradient(135deg,#f8fafc,#94a3b8)] shadow-[0_10px_22px_rgba(15,23,42,0.24)]"
+                ></div>
+                <div
+                  class="absolute left-0 top-5 h-7 w-7 rounded-l-full border-[3px] border-r-0 border-slate-100"
+                ></div>
+                <div
+                  class="absolute right-0 top-5 h-7 w-7 rounded-r-full border-[3px] border-l-0 border-slate-100"
+                ></div>
+                <div
+                  class="absolute left-1/2 top-[46px] h-5 w-4 -translate-x-1/2 bg-[linear-gradient(135deg,#e2e8f0,#94a3b8)]"
+                ></div>
+                <div
+                  class="absolute bottom-3 left-1/2 h-3 w-11 -translate-x-1/2 rounded-t bg-[linear-gradient(135deg,#f8fafc,#94a3b8)]"
+                ></div>
+                <div
+                  class="absolute bottom-0 left-1/2 h-3 w-16 -translate-x-1/2 rounded bg-slate-100 shadow-[0_8px_18px_rgba(15,23,42,0.2)]"
+                ></div>
               </div>
 
-              <div class="mt-3 w-full rounded-md border border-white/40 bg-white/95 p-2 text-left text-slate-900 shadow-[0_12px_24px_rgba(15,23,42,0.16)]">
-                <div class="mb-1 text-center text-[0.62rem] font-black uppercase text-slate-500">Финалисты</div>
+              <div
+                class="mt-3 w-full rounded-md border border-white/40 bg-white/95 p-2 text-left text-slate-900 shadow-[0_12px_24px_rgba(15,23,42,0.16)]"
+              >
+                <div class="mb-1 text-center text-[0.62rem] font-black uppercase text-slate-500">
+                  Финалисты
+                </div>
                 <div v-if="finalTie" class="space-y-1.5">
                   <div :class="teamRowClass(finalTie, finalTie.homeClubId)">
-                    <span class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black" :style="clubBadgeStyle(finalTie.homeClubId)">
+                    <span
+                      class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black"
+                      :style="clubBadgeStyle(finalTie.homeClubId)"
+                    >
                       {{ clubShortName(finalTie.homeClubId) }}
                     </span>
                     <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-bold">
                       {{ clubName(finalTie.homeClubId) }}
                     </span>
-                    <span class="text-sm font-black text-slate-950">{{ teamScore(finalTie, 'home') }}</span>
+                    <span class="text-sm font-black text-slate-950">{{
+                      teamScore(finalTie, 'home')
+                    }}</span>
                   </div>
                   <div :class="teamRowClass(finalTie, finalTie.awayClubId)">
-                    <span class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black" :style="clubBadgeStyle(finalTie.awayClubId)">
+                    <span
+                      class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black"
+                      :style="clubBadgeStyle(finalTie.awayClubId)"
+                    >
                       {{ clubShortName(finalTie.awayClubId) }}
                     </span>
                     <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-bold">
                       {{ clubName(finalTie.awayClubId) }}
                     </span>
-                    <span class="text-sm font-black text-slate-950">{{ teamScore(finalTie, 'away') }}</span>
+                    <span class="text-sm font-black text-slate-950">{{
+                      teamScore(finalTie, 'away')
+                    }}</span>
                   </div>
-                  <div v-if="penaltyWinnerName(finalTie)" class="truncate text-center text-[0.58rem] font-semibold text-slate-500">
+                  <div
+                    v-if="penaltyWinnerName(finalTie)"
+                    class="truncate text-center text-[0.58rem] font-semibold text-slate-500"
+                  >
                     Пенальти: {{ penaltyWinnerName(finalTie) }}
                   </div>
                 </div>
-                <div v-else class="rounded border border-dashed border-slate-300 p-2 text-center text-xs font-semibold text-slate-500">
+                <div
+                  v-else
+                  class="rounded border border-dashed border-slate-300 p-2 text-center text-xs font-semibold text-slate-500"
+                >
                   Финалисты определятся после полуфиналов.
                 </div>
               </div>
@@ -382,21 +404,26 @@ const emptyColumnStyle = (): Record<string, string> => ({
             :key="column.key"
             class="relative grid min-h-0 grid-rows-[28px_minmax(0,1fr)]"
           >
-            <div class="flex min-h-[28px] items-center justify-between gap-1 rounded bg-white/20 px-1.5 py-1 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
+            <div
+              class="flex min-h-[28px] items-center justify-between gap-1 rounded bg-white/20 px-1.5 py-1 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+            >
               <span class="text-xs font-black uppercase">{{ roundLabel(column.round) }}</span>
-              <span class="rounded-full px-1.5 py-0.5 text-[0.55rem] font-bold leading-none" :class="roundStatusClass(column.round)">
+              <span
+                class="rounded-full px-1.5 py-0.5 text-[0.55rem] font-bold leading-none"
+                :class="roundStatusClass(column.round)"
+              >
                 {{ roundStatusLabel(column.round) }}
               </span>
             </div>
 
-            <div class="pointer-events-none absolute bottom-3 left-[-0.25rem] top-10 border-l border-white/25"></div>
+            <div
+              class="pointer-events-none absolute bottom-3 left-[-0.25rem] top-10 border-l border-white/25"
+            ></div>
             <div class="grid min-h-0 gap-1 pt-1" :style="bracketGridStyle()">
-              <div
-                v-if="!column.ties.length"
-                class="flex items-center"
-                :style="emptyColumnStyle()"
-              >
-                <div class="rounded border border-dashed border-white/40 bg-white/20 p-1.5 text-[0.62rem] font-semibold text-white/75">
+              <div v-if="!column.ties.length" class="flex items-center" :style="emptyColumnStyle()">
+                <div
+                  class="rounded border border-dashed border-white/40 bg-white/20 p-1.5 text-[0.62rem] font-semibold text-white/75"
+                >
                   Пары появятся после предыдущей стадии.
                 </div>
               </div>
@@ -407,28 +434,47 @@ const emptyColumnStyle = (): Record<string, string> => ({
                 class="flex items-center"
                 :style="tieSlotStyle(column, tieIndex)"
               >
-                <div class="w-full rounded border border-slate-300 bg-slate-50/95 p-0.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]">
+                <div
+                  class="w-full rounded border border-slate-300 bg-slate-50/95 p-0.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]"
+                >
                   <div class="space-y-0.5 text-[0.6rem]">
                     <div :class="teamRowClass(tie, tie.homeClubId)">
-                      <span class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black" :style="clubBadgeStyle(tie.homeClubId)">
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black"
+                        :style="clubBadgeStyle(tie.homeClubId)"
+                      >
                         {{ clubShortName(tie.homeClubId) }}
                       </span>
-                      <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                      <span
+                        class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                      >
                         {{ clubShortName(tie.homeClubId) }}
                       </span>
-                      <span class="text-[0.68rem] font-black text-slate-950">{{ teamScore(tie, 'home') }}</span>
+                      <span class="text-[0.68rem] font-black text-slate-950">{{
+                        teamScore(tie, 'home')
+                      }}</span>
                     </div>
                     <div :class="teamRowClass(tie, tie.awayClubId)">
-                      <span class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black" :style="clubBadgeStyle(tie.awayClubId)">
+                      <span
+                        class="grid h-4 w-4 place-items-center rounded border text-[0.38rem] font-black"
+                        :style="clubBadgeStyle(tie.awayClubId)"
+                      >
                         {{ clubShortName(tie.awayClubId) }}
                       </span>
-                      <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                      <span
+                        class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                      >
                         {{ clubShortName(tie.awayClubId) }}
                       </span>
-                      <span class="text-[0.68rem] font-black text-slate-950">{{ teamScore(tie, 'away') }}</span>
+                      <span class="text-[0.68rem] font-black text-slate-950">{{
+                        teamScore(tie, 'away')
+                      }}</span>
                     </div>
                   </div>
-                  <div v-if="penaltyWinnerName(tie)" class="mt-0.5 truncate text-[0.55rem] font-semibold leading-tight text-slate-500">
+                  <div
+                    v-if="penaltyWinnerName(tie)"
+                    class="mt-0.5 truncate text-[0.55rem] font-semibold leading-tight text-slate-500"
+                  >
                     Пенальти: {{ penaltyWinnerName(tie) }}
                   </div>
                 </div>
@@ -444,7 +490,9 @@ const emptyColumnStyle = (): Record<string, string> => ({
       >
         <section class="min-h-0 rounded-md border border-white/25 bg-white/15 p-3">
           <div class="flex items-center justify-between gap-2 text-white">
-            <h3 class="text-sm font-black uppercase">{{ preliminaryRound ? roundLabel(preliminaryRound) : 'Отбор' }}</h3>
+            <h3 class="text-sm font-black uppercase">
+              {{ preliminaryRound ? roundLabel(preliminaryRound) : 'Отбор' }}
+            </h3>
             <span
               v-if="preliminaryRound"
               class="rounded-full px-2 py-1 text-[0.65rem] font-bold leading-none"
@@ -460,28 +508,47 @@ const emptyColumnStyle = (): Record<string, string> => ({
               :key="tie.id"
               class="flex items-center"
             >
-              <div class="w-full rounded border border-slate-300 bg-slate-50/95 p-1.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]">
+              <div
+                class="w-full rounded border border-slate-300 bg-slate-50/95 p-1.5 shadow-[0_8px_16px_rgba(15,23,42,0.18)]"
+              >
                 <div class="space-y-1 text-xs">
                   <div :class="teamRowClass(tie, tie.homeClubId)">
-                    <span class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black" :style="clubBadgeStyle(tie.homeClubId)">
+                    <span
+                      class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black"
+                      :style="clubBadgeStyle(tie.homeClubId)"
+                    >
                       {{ clubShortName(tie.homeClubId) }}
                     </span>
-                    <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                    <span
+                      class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                    >
                       {{ clubName(tie.homeClubId) }}
                     </span>
-                    <span class="text-sm font-black text-slate-950">{{ teamScore(tie, 'home') }}</span>
+                    <span class="text-sm font-black text-slate-950">{{
+                      teamScore(tie, 'home')
+                    }}</span>
                   </div>
                   <div :class="teamRowClass(tie, tie.awayClubId)">
-                    <span class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black" :style="clubBadgeStyle(tie.awayClubId)">
+                    <span
+                      class="grid h-5 w-5 place-items-center rounded border text-[0.45rem] font-black"
+                      :style="clubBadgeStyle(tie.awayClubId)"
+                    >
                       {{ clubShortName(tie.awayClubId) }}
                     </span>
-                    <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+                    <span
+                      class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+                    >
                       {{ clubName(tie.awayClubId) }}
                     </span>
-                    <span class="text-sm font-black text-slate-950">{{ teamScore(tie, 'away') }}</span>
+                    <span class="text-sm font-black text-slate-950">{{
+                      teamScore(tie, 'away')
+                    }}</span>
                   </div>
                 </div>
-                <div v-if="penaltyWinnerName(tie)" class="mt-1 truncate text-[0.62rem] font-semibold text-slate-500">
+                <div
+                  v-if="penaltyWinnerName(tie)"
+                  class="mt-1 truncate text-[0.62rem] font-semibold text-slate-500"
+                >
                   Пенальти: {{ penaltyWinnerName(tie) }}
                 </div>
               </div>

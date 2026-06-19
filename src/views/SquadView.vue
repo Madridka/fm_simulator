@@ -264,7 +264,8 @@ const dropOnReserve = (event: DragEvent): void => {
       </div>
     </div>
 
-    <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+    <div class="grid grid-cols-2 gap-5">
+      <!-- СОСТАВ -->
       <div class="space-y-5">
         <div
           class="relative min-h-[740px] overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)] max-[860px]:min-h-[640px]"
@@ -423,6 +424,7 @@ const dropOnReserve = (event: DragEvent): void => {
         </div>
       </div>
 
+      <!-- ЗАМЕНЫ -->
       <aside
         class="flex max-h-[920px] flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >

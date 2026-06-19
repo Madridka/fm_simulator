@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
 import CalendarView from '@/views/CalendarView.vue'
-import CompetitionsView from '@/views/CompetitionsView.vue'
+import CupView from '@/views/CupView.vue'
 import DashboardView from '@/views/DashboardView.vue'
+import LeagueView from '@/views/LeagueView.vue'
 import MatchView from '@/views/MatchView.vue'
 import SelectClubView from '@/views/SelectClubView.vue'
 import SquadView from '@/views/SquadView.vue'
@@ -30,8 +31,17 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/competitions',
-    name: 'competitions',
-    component: CompetitionsView,
+    redirect: '/league',
+  },
+  {
+    path: '/league',
+    name: 'league',
+    component: LeagueView,
+  },
+  {
+    path: '/cup',
+    name: 'cup',
+    component: CupView,
   },
   {
     path: '/calendar',
