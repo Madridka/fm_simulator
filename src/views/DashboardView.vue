@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import ClubBadge from '@/components/ClubBadge.vue'
 import { divisionNames } from '@/config/gameConfig'
-import { useClubStore } from '@/stores/clubStore'
+import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitionStore'
 import { useGameStore } from '@/stores/gameStore'
 import type { Club, Match } from '@/types/football'
@@ -206,7 +206,7 @@ const openMatch = (match: Match): void => {
                       v-if="clubById(row.clubId)"
                       :club="clubById(row.clubId)!"
                       size="sm"
-                      class="!h-6 !w-6 !rounded text-[8px]"
+                      class="!h-6 !w-6 !rounded text-[7px]"
                     /><span class="max-w-36 truncate font-bold">{{
                       clubById(row.clubId)?.shortName
                     }}</span>
@@ -228,9 +228,6 @@ const openMatch = (match: Match): void => {
       >
         <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
           <div>
-            <div class="text-[10px] font-black uppercase tracking-[0.14em] text-amber-500">
-              Впереди
-            </div>
             <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">Расписание</h2>
           </div>
           <RouterLink

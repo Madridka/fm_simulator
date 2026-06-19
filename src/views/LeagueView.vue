@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import LeagueTable from '@/components/LeagueTable.vue'
 import { divisionNames } from '@/config/gameConfig'
-import { useClubStore } from '@/stores/clubStore'
+import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitionStore'
 import { useGameStore } from '@/stores/gameStore'
 
@@ -14,9 +14,7 @@ const playerDivisionId = computed(() => gameStore.selectedClub?.divisionId ?? 1)
 const selectedDivisionId = ref(playerDivisionId.value)
 const divisions = [1, 2, 3, 4]
 
-const selectedRows = computed(
-  () => competitionStore.leagueTables[selectedDivisionId.value] ?? [],
-)
+const selectedRows = computed(() => competitionStore.leagueTables[selectedDivisionId.value] ?? [])
 
 const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivisionId.value)
 </script>
@@ -29,9 +27,7 @@ const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivis
           Чемпионат России
         </div>
         <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">Таблица лиги</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          По умолчанию открыт дивизион вашей команды.
-        </p>
+        <p class="mt-1 text-sm text-slate-600">По умолчанию открыт дивизион вашей команды.</p>
       </div>
 
       <div class="rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm">
@@ -62,11 +58,17 @@ const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivis
       </div>
     </header>
 
-    <article class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:px-6">
+    <article
+      class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]"
+    >
+      <div
+        class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:px-6"
+      >
         <div>
           <div class="flex items-center gap-2">
-            <h2 class="text-lg font-black text-slate-950">{{ divisionNames[selectedDivisionId] }}</h2>
+            <h2 class="text-lg font-black text-slate-950">
+              {{ divisionNames[selectedDivisionId] }}
+            </h2>
             <span
               v-if="isPlayerDivision"
               class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-emerald-800"

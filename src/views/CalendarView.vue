@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import ClubBadge from '@/components/ClubBadge.vue'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
-import { useClubStore } from '@/stores/clubStore'
+import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/gameStore'
 import type { Club, Match } from '@/types/football'
 
@@ -189,7 +189,9 @@ const homeAwayLabel = (match: Match): string => {
         :key="month.key"
         class="overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >
-        <div class="bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50">
+        <div
+          class="bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
+        >
           {{ month.title }}
         </div>
         <div class="grid grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef]">
@@ -211,7 +213,9 @@ const homeAwayLabel = (match: Match): string => {
               'bg-[#fbfdf9]': cell.matches.length,
             }"
           >
-            <div v-if="cell.dayNumber" class="mb-1.5 text-xs font-extrabold text-slate-700">{{ cell.dayNumber }}</div>
+            <div v-if="cell.dayNumber" class="mb-1.5 text-xs font-extrabold text-slate-700">
+              {{ cell.dayNumber }}
+            </div>
 
             <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
               <component
@@ -221,7 +225,8 @@ const homeAwayLabel = (match: Match): string => {
                 :class="{
                   'bg-slate-50 text-slate-600': match.status === 'played',
                   'border-emerald-500 bg-emerald-50': isNextMatch(match),
-                  'cursor-not-allowed bg-slate-100 text-slate-400 hover:translate-y-0 hover:border-[#dce8dd] hover:shadow-none': !canOpenMatch(match),
+                  'cursor-not-allowed bg-slate-100 text-slate-400 hover:translate-y-0 hover:border-[#dce8dd] hover:shadow-none':
+                    !canOpenMatch(match),
                 }"
                 @click="openMatch(match)"
               >

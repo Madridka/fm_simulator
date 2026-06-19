@@ -1,20 +1,6 @@
 import { buildSquad } from '@/data/players'
+import { ClubConfig } from '@/stores/clubs/types'
 import type { Club } from '@/types/football'
-
-export interface ClubConfig {
-  id: string
-  name: string
-  shortName: string
-  city: string
-  divisionId: number
-  rating: number
-  attackRating: number
-  midfieldRating: number
-  defenseRating: number
-  budget: number
-  primaryColor: string
-  secondaryColor: string
-}
 
 const createClub = (config: ClubConfig, index: number): Club => ({
   ...config,
