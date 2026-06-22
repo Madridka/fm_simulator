@@ -30,6 +30,22 @@ const championshipOptions: {
     label: 'Испания',
     value: 'spain',
   },
+  {
+    label: 'Англия',
+    value: 'england',
+  },
+  {
+    label: 'Германия',
+    value: 'germany',
+  },
+  {
+    label: 'Франция',
+    value: 'france',
+  },
+  {
+    label: 'Италия',
+    value: 'italy',
+  },
 ]
 
 const divisions = computed(() => {

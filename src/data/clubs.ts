@@ -1,6 +1,10 @@
 import { createClubs } from '@/data/clubConfig'
 import { russiaClubConfigs } from '@/data/champs/russia'
 import { spainClubConfigs } from '@/data/champs/spain'
+import { englandClubConfigs } from '@/data/champs/england'
+import { germanyClubConfigs } from '@/data/champs/germany'
+import { franceClubConfigs } from '@/data/champs/france'
+import { italyClubConfigs } from '@/data/champs/italy'
 import type { ChampionshipId, Club } from '@/types/football'
 import type { ClubConfig } from '@/stores/clubs/types'
 
@@ -37,6 +41,52 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       2: 'Segunda División',
     },
     clubConfigs: spainClubConfigs,
+  },
+
+  england: {
+    id: 'england',
+    name: 'Англия',
+    description: 'Англия, четыре дивизиона, 88 клубов.',
+    divisionNames: {
+      1: 'Premier League',
+      2: 'EFL Championship',
+      3: 'EFL League One',
+      4: 'EFL League Two',
+    },
+    clubConfigs: englandClubConfigs,
+  },
+
+  germany: {
+    id: 'germany',
+    name: 'Германия',
+    description: 'Германия, два дивизиона, 40 клубов.',
+    divisionNames: {
+      1: 'Bundesliga',
+      2: '2. Bundesliga',
+    },
+    clubConfigs: germanyClubConfigs,
+  },
+
+  france: {
+    id: 'france',
+    name: 'Франция',
+    description: 'Франция, два дивизиона, 40 клубов.',
+    divisionNames: {
+      1: 'Ligue 1',
+      2: 'Ligue 2',
+    },
+    clubConfigs: franceClubConfigs,
+  },
+
+  italy: {
+    id: 'italy',
+    name: 'Италия',
+    description: 'Италия, два дивизиона, 40 клубов.',
+    divisionNames: {
+      1: 'Serie A',
+      2: 'Serie B',
+    },
+    clubConfigs: italyClubConfigs,
   },
 }
 

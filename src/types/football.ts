@@ -1,6 +1,6 @@
 export type PlayerPosition = 'GK' | 'LB' | 'CB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'LW' | 'RW' | 'ST'
 
-export type ChampionshipId = 'russia' | 'spain'
+export type ChampionshipId = 'russia' | 'spain' | 'england' | 'germany' | 'france' | 'italy'
 
 export interface Player {
   id: string
