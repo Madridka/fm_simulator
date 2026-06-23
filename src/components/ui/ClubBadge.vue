@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <div
-    class="grid shrink-0 place-items-center rounded-md border font-bold"
+    class="grid shrink-0 place-items-center overflow-hidden rounded-md border font-bold"
     :class="{
       'h-8 w-8 text-xs': size === 'sm',
       'h-11 w-11 text-sm': !size || size === 'md',
@@ -21,6 +21,12 @@ defineProps<{
       borderColor: club.secondaryColor,
     }"
   >
-    {{ club.shortName }}
+    <img
+      v-if="club.logoUrl"
+      :src="club.logoUrl"
+      :alt="club.name"
+      class="h-full w-full object-contain p-1"
+    />
+    <span v-else>{{ club.shortName }}</span>
   </div>
 </template>

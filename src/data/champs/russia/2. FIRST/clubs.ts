@@ -1,4 +1,4 @@
-import { RussianClubConfig } from '@/stores/clubs/types'
+import { RussianClubConfig } from '@/data/clubs/types'
 
 // PARI Первая лига
 export const russiaFirstLeagueClubConfigs: RussianClubConfig[] = [

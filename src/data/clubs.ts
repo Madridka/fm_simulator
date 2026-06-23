@@ -6,7 +6,7 @@ import { germanyClubConfigs } from '@/data/champs/germany'
 import { franceClubConfigs } from '@/data/champs/france'
 import { italyClubConfigs } from '@/data/champs/italy'
 import type { ChampionshipId, Club } from '@/types/football'
-import type { ClubConfig } from '@/stores/clubs/types'
+import type { ClubConfig } from '@/data/clubs/types'
 
 export type { ChampionshipId } from '@/types/football'
 

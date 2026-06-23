@@ -2,11 +2,11 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { Club } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 
-import ClubBadge from '@/components/ClubBadge.vue'
+import ClubBadge from '@/components/ui/ClubBadge.vue'
 
 const gameStore = useGameStore()
 const router = useRouter()

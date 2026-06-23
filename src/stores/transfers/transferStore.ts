@@ -1,16 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { buyPlayer, sellPlayer } from '@/domain/transfer/transferService'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { Player, PlayerPosition } from '@/types/football'
+import type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 
-export interface MarketPlayer {
-  clubId: string
-  clubName: string
-  player: Player
-}
-
-export type TransferSortKey = 'rating' | 'age' | 'value'
+export type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 
 export const useTransferStore = defineStore('transfers', () => {
   const gameStore = useGameStore()

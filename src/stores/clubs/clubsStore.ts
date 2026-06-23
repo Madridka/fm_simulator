@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { Club } from '@/types/football'
 
 export const useClubStore = defineStore('clubs', () => {

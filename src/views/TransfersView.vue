@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { gameConfig } from '@/config/gameConfig'
-import { useGameStore } from '@/stores/gameStore'
-import { useTransferStore, type TransferSortKey } from '@/stores/transferStore'
+import { useGameStore } from '@/stores/game/gameStore'
+import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
 import type { PlayerPosition } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 

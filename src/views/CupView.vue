@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useClubStore } from '@/stores/clubs/clubsStore'
-import { useCompetitionStore } from '@/stores/competitionStore'
-import { useGameStore } from '@/stores/gameStore'
+import { useCompetitionStore } from '@/stores/competitions/competitionStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { CupRound, CupTie, Match } from '@/types/football'
 
 const gameStore = useGameStore()

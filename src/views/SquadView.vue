@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useSquadStore } from '@/stores/squadStore'
+import { useSquadStore } from '@/stores/squad/squadStore'
 import type { Formation, Player, PlayerPosition, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 

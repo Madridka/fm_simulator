@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import LeagueTable from '@/components/LeagueTable.vue'
+import LeagueTable from '@/components/ui/LeagueTable.vue'
 import { useClubStore } from '@/stores/clubs/clubsStore'
-import { useCompetitionStore } from '@/stores/competitionStore'
-import { useGameStore } from '@/stores/gameStore'
+import { useCompetitionStore } from '@/stores/competitions/competitionStore'
+import { useGameStore } from '@/stores/game/gameStore'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()

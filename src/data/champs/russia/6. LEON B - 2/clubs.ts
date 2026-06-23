@@ -1,4 +1,4 @@
-import { RussianClubConfig } from '@/stores/clubs/types'
+import { RussianClubConfig } from '@/data/clubs/types'
 
 // LEON Вторая лига Б — группа 2
 export const russiaSecondLeagueBGroup2ClubConfigs: RussianClubConfig[] = [

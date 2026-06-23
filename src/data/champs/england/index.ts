@@ -1,4 +1,4 @@
-import { ClubConfig } from '@/data/clubConfig'
+import type { ClubConfig } from '@/data/clubs/types'
 import { englandPremierLeagueClubConfigs } from '@/data/champs/england/1/clubs'
 import { englandChampionshipClubConfigs } from '@/data/champs/england/2/clubs'
 import { englandLeague1ClubConfigs } from '@/data/champs/england/3/clubs'

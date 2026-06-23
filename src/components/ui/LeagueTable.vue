@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '@/composables/useI18n'
 import type { Club, LeagueTableRow } from '@/types/football'
 
 const props = defineProps<{
@@ -6,6 +7,8 @@ const props = defineProps<{
   clubs: Club[]
   selectedClubId?: string
 }>()
+
+const { t } = useI18n()
 
 const clubName = (clubId: string): string =>
   props.clubs.find((club) => club.id === clubId)?.name ?? clubId
@@ -17,13 +20,13 @@ const clubName = (clubId: string): string =>
       <thead>
         <tr class="border-b border-slate-200 text-xs uppercase text-slate-500">
           <th class="whitespace-nowrap px-3 py-2 text-sm">#</th>
-          <th class="whitespace-nowrap px-3 py-2 text-sm">Клуб</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">И</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">В</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">Н</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">П</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">М</th>
-          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">О</th>
+          <th class="whitespace-nowrap px-3 py-2 text-sm">{{ t('leagueTable.club') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.played') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.wins') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.draws') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.losses') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.goals') }}</th>
+          <th class="whitespace-nowrap px-3 py-2 text-right text-sm">{{ t('leagueTable.points') }}</th>
         </tr>
       </thead>
       <tbody>

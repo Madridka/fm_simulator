@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import { getClubCupProgress } from '@/domain/competition/cupService'
 import { getClubPosition } from '@/domain/competition/leagueTableService'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { CupState, LeagueTableRow } from '@/types/football'
 
 export const useCompetitionStore = defineStore('competitions', () => {

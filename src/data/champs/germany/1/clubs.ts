@@ -1,4 +1,4 @@
-import { ClubConfig } from '@/data/clubConfig'
+import type { ClubConfig } from '@/data/clubs/types'
 
 export const germanyBundesligaClubConfigs: ClubConfig[] = [
   {

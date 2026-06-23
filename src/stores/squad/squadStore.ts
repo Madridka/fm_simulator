@@ -8,10 +8,9 @@ import {
   tacticalStyles,
   validateLineup,
 } from '@/domain/season/squadSelectionService'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
-
-type PlayerMoveSource = 'starter' | 'substitute' | 'reserve'
+import type { PlayerMoveSource } from '@/stores/squad/types'
 
 export const useSquadStore = defineStore('squad', () => {
   const gameStore = useGameStore()

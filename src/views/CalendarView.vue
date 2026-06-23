@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import ClubBadge from '@/components/ClubBadge.vue'
+import ClubBadge from '@/components/ui/ClubBadge.vue'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import { useClubStore } from '@/stores/clubs/clubsStore'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { Club, Match } from '@/types/football'
 
 interface CalendarCell {

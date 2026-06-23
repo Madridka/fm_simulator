@@ -30,6 +30,7 @@ export interface Club {
   budget: number
   primaryColor: string
   secondaryColor: string
+  logoUrl?: string
   squad: Player[]
 }
 

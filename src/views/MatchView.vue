@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import ClubBadge from '@/components/ClubBadge.vue'
+import ClubBadge from '@/components/ui/ClubBadge.vue'
 import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
 import {
   autoSelectLineup,
@@ -9,7 +9,7 @@ import {
   validateLineup,
 } from '@/domain/season/squadSelectionService'
 import { useClubStore } from '@/stores/clubs/clubsStore'
-import { useGameStore } from '@/stores/gameStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type { Club, ClubLineup, MatchResult, PlayedLineup, Player } from '@/types/football'
 
 type MatchSnapshot = MatchTimeline['minutes'][number]
