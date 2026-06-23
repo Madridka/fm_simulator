@@ -9,13 +9,13 @@ import {
   validateLineup,
 } from '@/domain/season/squadSelectionService'
 import { useGameStore } from '@/stores/game/gameStore'
-import type { ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
+import type { Club, ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 
 export const useSquadStore = defineStore('squad', () => {
   const gameStore = useGameStore()
 
-  const club = computed(() => gameStore.selectedClub)
+  const club = computed((): Club | undefined => gameStore.selectedClub)
 
   const lineup = computed<ClubLineup | undefined>(() => {
     const game = gameStore.game
@@ -229,6 +229,7 @@ export const useSquadStore = defineStore('squad', () => {
     validation,
     formations,
     tacticalStyles,
+
     setFormation,
     setTacticalStyle,
     assignPlayerToSlot,

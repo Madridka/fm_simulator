@@ -66,6 +66,16 @@ const dateFromIso = (isoDate: string): Date => new Date(`${isoDate}T12:00:00`)
 const matchDate = (match: Match): string =>
   match.date ?? getSeasonMatchDate(match.season, match.order)
 
+const currentCalendarDate = computed<string | undefined>(() => {
+  const nextMatch = gameStore.nextMatch
+  if (nextMatch) {
+    return matchDate(nextMatch)
+  }
+
+  const lastMatch = userMatches.value[userMatches.value.length - 1]
+  return lastMatch ? matchDate(lastMatch) : undefined
+})
+
 const monthsBetween = (firstDate: Date, lastDate: Date): Date[] => {
   const months: Date[] = []
   const cursor = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1, 12)
@@ -162,6 +172,23 @@ const openMatch = (match: Match): void => {
   }
 }
 
+const isPastDay = (cell: CalendarCell): boolean => {
+  if (!cell.isoDate || !currentCalendarDate.value) {
+    return false
+  }
+
+  return gameStore.nextMatch
+    ? cell.isoDate < currentCalendarDate.value
+    : cell.isoDate <= currentCalendarDate.value
+}
+
+const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
+  'bg-[#e2ece5]/45': !cell.dayNumber,
+  'bg-slate-200/75 text-slate-500': isPastDay(cell),
+  'bg-[#fbfdf9]': Boolean(cell.dayNumber && cell.matches.length && !isPastDay(cell)),
+  'bg-white/70': Boolean(cell.dayNumber && !cell.matches.length && !isPastDay(cell)),
+})
+
 const matchTypeLabel = (match: Match): string =>
   match.type === 'league' ? `Тур ${match.round}` : 'Кубок'
 
@@ -207,11 +234,8 @@ const homeAwayLabel = (match: Match): string => {
           <div
             v-for="cell in month.cells"
             :key="cell.key"
-            class="min-h-28 border-b border-r border-[#e2ebe5] bg-white/70 p-2 [&:nth-child(7n)]:border-r-0"
-            :class="{
-              'bg-[#e2ece5]/45': !cell.dayNumber,
-              'bg-[#fbfdf9]': cell.matches.length,
-            }"
+            class="min-h-28 border-b border-r border-[#e2ebe5] p-2 [&:nth-child(7n)]:border-r-0"
+            :class="calendarCellClasses(cell)"
           >
             <div v-if="cell.dayNumber" class="mb-1.5 text-xs font-extrabold text-slate-700">
               {{ cell.dayNumber }}

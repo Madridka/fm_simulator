@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, Ref, ref, watch } from 'vue'
 import { gameConfig } from '@/config/gameConfig'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
@@ -8,7 +8,8 @@ import { formatMoney } from '@/utils/format'
 
 const gameStore = useGameStore()
 const transferStore = useTransferStore()
-const toastMessage = ref('')
+
+const toastMessage: Ref<string> = ref('')
 let toastTimer: number | undefined
 
 const positions: Array<PlayerPosition | 'all'> = [

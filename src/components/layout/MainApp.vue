@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import AppSidebar from '@/components/layout/AppSidebar.vue'
-import AppTopBar from '@/components/layout/AppTopBar.vue'
 import { useI18n } from '@/composables/useI18n'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
+
+import SideBar from '@/components/layout/SideBar.vue'
+import TopBar from '@/components/layout/TopBar.vue'
 import type { AppNavItem } from '@/components/layout/types'
 
 const gameStore = useGameStore()
 const matchStore = useMatchStore()
 const route = useRoute()
 const router = useRouter()
-const settingsOpen = ref(false)
+const settingsOpen: Ref<boolean> = ref(false)
 const { t } = useI18n()
 
 const navItems = computed<AppNavItem[]>(() => [
@@ -20,6 +21,8 @@ const navItems = computed<AppNavItem[]>(() => [
   { divider: true },
   { to: '/squad', label: t('nav.squad'), icon: 'users' },
   { to: '/transfers', label: t('nav.transfers'), icon: 'swap' },
+  { divider: true },
+  { to: '/calendar', label: t('nav.calendar'), icon: 'table' },
   { divider: true },
   { to: '/league', label: t('nav.league'), icon: 'table' },
   { to: '/cup', label: t('nav.cup'), icon: 'trophy' },
@@ -43,7 +46,7 @@ const resetGame = (): void => {
 
 <template>
   <template v-if="gameStore.game">
-    <AppSidebar
+    <SideBar
       :active-path="route.path"
       :items="navItems"
       :selected-club="gameStore.selectedClub"
@@ -54,7 +57,7 @@ const resetGame = (): void => {
     />
 
     <div class="min-h-screen md:pl-[228px]">
-      <AppTopBar
+      <TopBar
         :active-path="route.path"
         :items="navItems"
         :next-match="matchStore.nextMatch"

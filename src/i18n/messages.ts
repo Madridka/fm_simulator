@@ -12,6 +12,7 @@ export const messages = {
       overview: 'Обзор',
       squad: 'Состав',
       transfers: 'Трансферы',
+      calendar: 'Календарь',
       league: 'Лига',
       cup: 'Кубок',
     },
