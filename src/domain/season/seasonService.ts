@@ -1,5 +1,5 @@
 import { gameConfig } from '@/config/gameConfig'
-import { getChampionshipClubs } from '@/data/clubs'
+import { championships, getChampionshipClubs } from '@/data/clubs'
 import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupService'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
 import { simulateMatch } from '@/domain/match/matchSimulator'
@@ -14,6 +14,7 @@ import type {
   Club,
   ClubLineup,
   GameState,
+  LeagueTableRow,
   Match,
   MatchLineups,
   MatchResult,
@@ -30,12 +31,83 @@ const cloneClub = (club: Club): Club => ({
   squad: club.squad.map(clonePlayer),
 })
 
-const cloneLineup = (lineup: ClubLineup): ClubLineup => ({
-  formation: lineup.formation,
-  tacticalStyle: lineup.tacticalStyle,
-  starters: { ...lineup.starters },
-  substitutes: [...lineup.substitutes],
+const championshipIds = Object.keys(championships) as ChampionshipId[]
+
+const cloneMatch = (match: Match): Match => ({
+  ...match,
+  result: match.result
+    ? {
+        ...match.result,
+        goals: [...match.result.goals],
+        stats: {
+          home: { ...match.result.stats.home },
+          away: { ...match.result.stats.away },
+        },
+      }
+    : undefined,
+  lineups: match.lineups
+    ? {
+        home: {
+          formation: match.lineups.home.formation,
+          tacticalStyle: match.lineups.home.tacticalStyle,
+          starters: [...match.lineups.home.starters],
+        },
+        away: {
+          formation: match.lineups.away.formation,
+          tacticalStyle: match.lineups.away.tacticalStyle,
+          starters: [...match.lineups.away.starters],
+        },
+      }
+    : undefined,
 })
+
+const prefixLeagueMatch = (championshipId: ChampionshipId, match: Match): Match => ({
+  ...match,
+  id: `${championshipId}-${match.id}`,
+  championshipId,
+})
+
+const createLeagueMatches = (clubs: readonly Club[], season: number, championshipId: ChampionshipId): Match[] =>
+  generateLeagueSchedule(clubs, season).map((match) => prefixLeagueMatch(championshipId, match))
+
+const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
+  return championshipIds.reduce<Record<ChampionshipId, Club[]>>(
+    (result, championshipId) => {
+      result[championshipId] = getChampionshipClubs(championshipId).map(cloneClub)
+      return result
+    },
+    {} as Record<ChampionshipId, Club[]>,
+  )
+}
+
+const createWorldMatches = (
+  worldClubs: Record<ChampionshipId, Club[]>,
+  season: number,
+): Record<ChampionshipId, Match[]> => {
+  return championshipIds.reduce<Record<ChampionshipId, Match[]>>(
+    (result, championshipId) => {
+      result[championshipId] = createLeagueMatches(worldClubs[championshipId], season, championshipId)
+      return result
+    },
+    {} as Record<ChampionshipId, Match[]>,
+  )
+}
+
+const createWorldLeagueTables = (
+  worldClubs: Record<ChampionshipId, Club[]>,
+  worldMatches: Record<ChampionshipId, Match[]>,
+): Record<ChampionshipId, Record<number, LeagueTableRow[]>> => {
+  return championshipIds.reduce<Record<ChampionshipId, Record<number, LeagueTableRow[]>>>(
+    (result, championshipId) => {
+      result[championshipId] = calculateLeagueTables(
+        worldClubs[championshipId],
+        worldMatches[championshipId],
+      )
+      return result
+    },
+    {} as Record<ChampionshipId, Record<number, LeagueTableRow[]>>,
+  )
+}
 
 const hashString = (value: string): number => {
   let hash = 0
@@ -81,15 +153,22 @@ export const createInitialGameState = (
   championshipId: ChampionshipId,
   selectedClubId: string,
 ): GameState => {
-  const clubs = getChampionshipClubs(championshipId).map(cloneClub)
+  const worldClubs = createWorldClubs()
+  const clubs = worldClubs[championshipId].map(cloneClub)
   if (!clubs.some((club) => club.id === selectedClubId)) {
     throw new Error(`Club ${selectedClubId} does not belong to ${championshipId}`)
   }
-  const leagueMatches = generateLeagueSchedule(clubs, 1)
+  const worldMatches = createWorldMatches(worldClubs, 1)
+  const leagueMatches = worldMatches[championshipId].map(cloneMatch)
   const cup = initializeCup(clubs, 1)
   const matches = [...leagueMatches, ...cup.matches].sort(
     (left, right) => left.order - right.order || left.id.localeCompare(right.id),
   )
+  const syncedWorldMatches = {
+    ...worldMatches,
+    [championshipId]: leagueMatches.map(cloneMatch),
+  }
+  const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
     championshipId,
@@ -98,10 +177,57 @@ export const createInitialGameState = (
     clubs,
     matches,
     leagueTables: calculateLeagueTables(clubs, matches),
+    worldClubs,
+    worldMatches: syncedWorldMatches,
+    worldLeagueTables,
     cup: cup.cup,
     lineups: createDefaultLineups(clubs),
     playerStats: createInitialPlayerStats(clubs),
     lastCompletedOrder: 0,
+  }
+}
+
+export const ensureWorldCompetitions = (state: GameState): GameState => {
+  const existingWorldClubs = state.worldClubs ?? {}
+  const worldClubs = championshipIds.reduce<Record<ChampionshipId, Club[]>>(
+    (result, championshipId) => {
+      const existingClubs = existingWorldClubs[championshipId]
+      result[championshipId] =
+        championshipId === state.championshipId
+          ? state.clubs.map(cloneClub)
+          : existingClubs?.map(cloneClub) ??
+            getChampionshipClubs(championshipId).map(cloneClub)
+      return result
+    },
+    {} as Record<ChampionshipId, Club[]>,
+  )
+
+  const generatedWorldMatches = createWorldMatches(worldClubs, state.season)
+  const existingWorldMatches = state.worldMatches ?? {}
+  const selectedLeagueMatches = state.matches
+    .filter((match) => match.type === 'league')
+    .map((match) => ({
+      ...cloneMatch(match),
+      championshipId: state.championshipId,
+    }))
+  const worldMatches = championshipIds.reduce<Record<ChampionshipId, Match[]>>(
+    (result, championshipId) => {
+      result[championshipId] =
+        championshipId === state.championshipId
+          ? selectedLeagueMatches
+          : existingWorldMatches[championshipId]?.map(cloneMatch) ??
+            generatedWorldMatches[championshipId]
+      return result
+    },
+    {} as Record<ChampionshipId, Match[]>,
+  )
+  const worldLeagueTables = createWorldLeagueTables(worldClubs, worldMatches)
+
+  return {
+    ...state,
+    worldClubs,
+    worldMatches,
+    worldLeagueTables,
   }
 }
 
@@ -323,6 +449,72 @@ const simulateScheduledMatch = (
   }
 }
 
+const getAutoLineupsForMatch = (clubs: readonly Club[], match: Match): MatchLineups => {
+  const homeClub = getClub(clubs, match.homeClubId)
+  const awayClub = getClub(clubs, match.awayClubId)
+  const homeLineup = autoSelectLineup(homeClub)
+  const awayLineup = autoSelectLineup(awayClub)
+
+  return {
+    home: getPlayedLineup(homeClub, homeLineup),
+    away: getPlayedLineup(awayClub, awayLineup),
+  }
+}
+
+const simulateWorldLeagueOrder = (state: GameState, order: number): GameState => {
+  const hydrated = ensureWorldCompetitions(state)
+  const worldClubs = { ...hydrated.worldClubs } as Record<ChampionshipId, Club[]>
+  const worldMatches = { ...hydrated.worldMatches } as Record<ChampionshipId, Match[]>
+
+  for (const championshipId of championshipIds) {
+    if (championshipId === hydrated.championshipId) {
+      worldClubs[championshipId] = hydrated.clubs.map(cloneClub)
+      worldMatches[championshipId] = hydrated.matches
+        .filter((match) => match.type === 'league')
+        .map((match) => ({
+          ...cloneMatch(match),
+          championshipId,
+        }))
+      continue
+    }
+
+    const clubs = worldClubs[championshipId]
+    worldMatches[championshipId] = worldMatches[championshipId].map((match) => {
+      if (match.order !== order || match.status !== 'scheduled') {
+        return match
+      }
+
+      const homeClub = getClub(clubs, match.homeClubId)
+      const awayClub = getClub(clubs, match.awayClubId)
+      const lineups = getAutoLineupsForMatch(clubs, match)
+      const result = simulateMatch({
+        matchId: match.id,
+        homeClub,
+        awayClub,
+        homeLineup: lineups.home,
+        awayLineup: lineups.away,
+        neutralVenue: match.neutralVenue,
+        allowPenaltyShootout: false,
+        seed: hashString(match.id) + hydrated.season * 10_000,
+      })
+
+      return {
+        ...match,
+        status: 'played' as const,
+        result,
+        lineups,
+      }
+    })
+  }
+
+  return {
+    ...hydrated,
+    worldClubs,
+    worldMatches,
+    worldLeagueTables: createWorldLeagueTables(worldClubs, worldMatches),
+  }
+}
+
 const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameState => {
   const reward = gameConfig.cupRoundRewards[completedRoundId] ?? 0
   if (reward <= 0) {
@@ -395,7 +587,7 @@ const simulateOrder = (
     }
   }
 
-  return advanceCupAndRefreshTables(nextState)
+  return simulateWorldLeagueOrder(advanceCupAndRefreshTables(nextState), order)
 }
 
 export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState => {
@@ -544,11 +736,19 @@ export const finishSeason = (state: GameState): GameState => {
   const progressedClubs = rewardedAndMoved.map((club) =>
     progressPlayersForNewSeason(club, nextSeason),
   )
-  const leagueMatches = generateLeagueSchedule(progressedClubs, nextSeason)
+  const worldClubs = createWorldClubs()
+  worldClubs[state.championshipId] = progressedClubs.map(cloneClub)
+  const worldMatches = createWorldMatches(worldClubs, nextSeason)
+  const leagueMatches = worldMatches[state.championshipId].map(cloneMatch)
   const cup = initializeCup(progressedClubs, nextSeason)
   const matches = [...leagueMatches, ...cup.matches].sort(
     (left, right) => left.order - right.order || left.id.localeCompare(right.id),
   )
+  const syncedWorldMatches = {
+    ...worldMatches,
+    [state.championshipId]: leagueMatches.map(cloneMatch),
+  }
+  const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
     championshipId: state.championshipId,
@@ -559,6 +759,9 @@ export const finishSeason = (state: GameState): GameState => {
     cup: cup.cup,
     lineups: createDefaultLineups(progressedClubs, state.lineups),
     leagueTables: calculateLeagueTables(progressedClubs, matches),
+    worldClubs,
+    worldMatches: syncedWorldMatches,
+    worldLeagueTables,
     playerStats: createInitialPlayerStats(progressedClubs),
     lastCompletedOrder: 0,
   }

@@ -26,6 +26,7 @@ const cupRounds = computed((): CupRound[] => competitionStore.cup?.rounds ?? [])
 const visibleRounds = computed((): CupRound[] => cupRounds.value)
 
 const activeRound = computed((): CupRound | undefined => visibleRounds.value[activeRoundIndex.value])
+const hasRoundByes = computed((): boolean => Boolean(activeRound.value?.byes.length))
 const championClub = computed(() => {
   const championClubId = competitionStore.cup?.championClubId
   return championClubId ? clubStore.getClubById(championClubId) : undefined
@@ -118,13 +119,16 @@ const isTieWinner = (tie: CupTie, clubId?: string): boolean =>
 
 const isSelectedClub = (clubId?: string): boolean => clubId === gameStore.game?.selectedClubId
 
-const teamRowClass = (tie: CupTie, clubId?: string): string[] => [
-  'grid grid-cols-[38px_minmax(0,1fr)_42px] items-center gap-3 rounded-md border px-3 py-2 text-sm transition',
+const isSelectedTie = (tie: CupTie): boolean =>
+  isSelectedClub(tie.homeClubId) || isSelectedClub(tie.awayClubId)
+
+const teamNameClass = (tie: CupTie, clubId?: string): string[] => [
+  'min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold',
   isTieWinner(tie, clubId)
-    ? 'border-emerald-300 bg-emerald-50 text-emerald-950 shadow-sm'
+    ? 'text-emerald-700'
     : isSelectedClub(clubId)
-      ? 'border-amber-300 bg-amber-50 text-amber-950'
-      : 'border-slate-200 bg-white text-slate-700',
+      ? 'text-amber-700'
+      : 'text-slate-700',
 ]
 
 const teamScore = (tie: CupTie, team: 'home' | 'away'): string => {
@@ -220,7 +224,8 @@ const tieStatusLabel = (tie: CupTie): string => {
 
       <div
         v-if="activeRound"
-        class="grid min-h-0 flex-1 gap-4 overflow-hidden bg-slate-50/70 p-4 lg:grid-cols-[minmax(0,1fr)_300px]"
+        class="grid min-h-0 flex-1 gap-4 overflow-hidden bg-slate-50/70 p-4"
+        :class="hasRoundByes ? 'lg:grid-cols-[minmax(0,1fr)_300px]' : 'lg:grid-cols-1'"
       >
         <section class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
@@ -228,66 +233,62 @@ const tieStatusLabel = (tie: CupTie): string => {
             <span class="text-xs font-bold text-slate-400">{{ activeRound.ties.length }} матчей</span>
           </div>
 
-          <div class="grid min-h-0 flex-1 auto-rows-min gap-3 overflow-auto p-4 md:grid-cols-2 xl:grid-cols-3">
+          <div class="min-h-0 flex-1 overflow-auto px-4 py-2">
             <div
               v-for="tie in activeRound.ties"
               :key="tie.id"
-              class="rounded-xl border border-slate-200 bg-slate-50 p-3 shadow-sm"
+              class="grid min-h-[86px] grid-cols-[minmax(0,1fr)_104px_minmax(0,1fr)] items-center gap-3 border-b border-slate-100 px-2 py-3 transition last:border-b-0 sm:grid-cols-[minmax(0,1fr)_136px_minmax(0,1fr)] sm:px-4"
+              :class="
+                isSelectedTie(tie)
+                  ? 'rounded-xl border border-amber-300 bg-amber-50/90 shadow-[0_10px_28px_rgba(245,158,11,0.16)]'
+                  : 'hover:bg-slate-50'
+              "
             >
-              <div class="mb-3 flex items-center justify-between gap-2">
-                <span class="text-xs font-black uppercase tracking-wide text-slate-400">
-                  {{ tieDate(tie) }}
+              <div class="flex min-w-0 items-center justify-end gap-3">
+                <span class="hidden min-w-0 text-right sm:block" :class="teamNameClass(tie, tie.homeClubId)">
+                  {{ clubName(tie.homeClubId) }}
                 </span>
                 <span
-                  class="rounded-full bg-white px-2 py-1 text-[10px] font-black uppercase tracking-wide text-slate-500"
+                  class="grid h-10 w-10 shrink-0 place-items-center rounded-md border text-[10px] font-black shadow-sm sm:h-12 sm:w-12"
+                  :style="clubBadgeStyle(tie.homeClubId)"
                 >
-                  {{ tieStatusLabel(tie) }}
+                  {{ clubShortName(tie.homeClubId) }}
                 </span>
               </div>
 
-              <div class="space-y-2">
-                <div :class="teamRowClass(tie, tie.homeClubId)">
-                  <span
-                    class="grid h-8 w-8 place-items-center rounded-md border text-[10px] font-black"
-                    :style="clubBadgeStyle(tie.homeClubId)"
-                  >
-                    {{ clubShortName(tie.homeClubId) }}
-                  </span>
-                  <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-bold">
-                    {{ clubName(tie.homeClubId) }}
-                  </span>
-                  <span class="text-right text-base font-black text-slate-950">
-                    {{ teamScore(tie, 'home') }}
-                  </span>
+              <div class="grid justify-items-center gap-1 text-center">
+                <div class="flex items-center justify-center gap-2 text-2xl font-black leading-none text-slate-950 sm:text-3xl">
+                  <span>{{ teamScore(tie, 'home') }}</span>
+                  <span class="text-slate-300">-</span>
+                  <span>{{ teamScore(tie, 'away') }}</span>
                 </div>
-
-                <div :class="teamRowClass(tie, tie.awayClubId)">
-                  <span
-                    class="grid h-8 w-8 place-items-center rounded-md border text-[10px] font-black"
-                    :style="clubBadgeStyle(tie.awayClubId)"
-                  >
-                    {{ clubShortName(tie.awayClubId) }}
-                  </span>
-                  <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-bold">
-                    {{ clubName(tie.awayClubId) }}
-                  </span>
-                  <span class="text-right text-base font-black text-slate-950">
-                    {{ teamScore(tie, 'away') }}
-                  </span>
+                <div class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-cyan-600">
+                  {{ tieStatusLabel(tie) }} · {{ tieDate(tie) }}
+                </div>
+                <div
+                  v-if="penaltyWinnerName(tie)"
+                  class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-bold text-amber-700"
+                >
+                  Пенальти: {{ penaltyWinnerName(tie) }}
                 </div>
               </div>
 
-              <div
-                v-if="penaltyWinnerName(tie)"
-                class="mt-3 rounded-lg bg-white px-3 py-2 text-xs font-bold text-slate-500"
-              >
-                Победа по пенальти: {{ penaltyWinnerName(tie) }}
+              <div class="flex min-w-0 items-center gap-3">
+                <span
+                  class="grid h-10 w-10 shrink-0 place-items-center rounded-md border text-[10px] font-black shadow-sm sm:h-12 sm:w-12"
+                  :style="clubBadgeStyle(tie.awayClubId)"
+                >
+                  {{ clubShortName(tie.awayClubId) }}
+                </span>
+                <span class="hidden min-w-0 sm:block" :class="teamNameClass(tie, tie.awayClubId)">
+                  {{ clubName(tie.awayClubId) }}
+                </span>
               </div>
             </div>
 
             <div
               v-if="activeRound.ties.length === 0"
-              class="col-span-full grid min-h-[240px] place-items-center rounded-xl border border-dashed border-slate-300 bg-white text-center"
+              class="grid min-h-[240px] place-items-center rounded-xl border border-dashed border-slate-300 bg-white text-center"
             >
               <div>
                 <div class="text-sm font-black text-slate-700">Пары ещё не сформированы</div>
@@ -299,7 +300,10 @@ const tieStatusLabel = (tie: CupTie): string => {
           </div>
         </section>
 
-        <aside class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <aside
+          v-if="hasRoundByes"
+          class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white"
+        >
           <div class="border-b border-slate-100 px-4 py-3">
             <h3 class="text-sm font-black text-slate-950">Проходят дальше</h3>
             <p class="mt-1 text-xs font-semibold text-slate-400">
@@ -308,7 +312,7 @@ const tieStatusLabel = (tie: CupTie): string => {
           </div>
 
           <div class="min-h-0 flex-1 overflow-auto p-4">
-            <div v-if="activeRound.byes.length" class="grid gap-2">
+            <div class="grid gap-2">
               <div
                 v-for="clubId in activeRound.byes"
                 :key="clubId"
@@ -326,17 +330,6 @@ const tieStatusLabel = (tie: CupTie): string => {
               </div>
             </div>
 
-            <div
-              v-else
-              class="grid min-h-[220px] place-items-center rounded-xl border border-dashed border-slate-300 text-center"
-            >
-              <div>
-                <div class="text-sm font-black text-slate-700">Без автопроходов</div>
-                <p class="mt-1 text-xs text-slate-400">
-                  Все команды этой стадии играют свои матчи.
-                </p>
-              </div>
-            </div>
           </div>
         </aside>
       </div>

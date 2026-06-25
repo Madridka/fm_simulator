@@ -73,24 +73,28 @@ const isCurrentChampionship = computed(
 const isPlayerLeague = computed((): boolean => selectedLeagueKey.value === playerLeagueKey.value)
 
 const selectedClubs = computed((): Club[] => {
-  if (isCurrentChampionship.value) {
-    return gameStore.game?.clubs ?? []
-  }
-  return getChampionshipClubs(selectedLeague.value.championshipId)
+  return (
+    gameStore.game?.worldClubs?.[selectedLeague.value.championshipId] ??
+    (isCurrentChampionship.value
+      ? gameStore.game?.clubs
+      : getChampionshipClubs(selectedLeague.value.championshipId)) ??
+    []
+  )
 })
 
 const staticTables = computed(() => calculateLeagueTables(selectedClubs.value, []))
 
 const selectedRows = computed((): LeagueTableRow[] => {
-  if (isCurrentChampionship.value) {
-    return (
-      competitionStore.leagueTables[selectedLeague.value.divisionId] ??
-      staticTables.value[selectedLeague.value.divisionId] ??
-      []
-    )
-  }
-
-  return staticTables.value[selectedLeague.value.divisionId] ?? []
+  return (
+    gameStore.game?.worldLeagueTables?.[selectedLeague.value.championshipId]?.[
+      selectedLeague.value.divisionId
+    ] ??
+    (isCurrentChampionship.value
+      ? competitionStore.leagueTables[selectedLeague.value.divisionId]
+      : undefined) ??
+    staticTables.value[selectedLeague.value.divisionId] ??
+    []
+  )
 })
 
 const selectedClubId = computed((): string | undefined =>
@@ -99,7 +103,10 @@ const selectedClubId = computed((): string | undefined =>
 </script>
 
 <template>
-  <section v-if="gameStore.game" class="mx-auto flex h-full max-w-6xl flex-col gap-5 overflow-hidden">
+  <section
+    v-if="gameStore.game"
+    class="mx-auto flex h-full max-w-6xl flex-col gap-5 overflow-hidden"
+  >
     <header class="flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -111,8 +118,12 @@ const selectedClubId = computed((): string | undefined =>
         </p>
       </div>
 
-      <label class="min-w-0 rounded-xl border border-slate-200 bg-white p-2 shadow-sm md:min-w-[360px]">
-        <span class="mb-1 block px-1 text-[9px] font-black uppercase tracking-widest text-slate-400">
+      <label
+        class="min-w-0 rounded-xl border border-slate-200 bg-white p-2 shadow-sm md:min-w-[360px]"
+      >
+        <span
+          class="mb-1 block px-1 text-[9px] font-black uppercase tracking-widest text-slate-400"
+        >
           Страна - лига
         </span>
         <select
@@ -135,27 +146,14 @@ const selectedClubId = computed((): string | undefined =>
         <div>
           <div class="flex flex-wrap items-center gap-2">
             <h2 class="text-lg font-black text-slate-950">
-              {{ selectedChampionship.name }} - {{ selectedChampionship.divisionNames[selectedLeague.divisionId] }}
+              {{ selectedChampionship.name }} -
+              {{ selectedChampionship.divisionNames[selectedLeague.divisionId] }}
             </h2>
-            <span
-              v-if="isPlayerLeague"
-              class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-emerald-800"
-            >
-              Ваш дивизион
-            </span>
           </div>
           <p class="mt-1 text-xs font-semibold text-slate-400">
             {{ selectedRows.length }} команд · сезон {{ gameStore.game.season }}
           </p>
         </div>
-        <button
-          v-if="!isPlayerLeague"
-          type="button"
-          class="rounded-lg bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800 transition hover:bg-emerald-100"
-          @click="selectedLeagueKey = playerLeagueKey"
-        >
-          Вернуться к своей лиге
-        </button>
       </div>
 
       <LeagueTable

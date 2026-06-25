@@ -170,6 +170,8 @@ const visibleSnapshot = computed<MatchSnapshot>(() => {
   )
 })
 
+const visibleGoals = computed(() => match.value?.result?.goals ?? visibleSnapshot.value.goals)
+
 const allPlayers = computed<Player[]>(() => {
   const home = homeClub.value?.squad ?? []
   const away = awayClub.value?.squad ?? []
@@ -334,9 +336,6 @@ onBeforeUnmount(clearTimer)
               </RouterLink>
             </template>
             <template v-else-if="match.status === 'played'">
-              <div class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-extrabold text-slate-700">
-                Матч завершен
-              </div>
               <Button class="min-w-[220px]" label="Назад к обзору" @click="goBack" />
             </template>
           </div>
@@ -460,30 +459,29 @@ onBeforeUnmount(clearTimer)
             playerName(currentResult.bestPlayerId)
           }}</span>
         </div>
-      </div>
-    </div>
 
-    <div
-      class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
-    >
-      <h2 class="text-lg font-semibold text-slate-950">Голы</h2>
-      <div v-if="(match.result?.goals ?? visibleSnapshot.goals).length" class="mt-3 space-y-2">
-        <div
-          v-for="goal in match.result?.goals ?? visibleSnapshot.goals"
-          :key="`${goal.minute}-${goal.playerId}`"
-          class="rounded-md bg-slate-50 px-3 py-2 text-sm"
-        >
-          {{ goal.minute }}' · {{ goal.playerName }} ·
-          {{ clubStore.getClubById(goal.clubId)?.name }}
+        <div class="mt-5 border-t border-slate-100 pt-4">
+          <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Голы</h3>
+          <div v-if="visibleGoals.length" class="mt-3 space-y-2">
+            <div
+              v-for="goal in visibleGoals"
+              :key="`${goal.minute}-${goal.playerId}`"
+              class="rounded-md bg-slate-50 px-3 py-2 text-sm"
+            >
+              {{ goal.minute }}' · {{ goal.playerName }} ·
+              {{ clubStore.getClubById(goal.clubId)?.name }}
+            </div>
+          </div>
+          <div v-else class="mt-3 text-sm text-slate-600">Голов пока нет.</div>
         </div>
-      </div>
-      <div v-else class="mt-3 text-sm text-slate-600">Голов пока нет.</div>
-      <div
-        v-if="match.result?.penaltyWinnerClubId"
-        class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
-      >
-        Победитель серии пенальти:
-        {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+
+        <div
+          v-if="match.result?.penaltyWinnerClubId"
+          class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
+        >
+          Победитель серии пенальти:
+          {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+        </div>
       </div>
     </div>
   </section>

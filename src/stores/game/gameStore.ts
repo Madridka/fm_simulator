@@ -5,6 +5,7 @@ import { getChampionship } from '@/data/clubs'
 import {
   completeUserMatchDay,
   createInitialGameState,
+  ensureWorldCompetitions,
   finishSeason,
   getNextUserMatch,
   isSeasonReadyToFinish,
@@ -14,7 +15,8 @@ import { gameSaveRepository } from '@/repositories/gameSaveRepository'
 import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
 
 export const useGameStore = defineStore('game', () => {
-  const game = ref<GameState | null>(gameSaveRepository.load())
+  const savedGame = gameSaveRepository.load()
+  const game = ref<GameState | null>(savedGame ? ensureWorldCompetitions(savedGame) : null)
   const activeMatchId = ref<string | null>(null)
 
   const selectedClub = computed<Club | undefined>(() => {
@@ -96,7 +98,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const updateGame = (nextState: GameState): void => {
-    game.value = nextState
+    game.value = ensureWorldCompetitions(nextState)
     save()
   }
 

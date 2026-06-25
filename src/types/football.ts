@@ -97,6 +97,7 @@ export interface MatchResult {
 
 export interface Match {
   id: string
+  championshipId?: ChampionshipId
   season: number
   type: MatchType
   date: string
@@ -166,6 +167,9 @@ export interface GameState {
   clubs: Club[]
   matches: Match[]
   leagueTables: Record<number, LeagueTableRow[]>
+  worldClubs?: Partial<Record<ChampionshipId, Club[]>>
+  worldMatches?: Partial<Record<ChampionshipId, Match[]>>
+  worldLeagueTables?: Partial<Record<ChampionshipId, Record<number, LeagueTableRow[]>>>
   cup: CupState
   lineups: Record<string, ClubLineup>
   playerStats: Record<string, PlayerStats>
