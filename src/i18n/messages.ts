@@ -1,3 +1,5 @@
+import { championshipTranslations } from '@/i18n/championships'
+
 export const messages = {
   ru: {
     app: {
@@ -63,6 +65,7 @@ export const messages = {
       goals: 'М',
       points: 'О',
     },
+    championships: championshipTranslations,
   },
 } as const
 
