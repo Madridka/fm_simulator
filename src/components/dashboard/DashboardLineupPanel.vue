@@ -74,7 +74,9 @@ const ratingClass = (rating?: number): string => {
       </span>
     </header>
 
-    <div class="relative min-h-0 flex-1 overflow-hidden bg-[linear-gradient(180deg,#142033,#0e1726)]">
+    <div
+      class="relative min-h-0 flex-1 overflow-hidden bg-[linear-gradient(180deg,#142033,#0e1726)]"
+    >
       <div class="pointer-events-none absolute inset-5 rounded-xl border-2 border-white/25"></div>
       <div class="pointer-events-none absolute inset-x-5 top-1/2 border-t-2 border-white/20"></div>
       <div

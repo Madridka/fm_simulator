@@ -1,37 +1,21 @@
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { computed } from 'vue'
 import Drawer from 'primevue/drawer'
 import { RouterView, useRoute, useRouter } from 'vue-router'
-import { useI18n } from '@/composables/useI18n'
+import { useAppStore } from '@/stores/app/app'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 
 import MenuNav from '@/components/layout/MenuNav.vue'
 import TopBar from '@/components/layout/TopBar.vue'
-import type { AppNavItem } from '@/components/layout/types'
 
+const appStore = useAppStore()
 const gameStore = useGameStore()
 const matchStore = useMatchStore()
 const toastStore = useToastStore()
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
-
-const settingsOpen: Ref<boolean> = ref(false)
-const drawerVisible: Ref<boolean> = ref(false)
-
-const navItems = computed<AppNavItem[]>(() => [
-  { to: '/dashboard', label: t('nav.overview'), icon: 'home' },
-  { divider: true },
-  { to: '/squad', label: t('nav.squad'), icon: 'users' },
-  { to: '/transfers', label: t('nav.transfers'), icon: 'swap' },
-  { divider: true },
-  { to: '/calendar', label: t('nav.calendar'), icon: 'calendar' },
-  { divider: true },
-  { to: '/league', label: t('nav.league'), icon: 'table' },
-  { to: '/cup', label: t('nav.cup'), icon: 'trophy' },
-])
 
 const toastClass = computed((): string => {
   if (toastStore.severity === 'success') {
@@ -52,13 +36,8 @@ const openNextMatch = (): void => {
   void router.push('/match')
 }
 
-const closeNavigation = (): void => {
-  settingsOpen.value = false
-  drawerVisible.value = false
-}
-
 const resetGame = (): void => {
-  closeNavigation()
+  appStore.closeNavigation()
   gameStore.resetGame()
   void router.push('/select-club')
 }
@@ -72,28 +51,28 @@ const resetGame = (): void => {
       >
         <MenuNav
           :active-path="route.path"
-          :items="navItems"
+          :items="appStore.navItems"
           :selected-club="gameStore.selectedClub"
-          :settings-open="settingsOpen"
-          @close-settings="settingsOpen = false"
-          @toggle-settings="settingsOpen = !settingsOpen"
+          :settings-open="appStore.settingsOpen"
+          @close-settings="appStore.closeSettings"
+          @toggle-settings="appStore.toggleSettings"
           @reset-game="resetGame"
-          @navigate="closeNavigation"
+          @navigate="appStore.closeNavigation"
         />
       </aside>
 
-      <Drawer v-model:visible="drawerVisible" position="left" class="!w-[280px] md:!hidden">
+      <Drawer v-model:visible="appStore.drawerVisible" position="left" class="!w-[280px] md:!hidden">
         <template #container>
           <MenuNav
             :active-path="route.path"
-            :items="navItems"
+            :items="appStore.navItems"
             :selected-club="gameStore.selectedClub"
-            :settings-open="settingsOpen"
+            :settings-open="appStore.settingsOpen"
             mode="drawer"
-            @close-settings="settingsOpen = false"
-            @toggle-settings="settingsOpen = !settingsOpen"
+            @close-settings="appStore.closeSettings"
+            @toggle-settings="appStore.toggleSettings"
             @reset-game="resetGame"
-            @navigate="closeNavigation"
+            @navigate="appStore.closeNavigation"
           />
         </template>
       </Drawer>
@@ -104,7 +83,7 @@ const resetGame = (): void => {
           :next-opponent="matchStore.nextOpponent"
           :season="gameStore.game.season"
           :selected-club="gameStore.selectedClub"
-          @open-menu="drawerVisible = true"
+          @open-menu="appStore.openDrawer"
           @open-next-match="openNextMatch"
         />
 

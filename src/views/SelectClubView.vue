@@ -219,7 +219,9 @@ const startGame = (): void => {
         </div>
 
         <div class="p-5">
-          <div class="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
+          <div
+            class="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200/70"
+          >
             Клуб
           </div>
 
@@ -242,9 +244,15 @@ const startGame = (): void => {
               <IconSymbol name="chevronRight" class="h-4 w-4" />
             </button>
 
-            <div class="mx-auto flex min-h-[360px] max-w-[320px] flex-col items-center justify-center text-center">
+            <div
+              class="mx-auto flex min-h-[360px] max-w-[320px] flex-col items-center justify-center text-center"
+            >
               <h1 class="text-2xl font-black uppercase tracking-wide">{{ selectedClub.name }}</h1>
-              <ClubBadge :club="selectedClub" size="lg" class="mt-12 !h-36 !w-36 !rounded-xl text-4xl shadow-2xl" />
+              <ClubBadge
+                :club="selectedClub"
+                size="lg"
+                class="mt-12 !h-36 !w-36 !rounded-xl text-4xl shadow-2xl"
+              />
               <div class="mt-9 flex items-center gap-1 text-xl">
                 <span
                   v-for="star in 5"
@@ -295,12 +303,11 @@ const startGame = (): void => {
 
       <div class="grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
         <div class="grid gap-4">
-          <article class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]">
+          <article
+            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+          >
             <div class="text-sm font-semibold text-slate-300">Город</div>
             <div class="mt-2 text-2xl font-black uppercase">{{ selectedClub.city }}</div>
-            <div class="mt-8 grid h-20 place-items-center rounded-xl bg-white/5">
-              <IconSymbol name="home" class="h-10 w-10 text-cyan-200" />
-            </div>
 
             <div class="mt-7 border-t border-white/10 pt-5">
               <div class="text-sm font-semibold text-slate-300">Цвета клуба</div>
@@ -314,25 +321,22 @@ const startGame = (): void => {
                   :style="{ backgroundColor: selectedClub.secondaryColor }"
                 ></span>
               </div>
-              <div class="mt-4 grid grid-cols-2 gap-2 text-xs font-bold text-slate-300">
-                <span>{{ selectedClub.primaryColor }}</span>
-                <span>{{ selectedClub.secondaryColor }}</span>
-              </div>
             </div>
           </article>
 
-          <article class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]">
+          <article
+            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+          >
             <div class="text-sm font-semibold text-slate-300">Стадион</div>
             <div class="mt-2 text-2xl font-black uppercase">{{ stadiumName }}</div>
             <div class="mt-1 text-sm font-semibold text-slate-400">{{ stadiumDetails }}</div>
-            <div class="mt-8 grid h-20 place-items-center rounded-xl bg-white/5">
-              <IconSymbol name="home" class="h-10 w-10 text-cyan-200" />
-            </div>
           </article>
         </div>
 
         <div class="grid gap-4">
-          <article class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]">
+          <article
+            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+          >
             <div class="grid gap-6 md:grid-cols-3">
               <div>
                 <div class="text-sm font-semibold text-slate-300">Основан</div>
@@ -374,7 +378,9 @@ const startGame = (): void => {
           >
             <div class="rounded-xl bg-slate-950/55 px-5 py-4 text-center backdrop-blur-sm">
               <div class="text-sm font-semibold text-slate-200">Ожидания руководства</div>
-              <div class="mt-3 text-2xl font-black uppercase text-white">{{ expectation.title }}</div>
+              <div class="mt-3 text-2xl font-black uppercase text-white">
+                {{ expectation.title }}
+              </div>
               <p class="mx-auto mt-3 max-w-xl text-sm font-semibold text-slate-200">
                 {{ expectation.description }}
               </p>

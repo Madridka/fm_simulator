@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from '@/composables/useI18n'
 import type { Club } from '@/types/football'
 
-import type { AppNavItem } from '@/components/layout/types'
+import type { AppNavItem } from '@/stores/app/types'
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
 
@@ -120,7 +120,9 @@ const handleNavigate = (): void => {
       <div
         v-if="settingsOpen"
         class="z-50 rounded-xl border border-slate-200 bg-white p-2 text-slate-900 shadow-2xl"
-        :class="mode === 'sidebar' ? 'absolute bottom-3 left-[calc(100%+10px)] w-48' : 'mt-2 w-full'"
+        :class="
+          mode === 'sidebar' ? 'absolute bottom-3 left-[calc(100%+10px)] w-48' : 'mt-2 w-full'
+        "
       >
         <div class="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
           {{ t('app.game') }}
