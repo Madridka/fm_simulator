@@ -1,8 +1,8 @@
-import type { ClubConfig } from '@/data/clubs/types'
-import { germanyBundesligaClubConfigs } from '@/data/champs/germany/1/clubs'
-import { germanyBundesliga2ClubConfigs } from '@/data/champs/germany/2/clubs'
+import type { ClubProfile } from '@/data/clubs/types'
+import { germanyBundesligaClubProfiles } from '@/data/champs/germany/1/clubs'
+import { germanyBundesliga2ClubProfiles } from '@/data/champs/germany/2/clubs'
 
-export const germanyClubConfigs: ClubConfig[] = [
-  ...germanyBundesligaClubConfigs,
-  ...germanyBundesliga2ClubConfigs,
+export const germanyClubConfigs: ClubProfile[] = [
+  ...germanyBundesligaClubProfiles,
+  ...germanyBundesliga2ClubProfiles,
 ]

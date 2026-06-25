@@ -1,22 +1,22 @@
-import { RussianClubConfig } from '@/data/clubs/types'
-import { russiaPremierLeagueClubConfigs } from '@/data/champs/russia/1. RPL/clubs'
-import { russiaFirstLeagueClubConfigs } from '@/data/champs/russia/2. FIRST/clubs'
-import { russiaSecondLeagueAGoldClubConfigs } from '@/data/champs/russia/3. LEON A - GOLD/clubs'
-import { russiaSecondLeagueASilverClubConfigs } from '@/data/champs/russia/4. LEON A - SILVER/clubs'
-import { russiaSecondLeagueBGroup1ClubConfigs } from '@/data/champs/russia/5. LEON B - 1/clubs'
-import { russiaSecondLeagueBGroup2ClubConfigs } from '@/data/champs/russia/6. LEON B - 2/clubs'
-import { russiaSecondLeagueBGroup3ClubConfigs } from '@/data/champs/russia/7. LEON B - 3/clubs'
-import { russiaSecondLeagueBGroup4ClubConfigs } from '@/data/champs/russia/8. LEON B - 4/clubs'
+import { ClubProfile } from '@/data/clubs/types'
+import { russiaPremierLeagueClubProfiles } from '@/data/champs/russia/1. RPL/clubs'
+import { russiaFirstLeagueClubProfiles } from '@/data/champs/russia/2. FIRST/clubs'
+import { russiaSecondLeagueAGoldClubProfiles } from '@/data/champs/russia/3. LEON A - GOLD/clubs'
+import { russiaSecondLeagueASilverClubProfiles } from '@/data/champs/russia/4. LEON A - SILVER/clubs'
+import { russiaSecondLeagueBGroup1ClubProfiles } from '@/data/champs/russia/5. LEON B - 1/clubs'
+import { russiaSecondLeagueBGroup2ClubProfiles } from '@/data/champs/russia/6. LEON B - 2/clubs'
+import { russiaSecondLeagueBGroup3ClubProfiles } from '@/data/champs/russia/7. LEON B - 3/clubs'
+import { russiaSecondLeagueBGroup4ClubProfiles } from '@/data/champs/russia/8. LEON B - 4/clubs'
 
-export const russiaClubConfigs: RussianClubConfig[] = [
-  ...russiaPremierLeagueClubConfigs,
-  ...russiaFirstLeagueClubConfigs,
-  ...russiaSecondLeagueAGoldClubConfigs,
-  ...russiaSecondLeagueASilverClubConfigs,
-  ...russiaSecondLeagueBGroup1ClubConfigs,
-  ...russiaSecondLeagueBGroup2ClubConfigs,
-  ...russiaSecondLeagueBGroup3ClubConfigs,
-  ...russiaSecondLeagueBGroup4ClubConfigs,
+export const russiaClubConfigs: ClubProfile[] = [
+  ...russiaPremierLeagueClubProfiles,
+  ...russiaFirstLeagueClubProfiles,
+  ...russiaSecondLeagueAGoldClubProfiles,
+  ...russiaSecondLeagueASilverClubProfiles,
+  ...russiaSecondLeagueBGroup1ClubProfiles,
+  ...russiaSecondLeagueBGroup2ClubProfiles,
+  ...russiaSecondLeagueBGroup3ClubProfiles,
+  ...russiaSecondLeagueBGroup4ClubProfiles,
 ]
 
 export const russianDivisions = [

@@ -1,8 +1,8 @@
-import type { ClubConfig } from '@/data/clubs/types'
-import { italySerieAClubConfigs } from '@/data/champs/italy/1/clubs'
-import { italySerieBClubConfigs } from '@/data/champs/italy/2/clubs'
+import { italySerieAClubProfiles } from '@/data/champs/italy/1/clubs'
+import { italySerieBClubProfiles } from '@/data/champs/italy/2/clubs'
+import { ClubProfile } from '@/data/clubs/types'
 
-export const italyClubConfigs: ClubConfig[] = [
-  ...italySerieAClubConfigs,
-  ...italySerieBClubConfigs,
+export const italyClubConfigs: ClubProfile[] = [
+  ...italySerieAClubProfiles,
+  ...italySerieBClubProfiles,
 ]

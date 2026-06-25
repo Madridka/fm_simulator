@@ -1,4 +1,8 @@
-import { spainDivision1ClubConfigs } from '@/data/champs/spain/1/clubs'
-import { spainDivision2ClubConfigs } from '@/data/champs/spain/2/clubs'
+import { spainDivision1ClubProfiles } from '@/data/champs/spain/1/clubs'
+import { spainDivision2ClubProfiles } from '@/data/champs/spain/2/clubs'
+import { ClubProfile } from '@/data/clubs/types'
 
-export const spainClubConfigs = [...spainDivision1ClubConfigs, ...spainDivision2ClubConfigs]
+export const spainClubConfigs: ClubProfile[] = [
+  ...spainDivision1ClubProfiles,
+  ...spainDivision2ClubProfiles,
+]
