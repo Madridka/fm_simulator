@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import ClubBadge from '@/components/ui/ClubBadge.vue'
 import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
 import {
   autoSelectLineup,
@@ -10,7 +9,17 @@ import {
 } from '@/domain/season/squadSelectionService'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
-import type { Club, ClubLineup, MatchResult, PlayedLineup, Player } from '@/types/football'
+import type {
+  Club,
+  ClubLineup,
+  Match,
+  MatchLineups,
+  MatchResult,
+  PlayedLineup,
+  Player,
+} from '@/types/football'
+
+import ClubBadge from '@/components/ui/ClubBadge.vue'
 
 type MatchSnapshot = MatchTimeline['minutes'][number]
 
@@ -21,11 +30,13 @@ const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
 
-const match = computed(() => gameStore.activeMatch)
-const homeClub = computed(() =>
+const match = computed((): Match | undefined => gameStore.activeMatch)
+
+const homeClub = computed((): Club | undefined =>
   match.value ? clubStore.getClubById(match.value.homeClubId) : undefined,
 )
-const awayClub = computed(() =>
+
+const awayClub = computed((): Club | undefined =>
   match.value ? clubStore.getClubById(match.value.awayClubId) : undefined,
 )
 
@@ -54,7 +65,7 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
   }
 }
 
-const preparedLineups = computed(() => {
+const preparedLineups = computed((): MatchLineups | undefined => {
   const game = gameStore.game
   const currentMatch = match.value
   const home = homeClub.value
@@ -111,7 +122,7 @@ const userValidation = computed(() => {
   return validateLineup(userClub, lineup)
 })
 
-const isUserMatch = computed(() => {
+const isUserMatch = computed((): boolean => {
   const game = gameStore.game
   const currentMatch = match.value
   return Boolean(
@@ -123,10 +134,10 @@ const isUserMatch = computed(() => {
 })
 
 const isPlayableMatch = computed(
-  () => match.value?.status === 'scheduled' && gameStore.nextMatch?.id === match.value.id,
+  (): boolean => match.value?.status === 'scheduled' && gameStore.nextMatch?.id === match.value.id,
 )
 
-const canSimulate = computed(() =>
+const canSimulate = computed((): boolean =>
   Boolean(isUserMatch.value && isPlayableMatch.value && userValidation.value.valid),
 )
 

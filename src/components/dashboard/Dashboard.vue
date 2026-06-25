@@ -1,22 +1,30 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import DashboardHero from '@/components/dashboard/DashboardHero.vue'
-import DashboardLeaguePanel from '@/components/dashboard/DashboardLeaguePanel.vue'
-import DashboardResultsPanel from '@/components/dashboard/DashboardResultsPanel.vue'
-import DashboardSchedulePanel from '@/components/dashboard/DashboardSchedulePanel.vue'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
+import { Club, LeagueTableRow } from '@/types/football'
+
+import DashboardHero from '@/components/dashboard/DashboardHero.vue'
+import DashboardLeaguePanel from '@/components/dashboard/DashboardLeaguePanel.vue'
+import DashboardResultsPanel from '@/components/dashboard/DashboardResultsPanel.vue'
+import DashboardSchedulePanel from '@/components/dashboard/DashboardSchedulePanel.vue'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 const matchStore = useMatchStore()
 
-const club = computed(() => gameStore.selectedClub)
-const divisionName = computed(() => (club.value ? clubStore.getDivisionName(club.value.divisionId) : ''))
-const leagueRows = computed(() => (club.value ? (competitionStore.leagueTables[club.value.divisionId] ?? []) : []))
+const club = computed((): Club | undefined => gameStore.selectedClub)
+
+const divisionName = computed((): string =>
+  club.value ? clubStore.getDivisionName(club.value.divisionId) : '',
+)
+
+const leagueRows = computed((): LeagueTableRow[] =>
+  club.value ? (competitionStore.leagueTables[club.value.divisionId] ?? []) : [],
+)
 </script>
 
 <template>

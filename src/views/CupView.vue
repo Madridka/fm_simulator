@@ -10,6 +10,7 @@ const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 const activeCupTab = ref<'main' | 'preliminary'>('main')
 type BracketSide = 'left' | 'right'
+
 const mainBracketRoundIds = [
   'round_of_64',
   'round_of_32',
@@ -17,6 +18,7 @@ const mainBracketRoundIds = [
   'quarter_final',
   'semi_final',
 ] as const
+
 type MainBracketRoundId = (typeof mainBracketRoundIds)[number]
 
 interface BracketColumn {

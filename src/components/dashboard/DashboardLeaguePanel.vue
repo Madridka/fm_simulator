@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import ClubBadge from '@/components/ui/ClubBadge.vue'
 import { useI18n } from '@/composables/useI18n'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import type { LeagueTableRow } from '@/types/football'
+
+import ClubBadge from '@/components/ui/ClubBadge.vue'
 
 const props = defineProps<{
   divisionName: string
@@ -16,13 +17,17 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <article class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]">
+  <article
+    class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+  >
     <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
           {{ divisionName }}
         </div>
-        <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">{{ t('dashboard.leagueTable') }}</h2>
+        <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">
+          {{ t('dashboard.leagueTable') }}
+        </h2>
       </div>
       <RouterLink
         to="/league"
@@ -48,7 +53,9 @@ const { t } = useI18n()
             v-for="row in props.rows"
             :key="row.clubId"
             class="border-t border-slate-100 text-sm"
-            :class="row.clubId === selectedClubId ? 'bg-emerald-50 text-emerald-950' : 'text-slate-600'"
+            :class="
+              row.clubId === selectedClubId ? 'bg-emerald-50 text-emerald-950' : 'text-slate-600'
+            "
           >
             <td class="w-9 px-2 py-2.5 font-black">{{ row.position }}</td>
             <td class="px-2 py-2.5">
@@ -59,11 +66,15 @@ const { t } = useI18n()
                   size="sm"
                   class="!h-6 !w-6 !rounded text-[7px]"
                 />
-                <span class="max-w-36 truncate font-bold">{{ clubStore.getClubById(row.clubId)?.shortName }}</span>
+                <span class="max-w-36 truncate font-bold">{{
+                  clubStore.getClubById(row.clubId)?.shortName
+                }}</span>
               </div>
             </td>
             <td class="px-2 py-2.5 text-center font-semibold">{{ row.played }}</td>
-            <td class="px-2 py-2.5 text-center text-xs font-semibold">{{ row.goalsFor }}-{{ row.goalsAgainst }}</td>
+            <td class="px-2 py-2.5 text-center text-xs font-semibold">
+              {{ row.goalsFor }}-{{ row.goalsAgainst }}
+            </td>
             <td class="px-2 py-2.5 text-right font-black text-slate-950">{{ row.points }}</td>
           </tr>
         </tbody>

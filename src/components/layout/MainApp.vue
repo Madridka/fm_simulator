@@ -22,7 +22,7 @@ const navItems = computed<AppNavItem[]>(() => [
   { to: '/squad', label: t('nav.squad'), icon: 'users' },
   { to: '/transfers', label: t('nav.transfers'), icon: 'swap' },
   { divider: true },
-  { to: '/calendar', label: t('nav.calendar'), icon: 'table' },
+  { to: '/calendar', label: t('nav.calendar'), icon: 'calendar' },
   { divider: true },
   { to: '/league', label: t('nav.league'), icon: 'table' },
   { to: '/cup', label: t('nav.cup'), icon: 'trophy' },

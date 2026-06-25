@@ -42,7 +42,8 @@ export const useMatchStore = defineStore('matches', () => {
       return undefined
     }
 
-    const opponentId = match.homeClubId === game.selectedClubId ? match.awayClubId : match.homeClubId
+    const opponentId =
+      match.homeClubId === game.selectedClubId ? match.awayClubId : match.homeClubId
     return clubStore.getClubById(opponentId)
   }
 

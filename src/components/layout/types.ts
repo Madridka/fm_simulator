@@ -1,4 +1,4 @@
-export type AppNavIcon = 'home' | 'users' | 'swap' | 'table' | 'trophy'
+export type AppNavIcon = 'home' | 'users' | 'swap' | 'table' | 'calendar' | 'trophy'
 
 export interface AppNavRouteItem {
   to: string

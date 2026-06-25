@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import ClubBadge from '@/components/ui/ClubBadge.vue'
-import IconSymbol from '@/components/ui/IconSymbol.vue'
+
 import { useI18n } from '@/composables/useI18n'
 import { useMatchDisplay } from '@/composables/useMatchDisplay'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Match } from '@/types/football'
+
+import ClubBadge from '@/components/ui/ClubBadge.vue'
+import IconSymbol from '@/components/ui/IconSymbol.vue'
 
 const props = defineProps<{
   matches: Match[]
@@ -21,7 +23,9 @@ const openMatch = (match: Match): void => {
 </script>
 
 <template>
-  <article class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]">
+  <article
+    class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+  >
     <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-sky-600">
@@ -31,7 +35,9 @@ const openMatch = (match: Match): void => {
           {{ t('dashboard.recentResults') }}
         </h2>
       </div>
-      <span class="text-xs font-bold text-slate-400">{{ t('dashboard.matchesCount', { count: matches.length }) }}</span>
+      <span class="text-xs font-bold text-slate-400">{{
+        t('dashboard.matchesCount', { count: matches.length })
+      }}</span>
     </header>
 
     <div v-if="matches.length" class="divide-y divide-slate-100 px-4">

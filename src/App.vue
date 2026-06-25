@@ -10,7 +10,7 @@ const hasGame = computed((): boolean => Boolean(gameStore.game))
 </script>
 
 <template>
-  <div class="min-h-screen min-w-[320px] bg-[#eef2f0] font-sans text-slate-900">
+  <div class="h-[100dvh] min-w-[320px] bg-[#eef2f0] font-sans text-slate-900">
     <MainApp v-if="hasGame">
       <RouterView />
     </MainApp>

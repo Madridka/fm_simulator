@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import ClubBadge from '@/components/ui/ClubBadge.vue'
-import IconSymbol from '@/components/ui/IconSymbol.vue'
 import { useI18n } from '@/composables/useI18n'
 import type { Club, Match } from '@/types/football'
+
 import type { AppNavItem } from '@/components/layout/types'
+import ClubBadge from '@/components/ui/ClubBadge.vue'
+import IconSymbol from '@/components/ui/IconSymbol.vue'
 
 const props = defineProps<{
   activePath: string
@@ -54,11 +55,14 @@ const matchCompetition = (match: Match): string =>
             {{ t('app.nextMatch') }}
           </div>
           <div class="text-sm font-extrabold text-slate-900">
-            {{ nextOpponent.shortName }} {{ t('common.separator') }} {{ matchCompetition(nextMatch) }}
+            {{ nextOpponent.shortName }} {{ t('common.separator') }}
+            {{ matchCompetition(nextMatch) }}
           </div>
         </div>
         <ClubBadge :club="nextOpponent" size="sm" />
-        <span class="grid h-8 w-8 place-items-center rounded-full bg-emerald-500 text-white transition group-hover:translate-x-0.5">
+        <span
+          class="grid h-8 w-8 place-items-center rounded-full bg-emerald-500 text-white transition group-hover:translate-x-0.5"
+        >
           <IconSymbol name="chevronRight" class="h-4 w-4" />
         </span>
       </button>
@@ -75,7 +79,10 @@ const matchCompetition = (match: Match): string =>
           {{ item.label }}
         </RouterLink>
       </template>
-      <button class="rounded-lg px-3 py-2 text-xs font-bold text-rose-600" @click="emit('resetGame')">
+      <button
+        class="rounded-lg px-3 py-2 text-xs font-bold text-rose-600"
+        @click="emit('resetGame')"
+      >
         {{ t('app.newGame') }}
       </button>
     </nav>

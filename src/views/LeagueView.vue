@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import LeagueTable from '@/components/ui/LeagueTable.vue'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
+import { LeagueTableRow } from '@/types/football'
+
+import LeagueTable from '@/components/ui/LeagueTable.vue'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 
-const playerDivisionId = computed(() => gameStore.selectedClub?.divisionId ?? 1)
+const playerDivisionId = computed((): number => gameStore.selectedClub?.divisionId ?? 1)
 const selectedDivisionId = ref(playerDivisionId.value)
-const divisions = computed(() => Object.keys(competitionStore.leagueTables).map(Number))
+const divisions = computed((): number[] => Object.keys(competitionStore.leagueTables).map(Number))
 const divisionName = (divisionId: number): string => clubStore.getDivisionName(divisionId)
 
-const selectedRows = computed(() => competitionStore.leagueTables[selectedDivisionId.value] ?? [])
+const selectedRows = computed(
+  (): LeagueTableRow[] => competitionStore.leagueTables[selectedDivisionId.value] ?? [],
+)
 
-const isPlayerDivision = computed(() => selectedDivisionId.value === playerDivisionId.value)
+const isPlayerDivision = computed(
+  (): boolean => selectedDivisionId.value === playerDivisionId.value,
+)
 </script>
 
 <template>

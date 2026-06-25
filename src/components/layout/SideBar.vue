@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import ClubBadge from '@/components/ui/ClubBadge.vue'
-import IconSymbol from '@/components/ui/IconSymbol.vue'
 import { useI18n } from '@/composables/useI18n'
 import type { Club } from '@/types/football'
+
 import type { AppNavItem } from '@/components/layout/types'
+import ClubBadge from '@/components/ui/ClubBadge.vue'
+import IconSymbol from '@/components/ui/IconSymbol.vue'
 
 const props = defineProps<{
   activePath: string
@@ -34,13 +35,18 @@ const isActive = (item: AppNavItem): boolean => {
   <aside
     class="fixed inset-y-0 left-0 z-40 hidden w-[228px] flex-col border-r border-white/10 bg-[#101c19] text-white shadow-[14px_0_40px_rgba(4,18,14,0.18)] md:flex"
   >
-    <RouterLink to="/dashboard" class="flex h-[86px] items-center gap-3 border-b border-white/10 px-5">
+    <RouterLink
+      to="/dashboard"
+      class="flex h-[86px] items-center gap-3 border-b border-white/10 px-5"
+    >
       <ClubBadge v-if="selectedClub" :club="selectedClub" />
       <div class="min-w-0">
         <div class="truncate text-sm font-black tracking-tight">
           {{ selectedClub?.shortName }}
         </div>
-        <div class="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/60">
+        <div
+          class="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/60"
+        >
           {{ t('app.brand') }}
         </div>
       </div>
@@ -53,7 +59,11 @@ const isActive = (item: AppNavItem): boolean => {
           v-else-if="item.to"
           :to="item.to"
           class="group mb-1 flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-bold text-slate-300 transition hover:bg-white/7 hover:text-white"
-          :class="isActive(item) ? 'bg-emerald-400/15 text-emerald-300 shadow-[inset_3px_0_0_#34d399]' : ''"
+          :class="
+            isActive(item)
+              ? 'bg-emerald-400/15 text-emerald-300 shadow-[inset_3px_0_0_#34d399]'
+              : ''
+          "
           @click="emit('closeSettings')"
         >
           <IconSymbol :name="item.icon" class="h-[18px] w-[18px]" />
