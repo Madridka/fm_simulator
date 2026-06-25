@@ -1,4 +1,7 @@
-import type { ClubProfile } from '@/data/clubs/types'
+import { RussianLeagueId } from '@/data/clubs/enums'
+import { type ClubProfile } from '@/data/clubs/types'
+
+const leagueId = String(RussianLeagueId.rpl)
 
 export const zenitProfile: ClubProfile = {
   config: {
@@ -7,6 +10,7 @@ export const zenitProfile: ClubProfile = {
     shortName: 'ЗЕН',
     city: 'Санкт-Петербург',
     divisionId: 1,
+    leagueId: leagueId,
     rating: 88,
     attackRating: 89,
     midfieldRating: 88,

@@ -14,7 +14,7 @@ export interface ClubConfig {
   shortName: string
   city: string
   divisionId: number
-  leagueId?: string
+  leagueId: string
   groupId?: string
   rating: number
   attackRating: number
@@ -41,7 +41,3 @@ export interface ClubHistoricalStats {
   domesticTitles?: number
   domesticCups?: number
 }
-
-// export type RussianLeagueId = 'rpl' | 'first-league' | 'second-league-a' | 'second-league-b'
-
-// export type RussianLeagueGroupId = 'gold' | 'silver' | 'group-1' | 'group-2' | 'group-3' | 'group-4'

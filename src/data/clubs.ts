@@ -30,7 +30,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       3: 'LEON \u0412\u0442\u043e\u0440\u0430\u044f \u043b\u0438\u0433\u0430, \u0414\u0438\u0432\u0438\u0437\u0438\u043e\u043d \u0410',
       4: 'LEON \u0412\u0442\u043e\u0440\u0430\u044f \u043b\u0438\u0433\u0430, \u0414\u0438\u0432\u0438\u0437\u0438\u043e\u043d \u0411',
     },
-    clubConfigs: russiaClubConfigs,
+    clubConfigs: russiaClubConfigs[0]?.config,
   },
 
   spain: {
@@ -40,9 +40,9 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       '\u0418\u0441\u043f\u0430\u043d\u0438\u044f, \u0434\u0432\u0430 \u0434\u0438\u0432\u0438\u0437\u0438\u043e\u043d\u0430, 42 \u043a\u043b\u0443\u0431\u0430.',
     divisionNames: {
       1: 'La Liga',
-      2: 'Segunda Divisi\u00f3n',
+      2: 'Segunda Division',
     },
-    clubConfigs: spainClubConfigs,
+    clubConfigs: spainClubConfigs[0]?.config,
   },
 
   england: {
@@ -56,7 +56,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       3: 'EFL League One',
       4: 'EFL League Two',
     },
-    clubConfigs: englandClubConfigs,
+    clubConfigs: englandClubConfigs[0]?.config,
   },
 
   germany: {
@@ -68,7 +68,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Bundesliga',
       2: '2. Bundesliga',
     },
-    clubConfigs: germanyClubConfigs,
+    clubConfigs: germanyClubConfigs[0]?.config,
   },
 
   france: {
@@ -80,7 +80,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Ligue 1',
       2: 'Ligue 2',
     },
-    clubConfigs: franceClubConfigs,
+    clubConfigs: franceClubConfigs[0]?.config,
   },
 
   italy: {
@@ -92,7 +92,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Serie A',
       2: 'Serie B',
     },
-    clubConfigs: italyClubConfigs,
+    clubConfigs: italyClubConfigs[0]?.config,
   },
 }
 
