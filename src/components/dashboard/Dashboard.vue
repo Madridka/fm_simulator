@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
@@ -19,11 +20,11 @@ const matchStore = useMatchStore()
 const club = computed((): Club | undefined => gameStore.selectedClub)
 
 const divisionName = computed((): string =>
-  club.value ? clubStore.getDivisionName(club.value.divisionId) : '',
+  club.value ? clubStore.getClubCompetitionName(club.value) : '',
 )
 
 const leagueRows = computed((): LeagueTableRow[] =>
-  club.value ? (competitionStore.leagueTables[club.value.divisionId] ?? []) : [],
+  club.value ? (competitionStore.leagueTables[getClubCompetitionId(club.value)] ?? []) : [],
 )
 </script>
 

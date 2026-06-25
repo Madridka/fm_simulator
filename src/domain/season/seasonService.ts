@@ -96,8 +96,8 @@ const createWorldMatches = (
 const createWorldLeagueTables = (
   worldClubs: Record<ChampionshipId, Club[]>,
   worldMatches: Record<ChampionshipId, Match[]>,
-): Record<ChampionshipId, Record<number, LeagueTableRow[]>> => {
-  return championshipIds.reduce<Record<ChampionshipId, Record<number, LeagueTableRow[]>>>(
+): Record<ChampionshipId, Record<string, LeagueTableRow[]>> => {
+  return championshipIds.reduce<Record<ChampionshipId, Record<string, LeagueTableRow[]>>>(
     (result, championshipId) => {
       result[championshipId] = calculateLeagueTables(
         worldClubs[championshipId],
@@ -105,7 +105,7 @@ const createWorldLeagueTables = (
       )
       return result
     },
-    {} as Record<ChampionshipId, Record<number, LeagueTableRow[]>>,
+    {} as Record<ChampionshipId, Record<string, LeagueTableRow[]>>,
   )
 }
 
@@ -225,6 +225,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
 
   return {
     ...state,
+    leagueTables: calculateLeagueTables(state.clubs, state.matches),
     worldClubs,
     worldMatches,
     worldLeagueTables,
@@ -695,9 +696,53 @@ export const getNextDivisionId = (
   return divisionId
 }
 
+const isRussianClub = (club: Club): boolean => Boolean(club.leagueId || club.groupId)
+
+const getRussianLeagueIdForDivision = (club: Club, divisionId: number): string | undefined => {
+  if (!isRussianClub(club)) {
+    return undefined
+  }
+
+  if (divisionId === 1) return 'rpl'
+  if (divisionId === 2) return 'first-league'
+  if (divisionId === 3) return 'second-league-a'
+  if (divisionId === 4) return 'second-league-b'
+  return undefined
+}
+
+const getRussianGroupIdForDivision = (
+  club: Club,
+  nextDivisionId: number,
+): string | undefined => {
+  if (!isRussianClub(club)) {
+    return undefined
+  }
+
+  if (nextDivisionId === 3) {
+    if (club.divisionId < nextDivisionId) {
+      return 'gold'
+    }
+
+    if (club.divisionId > nextDivisionId) {
+      return 'silver'
+    }
+
+    return club.groupId === 'gold' || club.groupId === 'silver' ? club.groupId : 'silver'
+  }
+
+  if (nextDivisionId === 4) {
+    return club.groupId?.startsWith('group-') ? club.groupId : 'group-1'
+  }
+
+  return undefined
+}
+
 const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
   const tableRows = Object.values(state.leagueTables).flat()
   const rowByClubId = new Map(tableRows.map((row) => [row.clubId, row]))
+  const competitionSizes = Object.fromEntries(
+    Object.entries(state.leagueTables).map(([competitionId, rows]) => [competitionId, rows.length]),
+  )
   const divisionSizes = state.clubs.reduce<Record<number, number>>((sizes, club) => {
     sizes[club.divisionId] = (sizes[club.divisionId] ?? 0) + 1
     return sizes
@@ -714,7 +759,7 @@ const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
     const divisionId = getNextDivisionId(
       club.divisionId,
       row.position,
-      divisionSizes[club.divisionId],
+      competitionSizes[row.competitionId] ?? divisionSizes[club.divisionId],
       divisionsCount,
     )
     const promoted = divisionId < club.divisionId
@@ -722,6 +767,8 @@ const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
     return {
       ...cloneClub(club),
       divisionId,
+      leagueId: getRussianLeagueIdForDivision(club, divisionId) ?? club.leagueId,
+      groupId: getRussianGroupIdForDivision(club, divisionId),
       budget: club.budget + reward + (promoted ? gameConfig.promotionReward : 0),
     }
   })

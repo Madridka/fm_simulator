@@ -23,6 +23,8 @@ export interface Club {
   shortName: string
   city: string
   divisionId: number
+  leagueId?: string
+  groupId?: string
   rating: number
   attackRating: number
   midfieldRating: number
@@ -104,6 +106,7 @@ export interface Match {
   order: number
   round: number
   divisionId?: number
+  competitionId?: string
   cupRoundId?: string
   homeClubId: string
   awayClubId: string
@@ -116,6 +119,7 @@ export interface Match {
 export interface LeagueTableRow {
   clubId: string
   divisionId: number
+  competitionId: string
   played: number
   wins: number
   draws: number
@@ -166,10 +170,10 @@ export interface GameState {
   season: number
   clubs: Club[]
   matches: Match[]
-  leagueTables: Record<number, LeagueTableRow[]>
+  leagueTables: Record<string, LeagueTableRow[]>
   worldClubs?: Partial<Record<ChampionshipId, Club[]>>
   worldMatches?: Partial<Record<ChampionshipId, Match[]>>
-  worldLeagueTables?: Partial<Record<ChampionshipId, Record<number, LeagueTableRow[]>>>
+  worldLeagueTables?: Partial<Record<ChampionshipId, Record<string, LeagueTableRow[]>>>
   cup: CupState
   lineups: Record<string, ClubLineup>
   playerStats: Record<string, PlayerStats>

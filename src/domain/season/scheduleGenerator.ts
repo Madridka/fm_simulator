@@ -1,3 +1,4 @@
+import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import type { Club, Match } from '@/types/football'
 
 export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24]
@@ -52,11 +53,12 @@ const rotateTeams = (teams: readonly string[]): string[] => {
 }
 
 export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][] => {
-  if (clubIds.length < 2 || clubIds.length % 2 !== 0) {
-    throw new Error('A division must contain an even number of at least two clubs')
+  if (clubIds.length < 2) {
+    throw new Error('A division must contain at least two clubs')
   }
 
-  let teams = [...clubIds]
+  const byeClubId = '__bye__'
+  let teams = clubIds.length % 2 === 0 ? [...clubIds] : [...clubIds, byeClubId]
   const rounds: Pairing[][] = []
   const roundsCount = teams.length - 1
 
@@ -69,6 +71,10 @@ export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][
       const right = teams[teams.length - 1 - index]
       if (!left || !right) {
         throw new Error('Invalid round-robin state')
+      }
+
+      if (left === byeClubId || right === byeClubId) {
+        continue
       }
 
       const swapHome = (roundIndex + index) % 2 === 1
@@ -94,28 +100,37 @@ export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][
 
 export const generateLeagueSchedule = (clubs: readonly Club[], season: number): Match[] => {
   const matches: Match[] = []
-  const divisionIds = [...new Set(clubs.map((club) => club.divisionId))].sort(
-    (left, right) => left - right,
+  const clubsByCompetition = clubs.reduce<Record<string, Club[]>>((result, club) => {
+    const competitionId = getClubCompetitionId(club)
+    result[competitionId] = [...(result[competitionId] ?? []), club]
+    return result
+  }, {})
+  const competitionIds = Object.keys(clubsByCompetition).sort(
+    (left, right) =>
+      Number(left.split(':')[0]) - Number(right.split(':')[0]) || left.localeCompare(right),
   )
 
-  for (const divisionId of divisionIds) {
-    const divisionClubIds = clubs
-      .filter((club) => club.divisionId === divisionId)
+  for (const competitionId of competitionIds) {
+    const competitionClubs = clubsByCompetition[competitionId] ?? []
+    const divisionId = competitionClubs[0]?.divisionId ?? Number(competitionId.split(':')[0])
+    const competitionClubIds = competitionClubs
       .map((club) => club.id)
       .sort((left, right) => left.localeCompare(right))
+    const matchIdCompetition = competitionId.replace(/[^a-z0-9-]/gi, '_')
 
-    const rounds = generateDivisionPairings(divisionClubIds)
+    const rounds = generateDivisionPairings(competitionClubIds)
 
     rounds.forEach((round, roundIndex) => {
       round.forEach((pairing, matchIndex) => {
         matches.push({
-          id: `s${season}-d${divisionId}-r${roundIndex + 1}-m${matchIndex + 1}`,
+          id: `s${season}-c${matchIdCompetition}-r${roundIndex + 1}-m${matchIndex + 1}`,
           season,
           type: 'league',
           date: getSeasonMatchDate(season, getLeagueRoundOrder(roundIndex)),
           order: getLeagueRoundOrder(roundIndex),
           round: roundIndex + 1,
           divisionId,
+          competitionId,
           homeClubId: pairing.homeClubId,
           awayClubId: pairing.awayClubId,
           neutralVenue: false,

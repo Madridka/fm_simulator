@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
+import {
+  getClubCompetitionId,
+  getCompetitionNames,
+  getCompetitionName,
+} from '@/domain/competition/competitionIdentity'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
@@ -11,21 +16,23 @@ import LeagueTable from '@/components/ui/LeagueTable.vue'
 interface LeagueOption {
   key: string
   championshipId: ChampionshipId
-  divisionId: number
+  competitionId: string
   label: string
 }
 
 const gameStore = useGameStore()
 const competitionStore = useCompetitionStore()
 
-const makeLeagueKey = (championshipId: ChampionshipId, divisionId: number): string =>
-  `${championshipId}:${divisionId}`
+const makeLeagueKey = (championshipId: ChampionshipId, competitionId: string): string =>
+  `${championshipId}|${competitionId}`
 
 const isChampionshipId = (value: string): value is ChampionshipId => value in championships
 
-const playerDivisionId = computed((): number => gameStore.selectedClub?.divisionId ?? 1)
+const playerCompetitionId = computed((): string =>
+  gameStore.selectedClub ? getClubCompetitionId(gameStore.selectedClub) : '1',
+)
 const playerLeagueKey = computed((): string =>
-  makeLeagueKey(gameStore.game?.championshipId ?? 'russia', playerDivisionId.value),
+  makeLeagueKey(gameStore.game?.championshipId ?? 'russia', playerCompetitionId.value),
 )
 
 const selectedLeagueKey = ref(playerLeagueKey.value)
@@ -39,28 +46,34 @@ watch(
 )
 
 const leagueOptions = computed((): LeagueOption[] =>
-  Object.values(championships).flatMap((championship) =>
-    Object.entries(championship.divisionNames)
-      .map(([divisionId, divisionName]) => ({
-        key: makeLeagueKey(championship.id, Number(divisionId)),
+  Object.values(championships).flatMap((championship) => {
+    const competitionNames = getCompetitionNames(championship)
+    return Object.entries(competitionNames)
+      .map(([competitionId, divisionName]) => ({
+        key: makeLeagueKey(championship.id, competitionId),
         championshipId: championship.id,
-        divisionId: Number(divisionId),
+        competitionId,
         label: `${championship.name} - ${divisionName}`,
       }))
-      .sort((left, right) => left.divisionId - right.divisionId),
-  ),
+      .sort(
+        (left, right) =>
+          Number(left.competitionId.split(':')[0]) -
+            Number(right.competitionId.split(':')[0]) ||
+          left.competitionId.localeCompare(right.competitionId),
+      )
+  }),
 )
 
 const selectedLeague = computed((): LeagueOption => {
-  const [championshipIdCandidate = '', divisionIdCandidate = '1'] =
-    selectedLeagueKey.value.split(':')
+  const [championshipIdCandidate = '', competitionIdCandidate = '1'] =
+    selectedLeagueKey.value.split('|')
   const championshipId = isChampionshipId(championshipIdCandidate)
     ? championshipIdCandidate
     : (gameStore.game?.championshipId ?? 'russia')
-  const divisionId = Number(divisionIdCandidate) || 1
+  const competitionId = competitionIdCandidate || '1'
   const option = leagueOptions.value.find(
     (candidate) =>
-      candidate.championshipId === championshipId && candidate.divisionId === divisionId,
+      candidate.championshipId === championshipId && candidate.competitionId === competitionId,
   )
 
   return option ?? leagueOptions.value[0]!
@@ -87,12 +100,12 @@ const staticTables = computed(() => calculateLeagueTables(selectedClubs.value, [
 const selectedRows = computed((): LeagueTableRow[] => {
   return (
     gameStore.game?.worldLeagueTables?.[selectedLeague.value.championshipId]?.[
-      selectedLeague.value.divisionId
+      selectedLeague.value.competitionId
     ] ??
     (isCurrentChampionship.value
-      ? competitionStore.leagueTables[selectedLeague.value.divisionId]
+      ? competitionStore.leagueTables[selectedLeague.value.competitionId]
       : undefined) ??
-    staticTables.value[selectedLeague.value.divisionId] ??
+    staticTables.value[selectedLeague.value.competitionId] ??
     []
   )
 })
@@ -147,7 +160,7 @@ const selectedClubId = computed((): string | undefined =>
           <div class="flex flex-wrap items-center gap-2">
             <h2 class="text-lg font-black text-slate-950">
               {{ selectedChampionship.name }} -
-              {{ selectedChampionship.divisionNames[selectedLeague.divisionId] }}
+              {{ getCompetitionName(selectedChampionship, selectedLeague.competitionId) }}
             </h2>
           </div>
           <p class="mt-1 text-xs font-semibold text-slate-400">

@@ -3,6 +3,11 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
 import { clubProfilesById } from '@/data/clubDatabase'
+import {
+  getClubCompetitionId,
+  getCompetitionNames,
+  getCompetitionName,
+} from '@/domain/competition/competitionIdentity'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { Club } from '@/types/football'
 import { formatMoney } from '@/utils/format'
@@ -17,7 +22,7 @@ interface ChampionshipOption {
 
 interface DivisionOption {
   label: string
-  value: number
+  value: string
 }
 
 interface BoardExpectation {
@@ -30,7 +35,7 @@ const gameStore = useGameStore()
 const router = useRouter()
 
 const selectedChampionship = ref<ChampionshipId>('russia')
-const selectedDivisionId = ref<number>(1)
+const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
 
 const championshipOptions: ChampionshipOption[] = [
@@ -46,14 +51,14 @@ const championship = computed(() => championships[selectedChampionship.value])
 const clubs = computed(() => getChampionshipClubs(selectedChampionship.value))
 
 const divisions = computed<DivisionOption[]>(() =>
-  Object.entries(championship.value.divisionNames).map(([divisionId, name]) => ({
+  Object.entries(getCompetitionNames(championship.value)).map(([divisionId, name]) => ({
     label: name,
-    value: Number(divisionId),
+    value: divisionId,
   })),
 )
 
 const divisionClubs = computed<Club[]>(() =>
-  clubs.value.filter((club) => club.divisionId === selectedDivisionId.value),
+  clubs.value.filter((club) => getClubCompetitionId(club) === selectedCompetitionId.value),
 )
 
 const selectedClub = computed<Club>(() => {
@@ -75,7 +80,7 @@ const selectedClubIndex = computed(() =>
 )
 
 const selectedDivisionName = computed(
-  () => championship.value.divisionNames[selectedClub.value.divisionId] ?? '',
+  () => getCompetitionName(championship.value, getClubCompetitionId(selectedClub.value)),
 )
 
 const clubWorth = computed(() =>
@@ -163,13 +168,13 @@ const selectFirstClubInDivision = (): void => {
 watch(
   selectedChampionship,
   () => {
-    selectedDivisionId.value = divisions.value[0]?.value ?? 1
+    selectedCompetitionId.value = divisions.value[0]?.value ?? '1'
     selectFirstClubInDivision()
   },
   { immediate: true },
 )
 
-watch(selectedDivisionId, () => {
+watch(selectedCompetitionId, () => {
   selectFirstClubInDivision()
 })
 
@@ -286,7 +291,7 @@ const startGame = (): void => {
             Дивизион
           </label>
           <select
-            v-model="selectedDivisionId"
+            v-model="selectedCompetitionId"
             class="mt-2 h-12 w-full rounded-lg border border-white/10 bg-white/[0.08] px-3 text-sm font-black text-white outline-none transition focus:border-cyan-300"
           >
             <option

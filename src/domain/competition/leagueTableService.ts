@@ -1,8 +1,14 @@
+import { getClubCompetitionId, getMatchCompetitionId } from '@/domain/competition/competitionIdentity'
 import type { Club, LeagueTableRow, Match } from '@/types/football'
 
-const createEmptyRow = (clubId: string, divisionId: number): LeagueTableRow => ({
+const createEmptyRow = (
+  clubId: string,
+  divisionId: number,
+  competitionId: string,
+): LeagueTableRow => ({
   clubId,
   divisionId,
+  competitionId,
   played: 0,
   wins: 0,
   draws: 0,
@@ -57,26 +63,32 @@ export const sortLeagueRows = (rows: readonly LeagueTableRow[]): LeagueTableRow[
 export const calculateLeagueTables = (
   clubs: readonly Club[],
   matches: readonly Match[],
-): Record<number, LeagueTableRow[]> => {
-  const tables: Record<number, LeagueTableRow[]> = {}
-  const divisionIds = [...new Set(clubs.map((club) => club.divisionId))].sort(
-    (left, right) => left - right,
+): Record<string, LeagueTableRow[]> => {
+  const tables: Record<string, LeagueTableRow[]> = {}
+  const clubsById = new Map(clubs.map((club) => [club.id, club]))
+  const clubsByCompetition = clubs.reduce<Record<string, Club[]>>((result, club) => {
+    const competitionId = getClubCompetitionId(club)
+    result[competitionId] = [...(result[competitionId] ?? []), club]
+    return result
+  }, {})
+  const competitionIds = Object.keys(clubsByCompetition).sort(
+    (left, right) =>
+      Number(left.split(':')[0]) - Number(right.split(':')[0]) || left.localeCompare(right),
   )
 
-  for (const divisionId of divisionIds) {
+  for (const competitionId of competitionIds) {
     const rows = new Map<string, LeagueTableRow>()
+    const competitionClubs = clubsByCompetition[competitionId] ?? []
 
-    clubs
-      .filter((club) => club.divisionId === divisionId)
-      .forEach((club) => {
-        rows.set(club.id, createEmptyRow(club.id, divisionId))
-      })
+    competitionClubs.forEach((club) => {
+      rows.set(club.id, createEmptyRow(club.id, club.divisionId, competitionId))
+    })
 
     matches
       .filter(
         (match) =>
           match.type === 'league' &&
-          match.divisionId === divisionId &&
+          getMatchCompetitionId(match, clubsById) === competitionId &&
           match.status === 'played' &&
           match.result,
       )
@@ -91,14 +103,14 @@ export const calculateLeagueTables = (
         applyResultToRow(awayRow, match.result.awayGoals, match.result.homeGoals)
       })
 
-    tables[divisionId] = sortLeagueRows([...rows.values()])
+    tables[competitionId] = sortLeagueRows([...rows.values()])
   }
 
   return tables
 }
 
 export const getClubPosition = (
-  tables: Record<number, LeagueTableRow[]>,
+  tables: Record<string, LeagueTableRow[]>,
   clubId: string,
 ): LeagueTableRow | undefined => {
   return Object.values(tables)
