@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useI18n } from '@/composables/useI18n'
+import i18n from '@/plugins/i18n/i18n'
 import type { AppNavItem } from '@/stores/app/types'
 
 export const useAppStore = defineStore('app', () => {
-  const { t } = useI18n()
+  const t = (key: string): string => i18n.global.t(key)
 
   const settingsOpen = ref(false)
   const drawerVisible = ref(false)

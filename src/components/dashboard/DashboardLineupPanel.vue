@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useI18n } from '@/composables/useI18n'
+import { useI18n } from 'vue-i18n'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import type { Player } from '@/types/football'
 

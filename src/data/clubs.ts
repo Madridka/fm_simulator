@@ -5,9 +5,9 @@ import { englandClubConfigs } from '@/data/championships/england'
 import { germanyClubConfigs } from '@/data/championships/germany'
 import { franceClubConfigs } from '@/data/championships/france'
 import { italyClubConfigs } from '@/data/championships/italy'
-import { championshipTranslations } from '@/i18n/championships'
 import type { ChampionshipId, Club } from '@/types/football'
 import type { ClubProfile } from '@/data/clubs/types'
+import { championshipTranslations } from '@/lang/championships'
 export type { ChampionshipId } from '@/types/football'
 
 export interface ChampionshipConfig {

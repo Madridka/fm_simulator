@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-import { useI18n } from '@/composables/useI18n'
+import { useI18n } from 'vue-i18n'
 import { useMatchDisplay } from '@/composables/useMatchDisplay'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Match } from '@/types/football'

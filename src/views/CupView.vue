@@ -4,23 +4,14 @@ import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { CupRound, CupTie, Match } from '@/types/football'
+import { useI18n } from 'vue-i18n'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
+const { t } = useI18n()
 
 const activeRoundIndex = ref(0)
-
-const cupRoundLabels: Record<string, string> = {
-  preliminary: '1/128',
-  round_of_128: '1/128',
-  round_of_64: '1/64',
-  round_of_32: '1/32',
-  round_of_16: '1/16',
-  quarter_final: '1/4',
-  semi_final: '1/2',
-  final: 'Финал',
-}
 
 const cupRounds = computed((): CupRound[] => competitionStore.cup?.rounds ?? [])
 const visibleRounds = computed((): CupRound[] => cupRounds.value)
@@ -73,7 +64,7 @@ const matchById = (matchId?: string): Match | undefined => {
 
 const clubName = (clubId?: string): string => {
   if (!clubId) {
-    return 'Ожидается'
+    return t('cup.awaitingClub')
   }
   return clubStore.getClubById(clubId)?.name ?? clubId
 }
@@ -95,13 +86,21 @@ const clubBadgeStyle = (clubId?: string): Record<string, string> => {
   }
 }
 
-const roundLabel = (round?: CupRound): string => (round ? cupRoundLabels[round.id] ?? round.name : '')
+const roundLabel = (round?: CupRound): string => {
+  if (!round) {
+    return ''
+  }
+
+  const key = `cup.roundLabels.${round.id}`
+  const label = t(key)
+  return label === key ? round.name : label
+}
 
 const roundStatusLabel = (round?: CupRound): string => {
   if (!round) {
     return ''
   }
-  return round.status === 'completed' ? 'Сыграно' : 'Ожидает матчей'
+  return round.status === 'completed' ? t('cup.roundCompleted') : t('cup.roundPending')
 }
 
 const roundStatusClass = (round?: CupRound): string =>
@@ -148,12 +147,12 @@ const penaltyWinnerName = (tie: CupTie): string | undefined => {
 
 const tieDate = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
-  return match?.date ?? 'Дата будет назначена'
+  return match?.date ?? t('cup.dateTbd')
 }
 
 const tieStatusLabel = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
-  return match?.status === 'played' ? 'Сыгран' : 'Запланирован'
+  return match?.status === 'played' ? t('cup.tiePlayed') : t('cup.tieScheduled')
 }
 </script>
 
@@ -162,11 +161,11 @@ const tieStatusLabel = (tie: CupTie): string => {
     <header class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-          Кубок: {{ gameStore.championship?.name }}
+          {{ t('cup.heading', { name: gameStore.championship?.name ?? '' }) }}
         </div>
-        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">Расписание кубка</h1>
+        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">{{ t('cup.title') }}</h1>
         <p class="mt-1 text-sm text-slate-600">
-          Стадии открываются по порядку от ранних раундов к финалу.
+          {{ t('cup.description') }}
         </p>
       </div>
 
@@ -174,7 +173,7 @@ const tieStatusLabel = (tie: CupTie): string => {
         v-if="championClub"
         class="rounded-lg bg-emerald-950 px-3 py-2 text-xs font-black text-emerald-50"
       >
-        Победитель: {{ championClub.name }}
+        {{ t('cup.champion', { club: championClub.name }) }}
       </div>
     </header>
 
@@ -196,7 +195,12 @@ const tieStatusLabel = (tie: CupTie): string => {
             </span>
           </div>
           <p class="mt-1 text-xs font-semibold text-slate-400">
-            Стадия {{ visibleRounds.length ? activeRoundIndex + 1 : 0 }} из {{ visibleRounds.length }}
+            {{
+              t('cup.stageProgress', {
+                current: visibleRounds.length ? activeRoundIndex + 1 : 0,
+                total: visibleRounds.length,
+              })
+            }}
           </p>
         </div>
 
@@ -205,7 +209,7 @@ const tieStatusLabel = (tie: CupTie): string => {
             type="button"
             class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-lg font-black text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
             :disabled="!canMoveBack"
-            aria-label="Предыдущая стадия"
+            :aria-label="t('cup.previousRound')"
             @click="moveRound(-1)"
           >
             ‹
@@ -214,7 +218,7 @@ const tieStatusLabel = (tie: CupTie): string => {
             type="button"
             class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-lg font-black text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
             :disabled="!canMoveForward"
-            aria-label="Следующая стадия"
+            :aria-label="t('cup.nextRound')"
             @click="moveRound(1)"
           >
             ›
@@ -229,8 +233,10 @@ const tieStatusLabel = (tie: CupTie): string => {
       >
         <section class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-            <h3 class="text-sm font-black text-slate-950">Пары стадии</h3>
-            <span class="text-xs font-bold text-slate-400">{{ activeRound.ties.length }} матчей</span>
+            <h3 class="text-sm font-black text-slate-950">{{ t('cup.tiesTitle') }}</h3>
+            <span class="text-xs font-bold text-slate-400">
+              {{ t('cup.matchesCount', { count: activeRound.ties.length }) }}
+            </span>
           </div>
 
           <div class="min-h-0 flex-1 overflow-auto px-4 py-2">
@@ -269,7 +275,7 @@ const tieStatusLabel = (tie: CupTie): string => {
                   v-if="penaltyWinnerName(tie)"
                   class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-bold text-amber-700"
                 >
-                  Пенальти: {{ penaltyWinnerName(tie) }}
+                  {{ t('cup.penalties', { club: penaltyWinnerName(tie) ?? '' }) }}
                 </div>
               </div>
 
@@ -291,9 +297,9 @@ const tieStatusLabel = (tie: CupTie): string => {
               class="grid min-h-[240px] place-items-center rounded-xl border border-dashed border-slate-300 bg-white text-center"
             >
               <div>
-                <div class="text-sm font-black text-slate-700">Пары ещё не сформированы</div>
+                <div class="text-sm font-black text-slate-700">{{ t('cup.emptyTiesTitle') }}</div>
                 <p class="mt-1 text-xs text-slate-400">
-                  Они появятся после завершения предыдущей стадии.
+                  {{ t('cup.emptyTiesHint') }}
                 </p>
               </div>
             </div>
@@ -305,9 +311,9 @@ const tieStatusLabel = (tie: CupTie): string => {
           class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white"
         >
           <div class="border-b border-slate-100 px-4 py-3">
-            <h3 class="text-sm font-black text-slate-950">Проходят дальше</h3>
+            <h3 class="text-sm font-black text-slate-950">{{ t('cup.byesTitle') }}</h3>
             <p class="mt-1 text-xs font-semibold text-slate-400">
-              Команды, которые начинают со следующей стадии.
+              {{ t('cup.byesHint') }}
             </p>
           </div>
 

@@ -1,4 +1,4 @@
-import { championshipTranslations } from '@/i18n/championships'
+import { championshipTranslations } from '@/lang/championships'
 import type { Club, Match } from '@/types/football'
 
 export type CompetitionId = string

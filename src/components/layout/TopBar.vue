@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useI18n } from '@/composables/useI18n'
+import { useI18n } from 'vue-i18n'
 import type { Club, Match } from '@/types/football'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'

@@ -7,7 +7,7 @@ import { russiaSecondLeagueBGroup1ClubProfiles } from '@/data/championships/russ
 import { russiaSecondLeagueBGroup2ClubProfiles } from '@/data/championships/russia/6. LEON B - 2/clubs'
 import { russiaSecondLeagueBGroup3ClubProfiles } from '@/data/championships/russia/7. LEON B - 3/clubs'
 import { russiaSecondLeagueBGroup4ClubProfiles } from '@/data/championships/russia/8. LEON B - 4/clubs'
-import { championshipTranslations } from '@/i18n/championships'
+import { championshipTranslations } from '@/lang/championships'
 
 const russianTranslation = championshipTranslations.russia
 

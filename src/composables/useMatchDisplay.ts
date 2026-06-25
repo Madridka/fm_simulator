@@ -1,4 +1,4 @@
-import { useI18n } from '@/composables/useI18n'
+import { useI18n } from 'vue-i18n'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Club, Match } from '@/types/football'

@@ -1,0 +1,175 @@
+{
+  "app": {
+    "brand": "FM Simulator",
+    "game": "Игра",
+    "menu": "Меню",
+    "openMenu": "Открыть меню",
+    "newGame": "Новая игра",
+    "season": "Сезон {season}",
+    "nextMatch": "Следующий матч"
+  },
+  "nav": {
+    "overview": "Обзор",
+    "squad": "Состав",
+    "transfers": "Трансферы",
+    "calendar": "Календарь",
+    "league": "Лига",
+    "cup": "Кубок"
+  },
+  "common": {
+    "dash": "-",
+    "separator": "·"
+  },
+  "match": {
+    "round": "тур {round}",
+    "cup": "кубок",
+    "home": "Дома",
+    "away": "В гостях",
+    "winLetter": "В",
+    "drawLetter": "Н",
+    "lossLetter": "П"
+  },
+  "dashboard": {
+    "place": "Место",
+    "budget": "Бюджет",
+    "rating": "Рейтинг",
+    "cup": "Кубок",
+    "season": "Сезон",
+    "finishSeason": "Завершить сезон",
+    "leagueTable": "Таблица лиги",
+    "fullTable": "Вся таблица",
+    "schedule": "Расписание",
+    "calendar": "Календарь",
+    "noMatchesLeft": "Матчей не осталось.",
+    "teamForm": "Форма команды",
+    "recentResults": "Последние результаты",
+    "startingLineup": "Основной состав",
+    "openSquad": "Открыть состав",
+    "matchesCount": "{count} матчей",
+    "seasonStarts": "Сезон только начинается",
+    "playedMatchesHint": "Здесь появятся сыгранные матчи.",
+    "tableClub": "Клуб",
+    "games": "И",
+    "goals": "М",
+    "points": "О"
+  },
+  "leagueTable": {
+    "club": "Клуб",
+    "played": "И",
+    "wins": "В",
+    "draws": "Н",
+    "losses": "П",
+    "goals": "М",
+    "points": "О"
+  },
+  "cup": {
+    "roundLabels": {
+      "preliminary": "1/128",
+      "round_of_128": "1/128",
+      "round_of_64": "1/64",
+      "round_of_32": "1/32",
+      "round_of_16": "1/16",
+      "quarter_final": "1/4",
+      "semi_final": "1/2",
+      "final": "Финал"
+    },
+    "awaitingClub": "Ожидается",
+    "roundCompleted": "Сыграно",
+    "roundPending": "Ожидает матчей",
+    "dateTbd": "Дата будет назначена",
+    "tiePlayed": "Сыгран",
+    "tieScheduled": "Запланирован",
+    "heading": "Кубок: {name}",
+    "title": "Расписание кубка",
+    "description": "Стадии открываются по порядку от ранних раундов к финалу.",
+    "champion": "Победитель: {club}",
+    "stageProgress": "Стадия {current} из {total}",
+    "previousRound": "Предыдущая стадия",
+    "nextRound": "Следующая стадия",
+    "tiesTitle": "Пары стадии",
+    "matchesCount": "{count} матчей",
+    "penalties": "Пенальти: {club}",
+    "emptyTiesTitle": "Пары ещё не сформированы",
+    "emptyTiesHint": "Они появятся после завершения предыдущей стадии.",
+    "byesTitle": "Проходят дальше",
+    "byesHint": "Команды, которые начинают со следующей стадии."
+  },
+  "championships": {
+    "russia": {
+      "name": "Россия",
+      "description": "Россия, четыре уровня, 108 клубов.",
+      "divisionNames": {
+        "1": "МИР Российская Премьер-Лига",
+        "2": "PARI Первая лига",
+        "3": "LEON Вторая лига, Дивизион А",
+        "4": "LEON Вторая лига, Дивизион Б"
+      },
+      "divisionShortNames": {
+        "1": "РПЛ",
+        "2": "Первая лига",
+        "3": "Вторая лига А",
+        "4": "Вторая лига Б"
+      },
+      "competitionNames": {
+        "1": "МИР Российская Премьер-Лига",
+        "2": "PARI Первая лига",
+        "3:gold": "LEON Вторая лига, Дивизион А - Группа «Золото»",
+        "3:silver": "LEON Вторая лига, Дивизион А - Группа «Серебро»",
+        "4:group-1": "LEON Вторая лига, Дивизион Б - Группа 1",
+        "4:group-2": "LEON Вторая лига, Дивизион Б - Группа 2",
+        "4:group-3": "LEON Вторая лига, Дивизион Б - Группа 3",
+        "4:group-4": "LEON Вторая лига, Дивизион Б - Группа 4"
+      },
+      "groupNames": {
+        "gold": "Группа «Золото»",
+        "silver": "Группа «Серебро»",
+        "group-1": "Группа 1",
+        "group-2": "Группа 2",
+        "group-3": "Группа 3",
+        "group-4": "Группа 4"
+      }
+    },
+    "spain": {
+      "name": "Испания",
+      "description": "Испания, два дивизиона, 42 клуба.",
+      "divisionNames": {
+        "1": "La Liga",
+        "2": "Segunda Division"
+      }
+    },
+    "england": {
+      "name": "Англия",
+      "description": "Англия, четыре дивизиона, 88 клубов.",
+      "divisionNames": {
+        "1": "Premier League",
+        "2": "EFL Championship",
+        "3": "EFL League One",
+        "4": "EFL League Two"
+      }
+    },
+    "germany": {
+      "name": "Германия",
+      "description": "Германия, два дивизиона, 40 клубов.",
+      "divisionNames": {
+        "1": "Bundesliga",
+        "2": "2. Bundesliga"
+      }
+    },
+    "france": {
+      "name": "Франция",
+      "description": "Франция, два дивизиона, 40 клубов.",
+      "divisionNames": {
+        "1": "Ligue 1",
+        "2": "Ligue 2"
+      }
+    },
+    "italy": {
+      "name": "Италия",
+      "description": "Италия, два дивизиона, 40 клубов.",
+      "divisionNames": {
+        "1": "Serie A",
+        "2": "Serie B"
+      }
+    }
+  }
+}

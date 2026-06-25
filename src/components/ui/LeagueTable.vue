@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n'
+import { useI18n } from 'vue-i18n'
 import type { Club, LeagueTableRow } from '@/types/football'
 
 const props = defineProps<{
