@@ -6,7 +6,7 @@ import { germanyClubConfigs } from '@/data/champs/germany'
 import { franceClubConfigs } from '@/data/champs/france'
 import { italyClubConfigs } from '@/data/champs/italy'
 import type { ChampionshipId, Club } from '@/types/football'
-import type { ClubConfig } from '@/data/clubs/types'
+import type { ClubProfile } from '@/data/clubs/types'
 export type { ChampionshipId } from '@/types/football'
 
 export interface ChampionshipConfig {
@@ -15,7 +15,7 @@ export interface ChampionshipConfig {
   description: string
   divisionNames: Record<number, string>
   competitionNames?: Record<string, string>
-  clubConfigs: readonly ClubConfig[]
+  clubProfiles: readonly ClubProfile[]
 }
 
 export const championships: Record<ChampionshipId, ChampionshipConfig> = {
@@ -30,7 +30,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       3: 'LEON \u0412\u0442\u043e\u0440\u0430\u044f \u043b\u0438\u0433\u0430, \u0414\u0438\u0432\u0438\u0437\u0438\u043e\u043d \u0410',
       4: 'LEON \u0412\u0442\u043e\u0440\u0430\u044f \u043b\u0438\u0433\u0430, \u0414\u0438\u0432\u0438\u0437\u0438\u043e\u043d \u0411',
     },
-    clubConfigs: russiaClubConfigs[0]?.config,
+    clubProfiles: russiaClubConfigs,
   },
 
   spain: {
@@ -42,7 +42,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'La Liga',
       2: 'Segunda Division',
     },
-    clubConfigs: spainClubConfigs[0]?.config,
+    clubProfiles: spainClubConfigs,
   },
 
   england: {
@@ -56,7 +56,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       3: 'EFL League One',
       4: 'EFL League Two',
     },
-    clubConfigs: englandClubConfigs[0]?.config,
+    clubProfiles: englandClubConfigs,
   },
 
   germany: {
@@ -68,7 +68,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Bundesliga',
       2: '2. Bundesliga',
     },
-    clubConfigs: germanyClubConfigs[0]?.config,
+    clubProfiles: germanyClubConfigs,
   },
 
   france: {
@@ -80,7 +80,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Ligue 1',
       2: 'Ligue 2',
     },
-    clubConfigs: franceClubConfigs[0]?.config,
+    clubProfiles: franceClubConfigs,
   },
 
   italy: {
@@ -92,12 +92,12 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
       1: 'Serie A',
       2: 'Serie B',
     },
-    clubConfigs: italyClubConfigs[0]?.config,
+    clubProfiles: italyClubConfigs,
   },
 }
 
 export const getChampionshipClubs = (championshipId: ChampionshipId): Club[] => {
-  return createClubs(championships[championshipId].clubConfigs)
+  return createClubs(championships[championshipId].clubProfiles)
 }
 
 // Compatibility for domain tests and code that needs the default club set.

@@ -1,4 +1,4 @@
-import { ClubProfile } from '@/data/clubs/types'
+import type { ClubProfile } from '@/data/clubs/types'
 import { russiaPremierLeagueClubProfiles } from '@/data/champs/russia/1. RPL/clubs'
 import { russiaFirstLeagueClubProfiles } from '@/data/champs/russia/2. FIRST/clubs'
 import { russiaSecondLeagueAGoldClubProfiles } from '@/data/champs/russia/3. LEON A - GOLD/clubs'

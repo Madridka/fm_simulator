@@ -1,4 +1,4 @@
-import { ClubProfile } from '@/data/clubs/types'
+import type { ClubProfile } from '@/data/clubs/types'
 import { zenitProfile } from '@/data/clubDatabase/russia/rpl/zenit'
 import { RussianLeagueId } from '@/data/clubs/enums'
 

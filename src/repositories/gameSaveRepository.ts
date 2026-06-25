@@ -44,8 +44,8 @@ export const gameSaveRepository = {
     try {
       const state = JSON.parse(raw) as GameState
       if (!state.championshipId) {
-        state.championshipId = championships.spain.clubConfigs.some(
-          (club) => club.id === state.selectedClubId,
+        state.championshipId = championships.spain.clubProfiles.some(
+          (club) => club.config.id === state.selectedClubId,
         )
           ? 'spain'
           : 'russia'

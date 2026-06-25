@@ -1,17 +1,26 @@
 import { buildSquad } from '@/data/players'
 import { clubProfilesById } from '@/data/clubDatabase'
-import type { ClubConfig } from '@/data/clubs/types'
+import type { ClubConfig, ClubProfile } from '@/data/clubs/types'
 import type { Club } from '@/types/football'
 
-const createClub = (config: ClubConfig, index: number): Club => {
-  const profile = clubProfilesById[config.id]
-  const sourceConfig = profile?.config ?? config
+const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): ClubProfile => ({
+  ...baseProfile,
+  ...overrideProfile,
+  config: {
+    ...baseProfile.config,
+    ...overrideProfile?.config,
+  },
+})
+
+const createClub = (profile: ClubProfile, index: number): Club => {
+  const sourceProfile = mergeProfile(profile, clubProfilesById[profile.config.id])
+  const sourceConfig = sourceProfile.config
 
   return {
     ...sourceConfig,
-    logoUrl: profile?.assets?.crestUrl ?? sourceConfig.logoUrl,
+    logoUrl: sourceProfile.assets?.crestUrl ?? sourceConfig.logoUrl,
     squad:
-      profile?.squad ??
+      sourceProfile.squad ??
       buildSquad(
         sourceConfig.id,
         index,
@@ -22,7 +31,7 @@ const createClub = (config: ClubConfig, index: number): Club => {
   }
 }
 
-export const createClubs = (clubConfigs: readonly ClubConfig[]): Club[] =>
-  clubConfigs.map((club, index) => createClub(club, index))
+export const createClubs = (clubProfiles: readonly ClubProfile[]): Club[] =>
+  clubProfiles.map((club, index) => createClub(club, index))
 
-export type { ClubConfig }
+export type { ClubConfig, ClubProfile }

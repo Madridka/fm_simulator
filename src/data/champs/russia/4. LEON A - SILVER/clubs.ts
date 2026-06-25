@@ -1,5 +1,5 @@
 import { RussianLeagueGroupId, RussianLeagueId } from '@/data/clubs/enums'
-import { ClubProfile } from '@/data/clubs/types'
+import type { ClubProfile } from '@/data/clubs/types'
 
 const leagueId = String(RussianLeagueId['second-league-a'])
 const groupId = String(RussianLeagueGroupId.silver)
