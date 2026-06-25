@@ -22,7 +22,7 @@ export const zenitProfile: ClubProfile = {
   stadium: {
     name: 'Газпром Арена',
     city: 'Санкт-Петербург',
-    capacity: 68134,
+    capacity: 68_134,
   },
   historicalStats: {
     foundedYear: 1925,

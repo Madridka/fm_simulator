@@ -9,6 +9,7 @@ import {
   getCompetitionName,
 } from '@/domain/competition/competitionIdentity'
 import { useGameStore } from '@/stores/game/gameStore'
+import type { ClubProfile } from '@/data/clubs/types'
 import type { Club } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 
@@ -38,14 +39,12 @@ const selectedChampionship = ref<ChampionshipId>('russia')
 const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
 
-const championshipOptions: ChampionshipOption[] = [
-  { label: 'Россия', value: 'russia' },
-  { label: 'Испания', value: 'spain' },
-  { label: 'Англия', value: 'england' },
-  { label: 'Германия', value: 'germany' },
-  { label: 'Франция', value: 'france' },
-  { label: 'Италия', value: 'italy' },
-]
+const championshipOptions = computed<ChampionshipOption[]>(() =>
+  Object.values(championships).map((championship) => ({
+    label: championship.name,
+    value: championship.id,
+  })),
+)
 
 const championship = computed(() => championships[selectedChampionship.value])
 const clubs = computed(() => getChampionshipClubs(selectedChampionship.value))
@@ -70,7 +69,27 @@ const selectedClub = computed<Club>(() => {
   return club as Club
 })
 
-const selectedClubProfile = computed(() => clubProfilesById[selectedClub.value.id])
+const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): ClubProfile => ({
+  ...baseProfile,
+  ...overrideProfile,
+  config: {
+    ...baseProfile.config,
+    ...overrideProfile?.config,
+  },
+})
+
+const selectedClubProfile = computed<ClubProfile | undefined>(() => {
+  const championshipProfile = championship.value.clubProfiles.find(
+    (profile) => profile.config.id === selectedClub.value.id,
+  )
+  const databaseProfile = clubProfilesById[selectedClub.value.id]
+
+  if (championshipProfile) {
+    return mergeProfile(championshipProfile, databaseProfile)
+  }
+
+  return databaseProfile
+})
 
 const selectedClubIndex = computed(() =>
   Math.max(
@@ -89,15 +108,37 @@ const clubWorth = computed(() =>
 
 const stars = computed(() => Math.max(1, Math.min(5, Math.round(selectedClub.value.rating / 20))))
 
-const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? 'Домашняя арена')
+const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? 'Стадион не указан')
 
 const stadiumDetails = computed(() => {
   const stadium = selectedClubProfile.value?.stadium
+  if (!stadium) {
+    return `Город: ${selectedClub.value.city}`
+  }
+
   if (!stadium?.capacity) {
-    return selectedClub.value.city
+    return `${stadium.city}, вместимость уточняется`
   }
 
   return `${stadium.city}, ${stadium.capacity.toLocaleString('ru-RU')} мест`
+})
+
+const foundedYear = computed(() =>
+  selectedClubProfile.value?.historicalStats?.foundedYear?.toString() ?? 'Нет данных',
+)
+
+const historicalSummary = computed(() => {
+  const stats = selectedClubProfile.value?.historicalStats
+  if (!stats) {
+    return 'История клуба уточняется'
+  }
+
+  const achievements = [
+    typeof stats.domesticTitles === 'number' ? `чемпионств: ${stats.domesticTitles}` : undefined,
+    typeof stats.domesticCups === 'number' ? `кубков: ${stats.domesticCups}` : undefined,
+  ].filter((item): item is string => Boolean(item))
+
+  return achievements.length ? achievements.join(', ') : 'Трофеи уточняются'
 })
 
 const boardExpectation = (club: Club): BoardExpectation => {
@@ -199,12 +240,12 @@ const startGame = (): void => {
 </script>
 
 <template>
-  <section class="mx-auto flex h-full max-w-[1500px] items-center overflow-auto">
-    <div class="grid w-full gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]">
+  <section class="mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto md:items-center">
+    <div class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]">
       <aside
-        class="overflow-hidden rounded-2xl border border-cyan-300/25 bg-[#121820] text-white shadow-[0_24px_70px_rgba(8,19,29,0.22)]"
+        class="overflow-hidden rounded-xl border border-cyan-300/25 bg-[#121820] text-white shadow-[0_24px_70px_rgba(8,19,29,0.22)] sm:rounded-2xl"
       >
-        <div class="border-b border-white/10 p-5">
+        <div class="border-b border-white/10 p-4 sm:p-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
             Страна
           </label>
@@ -223,7 +264,7 @@ const startGame = (): void => {
           </select>
         </div>
 
-        <div class="p-5">
+        <div class="p-4 sm:p-5">
           <div
             class="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200/70"
           >
@@ -231,11 +272,11 @@ const startGame = (): void => {
           </div>
 
           <div
-            class="relative rounded-2xl border border-cyan-300/50 bg-[#0f1420] px-4 py-5 shadow-[inset_0_0_35px_rgba(34,211,238,0.08)]"
+            class="relative rounded-xl border border-cyan-300/50 bg-[#0f1420] px-3 py-4 shadow-[inset_0_0_35px_rgba(34,211,238,0.08)] sm:rounded-2xl sm:px-4 sm:py-5"
           >
             <button
               type="button"
-              class="absolute left-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-cyan-400/20"
+              class="absolute left-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-cyan-400/20 sm:left-3 sm:h-9 sm:w-9"
               @click="moveClub(-1)"
             >
               <IconSymbol name="chevronRight" class="h-4 w-4 rotate-180" />
@@ -243,22 +284,24 @@ const startGame = (): void => {
 
             <button
               type="button"
-              class="absolute right-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-cyan-400/20"
+              class="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white transition hover:bg-cyan-400/20 sm:right-3 sm:h-9 sm:w-9"
               @click="moveClub(1)"
             >
               <IconSymbol name="chevronRight" class="h-4 w-4" />
             </button>
 
             <div
-              class="mx-auto flex min-h-[360px] max-w-[320px] flex-col items-center justify-center text-center"
+              class="mx-auto flex min-h-[210px] max-w-[280px] flex-col items-center justify-center text-center sm:min-h-[280px] sm:max-w-[320px] lg:min-h-[330px] xl:min-h-[360px]"
             >
-              <h1 class="text-2xl font-black uppercase tracking-wide">{{ selectedClub.name }}</h1>
+              <h1 class="max-w-full text-xl font-black uppercase tracking-wide sm:text-2xl">
+                {{ selectedClub.name }}
+              </h1>
               <ClubBadge
                 :club="selectedClub"
                 size="lg"
-                class="mt-12 !h-36 !w-36 !rounded-xl text-4xl shadow-2xl"
+                class="mt-6 !h-24 !w-24 !rounded-xl text-3xl shadow-2xl sm:mt-9 sm:!h-32 sm:!w-32 sm:text-4xl xl:mt-12 xl:!h-36 xl:!w-36"
               />
-              <div class="mt-9 flex items-center gap-1 text-xl">
+              <div class="mt-5 flex items-center gap-1 text-lg sm:mt-8 sm:text-xl xl:mt-9">
                 <span
                   v-for="star in 5"
                   :key="star"
@@ -286,7 +329,7 @@ const startGame = (): void => {
           </select>
         </div>
 
-        <div class="border-t border-white/10 p-5">
+        <div class="border-t border-white/10 p-4 sm:p-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
             Дивизион
           </label>
@@ -306,23 +349,23 @@ const startGame = (): void => {
         </div>
       </aside>
 
-      <div class="grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
-        <div class="grid gap-4">
+      <div class="grid gap-3 lg:grid-cols-[0.82fr_1.18fr] lg:gap-4">
+        <div class="grid gap-3 lg:gap-4">
           <article
-            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+            class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
             <div class="text-sm font-semibold text-slate-300">Город</div>
-            <div class="mt-2 text-2xl font-black uppercase">{{ selectedClub.city }}</div>
+            <div class="mt-2 text-xl font-black uppercase sm:text-2xl">{{ selectedClub.city }}</div>
 
-            <div class="mt-7 border-t border-white/10 pt-5">
+            <div class="mt-5 border-t border-white/10 pt-4 sm:mt-7 sm:pt-5">
               <div class="text-sm font-semibold text-slate-300">Цвета клуба</div>
               <div class="mt-4 flex items-center gap-3">
                 <span
-                  class="h-14 w-14 rounded-xl border border-white/20 shadow-lg"
+                  class="h-12 w-12 rounded-xl border border-white/20 shadow-lg sm:h-14 sm:w-14"
                   :style="{ backgroundColor: selectedClub.primaryColor }"
                 ></span>
                 <span
-                  class="h-14 w-14 rounded-xl border border-white/20 shadow-lg"
+                  class="h-12 w-12 rounded-xl border border-white/20 shadow-lg sm:h-14 sm:w-14"
                   :style="{ backgroundColor: selectedClub.secondaryColor }"
                 ></span>
               </div>
@@ -330,28 +373,31 @@ const startGame = (): void => {
           </article>
 
           <article
-            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+            class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
             <div class="text-sm font-semibold text-slate-300">Стадион</div>
-            <div class="mt-2 text-2xl font-black uppercase">{{ stadiumName }}</div>
+            <div class="mt-2 text-xl font-black uppercase sm:text-2xl">{{ stadiumName }}</div>
             <div class="mt-1 text-sm font-semibold text-slate-400">{{ stadiumDetails }}</div>
           </article>
         </div>
 
-        <div class="grid gap-4">
+        <div class="grid gap-3 lg:gap-4">
           <article
-            class="rounded-2xl bg-[#191825] p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+            class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
-            <div class="grid gap-6 md:grid-cols-3">
+            <div class="grid gap-5 xl:grid-cols-3">
               <div>
                 <div class="text-sm font-semibold text-slate-300">Основан</div>
-                <div class="mt-2 text-4xl font-black">
-                  {{ selectedClubProfile?.historicalStats?.foundedYear ?? '—' }}
+                <div class="mt-2 text-3xl font-black sm:text-4xl">
+                  {{ foundedYear }}
+                </div>
+                <div class="mt-1 text-sm font-semibold text-slate-400">
+                  {{ historicalSummary }}
                 </div>
               </div>
               <div>
                 <div class="text-sm font-semibold text-slate-300">Рейтинг</div>
-                <div class="mt-2 text-4xl font-black">{{ selectedClub.rating }}</div>
+                <div class="mt-2 text-3xl font-black sm:text-4xl">{{ selectedClub.rating }}</div>
               </div>
               <div>
                 <div class="text-sm font-semibold text-slate-300">Дивизион</div>
@@ -361,7 +407,7 @@ const startGame = (): void => {
 
             <div class="my-6 h-px bg-white/10"></div>
 
-            <div class="grid gap-5 md:grid-cols-3">
+            <div class="grid gap-5 xl:grid-cols-3">
               <div>
                 <div class="text-sm font-semibold text-slate-300">Стоимость клуба</div>
                 <div class="mt-2 text-xl font-black">{{ formatMoney(clubWorth) }}</div>
@@ -378,10 +424,10 @@ const startGame = (): void => {
           </article>
 
           <article
-            class="rounded-2xl border border-white/10 bg-gradient-to-br p-6 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)]"
+            class="rounded-xl border border-white/10 bg-gradient-to-br p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
             :class="expectation.tone"
           >
-            <div class="rounded-xl bg-slate-950/55 px-5 py-4 text-center backdrop-blur-sm">
+            <div class="rounded-xl bg-slate-950/55 px-4 py-4 text-center backdrop-blur-sm sm:px-5">
               <div class="text-sm font-semibold text-slate-200">Ожидания руководства</div>
               <div class="mt-3 text-2xl font-black uppercase text-white">
                 {{ expectation.title }}

@@ -1,9 +1,11 @@
+import { realMadridProfile } from '@/data/clubDatabase/spain/LaLiga'
 import { SpainLeagueId } from '@/data/clubs/enums'
 import type { ClubProfile } from '@/data/clubs/types'
 
 const leagueId = String(SpainLeagueId['La Liga'])
 
 export const spainDivision1ClubProfiles: ClubProfile[] = [
+  realMadridProfile,
   {
     config: {
       id: 'barcelona',
@@ -19,23 +21,6 @@ export const spainDivision1ClubProfiles: ClubProfile[] = [
       budget: 180_000_000,
       primaryColor: '#a50044',
       secondaryColor: '#004d98',
-    },
-  },
-  {
-    config: {
-      id: 'real-madrid',
-      name: 'Реал Мадрид',
-      shortName: 'РМА',
-      city: 'Мадрид',
-      divisionId: 1,
-      leagueId: leagueId,
-      rating: 93,
-      attackRating: 94,
-      midfieldRating: 93,
-      defenseRating: 91,
-      budget: 200_000_000,
-      primaryColor: '#ffffff',
-      secondaryColor: '#febd11',
     },
   },
   {
