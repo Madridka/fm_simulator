@@ -22,10 +22,11 @@ export const divisionNames: Record<number, string> = {
 }
 
 export const cupRoundNames: Record<string, string> = {
-  preliminary: 'Предварительный раунд',
-  round_of_64: '1/32 финала',
-  round_of_32: '1/16 финала',
-  round_of_16: '1/8 финала',
+  preliminary: '1/128 финала',
+  round_of_128: '1/128 финала',
+  round_of_64: '1/64 финала',
+  round_of_32: '1/32 финала',
+  round_of_16: '1/16 финала',
   quarter_final: '1/4 финала',
   semi_final: '1/2 финала',
   final: 'Финал',
@@ -33,6 +34,7 @@ export const cupRoundNames: Record<string, string> = {
 
 export const cupRoundOrders: Record<string, number> = {
   preliminary: 3,
+  round_of_128: 3,
   round_of_64: 7,
   round_of_32: 11,
   round_of_16: 15,
@@ -73,6 +75,7 @@ export const gameConfig: GameConfig = {
   },
   cupRoundRewards: {
     preliminary: 750_000,
+    round_of_128: 750_000,
     round_of_64: 1_000_000,
     round_of_32: 1_250_000,
     round_of_16: 2_500_000,

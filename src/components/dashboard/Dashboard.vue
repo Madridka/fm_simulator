@@ -4,12 +4,12 @@ import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
-import { Club, LeagueTableRow } from '@/types/football'
+import type { Club, LeagueTableRow } from '@/types/football'
 
 import DashboardHero from '@/components/dashboard/DashboardHero.vue'
 import DashboardLeaguePanel from '@/components/dashboard/DashboardLeaguePanel.vue'
-import DashboardResultsPanel from '@/components/dashboard/DashboardResultsPanel.vue'
-import DashboardSchedulePanel from '@/components/dashboard/DashboardSchedulePanel.vue'
+import DashboardLineupPanel from '@/components/dashboard/DashboardLineupPanel.vue'
+import DashboardMatchesColumn from '@/components/dashboard/DashboardMatchesColumn.vue'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
@@ -28,7 +28,10 @@ const leagueRows = computed((): LeagueTableRow[] =>
 </script>
 
 <template>
-  <section v-if="club && gameStore.game" class="mx-auto max-w-[1600px] space-y-5">
+  <section
+    v-if="club && gameStore.game"
+    class="mx-auto flex h-full max-w-[1600px] flex-col gap-5 overflow-hidden"
+  >
     <DashboardHero
       :club="club"
       :cup-progress="competitionStore.cupProgress"
@@ -40,14 +43,17 @@ const leagueRows = computed((): LeagueTableRow[] =>
       @finish-season="gameStore.finishCurrentSeason()"
     />
 
-    <div class="grid gap-5 xl:grid-cols-[1.08fr_0.92fr_0.92fr]">
+    <div class="grid min-h-0 flex-1 gap-5 xl:grid-cols-[1.05fr_0.95fr_0.95fr]">
       <DashboardLeaguePanel
         :division-name="divisionName"
         :rows="leagueRows"
         :selected-club-id="gameStore.game.selectedClubId"
       />
-      <DashboardSchedulePanel :matches="matchStore.upcomingMatches" />
-      <DashboardResultsPanel :matches="matchStore.recentResults" />
+      <DashboardLineupPanel />
+      <DashboardMatchesColumn
+        :recent-results="matchStore.recentResults"
+        :upcoming-matches="matchStore.upcomingMatches"
+      />
     </div>
   </section>
 </template>

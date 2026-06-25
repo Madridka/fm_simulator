@@ -74,7 +74,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
 <template>
   <section
     v-if="gameStore.selectedClub"
-    class="flex h-[calc(100dvh-120px)] min-h-[640px] flex-col gap-5"
+    class="flex h-full min-h-0 flex-col gap-5 overflow-hidden"
   >
     <div class="flex shrink-0 flex-col gap-1">
       <div>

@@ -15,7 +15,7 @@ const clubName = (clubId: string): string =>
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="overflow-auto">
     <table class="min-w-full border-collapse text-left">
       <thead>
         <tr class="border-b border-slate-200 text-xs uppercase text-slate-500">

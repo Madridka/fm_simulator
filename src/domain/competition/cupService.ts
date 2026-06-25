@@ -4,7 +4,7 @@ import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
 import { createSeededRandom } from '@/utils/random'
 
 export const cupRoundIds = [
-  'preliminary',
+  'round_of_128',
   'round_of_64',
   'round_of_32',
   'round_of_16',
@@ -19,6 +19,38 @@ const highestPowerOfTwoAtMost = (value: number): number => {
     power *= 2
   }
   return power
+}
+
+const getRoundIdForBracketSize = (bracketSize: number): string => {
+  if (bracketSize >= 128) {
+    return 'round_of_128'
+  }
+  if (bracketSize >= 64) {
+    return 'round_of_64'
+  }
+  if (bracketSize >= 32) {
+    return 'round_of_32'
+  }
+  if (bracketSize >= 16) {
+    return 'round_of_16'
+  }
+  if (bracketSize >= 8) {
+    return 'quarter_final'
+  }
+  if (bracketSize >= 4) {
+    return 'semi_final'
+  }
+  return 'final'
+}
+
+const getRoundIdForPlayInSize = (bracketSizeAfterRound: number): string => {
+  const playInSize = bracketSizeAfterRound * 2
+  return getRoundIdForBracketSize(playInSize)
+}
+
+const getActiveRoundIdsFrom = (firstRoundId: string): string[] => {
+  const firstRoundIndex = cupRoundIds.indexOf(firstRoundId as (typeof cupRoundIds)[number])
+  return firstRoundIndex >= 0 ? [...cupRoundIds.slice(firstRoundIndex)] : [...cupRoundIds]
 }
 
 const shuffle = <T>(items: readonly T[], seed: number): T[] => {
@@ -119,7 +151,7 @@ export const initializeCup = (
   season: number,
 ): { cup: CupState; matches: Match[] } => {
   const bracketSize = highestPowerOfTwoAtMost(clubs.length)
-  const preliminaryTeamsCount = (clubs.length - bracketSize) * 2
+  const playInTeamsCount = (clubs.length - bracketSize) * 2
   const sortedClubs = [...clubs].sort((left, right) => {
     if (right.divisionId !== left.divisionId) {
       return right.divisionId - left.divisionId
@@ -127,14 +159,20 @@ export const initializeCup = (
     return left.rating - right.rating
   })
 
-  const preliminaryClubs = sortedClubs.slice(0, preliminaryTeamsCount).map((club) => club.id)
-  const byes = sortedClubs.slice(preliminaryTeamsCount).map((club) => club.id)
-  const preliminaryParticipants = shuffle(preliminaryClubs, season * 101 + 7)
-  const initial = createRound('preliminary', season, preliminaryParticipants, 1)
+  const initialRoundId =
+    playInTeamsCount > 0
+      ? getRoundIdForPlayInSize(bracketSize)
+      : getRoundIdForBracketSize(bracketSize)
+  const initialClubIds =
+    playInTeamsCount > 0
+      ? sortedClubs.slice(0, playInTeamsCount).map((club) => club.id)
+      : sortedClubs.map((club) => club.id)
+  const byes =
+    playInTeamsCount > 0 ? sortedClubs.slice(playInTeamsCount).map((club) => club.id) : []
+  const initialParticipants = shuffle(initialClubIds, season * 101 + 7)
+  const initial = createRound(initialRoundId, season, initialParticipants, 1)
 
-  const firstMainRoundId = bracketSize >= 64 ? 'round_of_64' : 'round_of_32'
-  const firstMainRoundIndex = cupRoundIds.indexOf(firstMainRoundId)
-  const activeRoundIds = [cupRoundIds[0], ...cupRoundIds.slice(firstMainRoundIndex)]
+  const activeRoundIds = getActiveRoundIdsFrom(initialRoundId)
   const rounds: CupRound[] = activeRoundIds.map((roundId) => createEmptyRound(roundId))
   rounds[0] = {
     ...initial.round,

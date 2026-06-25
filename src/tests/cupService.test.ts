@@ -16,10 +16,11 @@ const resultFor = (match: Match): MatchResult => ({
 })
 
 describe('cupService', () => {
-  it('creates preliminary round and advances winners to round of 32 with byes', () => {
+  it('starts from round of 128 and advances winners to round of 64 with byes', () => {
     const initial = initializeCup(clubs, 1)
 
     expect(initial.matches).toHaveLength(44)
+    expect(initial.cup.rounds[0]?.id).toBe('round_of_128')
     expect(initial.cup.rounds[0]?.byes).toHaveLength(20)
 
     const playedMatches = initial.matches.map((match) => ({
@@ -31,7 +32,7 @@ describe('cupService', () => {
     const advanced = advanceCupIfPossible(initial.cup, playedMatches)
     const roundOf64 = advanced.cup.rounds.find((round) => round.id === 'round_of_64')
 
-    expect(advanced.completedRoundId).toBe('preliminary')
+    expect(advanced.completedRoundId).toBe('round_of_128')
     expect(advanced.newMatches).toHaveLength(32)
     expect(roundOf64?.ties).toHaveLength(32)
   })

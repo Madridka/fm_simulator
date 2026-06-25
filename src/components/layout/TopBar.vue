@@ -3,13 +3,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from '@/composables/useI18n'
 import type { Club, Match } from '@/types/football'
 
-import type { AppNavItem } from '@/components/layout/types'
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
 
-const props = defineProps<{
-  activePath: string
-  items: AppNavItem[]
+defineProps<{
   nextMatch?: Match
   nextOpponent?: Club
   season?: number
@@ -18,12 +15,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   openNextMatch: []
-  resetGame: []
+  openMenu: []
 }>()
 
 const { t } = useI18n()
-
-const isActive = (item: AppNavItem): boolean => Boolean(item.to && props.activePath === item.to)
 
 const matchCompetition = (match: Match): string =>
   match.type === 'league' ? t('match.round', { round: match.round }) : t('match.cup')
@@ -32,17 +27,28 @@ const matchCompetition = (match: Match): string =>
 <template>
   <header class="sticky top-0 z-30 border-b border-slate-200/90 bg-white/90 backdrop-blur-xl">
     <div class="flex min-h-[86px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-      <RouterLink to="/dashboard" class="flex min-w-0 items-center gap-3 md:gap-4">
-        <ClubBadge v-if="selectedClub" :club="selectedClub" class="md:hidden" />
-        <div class="min-w-0">
-          <div class="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">
-            {{ t('app.season', { season: season ?? '' }) }}
+      <div class="flex min-w-0 items-center gap-3">
+        <button
+          type="button"
+          class="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700 md:hidden"
+          :aria-label="t('app.openMenu')"
+          @click="emit('openMenu')"
+        >
+          <IconSymbol name="menu" class="h-5 w-5" />
+        </button>
+
+        <RouterLink to="/dashboard" class="flex min-w-0 items-center gap-3 md:gap-4">
+          <ClubBadge v-if="selectedClub" :club="selectedClub" class="md:hidden" />
+          <div class="min-w-0">
+            <div class="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">
+              {{ t('app.season', { season: season ?? '' }) }}
+            </div>
+            <div class="truncate text-lg font-black tracking-tight text-slate-950 sm:text-xl">
+              {{ selectedClub?.name }}
+            </div>
           </div>
-          <div class="truncate text-lg font-black tracking-tight text-slate-950 sm:text-xl">
-            {{ selectedClub?.name }}
-          </div>
-        </div>
-      </RouterLink>
+        </RouterLink>
+      </div>
 
       <button
         v-if="nextMatch && nextOpponent"
@@ -67,24 +73,5 @@ const matchCompetition = (match: Match): string =>
         </span>
       </button>
     </div>
-
-    <nav class="flex gap-1 overflow-x-auto border-t border-slate-100 px-3 py-2 md:hidden">
-      <template v-for="(item, index) in items" :key="item.to ?? `mobile-divider-${index}`">
-        <RouterLink
-          v-if="item.to"
-          :to="item.to"
-          class="whitespace-nowrap rounded-lg px-3 py-2 text-xs font-bold text-slate-500"
-          :class="isActive(item) ? 'bg-emerald-100 text-emerald-800' : ''"
-        >
-          {{ item.label }}
-        </RouterLink>
-      </template>
-      <button
-        class="rounded-lg px-3 py-2 text-xs font-bold text-rose-600"
-        @click="emit('resetGame')"
-      >
-        {{ t('app.newGame') }}
-      </button>
-    </nav>
   </header>
 </template>

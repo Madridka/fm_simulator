@@ -24,7 +24,7 @@ const { t } = useI18n()
 
 <template>
   <article
-    class="relative isolate overflow-hidden rounded-2xl bg-[#14241f] text-white shadow-[0_22px_55px_rgba(15,42,32,0.18)]"
+    class="relative isolate shrink-0 overflow-hidden rounded-2xl bg-[#14241f] text-white shadow-[0_22px_55px_rgba(15,42,32,0.18)]"
   >
     <div
       class="absolute inset-0 -z-10 opacity-80"

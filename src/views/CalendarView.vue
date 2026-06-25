@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import { useClubStore } from '@/stores/clubs/clubsStore'
@@ -23,6 +23,7 @@ interface CalendarMonth {
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
+const activeMonthIndex = ref(0)
 
 const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const monthNames = [
@@ -140,6 +141,37 @@ const calendarMonths = computed<CalendarMonth[]>(() => {
   })
 })
 
+const activeMonth = computed<CalendarMonth | undefined>(
+  () => calendarMonths.value[activeMonthIndex.value],
+)
+
+watch(
+  calendarMonths,
+  (months) => {
+    if (!months.length) {
+      activeMonthIndex.value = 0
+      return
+    }
+
+    const currentDate = currentCalendarDate.value
+    const currentIndex = currentDate
+      ? months.findIndex((month) =>
+          month.cells.some((cell) => cell.isoDate?.slice(0, 7) === currentDate.slice(0, 7)),
+        )
+      : 0
+
+    activeMonthIndex.value = Math.max(0, currentIndex === -1 ? 0 : currentIndex)
+  },
+  { immediate: true },
+)
+
+const moveMonth = (direction: -1 | 1): void => {
+  activeMonthIndex.value = Math.min(
+    Math.max(activeMonthIndex.value + direction, 0),
+    Math.max(calendarMonths.value.length - 1, 0),
+  )
+}
+
 const opponentId = (match: Match): string => {
   const game = gameStore.game
   if (!game) {
@@ -203,26 +235,49 @@ const homeAwayLabel = (match: Match): string => {
 </script>
 
 <template>
-  <section v-if="gameStore.game" class="space-y-5">
-    <div class="border-l-4 border-l-emerald-700 pl-3.5">
-      <h1 class="text-2xl font-bold text-slate-950">Календарь</h1>
-      <p class="mt-1 text-sm text-slate-600">
-        Сезон начинается в сентябре. Матчи идут по субботам, следующий доступный матч подсвечен.
-      </p>
+  <section v-if="gameStore.game" class="flex h-full flex-col gap-5 overflow-hidden">
+    <div class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-950">Календарь</h1>
+        <p class="mt-1 text-sm text-slate-600">
+          Сезон начинается в сентябре. Матчи идут по субботам, следующий доступный матч подсвечен.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-black text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          :disabled="activeMonthIndex === 0"
+          @click="moveMonth(-1)"
+        >
+          Назад
+        </button>
+        <div class="min-w-40 rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-black text-white">
+          {{ activeMonth?.title ?? 'Сезон' }}
+        </div>
+        <button
+          type="button"
+          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-black text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          :disabled="activeMonthIndex >= calendarMonths.length - 1"
+          @click="moveMonth(1)"
+        >
+          Вперед
+        </button>
+      </div>
     </div>
 
-    <div class="grid gap-5 xl:grid-cols-2">
+    <div class="min-h-0 flex-1 overflow-hidden">
       <article
-        v-for="month in calendarMonths"
-        :key="month.key"
-        class="overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        v-if="activeMonth"
+        class="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >
         <div
-          class="bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
+          class="shrink-0 bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
         >
-          {{ month.title }}
+          {{ activeMonth.title }}
         </div>
-        <div class="grid grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef]">
+        <div class="grid shrink-0 grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef]">
           <div
             v-for="day in weekDays"
             :key="day"
@@ -231,18 +286,19 @@ const homeAwayLabel = (match: Match): string => {
             {{ day }}
           </div>
         </div>
-        <div class="grid grid-cols-7">
+        <div class="grid min-h-0 flex-1 auto-rows-fr grid-cols-7">
           <div
-            v-for="cell in month.cells"
+            v-for="cell in activeMonth.cells"
             :key="cell.key"
-            class="min-h-28 border-b border-r border-[#e2ebe5] p-2 [&:nth-child(7n)]:border-r-0"
+            class="min-h-0 overflow-hidden border-b border-r border-[#e2ebe5] p-2 [&:nth-child(7n)]:border-r-0"
             :class="calendarCellClasses(cell)"
           >
             <div v-if="cell.dayNumber" class="mb-1.5 text-xs font-extrabold text-slate-700">
               {{ cell.dayNumber }}
             </div>
 
-            <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
+            <div class="max-h-[calc(100%-22px)] overflow-auto pr-1">
+              <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
               <component
                 :is="canOpenMatch(match) ? RouterLink : 'div'"
                 :to="canOpenMatch(match) ? '/match' : undefined"
@@ -266,6 +322,7 @@ const homeAwayLabel = (match: Match): string => {
                 </div>
                 <div class="ml-auto text-sm font-black">{{ score(match) }}</div>
               </component>
+              </div>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ type IconName =
   | 'calendar'
   | 'trophy'
   | 'settings'
+  | 'menu'
   | 'chevronRight'
 
 defineProps<{
@@ -42,6 +43,8 @@ defineProps<{
       <path d="M7 3v4M17 3v4M3 10h18" />
       <path d="M7 14h.01M12 14h.01M17 14h.01M7 18h.01M12 18h.01M17 18h.01" />
     </template>
+
+    <path v-else-if="name === 'menu'" d="M4 7h16M4 12h16M4 17h16" stroke-width="2" />
 
     <path v-else d="m9 18 6-6-6-6" stroke-width="2" />
   </svg>

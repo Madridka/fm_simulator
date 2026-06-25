@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
+import { useToastStore } from '@/stores/ui/toastStore'
 import type { Formation, Player, PlayerPosition, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 
@@ -13,6 +15,7 @@ interface DragPayload {
 }
 
 const squadStore = useSquadStore()
+const toastStore = useToastStore()
 const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)
@@ -75,6 +78,8 @@ const reservePlayers = computed(() => {
 const totalValue = computed(
   () => squadStore.club?.squad.reduce((sum, player) => sum + player.value, 0) ?? 0,
 )
+
+const validationMessage = computed(() => squadStore.validation.errors[0] ?? '')
 
 const positionLabels: Record<PlayerPosition, string> = {
   GK: 'ВР',
@@ -209,27 +214,45 @@ const dropOnReserve = (event: DragEvent): void => {
   squadStore.movePlayerToReserve(payload.playerId)
   endPlayerDrag()
 }
+
+watch(
+  validationMessage,
+  (message, previousMessage) => {
+    if (!message || message === previousMessage) {
+      return
+    }
+    toastStore.show(message, 'warning')
+  },
+  { immediate: true },
+)
+
+onBeforeRouteLeave(() => {
+  if (squadStore.club && squadStore.lineup && !squadStore.validation.valid) {
+    squadStore.resetLineup()
+    toastStore.show('Состав был исправлен автоматически.', 'warning')
+  }
+})
 </script>
 
 <template>
-  <section v-if="squadStore.club && squadStore.lineup" class="space-y-5">
+  <section v-if="squadStore.club && squadStore.lineup" class="flex h-full min-h-0 flex-col gap-3 overflow-hidden">
     <div
-      class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+      class="shrink-0 rounded-lg border border-white/70 bg-white/90 px-4 py-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)]"
     >
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-slate-950">Состав</h1>
-          <p class="mt-1 text-sm text-slate-600">
+          <h1 class="text-xl font-bold leading-tight text-slate-950">Состав</h1>
+          <p class="mt-0.5 text-xs text-slate-600">
             {{ squadStore.club.name }} · {{ squadStore.club.squad.length }} игроков ·
             {{ formatMoney(totalValue) }}
           </p>
         </div>
 
-        <div class="flex flex-wrap gap-2">
-          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+        <div class="flex flex-wrap items-end gap-2">
+          <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
             Формация
             <select
-              class="h-10 rounded-lg border border-slate-300 bg-white px-3"
+              class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
               :value="squadStore.lineup.formation"
               @change="setFormation"
             >
@@ -242,10 +265,10 @@ const dropOnReserve = (event: DragEvent): void => {
               </option>
             </select>
           </label>
-          <label class="flex flex-col gap-1 text-sm font-medium text-slate-700">
+          <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
             Тактика
             <select
-              class="h-10 rounded-lg border border-slate-300 bg-white px-3"
+              class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
               :value="squadStore.lineup.tacticalStyle"
               @change="setTactic"
             >
@@ -255,7 +278,7 @@ const dropOnReserve = (event: DragEvent): void => {
             </select>
           </label>
           <Button
-            class="self-end"
+            class="!h-9 self-end"
             severity="secondary"
             label="Автосостав"
             @click="squadStore.resetLineup"
@@ -264,11 +287,11 @@ const dropOnReserve = (event: DragEvent): void => {
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-5">
+    <div class="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_minmax(260px,340px)] gap-4 max-xl:grid-cols-1 max-xl:grid-rows-[minmax(0,1fr)_220px]">
       <!-- СОСТАВ -->
-      <div class="space-y-5">
+      <div class="grid min-h-0 grid-rows-[minmax(0,1fr)_112px] gap-3 overflow-hidden">
         <div
-          class="relative min-h-[740px] overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)] max-[860px]:min-h-[640px]"
+          class="relative min-h-0 overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)]"
         >
           <div
             class="pointer-events-none absolute inset-[26px] rounded-lg border-2 border-white/30"
@@ -366,9 +389,9 @@ const dropOnReserve = (event: DragEvent): void => {
         </div>
 
         <div
-          class="grid grid-cols-[repeat(7,minmax(104px,1fr))] gap-2.5 overflow-x-auto rounded-lg border border-white/70 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_18%,transparent_18%_100%),#121d2e] p-3.5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+          class="grid min-h-0 grid-cols-[repeat(7,minmax(92px,1fr))] gap-2 overflow-x-auto rounded-lg border border-white/70 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_18%,transparent_18%_100%),#121d2e] p-2.5 shadow-[0_12px_32px_rgba(20,46,38,0.08)]"
           :class="{
-            'shadow-[0_0_0_2px_rgba(163,230,53,0.34),0_18px_50px_rgba(20,46,38,0.1)]':
+            'shadow-[0_0_0_2px_rgba(163,230,53,0.34),0_12px_32px_rgba(20,46,38,0.08)]':
               dragOverGroup === 'substitutes',
           }"
           @dragenter.prevent="dragOverGroup = 'substitutes'"
@@ -380,7 +403,7 @@ const dropOnReserve = (event: DragEvent): void => {
             v-for="player in substitutePlayers"
             :key="player.id"
             type="button"
-            class="grid min-w-[104px] grid-rows-[auto_auto_auto_auto] justify-items-start gap-1 rounded-lg border border-slate-400/30 bg-slate-950/80 p-2 text-left text-slate-50 hover:border-lime-200"
+            class="grid min-w-[92px] grid-rows-[auto_auto_auto_auto] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/80 p-1.5 text-left text-slate-50 hover:border-lime-200"
             :class="{
               'opacity-50': player.isInjured,
               'opacity-45': player.id === draggingPlayerId,
@@ -394,21 +417,21 @@ const dropOnReserve = (event: DragEvent): void => {
           >
             <span class="flex items-center gap-1.5">
               <span
-                class="inline-grid h-[30px] min-w-[30px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.7rem] font-black leading-none text-white"
+                class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.62rem] font-black leading-none text-white"
                 >{{ positionLabels[player.position] }}</span
               >
               <span
-                class="inline-grid h-[30px] min-w-[30px] place-items-center rounded-full border-2 border-white/80 text-[0.7rem] font-black leading-none text-white"
+                class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-white/80 text-[0.62rem] font-black leading-none text-white"
                 :class="ratingClass(player.rating)"
                 >{{ player.rating }}</span
               >
             </span>
             <span
-              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.78rem] font-black uppercase"
+              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-black uppercase"
               >{{ player.lastName }}</span
             >
             <span
-              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75"
+              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.58rem] font-bold text-slate-200/75"
               >Форма {{ player.form }} · Готовность {{ player.fitness }}</span
             >
             <span class="h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35"
@@ -426,30 +449,30 @@ const dropOnReserve = (event: DragEvent): void => {
 
       <!-- ЗАМЕНЫ -->
       <aside
-        class="flex max-h-[920px] flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="flex min-h-0 flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_12px_32px_rgba(20,46,38,0.08)]"
       >
-        <div class="flex items-start justify-between gap-3 px-5 pb-3 pt-5">
+        <div class="flex items-start justify-between gap-3 px-4 pb-2.5 pt-4">
           <div>
-            <h2 class="text-lg font-semibold text-slate-950">Команда</h2>
-            <p class="mt-1 text-sm text-slate-500">Игроки вне заявки</p>
+            <h2 class="text-base font-semibold text-slate-950">Команда</h2>
+            <p class="mt-0.5 text-xs text-slate-500">Игроки вне заявки</p>
           </div>
         </div>
 
         <div
-          class="min-h-0 flex-1 overflow-hidden px-5 pb-4"
+          class="min-h-0 flex-1 overflow-hidden px-4 pb-4"
           :class="{ 'bg-emerald-50': dragOverGroup === 'reserve' }"
           @dragenter.prevent="dragOverGroup = 'reserve'"
           @dragover.prevent="dragOverGroup = 'reserve'"
           @dragleave="dragOverGroup === 'reserve' && (dragOverGroup = null)"
           @drop.prevent="dropOnReserve"
         >
-          <h3 class="mb-2.5 text-sm font-black uppercase text-slate-700">Резерв</h3>
-          <div class="grid max-h-full gap-2 overflow-y-auto pr-0.5">
+          <h3 class="mb-2 text-xs font-black uppercase text-slate-700">Резерв</h3>
+          <div class="grid max-h-full gap-1.5 overflow-y-auto pr-0.5">
             <button
               v-for="player in reservePlayers"
               :key="player.id"
               type="button"
-              class="grid grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[#dbe7de] bg-white p-2 text-left transition hover:-translate-y-px hover:border-emerald-300 hover:bg-[#f7fdf8]"
+              class="grid grid-cols-[26px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[#dbe7de] bg-white px-2 py-1.5 text-left transition hover:-translate-y-px hover:border-emerald-300 hover:bg-[#f7fdf8]"
               :class="{
                 'opacity-50': player.isInjured,
                 'opacity-45': player.id === draggingPlayerId,
@@ -462,22 +485,22 @@ const dropOnReserve = (event: DragEvent): void => {
               @drop.stop.prevent="dropOnReservePlayer($event, player)"
             >
               <span
-                class="inline-grid h-[30px] min-w-[30px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.7rem] font-black leading-none text-white"
+                class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.62rem] font-black leading-none text-white"
                 >{{ positionLabels[player.position] }}</span
               >
               <span class="grid min-w-0">
                 <span
-                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-bold text-slate-950"
+                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-950"
                   >{{ player.firstName }} {{ player.lastName }}</span
                 >
                 <span
-                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-slate-500"
+                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] text-slate-500"
                   >Форма {{ player.form }} · Готовность {{ player.fitness }} ·
                   {{ player.age }} лет</span
                 >
               </span>
               <span
-                class="inline-grid h-[30px] min-w-[30px] place-items-center rounded-full border-2 border-white/80 text-[0.7rem] font-black leading-none text-white"
+                class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-white/80 text-[0.62rem] font-black leading-none text-white"
                 :class="ratingClass(player.rating)"
                 >{{ player.rating }}</span
               >
@@ -485,27 +508,6 @@ const dropOnReserve = (event: DragEvent): void => {
           </div>
         </div>
       </aside>
-    </div>
-
-    <div
-      class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
-    >
-      <h2 class="text-lg font-semibold text-slate-950">Готовность к матчу</h2>
-      <div
-        v-if="squadStore.validation.valid"
-        class="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800"
-      >
-        Стартовый состав готов.
-      </div>
-      <ul v-else class="mt-3 space-y-2">
-        <li
-          v-for="error in squadStore.validation.errors"
-          :key="error"
-          class="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-800"
-        >
-          {{ error }}
-        </li>
-      </ul>
     </div>
   </section>
 </template>

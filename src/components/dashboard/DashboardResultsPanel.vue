@@ -24,9 +24,9 @@ const openMatch = (match: Match): void => {
 
 <template>
   <article
-    class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+    class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
   >
-    <header class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+    <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-sky-600">
           {{ t('dashboard.teamForm') }}
@@ -40,7 +40,7 @@ const openMatch = (match: Match): void => {
       }}</span>
     </header>
 
-    <div v-if="matches.length" class="divide-y divide-slate-100 px-4">
+    <div v-if="matches.length" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-auto px-4">
       <RouterLink
         v-for="match in props.matches"
         :key="match.id"
@@ -76,7 +76,7 @@ const openMatch = (match: Match): void => {
       </RouterLink>
     </div>
 
-    <div v-else class="flex min-h-64 flex-col items-center justify-center p-8 text-center">
+    <div v-else class="flex min-h-0 flex-1 flex-col items-center justify-center p-8 text-center">
       <span class="grid h-12 w-12 place-items-center rounded-full bg-slate-100 text-slate-500">
         <IconSymbol name="trophy" class="h-5 w-5" />
       </span>
