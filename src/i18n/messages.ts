@@ -1,70 +1,19 @@
 import { championshipTranslations } from '@/i18n/championships'
+import { appMessages } from '@/i18n/messages/app'
+import { commonMessages } from '@/i18n/messages/common'
+import { dashboardMessages } from '@/i18n/messages/dashboard'
+import { leagueTableMessages } from '@/i18n/messages/leagueTable'
+import { matchMessages } from '@/i18n/messages/match'
+import { navMessages } from '@/i18n/messages/nav'
 
 export const messages = {
   ru: {
-    app: {
-      brand: 'FM Simulator',
-      game: 'Игра',
-      menu: 'Меню',
-      openMenu: 'Открыть меню',
-      newGame: 'Новая игра',
-      season: 'Сезон {season}',
-      nextMatch: 'Следующий матч',
-    },
-    nav: {
-      overview: 'Обзор',
-      squad: 'Состав',
-      transfers: 'Трансферы',
-      calendar: 'Календарь',
-      league: 'Лига',
-      cup: 'Кубок',
-    },
-    common: {
-      dash: '-',
-      separator: '·',
-    },
-    match: {
-      round: 'тур {round}',
-      cup: 'кубок',
-      home: 'Дома',
-      away: 'В гостях',
-      winLetter: 'В',
-      drawLetter: 'Н',
-      lossLetter: 'П',
-    },
-    dashboard: {
-      place: 'Место',
-      budget: 'Бюджет',
-      rating: 'Рейтинг',
-      cup: 'Кубок',
-      season: 'Сезон',
-      finishSeason: 'Завершить сезон',
-      leagueTable: 'Таблица лиги',
-      fullTable: 'Вся таблица',
-      schedule: 'Расписание',
-      calendar: 'Календарь',
-      noMatchesLeft: 'Матчей не осталось.',
-      teamForm: 'Форма команды',
-      recentResults: 'Последние результаты',
-      startingLineup: 'Основной состав',
-      openSquad: 'Открыть состав',
-      matchesCount: '{count} матчей',
-      seasonStarts: 'Сезон только начинается',
-      playedMatchesHint: 'Здесь появятся сыгранные матчи.',
-      tableClub: 'Клуб',
-      games: 'И',
-      goals: 'М',
-      points: 'О',
-    },
-    leagueTable: {
-      club: 'Клуб',
-      played: 'И',
-      wins: 'В',
-      draws: 'Н',
-      losses: 'П',
-      goals: 'М',
-      points: 'О',
-    },
+    app: appMessages,
+    nav: navMessages,
+    common: commonMessages,
+    match: matchMessages,
+    dashboard: dashboardMessages,
+    leagueTable: leagueTableMessages,
     championships: championshipTranslations,
   },
 } as const
