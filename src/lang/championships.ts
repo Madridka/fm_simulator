@@ -10,5 +10,15 @@ export interface ChampionshipTranslation {
   groupNames?: Record<string, string>
 }
 
+export interface RussianChampionshipTranslation extends ChampionshipTranslation {
+  divisionShortNames: Record<number, string>
+  competitionNames: Record<string, string>
+  groupNames: Record<string, string>
+}
+
+type ChampionshipTranslations = Record<ChampionshipId, ChampionshipTranslation> & {
+  russia: RussianChampionshipTranslation
+}
+
 export const championshipTranslations =
-  ruMessages.championships as Record<ChampionshipId, ChampionshipTranslation>
+  ruMessages.championships as ChampionshipTranslations
