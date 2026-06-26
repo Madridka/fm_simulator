@@ -1,1 +1,0 @@
-import{D as i,E as s}from"./index-CyHSeEoo.js";const l=i("toast",()=>{const e=s(""),t=s("info");let o;return{message:e,severity:t,show:(a,r="info")=>{e.value=a,t.value=r,window.clearTimeout(o),o=window.setTimeout(()=>{e.value=""},3600)},clear:()=>{window.clearTimeout(o),e.value=""}}});export{l as u};

@@ -17,4 +17,6 @@ export default defineConfig(({ mode }) => ({
     },
     port: 5173,
   },
+
+  base: '/fm_simulator/',
 }))
