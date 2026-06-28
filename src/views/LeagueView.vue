@@ -57,8 +57,7 @@ const leagueOptions = computed((): LeagueOption[] =>
       }))
       .sort(
         (left, right) =>
-          Number(left.competitionId.split(':')[0]) -
-            Number(right.competitionId.split(':')[0]) ||
+          Number(left.competitionId.split(':')[0]) - Number(right.competitionId.split(':')[0]) ||
           left.competitionId.localeCompare(right.competitionId),
       )
   }),

@@ -44,7 +44,9 @@ const resetGame = (): void => {
 </script>
 
 <template>
-  <div class="h-screen min-w-[320px] overflow-hidden bg-[#eef2f0] font-sans text-slate-900">
+  <div
+    class="min-h-screen min-w-[320px] bg-[#eef2f0] font-sans text-slate-900 xl:h-screen xl:overflow-hidden"
+  >
     <template v-if="gameStore.game">
       <aside
         class="fixed inset-y-0 left-0 z-40 hidden w-[228px] border-r border-white/10 shadow-[14px_0_40px_rgba(4,18,14,0.18)] md:block"
@@ -61,7 +63,11 @@ const resetGame = (): void => {
         />
       </aside>
 
-      <Drawer v-model:visible="appStore.drawerVisible" position="left" class="!w-[280px] md:!hidden">
+      <Drawer
+        v-model:visible="appStore.drawerVisible"
+        position="left"
+        class="!w-[280px] md:!hidden"
+      >
         <template #container>
           <MenuNav
             :active-path="route.path"
@@ -77,7 +83,7 @@ const resetGame = (): void => {
         </template>
       </Drawer>
 
-      <div class="flex h-screen flex-col md:pl-[228px]">
+      <div class="flex min-h-screen flex-col md:pl-[228px] xl:h-screen xl:min-h-0">
         <TopBar
           :next-match="matchStore.nextMatch"
           :next-opponent="matchStore.nextOpponent"
@@ -87,7 +93,7 @@ const resetGame = (): void => {
           @open-next-match="openNextMatch"
         />
 
-        <main class="min-h-0 flex-1 overflow-hidden p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 xl:min-h-0 xl:overflow-hidden">
           <RouterView />
         </main>
       </div>
@@ -102,7 +108,7 @@ const resetGame = (): void => {
       </div>
     </template>
 
-    <main v-else class="h-screen overflow-hidden p-4 sm:p-6">
+    <main v-else class="h-screen xl:overflow-hidden p-4 sm:p-6">
       <RouterView />
     </main>
   </div>

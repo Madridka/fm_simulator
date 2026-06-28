@@ -2,8 +2,8 @@
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { Club } from '@/types/football'
-
 import type { AppNavItem } from '@/stores/app/types'
+
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
 

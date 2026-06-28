@@ -31,7 +31,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
 <template>
   <section
     v-if="club && gameStore.game"
-    class="mx-auto flex h-full max-w-[1600px] flex-col gap-5 overflow-hidden"
+    class="mx-auto flex max-w-[1600px] flex-col gap-5 xl:h-full xl:overflow-hidden"
   >
     <DashboardHero
       :club="club"
@@ -44,7 +44,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
       @finish-season="gameStore.finishCurrentSeason()"
     />
 
-    <div class="grid min-h-0 flex-1 gap-5 xl:grid-cols-[1.05fr_0.95fr_0.95fr]">
+    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.05fr_0.95fr_0.95fr]">
       <DashboardLeaguePanel
         :division-name="divisionName"
         :rows="leagueRows"

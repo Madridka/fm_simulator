@@ -18,7 +18,7 @@ const { t } = useI18n()
 
 <template>
   <article
-    class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+    class="flex h-[420px] min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] xl:h-auto"
   >
     <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>

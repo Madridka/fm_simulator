@@ -145,6 +145,19 @@ const activeMonth = computed<CalendarMonth | undefined>(
   () => calendarMonths.value[activeMonthIndex.value],
 )
 
+const activeMonthMatchCells = computed<CalendarCell[]>(() =>
+  (activeMonth.value?.cells ?? []).filter((cell) => cell.matches.length > 0),
+)
+
+const mobileDateFormatter = new Intl.DateTimeFormat('ru-RU', {
+  day: 'numeric',
+  month: 'long',
+  weekday: 'short',
+})
+
+const mobileDateLabel = (cell: CalendarCell): string =>
+  cell.isoDate ? mobileDateFormatter.format(dateFromIso(cell.isoDate)) : ''
+
 watch(
   calendarMonths,
   (months) => {
@@ -235,8 +248,10 @@ const homeAwayLabel = (match: Match): string => {
 </script>
 
 <template>
-  <section v-if="gameStore.game" class="flex h-full flex-col gap-5 overflow-hidden">
-    <div class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between">
+  <section v-if="gameStore.game" class="flex flex-col gap-5 xl:h-full xl:overflow-hidden">
+    <div
+      class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between"
+    >
       <div>
         <h1 class="text-2xl font-bold text-slate-950">Календарь</h1>
         <p class="mt-1 text-sm text-slate-600">
@@ -251,9 +266,11 @@ const homeAwayLabel = (match: Match): string => {
           :disabled="activeMonthIndex === 0"
           @click="moveMonth(-1)"
         >
-          Назад
+          <i class="pi pi-angle-left" />
         </button>
-        <div class="min-w-40 rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-black text-white">
+        <div
+          class="min-w-40 rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-black text-white"
+        >
           {{ activeMonth?.title ?? 'Сезон' }}
         </div>
         <button
@@ -262,22 +279,63 @@ const homeAwayLabel = (match: Match): string => {
           :disabled="activeMonthIndex >= calendarMonths.length - 1"
           @click="moveMonth(1)"
         >
-          Вперед
+          <i class="pi pi-angle-right" />
         </button>
       </div>
     </div>
 
-    <div class="min-h-0 flex-1 overflow-hidden">
+    <div class="xl:min-h-0 xl:flex-1 xl:overflow-hidden">
       <article
         v-if="activeMonth"
-        class="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="flex flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:h-full xl:min-h-0"
       >
         <div
           class="shrink-0 bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
         >
           {{ activeMonth.title }}
         </div>
-        <div class="grid shrink-0 grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef]">
+        <div v-if="activeMonthMatchCells.length" class="grid gap-2.5 bg-[#f5f8f6] p-3 md:hidden">
+          <section
+            v-for="cell in activeMonthMatchCells"
+            :key="`mobile-${cell.key}`"
+            class="overflow-hidden rounded-lg border border-[#dce8dd] bg-white"
+          >
+            <div
+              class="border-b border-[#e2ebe5] bg-[#eef6ef] px-3 py-2 text-xs font-extrabold capitalize text-[#3f5f51]"
+            >
+              {{ mobileDateLabel(cell) }}
+            </div>
+            <component
+              :is="canOpenMatch(match) ? RouterLink : 'div'"
+              v-for="match in cell.matches"
+              :key="match.id"
+              :to="canOpenMatch(match) ? '/match' : undefined"
+              class="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 p-3 text-[#18312b] transition [&+&]:border-t [&+&]:border-[#e2ebe5]"
+              :class="{
+                'bg-slate-50 text-slate-600': match.status === 'played',
+                'bg-emerald-50 ring-1 ring-inset ring-emerald-500': isNextMatch(match),
+                'cursor-not-allowed bg-slate-100 text-slate-400': !canOpenMatch(match),
+              }"
+              @click="openMatch(match)"
+            >
+              <ClubBadge :club="opponentClub(match)" size="sm" />
+              <div class="min-w-0">
+                <div class="truncate text-sm font-bold">
+                  {{ opponentClub(match).name }}
+                </div>
+                <div class="mt-0.5 text-xs opacity-70">
+                  {{ matchTypeLabel(match) }} · {{ homeAwayLabel(match) }}
+                </div>
+              </div>
+              <div class="text-base font-black">{{ score(match) }}</div>
+            </component>
+          </section>
+        </div>
+        <div v-else class="p-6 text-center text-sm text-slate-500 md:hidden">
+          В этом месяце матчей нет.
+        </div>
+
+        <div class="hidden shrink-0 grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef] md:grid">
           <div
             v-for="day in weekDays"
             :key="day"
@@ -286,7 +344,9 @@ const homeAwayLabel = (match: Match): string => {
             {{ day }}
           </div>
         </div>
-        <div class="grid min-h-0 flex-1 auto-rows-fr grid-cols-7">
+        <div
+          class="hidden grid-cols-7 md:grid md:auto-rows-[140px] xl:min-h-0 xl:flex-1 xl:auto-rows-fr"
+        >
           <div
             v-for="cell in activeMonth.cells"
             :key="cell.key"
@@ -299,29 +359,29 @@ const homeAwayLabel = (match: Match): string => {
 
             <div class="max-h-[calc(100%-22px)] overflow-auto pr-1">
               <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
-              <component
-                :is="canOpenMatch(match) ? RouterLink : 'div'"
-                :to="canOpenMatch(match) ? '/match' : undefined"
-                class="flex min-w-0 items-center gap-2 rounded-lg border border-[#dce8dd] bg-white p-[7px] text-[#18312b] transition hover:-translate-y-px hover:border-emerald-300 hover:shadow-[0_10px_22px_rgba(22,101,52,0.12)]"
-                :class="{
-                  'bg-slate-50 text-slate-600': match.status === 'played',
-                  'border-emerald-500 bg-emerald-50': isNextMatch(match),
-                  'cursor-not-allowed bg-slate-100 text-slate-400 hover:translate-y-0 hover:border-[#dce8dd] hover:shadow-none':
-                    !canOpenMatch(match),
-                }"
-                @click="openMatch(match)"
-              >
-                <ClubBadge :club="opponentClub(match)" size="sm" />
-                <div class="min-w-0">
-                  <div class="truncate text-sm font-semibold">
-                    {{ opponentClub(match).shortName }}
+                <component
+                  :is="canOpenMatch(match) ? RouterLink : 'div'"
+                  :to="canOpenMatch(match) ? '/match' : undefined"
+                  class="flex min-w-0 items-center gap-2 rounded-lg border border-[#dce8dd] bg-white p-[7px] text-[#18312b] transition hover:-translate-y-px hover:border-emerald-300 hover:shadow-[0_10px_22px_rgba(22,101,52,0.12)]"
+                  :class="{
+                    'bg-slate-50 text-slate-600': match.status === 'played',
+                    'border-emerald-500 bg-emerald-50': isNextMatch(match),
+                    'cursor-not-allowed bg-slate-100 text-slate-400 hover:translate-y-0 hover:border-[#dce8dd] hover:shadow-none':
+                      !canOpenMatch(match),
+                  }"
+                  @click="openMatch(match)"
+                >
+                  <ClubBadge :club="opponentClub(match)" size="sm" />
+                  <div class="min-w-0">
+                    <div class="truncate text-sm font-semibold">
+                      {{ opponentClub(match).shortName }}
+                    </div>
+                    <div class="text-xs opacity-75">
+                      {{ matchTypeLabel(match) }} · {{ homeAwayLabel(match) }}
+                    </div>
                   </div>
-                  <div class="text-xs opacity-75">
-                    {{ matchTypeLabel(match) }} · {{ homeAwayLabel(match) }}
-                  </div>
-                </div>
-                <div class="ml-auto text-sm font-black">{{ score(match) }}</div>
-              </component>
+                  <div class="ml-auto text-sm font-black">{{ score(match) }}</div>
+                </component>
               </div>
             </div>
           </div>

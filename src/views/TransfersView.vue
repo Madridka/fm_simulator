@@ -74,7 +74,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
 <template>
   <section
     v-if="gameStore.selectedClub"
-    class="flex h-full min-h-0 flex-col gap-5 overflow-hidden"
+    class="flex flex-col gap-5 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
     <div class="flex shrink-0 flex-col gap-1">
       <div>
@@ -94,10 +94,10 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     </div>
 
     <div
-      class="grid min-h-0 flex-1 auto-rows-fr gap-5 xl:auto-rows-auto xl:grid-cols-[1.1fr_0.9fr]"
+      class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.1fr_0.9fr]"
     >
       <div
-        class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
       >
         <div class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <h2 class="text-lg font-semibold text-slate-950">Рынок игроков</h2>
@@ -157,7 +157,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
       </div>
 
       <div
-        class="flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
       >
         <div class="flex shrink-0 flex-col gap-3 2xl:flex-row 2xl:items-end 2xl:justify-between">
           <h2 class="text-lg font-semibold text-slate-950">Продажа игроков</h2>

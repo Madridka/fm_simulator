@@ -98,8 +98,8 @@ const selectedClubIndex = computed(() =>
   ),
 )
 
-const selectedDivisionName = computed(
-  () => getCompetitionName(championship.value, getClubCompetitionId(selectedClub.value)),
+const selectedDivisionName = computed(() =>
+  getCompetitionName(championship.value, getClubCompetitionId(selectedClub.value)),
 )
 
 const clubWorth = computed(() =>
@@ -108,7 +108,7 @@ const clubWorth = computed(() =>
 
 const stars = computed(() => Math.max(1, Math.min(5, Math.round(selectedClub.value.rating / 20))))
 
-const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? 'Стадион не указан')
+const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? '-')
 
 const stadiumDetails = computed(() => {
   const stadium = selectedClubProfile.value?.stadium
@@ -123,8 +123,8 @@ const stadiumDetails = computed(() => {
   return `${stadium.city}, ${stadium.capacity.toLocaleString('ru-RU')} мест`
 })
 
-const foundedYear = computed(() =>
-  selectedClubProfile.value?.historicalStats?.foundedYear?.toString() ?? 'Нет данных',
+const foundedYear = computed(
+  () => selectedClubProfile.value?.historicalStats?.foundedYear?.toString() ?? '-',
 )
 
 const historicalSummary = computed(() => {
@@ -241,7 +241,9 @@ const startGame = (): void => {
 
 <template>
   <section class="mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto pb-4">
-    <div class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]">
+    <div
+      class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]"
+    >
       <aside
         class="overflow-hidden rounded-xl border border-cyan-300/25 bg-[#121820] text-white shadow-[0_24px_70px_rgba(8,19,29,0.22)] sm:rounded-2xl"
       >

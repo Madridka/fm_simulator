@@ -16,7 +16,9 @@ const activeRoundIndex = ref(0)
 const cupRounds = computed((): CupRound[] => competitionStore.cup?.rounds ?? [])
 const visibleRounds = computed((): CupRound[] => cupRounds.value)
 
-const activeRound = computed((): CupRound | undefined => visibleRounds.value[activeRoundIndex.value])
+const activeRound = computed(
+  (): CupRound | undefined => visibleRounds.value[activeRoundIndex.value],
+)
 const hasRoundByes = computed((): boolean => Boolean(activeRound.value?.byes.length))
 const championClub = computed(() => {
   const championClubId = competitionStore.cup?.championClubId
@@ -45,7 +47,9 @@ watch(
 )
 
 const canMoveBack = computed((): boolean => activeRoundIndex.value > 0)
-const canMoveForward = computed((): boolean => activeRoundIndex.value < visibleRounds.value.length - 1)
+const canMoveForward = computed(
+  (): boolean => activeRoundIndex.value < visibleRounds.value.length - 1,
+)
 
 const moveRound = (direction: -1 | 1): void => {
   const nextIndex = activeRoundIndex.value + direction
@@ -104,9 +108,7 @@ const roundStatusLabel = (round?: CupRound): string => {
 }
 
 const roundStatusClass = (round?: CupRound): string =>
-  round?.status === 'completed'
-    ? 'bg-emerald-100 text-emerald-800'
-    : 'bg-slate-100 text-slate-600'
+  round?.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
 
 const tieWinnerClubId = (tie: CupTie): string | undefined => {
   const matchResult = tie.matchId ? matchById(tie.matchId)?.result : undefined
@@ -157,7 +159,10 @@ const tieStatusLabel = (tie: CupTie): string => {
 </script>
 
 <template>
-  <section v-if="gameStore.game" class="mx-auto flex h-full max-w-7xl flex-col gap-4 overflow-hidden">
+  <section
+    v-if="gameStore.game"
+    class="mx-auto flex h-full max-w-7xl flex-col gap-4 overflow-hidden"
+  >
     <header class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -231,7 +236,9 @@ const tieStatusLabel = (tie: CupTie): string => {
         class="grid min-h-0 flex-1 gap-4 overflow-hidden bg-slate-50/70 p-4"
         :class="hasRoundByes ? 'lg:grid-cols-[minmax(0,1fr)_300px]' : 'lg:grid-cols-1'"
       >
-        <section class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <section
+          class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white"
+        >
           <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
             <h3 class="text-sm font-black text-slate-950">{{ t('cup.tiesTitle') }}</h3>
             <span class="text-xs font-bold text-slate-400">
@@ -251,7 +258,10 @@ const tieStatusLabel = (tie: CupTie): string => {
               "
             >
               <div class="flex min-w-0 items-center justify-end gap-3">
-                <span class="hidden min-w-0 text-right sm:block" :class="teamNameClass(tie, tie.homeClubId)">
+                <span
+                  class="hidden min-w-0 text-right sm:block"
+                  :class="teamNameClass(tie, tie.homeClubId)"
+                >
                   {{ clubName(tie.homeClubId) }}
                 </span>
                 <span
@@ -263,12 +273,16 @@ const tieStatusLabel = (tie: CupTie): string => {
               </div>
 
               <div class="grid justify-items-center gap-1 text-center">
-                <div class="flex items-center justify-center gap-2 text-2xl font-black leading-none text-slate-950 sm:text-3xl">
+                <div
+                  class="flex items-center justify-center gap-2 text-2xl font-black leading-none text-slate-950 sm:text-3xl"
+                >
                   <span>{{ teamScore(tie, 'home') }}</span>
                   <span class="text-slate-300">-</span>
                   <span>{{ teamScore(tie, 'away') }}</span>
                 </div>
-                <div class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-cyan-600">
+                <div
+                  class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-cyan-600"
+                >
                   {{ tieStatusLabel(tie) }} · {{ tieDate(tie) }}
                 </div>
                 <div
@@ -330,12 +344,13 @@ const tieStatusLabel = (tie: CupTie): string => {
                 >
                   {{ clubShortName(clubId) }}
                 </span>
-                <span class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-700">
+                <span
+                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-700"
+                >
                   {{ clubName(clubId) }}
                 </span>
               </div>
             </div>
-
           </div>
         </aside>
       </div>
