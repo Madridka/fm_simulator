@@ -16,11 +16,13 @@ interface StarterView {
 const squadStore = useSquadStore()
 const { t } = useI18n()
 
+// СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
   const club = squadStore.club
   return new Map((club?.squad ?? []).map((player) => [player.id, player]))
 })
 
+// ФОРМИРУЕТ ДАННЫЕ СТАРТОВОГО СОСТАВА ДЛЯ ПОЛЯ
 const starters = computed<StarterView[]>(() => {
   const lineup = squadStore.lineup
   if (!lineup) {
@@ -39,6 +41,7 @@ const starters = computed<StarterView[]>(() => {
   })
 })
 
+// ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
 const ratingClass = (rating?: number): string => {
   if (!rating) {
     return 'bg-slate-600'
@@ -54,10 +57,12 @@ const ratingClass = (rating?: number): string => {
 </script>
 
 <template>
+  <!-- КАРТОЧКА СТАРТОВОГО СОСТАВА -->
   <RouterLink
     to="/squad"
     class="group flex h-[560px] min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_18px_50px_rgba(24,51,43,0.12)] xl:h-auto"
   >
+    <!-- ЗАГОЛОВОК ПАНЕЛИ СОСТАВА -->
     <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -74,6 +79,7 @@ const ratingClass = (rating?: number): string => {
       </span>
     </header>
 
+    <!-- ТАКТИЧЕСКОЕ ПОЛЕ С ИГРОКАМИ -->
     <div
       class="relative min-h-0 flex-1 overflow-hidden bg-[linear-gradient(180deg,#142033,#0e1726)]"
     >

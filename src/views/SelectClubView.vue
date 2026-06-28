@@ -39,6 +39,7 @@ const selectedChampionship = ref<ChampionshipId>('russia')
 const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
 
+// ФОРМИРУЕТ СПИСОК ДОСТУПНЫХ ЧЕМПИОНАТОВ
 const championshipOptions = computed<ChampionshipOption[]>(() =>
   Object.values(championships).map((championship) => ({
     label: championship.name,
@@ -46,9 +47,13 @@ const championshipOptions = computed<ChampionshipOption[]>(() =>
   })),
 )
 
+// ВОЗВРАЩАЕТ ВЫБРАННЫЙ ЧЕМПИОНАТ
 const championship = computed(() => championships[selectedChampionship.value])
+
+// ВОЗВРАЩАЕТ КЛУБЫ ВЫБРАННОГО ЧЕМПИОНАТА
 const clubs = computed(() => getChampionshipClubs(selectedChampionship.value))
 
+// ФОРМИРУЕТ СПИСОК ДИВИЗИОНОВ
 const divisions = computed<DivisionOption[]>(() =>
   Object.entries(getCompetitionNames(championship.value)).map(([divisionId, name]) => ({
     label: name,
@@ -56,10 +61,12 @@ const divisions = computed<DivisionOption[]>(() =>
   })),
 )
 
+// ВОЗВРАЩАЕТ КЛУБЫ ВЫБРАННОГО ДИВИЗИОНА
 const divisionClubs = computed<Club[]>(() =>
   clubs.value.filter((club) => getClubCompetitionId(club) === selectedCompetitionId.value),
 )
 
+// ВОЗВРАЩАЕТ ВЫБРАННЫЙ КЛУБ
 const selectedClub = computed<Club>(() => {
   const club =
     divisionClubs.value.find((candidate) => candidate.id === selectedClubId.value) ??
@@ -69,6 +76,7 @@ const selectedClub = computed<Club>(() => {
   return club as Club
 })
 
+// ОБЪЕДИНЯЕТ БАЗОВЫЙ И РАСШИРЕННЫЙ ПРОФИЛИ КЛУБА
 const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): ClubProfile => ({
   ...baseProfile,
   ...overrideProfile,
@@ -78,6 +86,7 @@ const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): 
   },
 })
 
+// ВОЗВРАЩАЕТ ПРОФИЛЬ ВЫБРАННОГО КЛУБА
 const selectedClubProfile = computed<ClubProfile | undefined>(() => {
   const championshipProfile = championship.value.clubProfiles.find(
     (profile) => profile.config.id === selectedClub.value.id,
@@ -91,6 +100,7 @@ const selectedClubProfile = computed<ClubProfile | undefined>(() => {
   return databaseProfile
 })
 
+// ВОЗВРАЩАЕТ ИНДЕКС ВЫБРАННОГО КЛУБА
 const selectedClubIndex = computed(() =>
   Math.max(
     0,
@@ -98,18 +108,23 @@ const selectedClubIndex = computed(() =>
   ),
 )
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ВЫБРАННОГО ДИВИЗИОНА
 const selectedDivisionName = computed(() =>
   getCompetitionName(championship.value, getClubCompetitionId(selectedClub.value)),
 )
 
+// РАССЧИТЫВАЕТ СТОИМОСТЬ СОСТАВА КЛУБА
 const clubWorth = computed(() =>
   selectedClub.value.squad.reduce((sum, player) => sum + player.value, 0),
 )
 
+// РАССЧИТЫВАЕТ ЗВЁЗДНЫЙ РЕЙТИНГ КЛУБА
 const stars = computed(() => Math.max(1, Math.min(5, Math.round(selectedClub.value.rating / 20))))
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ СТАДИОНА
 const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? '-')
 
+// ФОРМИРУЕТ ОПИСАНИЕ СТАДИОНА
 const stadiumDetails = computed(() => {
   const stadium = selectedClubProfile.value?.stadium
   if (!stadium) {
@@ -123,10 +138,12 @@ const stadiumDetails = computed(() => {
   return `${stadium.city}, ${stadium.capacity.toLocaleString('ru-RU')} мест`
 })
 
+// ВОЗВРАЩАЕТ ГОД ОСНОВАНИЯ КЛУБА
 const foundedYear = computed(
   () => selectedClubProfile.value?.historicalStats?.foundedYear?.toString() ?? '-',
 )
 
+// ФОРМИРУЕТ КРАТКУЮ ИСТОРИЧЕСКУЮ СПРАВКУ
 const historicalSummary = computed(() => {
   const stats = selectedClubProfile.value?.historicalStats
   if (!stats) {
@@ -141,6 +158,7 @@ const historicalSummary = computed(() => {
   return achievements.length ? achievements.join(', ') : 'Трофеи уточняются'
 })
 
+// ОПРЕДЕЛЯЕТ ОЖИДАНИЯ РУКОВОДСТВА ОТ КЛУБА
 const boardExpectation = (club: Club): BoardExpectation => {
   const budgetScore = club.budget / 2_000_000
   const strengthScore = club.rating + budgetScore - club.divisionId * 8
@@ -200,12 +218,15 @@ const boardExpectation = (club: Club): BoardExpectation => {
   }
 }
 
+// ВОЗВРАЩАЕТ ОЖИДАНИЕ ДЛЯ ВЫБРАННОГО КЛУБА
 const expectation = computed(() => boardExpectation(selectedClub.value))
 
+// ВЫБИРАЕТ ПЕРВЫЙ КЛУБ В ДИВИЗИОНЕ
 const selectFirstClubInDivision = (): void => {
   selectedClubId.value = divisionClubs.value[0]?.id ?? clubs.value[0]?.id ?? ''
 }
 
+// ОБНОВЛЯЕТ ДИВИЗИОН И КЛУБ ПРИ СМЕНЕ ЧЕМПИОНАТА
 watch(
   selectedChampionship,
   () => {
@@ -215,14 +236,17 @@ watch(
   { immediate: true },
 )
 
+// ОБНОВЛЯЕТ КЛУБ ПРИ СМЕНЕ ДИВИЗИОНА
 watch(selectedCompetitionId, () => {
   selectFirstClubInDivision()
 })
 
+// ВЫБИРАЕТ КЛУБ ПО ИДЕНТИФИКАТОРУ
 const selectClub = (clubId: string): void => {
   selectedClubId.value = clubId
 }
 
+// ПЕРЕКЛЮЧАЕТ КЛУБ В КАРУСЕЛИ
 const moveClub = (direction: -1 | 1): void => {
   if (!divisionClubs.value.length) {
     return
@@ -233,6 +257,7 @@ const moveClub = (direction: -1 | 1): void => {
   selectedClubId.value = divisionClubs.value[nextIndex]?.id ?? selectedClubId.value
 }
 
+// ЗАПУСКАЕТ НОВУЮ ИГРУ С ВЫБРАННЫМ КЛУБОМ
 const startGame = (): void => {
   gameStore.startNewGame(selectedChampionship.value, selectedClub.value.id)
   void router.push('/dashboard')
@@ -240,10 +265,13 @@ const startGame = (): void => {
 </script>
 
 <template>
+  <!-- СТРАНИЦА ВЫБОРА КЛУБА -->
   <section class="mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto pb-4">
+    <!-- ОСНОВНАЯ СЕТКА ВЫБОРА И ИНФОРМАЦИИ -->
     <div
       class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]"
     >
+      <!-- ПАНЕЛЬ ВЫБОРА ЧЕМПИОНАТА ДИВИЗИОНА И КЛУБА -->
       <aside
         class="overflow-hidden rounded-xl border border-cyan-300/25 bg-[#121820] text-white shadow-[0_24px_70px_rgba(8,19,29,0.22)] sm:rounded-2xl"
       >
@@ -351,8 +379,10 @@ const startGame = (): void => {
         </div>
       </aside>
 
+      <!-- ИНФОРМАЦИЯ О ВЫБРАННОМ КЛУБЕ -->
       <div class="grid gap-3 lg:grid-cols-[0.82fr_1.18fr] lg:gap-4">
         <div class="grid gap-3 lg:gap-4">
+          <!-- ГОРОД И ЦВЕТА КЛУБА -->
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
@@ -374,6 +404,7 @@ const startGame = (): void => {
             </div>
           </article>
 
+          <!-- ИНФОРМАЦИЯ О СТАДИОНЕ -->
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
@@ -384,6 +415,7 @@ const startGame = (): void => {
         </div>
 
         <div class="grid gap-3 lg:gap-4">
+          <!-- ИСТОРИЯ И ФИНАНСОВЫЕ ПОКАЗАТЕЛИ -->
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
@@ -425,6 +457,7 @@ const startGame = (): void => {
             </div>
           </article>
 
+          <!-- ОЖИДАНИЯ РУКОВОДСТВА -->
           <article
             class="rounded-xl border border-white/10 bg-gradient-to-br p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
             :class="expectation.tone"
@@ -440,6 +473,7 @@ const startGame = (): void => {
             </div>
           </article>
 
+          <!-- КНОПКА ЗАПУСКА КАРЬЕРЫ -->
           <Button class="h-12 w-full !font-black" label="Начать карьеру" @click="startGame" />
         </div>
       </div>

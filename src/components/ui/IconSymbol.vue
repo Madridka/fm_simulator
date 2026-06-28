@@ -16,6 +16,7 @@ defineProps<{
 </script>
 
 <template>
+  <!-- ГРАФИЧЕСКИЙ СИМВОЛ ИНТЕРФЕЙСА -->
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
     <path v-if="name === 'home'" d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
     <template v-else-if="name === 'users'">

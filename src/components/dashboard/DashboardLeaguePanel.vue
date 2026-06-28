@@ -17,9 +17,11 @@ const { t } = useI18n()
 </script>
 
 <template>
+  <!-- КРАТКАЯ ТУРНИРНАЯ ТАБЛИЦА -->
   <article
     class="flex h-[420px] min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] xl:h-auto"
   >
+    <!-- ЗАГОЛОВОК ТУРНИРНОЙ ТАБЛИЦЫ -->
     <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -37,6 +39,7 @@ const { t } = useI18n()
       </RouterLink>
     </header>
 
+    <!-- СТРОКИ ТУРНИРНОЙ ТАБЛИЦЫ -->
     <div class="min-h-0 flex-1 overflow-auto px-3 pb-3">
       <table class="w-full min-w-[390px] border-collapse text-left">
         <thead>

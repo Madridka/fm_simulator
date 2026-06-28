@@ -30,16 +30,20 @@ const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
 
+// ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
 
+// ВОЗВРАЩАЕТ ДОМАШНИЙ КЛУБ
 const homeClub = computed((): Club | undefined =>
   match.value ? clubStore.getClubById(match.value.homeClubId) : undefined,
 )
 
+// ВОЗВРАЩАЕТ ГОСТЕВОЙ КЛУБ
 const awayClub = computed((): Club | undefined =>
   match.value ? clubStore.getClubById(match.value.awayClubId) : undefined,
 )
 
+// СОЗДАЁТ ЧИСЛОВОЙ ХЕШ ИЗ СТРОКИ
 const hashString = (value: string): number => {
   let hash = 0
   for (let index = 0; index < value.length; index += 1) {
@@ -48,6 +52,7 @@ const hashString = (value: string): number => {
   return hash || 1
 }
 
+// ФОРМИРУЕТ СОСТАВ КЛУБА ДЛЯ СИМУЛЯЦИИ
 const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
   const starters = getFormationSlots(lineup.formation)
     .map((slot) => lineup.starters[slot.id])
@@ -65,6 +70,7 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
   }
 }
 
+// ПОДГОТАВЛИВАЕТ СОСТАВЫ ОБЕИХ КОМАНД
 const preparedLineups = computed((): MatchLineups | undefined => {
   const game = gameStore.game
   const currentMatch = match.value
@@ -106,6 +112,7 @@ const preparedLineups = computed((): MatchLineups | undefined => {
   }
 })
 
+// ПРОВЕРЯЕТ КОРРЕКТНОСТЬ СОСТАВА ИГРОКА
 const userValidation = computed(() => {
   const game = gameStore.game
   const currentMatch = match.value
@@ -122,6 +129,7 @@ const userValidation = computed(() => {
   return validateLineup(userClub, lineup)
 })
 
+// ПРОВЕРЯЕТ УЧАСТИЕ КЛУБА ИГРОКА В МАТЧЕ
 const isUserMatch = computed((): boolean => {
   const game = gameStore.game
   const currentMatch = match.value
@@ -133,14 +141,17 @@ const isUserMatch = computed((): boolean => {
   )
 })
 
+// ПРОВЕРЯЕТ ДОСТУПНОСТЬ МАТЧА ДЛЯ ИГРЫ
 const isPlayableMatch = computed(
   (): boolean => match.value?.status === 'scheduled' && gameStore.nextMatch?.id === match.value.id,
 )
 
+// ПРОВЕРЯЕТ ВОЗМОЖНОСТЬ ЗАПУСКА СИМУЛЯЦИИ
 const canSimulate = computed((): boolean =>
   Boolean(isUserMatch.value && isPlayableMatch.value && userValidation.value.valid),
 )
 
+// ВОЗВРАЩАЕТ ТЕКУЩИЙ ИЛИ ИТОГОВЫЙ РЕЗУЛЬТАТ
 const currentResult = computed<MatchResult | undefined>(() => {
   if (match.value?.result) {
     return match.value.result
@@ -148,6 +159,7 @@ const currentResult = computed<MatchResult | undefined>(() => {
   return currentMinute.value >= 90 ? timeline.value?.finalResult : undefined
 })
 
+// СОЗДАЁТ ПУСТОЙ СНИМОК СОСТОЯНИЯ МАТЧА
 const emptySnapshot = (): MatchSnapshot => ({
   minute: 0,
   homeGoals: 0,
@@ -159,6 +171,7 @@ const emptySnapshot = (): MatchSnapshot => ({
   },
 })
 
+// ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
 const visibleSnapshot = computed<MatchSnapshot>(() => {
   if (!timeline.value || currentMinute.value === 0) {
     return emptySnapshot()
@@ -170,14 +183,17 @@ const visibleSnapshot = computed<MatchSnapshot>(() => {
   )
 })
 
+// ВОЗВРАЩАЕТ ВИДИМЫЕ СОБЫТИЯ С ГОЛАМИ
 const visibleGoals = computed(() => match.value?.result?.goals ?? visibleSnapshot.value.goals)
 
+// ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
   const home = homeClub.value?.squad ?? []
   const away = awayClub.value?.squad ?? []
   return [...home, ...away]
 })
 
+// ВОЗВРАЩАЕТ ИМЯ ИГРОКА ПО ИДЕНТИФИКАТОРУ
 const playerName = (playerId?: string): string => {
   if (!playerId) {
     return '-'
@@ -186,6 +202,7 @@ const playerName = (playerId?: string): string => {
   return player ? `${player.firstName} ${player.lastName}` : playerId
 }
 
+// СОЗДАЁТ ИЛИ ВОЗВРАЩАЕТ ВРЕМЕННУЮ ШКАЛУ МАТЧА
 const ensureTimeline = (): MatchTimeline | undefined => {
   const currentMatch = match.value
   const home = homeClub.value
@@ -213,6 +230,7 @@ const ensureTimeline = (): MatchTimeline | undefined => {
   return timeline.value
 }
 
+// ОСТАНАВЛИВАЕТ ТАЙМЕР СИМУЛЯЦИИ
 const clearTimer = (): void => {
   if (timerId.value !== null) {
     window.clearInterval(timerId.value)
@@ -220,6 +238,7 @@ const clearTimer = (): void => {
   }
 }
 
+// ЗАВЕРШАЕТ МАТЧ И СОХРАНЯЕТ РЕЗУЛЬТАТ
 const finish = (result: MatchResult): void => {
   clearTimer()
   const currentMatch = match.value
@@ -228,6 +247,7 @@ const finish = (result: MatchResult): void => {
   }
 }
 
+// ПЕРЕВОДИТ СИМУЛЯЦИЮ НА СЛЕДУЮЩУЮ МИНУТУ
 const nextMinute = (): void => {
   const currentTimeline = ensureTimeline()
   if (!currentTimeline) {
@@ -240,6 +260,7 @@ const nextMinute = (): void => {
   }
 }
 
+// ЗАПУСКАЕТ ПОМИНУТНУЮ СИМУЛЯЦИЮ
 const startSimulation = (): void => {
   if (!canSimulate.value || timerId.value !== null || currentMinute.value >= 90) {
     return
@@ -251,6 +272,7 @@ const startSimulation = (): void => {
   }, 130)
 }
 
+// МГНОВЕННО ЗАВЕРШАЕТ СИМУЛЯЦИЮ
 const instantResult = (): void => {
   if (!canSimulate.value) {
     return
@@ -263,11 +285,13 @@ const instantResult = (): void => {
   finish(currentTimeline.finalResult)
 }
 
+// ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА ГЛАВНУЮ СТРАНИЦУ
 const goBack = (): void => {
   gameStore.clearActiveMatch()
   void router.push('/dashboard')
 }
 
+// СБРАСЫВАЕТ СИМУЛЯЦИЮ ПРИ СМЕНЕ МАТЧА
 watch(
   () => match.value?.id,
   () => {
@@ -277,6 +301,7 @@ watch(
   },
 )
 
+// АВТОМАТИЧЕСКИ ЗАПУСКАЕТ ИЛИ ОСТАНАВЛИВАЕТ СИМУЛЯЦИЮ
 watch(
   canSimulate,
   (ready) => {
@@ -289,11 +314,14 @@ watch(
   { immediate: true },
 )
 
+// ОСТАНАВЛИВАЕТ ТАЙМЕР ПЕРЕД УДАЛЕНИЕМ КОМПОНЕНТА
 onBeforeUnmount(clearTimer)
 </script>
 
 <template>
+  <!-- СТРАНИЦА МАТЧА -->
   <section v-if="match && homeClub && awayClub" class="space-y-5">
+    <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
     <div
       class="rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
     >
@@ -370,7 +398,9 @@ onBeforeUnmount(clearTimer)
       </div>
     </div>
 
+    <!-- СОСТАВЫ И СТАТИСТИКА МАТЧА -->
     <div class="grid gap-5 lg:grid-cols-2">
+      <!-- СОСТАВЫ КОМАНД -->
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >
@@ -407,6 +437,7 @@ onBeforeUnmount(clearTimer)
         </div>
       </div>
 
+      <!-- СТАТИСТИКА И СОБЫТИЯ МАТЧА -->
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
       >
@@ -485,6 +516,7 @@ onBeforeUnmount(clearTimer)
       </div>
     </div>
   </section>
+  <!-- СОСТОЯНИЕ БЕЗ ВЫБРАННОГО МАТЧА -->
   <section
     v-else
     class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"

@@ -23,6 +23,7 @@ const { t } = useI18n()
 </script>
 
 <template>
+  <!-- ГЛАВНАЯ КАРТОЧКА КЛУБА -->
   <article
     class="relative isolate shrink-0 overflow-hidden rounded-2xl bg-[#14241f] text-white shadow-[0_22px_55px_rgba(15,42,32,0.18)]"
   >
@@ -36,6 +37,7 @@ const { t } = useI18n()
       class="absolute -right-16 -top-32 -z-10 h-80 w-80 rounded-full border-[52px] border-white/[0.035]"
     ></div>
 
+    <!-- ОСНОВНАЯ ИНФОРМАЦИЯ И ПОКАЗАТЕЛИ КЛУБА -->
     <div class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:p-8">
       <div class="flex items-center gap-5">
         <ClubBadge
@@ -90,6 +92,7 @@ const { t } = useI18n()
       </div>
     </div>
 
+    <!-- СТАТУС КУБКА И СЕЗОНА -->
     <div
       class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/10 bg-black/10 px-5 py-3 text-xs font-semibold text-slate-300 sm:px-7 lg:px-8"
     >

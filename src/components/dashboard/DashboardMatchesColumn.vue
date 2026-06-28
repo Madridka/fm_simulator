@@ -11,6 +11,7 @@ defineProps<{
 </script>
 
 <template>
+  <!-- КОЛОНКА БЛИЖАЙШИХ И ЗАВЕРШЁННЫХ МАТЧЕЙ -->
   <div
     class="grid h-[720px] min-h-0 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] gap-5 xl:h-auto"
   >

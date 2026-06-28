@@ -27,6 +27,7 @@ const positions: Array<PlayerPosition | 'all'> = [
 ]
 const sortOptions: TransferSortKey[] = ['rating', 'age', 'value']
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ПОЗИЦИИ ИГРОКА
 const positionLabel = (position: PlayerPosition | 'all'): string => {
   const labels: Record<PlayerPosition | 'all', string> = {
     all: 'Все позиции',
@@ -44,6 +45,7 @@ const positionLabel = (position: PlayerPosition | 'all'): string => {
   return labels[position]
 }
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ВАРИАНТА СОРТИРОВКИ
 const sortLabel = (sort: TransferSortKey): string => {
   const labels: Record<TransferSortKey, string> = {
     rating: 'Рейтинг',
@@ -53,6 +55,7 @@ const sortLabel = (sort: TransferSortKey): string => {
   return labels[sort]
 }
 
+// ОТСЛЕЖИВАЕТ НОВЫЕ СООБЩЕНИЯ О ТРАНСФЕРАХ
 watch(
   () => transferStore.messageId,
   () => {
@@ -68,14 +71,17 @@ watch(
   },
 )
 
+// ОЧИЩАЕТ ТАЙМЕР УВЕДОМЛЕНИЯ ПЕРЕД УДАЛЕНИЕМ КОМПОНЕНТА
 onBeforeUnmount(() => window.clearTimeout(toastTimer))
 </script>
 
 <template>
+  <!-- СТРАНИЦА ТРАНСФЕРОВ -->
   <section
     v-if="gameStore.selectedClub"
     class="flex flex-col gap-5 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
+    <!-- ЗАГОЛОВОК И ТЕКУЩИЙ БЮДЖЕТ -->
     <div class="flex shrink-0 flex-col gap-1">
       <div>
         <h1 class="text-2xl font-bold text-slate-950">Трансферы</h1>
@@ -85,6 +91,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
       </div>
     </div>
 
+    <!-- УВЕДОМЛЕНИЕ О РЕЗУЛЬТАТЕ ТРАНСФЕРА -->
     <div
       v-if="toastMessage"
       class="fixed bottom-5 left-5 z-50 max-w-sm rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(15,23,42,0.28)]"
@@ -93,9 +100,11 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
       {{ toastMessage }}
     </div>
 
+    <!-- ПАНЕЛИ ПОКУПКИ И ПРОДАЖИ ИГРОКОВ -->
     <div
       class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.1fr_0.9fr]"
     >
+      <!-- РЫНОК ИГРОКОВ ДЛЯ ПОКУПКИ -->
       <div
         class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
       >
@@ -156,6 +165,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
         </div>
       </div>
 
+      <!-- СОСТАВ КЛУБА ДЛЯ ПРОДАЖИ -->
       <div
         class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
       >

@@ -13,18 +13,26 @@ const { t } = useI18n()
 
 const activeRoundIndex = ref(0)
 
+// ВОЗВРАЩАЕТ ВСЕ РАУНДЫ КУБКА
 const cupRounds = computed((): CupRound[] => competitionStore.cup?.rounds ?? [])
+
+// ВОЗВРАЩАЕТ ДОСТУПНЫЕ ДЛЯ ПРОСМОТРА РАУНДЫ
 const visibleRounds = computed((): CupRound[] => cupRounds.value)
 
+// ВОЗВРАЩАЕТ АКТИВНЫЙ РАУНД КУБКА
 const activeRound = computed(
   (): CupRound | undefined => visibleRounds.value[activeRoundIndex.value],
 )
+// ПРОВЕРЯЕТ НАЛИЧИЕ КЛУБОВ БЕЗ МАТЧА В РАУНДЕ
 const hasRoundByes = computed((): boolean => Boolean(activeRound.value?.byes.length))
+
+// ВОЗВРАЩАЕТ ПОБЕДИТЕЛЯ КУБКА
 const championClub = computed(() => {
   const championClubId = competitionStore.cup?.championClubId
   return championClubId ? clubStore.getClubById(championClubId) : undefined
 })
 
+// СИНХРОНИЗИРУЕТ АКТИВНЫЙ РАУНД С ТЕКУЩЕЙ СТАДИЕЙ
 watch(
   visibleRounds,
   (rounds) => {
@@ -46,11 +54,15 @@ watch(
   { immediate: true },
 )
 
+// ПРОВЕРЯЕТ ДОСТУПНОСТЬ ПРЕДЫДУЩЕГО РАУНДА
 const canMoveBack = computed((): boolean => activeRoundIndex.value > 0)
+
+// ПРОВЕРЯЕТ ДОСТУПНОСТЬ СЛЕДУЮЩЕГО РАУНДА
 const canMoveForward = computed(
   (): boolean => activeRoundIndex.value < visibleRounds.value.length - 1,
 )
 
+// ПЕРЕКЛЮЧАЕТ АКТИВНЫЙ РАУНД
 const moveRound = (direction: -1 | 1): void => {
   const nextIndex = activeRoundIndex.value + direction
   if (nextIndex < 0 || nextIndex >= visibleRounds.value.length) {
@@ -59,6 +71,7 @@ const moveRound = (direction: -1 | 1): void => {
   activeRoundIndex.value = nextIndex
 }
 
+// ВОЗВРАЩАЕТ МАТЧ ПО ИДЕНТИФИКАТОРУ
 const matchById = (matchId?: string): Match | undefined => {
   if (!matchId) {
     return undefined
@@ -66,6 +79,7 @@ const matchById = (matchId?: string): Match | undefined => {
   return gameStore.game?.matches.find((match) => match.id === matchId)
 }
 
+// ВОЗВРАЩАЕТ ПОЛНОЕ НАЗВАНИЕ КЛУБА
 const clubName = (clubId?: string): string => {
   if (!clubId) {
     return t('cup.awaitingClub')
@@ -73,6 +87,7 @@ const clubName = (clubId?: string): string => {
   return clubStore.getClubById(clubId)?.name ?? clubId
 }
 
+// ВОЗВРАЩАЕТ КОРОТКОЕ НАЗВАНИЕ КЛУБА
 const clubShortName = (clubId?: string): string => {
   if (!clubId) {
     return '---'
@@ -80,6 +95,7 @@ const clubShortName = (clubId?: string): string => {
   return clubStore.getClubById(clubId)?.shortName ?? clubId
 }
 
+// ФОРМИРУЕТ ЦВЕТА ЭМБЛЕМЫ КЛУБА
 const clubBadgeStyle = (clubId?: string): Record<string, string> => {
   const club = clubId ? clubStore.getClubById(clubId) : undefined
 
@@ -90,6 +106,7 @@ const clubBadgeStyle = (clubId?: string): Record<string, string> => {
   }
 }
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ РАУНДА
 const roundLabel = (round?: CupRound): string => {
   if (!round) {
     return ''
@@ -100,6 +117,7 @@ const roundLabel = (round?: CupRound): string => {
   return label === key ? round.name : label
 }
 
+// ВОЗВРАЩАЕТ ТЕКСТОВЫЙ СТАТУС РАУНДА
 const roundStatusLabel = (round?: CupRound): string => {
   if (!round) {
     return ''
@@ -107,22 +125,28 @@ const roundStatusLabel = (round?: CupRound): string => {
   return round.status === 'completed' ? t('cup.roundCompleted') : t('cup.roundPending')
 }
 
+// ВОЗВРАЩАЕТ КЛАСС ОФОРМЛЕНИЯ СТАТУСА РАУНДА
 const roundStatusClass = (round?: CupRound): string =>
   round?.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
 
+// ОПРЕДЕЛЯЕТ ПОБЕДИТЕЛЯ ПАРЫ
 const tieWinnerClubId = (tie: CupTie): string | undefined => {
   const matchResult = tie.matchId ? matchById(tie.matchId)?.result : undefined
   return tie.winnerClubId ?? matchResult?.winnerClubId ?? matchResult?.penaltyWinnerClubId
 }
 
+// ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ КЛУБ ПОБЕДИТЕЛЕМ ПАРЫ
 const isTieWinner = (tie: CupTie, clubId?: string): boolean =>
   Boolean(clubId && tieWinnerClubId(tie) === clubId)
 
+// ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ КЛУБ ВЫБРАННЫМ
 const isSelectedClub = (clubId?: string): boolean => clubId === gameStore.game?.selectedClubId
 
+// ПРОВЕРЯЕТ УЧАСТИЕ ВЫБРАННОГО КЛУБА В ПАРЕ
 const isSelectedTie = (tie: CupTie): boolean =>
   isSelectedClub(tie.homeClubId) || isSelectedClub(tie.awayClubId)
 
+// ФОРМИРУЕТ КЛАССЫ НАЗВАНИЯ КОМАНДЫ
 const teamNameClass = (tie: CupTie, clubId?: string): string[] => [
   'min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold',
   isTieWinner(tie, clubId)
@@ -132,6 +156,7 @@ const teamNameClass = (tie: CupTie, clubId?: string): string[] => [
       : 'text-slate-700',
 ]
 
+// ВОЗВРАЩАЕТ СЧЁТ КОМАНДЫ В ПАРЕ
 const teamScore = (tie: CupTie, team: 'home' | 'away'): string => {
   const result = tie.matchId ? matchById(tie.matchId)?.result : undefined
   if (!result) {
@@ -140,6 +165,7 @@ const teamScore = (tie: CupTie, team: 'home' | 'away'): string => {
   return String(team === 'home' ? result.homeGoals : result.awayGoals)
 }
 
+// ВОЗВРАЩАЕТ ПОБЕДИТЕЛЯ СЕРИИ ПЕНАЛЬТИ
 const penaltyWinnerName = (tie: CupTie): string | undefined => {
   const penaltyWinnerClubId = tie.matchId
     ? matchById(tie.matchId)?.result?.penaltyWinnerClubId
@@ -147,11 +173,13 @@ const penaltyWinnerName = (tie: CupTie): string | undefined => {
   return penaltyWinnerClubId ? clubName(penaltyWinnerClubId) : undefined
 }
 
+// ВОЗВРАЩАЕТ ДАТУ МАТЧА ПАРЫ
 const tieDate = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
   return match?.date ?? t('cup.dateTbd')
 }
 
+// ВОЗВРАЩАЕТ СТАТУС МАТЧА ПАРЫ
 const tieStatusLabel = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
   return match?.status === 'played' ? t('cup.tiePlayed') : t('cup.tieScheduled')
@@ -159,10 +187,12 @@ const tieStatusLabel = (tie: CupTie): string => {
 </script>
 
 <template>
+  <!-- СТРАНИЦА КУБКОВОГО ТУРНИРА -->
   <section
     v-if="gameStore.game"
     class="mx-auto flex h-full max-w-7xl flex-col gap-4 overflow-hidden"
   >
+    <!-- ЗАГОЛОВОК И ИНФОРМАЦИЯ О ЧЕМПИОНЕ -->
     <header class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -174,6 +204,7 @@ const tieStatusLabel = (tie: CupTie): string => {
         </p>
       </div>
 
+      <!-- ЗАГОЛОВОК И НАВИГАЦИЯ ПО РАУНДАМ -->
       <div
         v-if="championClub"
         class="rounded-lg bg-emerald-950 px-3 py-2 text-xs font-black text-emerald-50"
@@ -182,9 +213,11 @@ const tieStatusLabel = (tie: CupTie): string => {
       </div>
     </header>
 
+    <!-- СЕТКА АКТИВНОГО РАУНДА -->
     <article
       class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]"
     >
+      <!-- СОДЕРЖИМОЕ АКТИВНОГО РАУНДА -->
       <div
         class="flex shrink-0 flex-col gap-3 border-b border-slate-100 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between"
       >
@@ -236,6 +269,7 @@ const tieStatusLabel = (tie: CupTie): string => {
         class="grid min-h-0 flex-1 gap-4 overflow-hidden bg-slate-50/70 p-4"
         :class="hasRoundByes ? 'lg:grid-cols-[minmax(0,1fr)_300px]' : 'lg:grid-cols-1'"
       >
+        <!-- СПИСОК КУБКОВЫХ ПАР -->
         <section
           class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white"
         >
@@ -320,6 +354,7 @@ const tieStatusLabel = (tie: CupTie): string => {
           </div>
         </section>
 
+        <!-- КЛУБЫ БЕЗ МАТЧА В ТЕКУЩЕМ РАУНДЕ -->
         <aside
           v-if="hasRoundByes"
           class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white"

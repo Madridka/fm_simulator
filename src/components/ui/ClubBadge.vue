@@ -8,6 +8,7 @@ defineProps<{
 </script>
 
 <template>
+  <!-- ЭМБЛЕМА КЛУБА -->
   <div
     class="grid shrink-0 place-items-center overflow-hidden rounded-md border font-bold"
     :class="{

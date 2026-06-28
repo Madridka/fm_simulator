@@ -41,6 +41,7 @@ const monthNames = [
   'Декабрь',
 ]
 
+// ФОРМИРУЕТ СПИСОК МАТЧЕЙ ВЫБРАННОГО КЛУБА
 const userMatches = computed<Match[]>(() => {
   const game = gameStore.game
   if (!game) {
@@ -57,17 +58,22 @@ const userMatches = computed<Match[]>(() => {
     )
 })
 
+// ДОБАВЛЯЕТ ВЕДУЩИЙ НОЛЬ К ЧИСЛУ
 const pad = (value: number): string => String(value).padStart(2, '0')
 
+// СОБИРАЕТ ДАТУ В ФОРМАТЕ ISO ИЗ ОТДЕЛЬНЫХ ЧАСТЕЙ
 const isoFromParts = (year: number, monthIndex: number, day: number): string => {
   return `${year}-${pad(monthIndex + 1)}-${pad(day)}`
 }
 
+// ПРЕОБРАЗУЕТ ISO-ДАТУ В ОБЪЕКТ DATE
 const dateFromIso = (isoDate: string): Date => new Date(`${isoDate}T12:00:00`)
 
+// ВОЗВРАЩАЕТ ДАТУ ПРОВЕДЕНИЯ МАТЧА
 const matchDate = (match: Match): string =>
   match.date ?? getSeasonMatchDate(match.season, match.order)
 
+// ОПРЕДЕЛЯЕТ ТЕКУЩУЮ ДАТУ ДЛЯ КАЛЕНДАРЯ
 const currentCalendarDate = computed<string | undefined>(() => {
   const nextMatch = gameStore.nextMatch
   if (nextMatch) {
@@ -78,6 +84,7 @@ const currentCalendarDate = computed<string | undefined>(() => {
   return lastMatch ? matchDate(lastMatch) : undefined
 })
 
+// ФОРМИРУЕТ ДИАПАЗОН МЕСЯЦЕВ МЕЖДУ ДВУМЯ ДАТАМИ
 const monthsBetween = (firstDate: Date, lastDate: Date): Date[] => {
   const months: Date[] = []
   const cursor = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1, 12)
@@ -91,6 +98,7 @@ const monthsBetween = (firstDate: Date, lastDate: Date): Date[] => {
   return months
 }
 
+// СТРОИТ КАЛЕНДАРНЫЕ СЕТКИ ДЛЯ ВСЕХ МЕСЯЦЕВ СЕЗОНА
 const calendarMonths = computed<CalendarMonth[]>(() => {
   if (!userMatches.value.length) {
     return []
@@ -141,10 +149,12 @@ const calendarMonths = computed<CalendarMonth[]>(() => {
   })
 })
 
+// ВОЗВРАЩАЕТ АКТИВНЫЙ МЕСЯЦ КАЛЕНДАРЯ
 const activeMonth = computed<CalendarMonth | undefined>(
   () => calendarMonths.value[activeMonthIndex.value],
 )
 
+// ВОЗВРАЩАЕТ ДНИ АКТИВНОГО МЕСЯЦА С МАТЧАМИ
 const activeMonthMatchCells = computed<CalendarCell[]>(() =>
   (activeMonth.value?.cells ?? []).filter((cell) => cell.matches.length > 0),
 )
@@ -155,9 +165,11 @@ const mobileDateFormatter = new Intl.DateTimeFormat('ru-RU', {
   weekday: 'short',
 })
 
+// ФОРМАТИРУЕТ ДАТУ ДЛЯ МОБИЛЬНОГО СПИСКА МАТЧЕЙ
 const mobileDateLabel = (cell: CalendarCell): string =>
   cell.isoDate ? mobileDateFormatter.format(dateFromIso(cell.isoDate)) : ''
 
+// СИНХРОНИЗИРУЕТ АКТИВНЫЙ МЕСЯЦ С ТЕКУЩИМ МАТЧЕМ
 watch(
   calendarMonths,
   (months) => {
@@ -178,6 +190,7 @@ watch(
   { immediate: true },
 )
 
+// ПЕРЕКЛЮЧАЕТ КАЛЕНДАРЬ НА СОСЕДНИЙ МЕСЯЦ
 const moveMonth = (direction: -1 | 1): void => {
   activeMonthIndex.value = Math.min(
     Math.max(activeMonthIndex.value + direction, 0),
@@ -185,6 +198,7 @@ const moveMonth = (direction: -1 | 1): void => {
   )
 }
 
+// ОПРЕДЕЛЯЕТ ИДЕНТИФИКАТОР СОПЕРНИКА В МАТЧЕ
 const opponentId = (match: Match): string => {
   const game = gameStore.game
   if (!game) {
@@ -193,6 +207,7 @@ const opponentId = (match: Match): string => {
   return match.homeClubId === game.selectedClubId ? match.awayClubId : match.homeClubId
 }
 
+// ВОЗВРАЩАЕТ КЛУБ СОПЕРНИКА
 const opponentClub = (match: Match): Club => {
   const club = clubStore.getClubById(opponentId(match))
   if (!club) {
@@ -201,6 +216,7 @@ const opponentClub = (match: Match): Club => {
   return club
 }
 
+// ФОРМАТИРУЕТ СЧЁТ МАТЧА
 const score = (match: Match): string => {
   if (!match.result) {
     return '-'
@@ -208,16 +224,20 @@ const score = (match: Match): string => {
   return `${match.result.homeGoals}:${match.result.awayGoals}`
 }
 
+// ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ МАТЧ СЛЕДУЮЩИМ
 const isNextMatch = (match: Match): boolean => gameStore.nextMatch?.id === match.id
 
+// ПРОВЕРЯЕТ, МОЖНО ЛИ ОТКРЫТЬ МАТЧ
 const canOpenMatch = (match: Match): boolean => match.status === 'played' || isNextMatch(match)
 
+// ОТКРЫВАЕТ ДОСТУПНЫЙ МАТЧ
 const openMatch = (match: Match): void => {
   if (canOpenMatch(match)) {
     gameStore.openMatch(match.id)
   }
 }
 
+// ПРОВЕРЯЕТ, ОТНОСИТСЯ ЛИ ДЕНЬ К ПРОШЕДШЕМУ ПЕРИОДУ
 const isPastDay = (cell: CalendarCell): boolean => {
   if (!cell.isoDate || !currentCalendarDate.value) {
     return false
@@ -228,6 +248,7 @@ const isPastDay = (cell: CalendarCell): boolean => {
     : cell.isoDate <= currentCalendarDate.value
 }
 
+// ФОРМИРУЕТ КЛАССЫ ОФОРМЛЕНИЯ КАЛЕНДАРНОЙ ЯЧЕЙКИ
 const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
   'bg-[#e2ece5]/45': !cell.dayNumber,
   'bg-slate-200/75 text-slate-500': isPastDay(cell),
@@ -235,9 +256,11 @@ const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
   'bg-white/70': Boolean(cell.dayNumber && !cell.matches.length && !isPastDay(cell)),
 })
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ТИПА МАТЧА
 const matchTypeLabel = (match: Match): string =>
   match.type === 'league' ? `Тур ${match.round}` : 'Кубок'
 
+// ВОЗВРАЩАЕТ ПРИЗНАК ДОМАШНЕГО ИЛИ ВЫЕЗДНОГО МАТЧА
 const homeAwayLabel = (match: Match): string => {
   const game = gameStore.game
   if (!game) {
@@ -248,7 +271,9 @@ const homeAwayLabel = (match: Match): string => {
 </script>
 
 <template>
+  <!-- СТРАНИЦА КАЛЕНДАРЯ МАТЧЕЙ -->
   <section v-if="gameStore.game" class="flex flex-col gap-5 xl:h-full xl:overflow-hidden">
+    <!-- ЗАГОЛОВОК И НАВИГАЦИЯ ПО МЕСЯЦАМ -->
     <div
       class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between"
     >
@@ -284,16 +309,19 @@ const homeAwayLabel = (match: Match): string => {
       </div>
     </div>
 
+    <!-- КАЛЕНДАРЬ АКТИВНОГО МЕСЯЦА -->
     <div class="xl:min-h-0 xl:flex-1 xl:overflow-hidden">
       <article
         v-if="activeMonth"
         class="flex flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:h-full xl:min-h-0"
       >
+        <!-- ЗАГОЛОВОК АКТИВНОГО МЕСЯЦА -->
         <div
           class="shrink-0 bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
         >
           {{ activeMonth.title }}
         </div>
+        <!-- МОБИЛЬНЫЙ СПИСОК МАТЧЕЙ -->
         <div v-if="activeMonthMatchCells.length" class="grid gap-2.5 bg-[#f5f8f6] p-3 md:hidden">
           <section
             v-for="cell in activeMonthMatchCells"
@@ -331,10 +359,12 @@ const homeAwayLabel = (match: Match): string => {
             </component>
           </section>
         </div>
+        <!-- МОБИЛЬНОЕ СОСТОЯНИЕ БЕЗ МАТЧЕЙ -->
         <div v-else class="p-6 text-center text-sm text-slate-500 md:hidden">
           В этом месяце матчей нет.
         </div>
 
+        <!-- ЗАГОЛОВКИ ДНЕЙ НЕДЕЛИ -->
         <div class="hidden shrink-0 grid-cols-7 border-b border-[#d9e4dc] bg-[#eef6ef] md:grid">
           <div
             v-for="day in weekDays"
@@ -344,6 +374,7 @@ const homeAwayLabel = (match: Match): string => {
             {{ day }}
           </div>
         </div>
+        <!-- ДЕСКТОПНАЯ СЕТКА КАЛЕНДАРЯ -->
         <div
           class="hidden grid-cols-7 md:grid md:auto-rows-[140px] xl:min-h-0 xl:flex-1 xl:auto-rows-fr"
         >

@@ -29,6 +29,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
+// ПРОВЕРЯЕТ АКТИВНОСТЬ ПУНКТА НАВИГАЦИИ
 const isActive = (item: AppNavItem): boolean => {
   if (!item.to) {
     return false
@@ -37,6 +38,7 @@ const isActive = (item: AppNavItem): boolean => {
   return props.activePath === item.to
 }
 
+// ЗАКРЫВАЕТ МОБИЛЬНОЕ МЕНЮ ПОСЛЕ ПЕРЕХОДА
 const handleNavigate = (): void => {
   emit('closeSettings')
   emit('navigate')
@@ -44,10 +46,12 @@ const handleNavigate = (): void => {
 </script>
 
 <template>
+  <!-- БОКОВОЕ НАВИГАЦИОННОЕ МЕНЮ -->
   <div
     class="flex h-full flex-col"
     :class="mode === 'sidebar' ? 'bg-[#101c19] text-white' : 'bg-white text-slate-950'"
   >
+    <!-- ССЫЛКА НА ГЛАВНУЮ СТРАНИЦУ КЛУБА -->
     <RouterLink
       to="/dashboard"
       class="flex h-[86px] items-center gap-3 px-5"
@@ -68,6 +72,7 @@ const handleNavigate = (): void => {
       </div>
     </RouterLink>
 
+    <!-- ОСНОВНЫЕ РАЗДЕЛЫ ПРИЛОЖЕНИЯ -->
     <nav class="flex-1 px-3 py-5">
       <template v-for="(item, index) in items" :key="item.to ?? `divider-${index}`">
         <div
@@ -97,6 +102,7 @@ const handleNavigate = (): void => {
       </template>
     </nav>
 
+    <!-- НАСТРОЙКИ И УПРАВЛЕНИЕ ИГРОЙ -->
     <div
       class="relative p-3"
       :class="mode === 'sidebar' ? 'border-t border-white/10' : 'border-t border-slate-100'"

@@ -17,22 +17,27 @@ const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 const matchStore = useMatchStore()
 
+// ВОЗВРАЩАЕТ ВЫБРАННЫЙ КЛУБ
 const club = computed((): Club | undefined => gameStore.selectedClub)
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ДИВИЗИОНА КЛУБА
 const divisionName = computed((): string =>
   club.value ? clubStore.getClubCompetitionName(club.value) : '',
 )
 
+// ВОЗВРАЩАЕТ СТРОКИ ТУРНИРНОЙ ТАБЛИЦЫ
 const leagueRows = computed((): LeagueTableRow[] =>
   club.value ? (competitionStore.leagueTables[getClubCompetitionId(club.value)] ?? []) : [],
 )
 </script>
 
 <template>
+  <!-- ОСНОВНОЕ СОДЕРЖИМОЕ ДАШБОРДА -->
   <section
     v-if="club && gameStore.game"
     class="mx-auto flex max-w-[1600px] flex-col gap-5 xl:h-full xl:overflow-hidden"
   >
+    <!-- СВОДКА ПО ВЫБРАННОМУ КЛУБУ -->
     <DashboardHero
       :club="club"
       :cup-progress="competitionStore.cupProgress"
@@ -44,6 +49,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
       @finish-season="gameStore.finishCurrentSeason()"
     />
 
+    <!-- ИНФОРМАЦИОННЫЕ ПАНЕЛИ КЛУБА -->
     <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.05fr_0.95fr_0.95fr]">
       <DashboardLeaguePanel
         :division-name="divisionName"

@@ -23,20 +23,25 @@ interface LeagueOption {
 const gameStore = useGameStore()
 const competitionStore = useCompetitionStore()
 
+// СОЗДАЁТ УНИКАЛЬНЫЙ КЛЮЧ ЛИГИ
 const makeLeagueKey = (championshipId: ChampionshipId, competitionId: string): string =>
   `${championshipId}|${competitionId}`
 
+// ПРОВЕРЯЕТ ИДЕНТИФИКАТОР ЧЕМПИОНАТА
 const isChampionshipId = (value: string): value is ChampionshipId => value in championships
 
+// ВОЗВРАЩАЕТ ИДЕНТИФИКАТОР ТУРНИРА КЛУБА ИГРОКА
 const playerCompetitionId = computed((): string =>
   gameStore.selectedClub ? getClubCompetitionId(gameStore.selectedClub) : '1',
 )
+// ВОЗВРАЩАЕТ КЛЮЧ ЛИГИ КЛУБА ИГРОКА
 const playerLeagueKey = computed((): string =>
   makeLeagueKey(gameStore.game?.championshipId ?? 'russia', playerCompetitionId.value),
 )
 
 const selectedLeagueKey = ref(playerLeagueKey.value)
 
+// СИНХРОНИЗИРУЕТ ВЫБРАННУЮ ЛИГУ С КЛУБОМ ИГРОКА
 watch(
   playerLeagueKey,
   (leagueKey) => {
@@ -45,6 +50,7 @@ watch(
   { immediate: true },
 )
 
+// ФОРМИРУЕТ СПИСОК ДОСТУПНЫХ ЛИГ
 const leagueOptions = computed((): LeagueOption[] =>
   Object.values(championships).flatMap((championship) => {
     const competitionNames = getCompetitionNames(championship)
@@ -63,6 +69,7 @@ const leagueOptions = computed((): LeagueOption[] =>
   }),
 )
 
+// ВОЗВРАЩАЕТ ВЫБРАННУЮ ЛИГУ
 const selectedLeague = computed((): LeagueOption => {
   const [championshipIdCandidate = '', competitionIdCandidate = '1'] =
     selectedLeagueKey.value.split('|')
@@ -78,12 +85,17 @@ const selectedLeague = computed((): LeagueOption => {
   return option ?? leagueOptions.value[0]!
 })
 
+// ВОЗВРАЩАЕТ ВЫБРАННЫЙ ЧЕМПИОНАТ
 const selectedChampionship = computed(() => championships[selectedLeague.value.championshipId])
+
+// ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ ЧЕМПИОНАТ ТЕКУЩИМ
 const isCurrentChampionship = computed(
   (): boolean => selectedLeague.value.championshipId === gameStore.game?.championshipId,
 )
+// ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ ЛИГА ТЕКУЩЕЙ ДЛЯ КЛУБА ИГРОКА
 const isPlayerLeague = computed((): boolean => selectedLeagueKey.value === playerLeagueKey.value)
 
+// ВОЗВРАЩАЕТ КЛУБЫ ВЫБРАННОЙ ЛИГИ
 const selectedClubs = computed((): Club[] => {
   return (
     gameStore.game?.worldClubs?.[selectedLeague.value.championshipId] ??
@@ -94,8 +106,10 @@ const selectedClubs = computed((): Club[] => {
   )
 })
 
+// РАССЧИТЫВАЕТ СТАТИЧЕСКУЮ ТАБЛИЦУ ДЛЯ ЧУЖОЙ ЛИГИ
 const staticTables = computed(() => calculateLeagueTables(selectedClubs.value, []))
 
+// ВОЗВРАЩАЕТ СТРОКИ ВЫБРАННОЙ ТУРНИРНОЙ ТАБЛИЦЫ
 const selectedRows = computed((): LeagueTableRow[] => {
   return (
     gameStore.game?.worldLeagueTables?.[selectedLeague.value.championshipId]?.[
@@ -109,16 +123,19 @@ const selectedRows = computed((): LeagueTableRow[] => {
   )
 })
 
+// ВОЗВРАЩАЕТ КЛУБ ДЛЯ ПОДСВЕТКИ В ТАБЛИЦЕ
 const selectedClubId = computed((): string | undefined =>
   isCurrentChampionship.value ? gameStore.game?.selectedClubId : undefined,
 )
 </script>
 
 <template>
+  <!-- СТРАНИЦА ТУРНИРНОЙ ТАБЛИЦЫ -->
   <section
     v-if="gameStore.game"
     class="mx-auto flex h-full max-w-6xl flex-col gap-5 overflow-hidden"
   >
+    <!-- ЗАГОЛОВОК И ВЫБОР ЛИГИ -->
     <header class="flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
@@ -149,6 +166,7 @@ const selectedClubId = computed((): string | undefined =>
       </label>
     </header>
 
+    <!-- ТАБЛИЦА ВЫБРАННОЙ ЛИГИ -->
     <article
       class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]"
     >

@@ -10,11 +10,13 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ КЛУБА ПО ИДЕНТИФИКАТОРУ
 const clubName = (clubId: string): string =>
   props.clubs.find((club) => club.id === clubId)?.name ?? clubId
 </script>
 
 <template>
+  <!-- ТУРНИРНАЯ ТАБЛИЦА ЛИГИ -->
   <div class="overflow-auto">
     <table class="min-w-full border-collapse text-left">
       <thead>

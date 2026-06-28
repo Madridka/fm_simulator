@@ -16,15 +16,18 @@ const { t } = useI18n()
 const matchStore = useMatchStore()
 const { matchCompetition, matchDate, opponent, resultData, venue } = useMatchDisplay()
 
+// ОТКРЫВАЕТ ВЫБРАННЫЙ ЗАВЕРШЁННЫЙ МАТЧ
 const openMatch = (match: Match): void => {
   matchStore.openMatch(match)
 }
 </script>
 
 <template>
+  <!-- ПАНЕЛЬ ПОСЛЕДНИХ РЕЗУЛЬТАТОВ -->
   <article
     class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
   >
+    <!-- ЗАГОЛОВОК РЕЗУЛЬТАТОВ -->
     <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-sky-600">

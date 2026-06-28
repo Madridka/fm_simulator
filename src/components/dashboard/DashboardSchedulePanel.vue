@@ -16,15 +16,18 @@ const { t } = useI18n()
 const matchStore = useMatchStore()
 const { matchCompetition, matchDate, opponent, venue } = useMatchDisplay()
 
+// ОТКРЫВАЕТ ВЫБРАННЫЙ БУДУЩИЙ МАТЧ
 const openMatch = (match: Match): void => {
   matchStore.openMatch(match)
 }
 </script>
 
 <template>
+  <!-- ПАНЕЛЬ БЛИЖАЙШИХ МАТЧЕЙ -->
   <article
     class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
   >
+    <!-- ЗАГОЛОВОК РАСПИСАНИЯ -->
     <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
       <div>
         <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">

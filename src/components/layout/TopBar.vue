@@ -20,12 +20,15 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ТУРНИРА СЛЕДУЮЩЕГО МАТЧА
 const matchCompetition = (match: Match): string =>
   match.type === 'league' ? t('match.round', { round: match.round }) : t('match.cup')
 </script>
 
 <template>
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ ПРИЛОЖЕНИЯ -->
   <header class="sticky top-0 z-30 border-b border-slate-200/90 bg-white/90 backdrop-blur-xl">
+    <!-- КЛУБ И БЫСТРЫЕ ДЕЙСТВИЯ -->
     <div class="flex min-h-[86px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
       <div class="flex min-w-0 items-center gap-3">
         <button
@@ -50,6 +53,7 @@ const matchCompetition = (match: Match): string =>
         </RouterLink>
       </div>
 
+      <!-- КАРТОЧКА СЛЕДУЮЩЕГО МАТЧА -->
       <button
         v-if="nextMatch && nextOpponent"
         type="button"

@@ -31,11 +31,13 @@ const selectedTouchPayload = ref<DragPayload | null>(null)
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
 
+// СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
   const club = squadStore.club
   return new Map((club?.squad ?? []).map((player) => [player.id, player]))
 })
 
+// СОПОСТАВЛЯЕТ ПОЗИЦИИ С НАЗНАЧЕННЫМИ ИГРОКАМИ
 const assignedPlayerBySlot = computed<Record<string, Player | undefined>>(() => {
   const lineup = squadStore.lineup
   if (!lineup) {
@@ -50,6 +52,7 @@ const assignedPlayerBySlot = computed<Record<string, Player | undefined>>(() => 
   )
 })
 
+// ФОРМИРУЕТ НАБОР ИДЕНТИФИКАТОРОВ СТАРТОВЫХ ИГРОКОВ
 const starterIds = computed(() => {
   const lineup = squadStore.lineup
   if (!lineup) {
@@ -62,6 +65,7 @@ const starterIds = computed(() => {
   )
 })
 
+// ВОЗВРАЩАЕТ СПИСОК ЗАПАСНЫХ ИГРОКОВ
 const substitutePlayers = computed(() => {
   const lineup = squadStore.lineup
   if (!lineup) {
@@ -73,6 +77,7 @@ const substitutePlayers = computed(() => {
     .filter((player): player is Player => Boolean(player))
 })
 
+// ВОЗВРАЩАЕТ ОТСОРТИРОВАННЫЙ СПИСОК РЕЗЕРВИСТОВ
 const reservePlayers = computed(() => {
   const club = squadStore.club
   const lineup = squadStore.lineup
@@ -86,10 +91,12 @@ const reservePlayers = computed(() => {
     .sort((left, right) => right.rating - left.rating || right.form - left.form)
 })
 
+// РАССЧИТЫВАЕТ ОБЩУЮ СТОИМОСТЬ СОСТАВА
 const totalValue = computed(
   () => squadStore.club?.squad.reduce((sum, player) => sum + player.value, 0) ?? 0,
 )
 
+// ВОЗВРАЩАЕТ ПЕРВОЕ СООБЩЕНИЕ ОБ ОШИБКЕ СОСТАВА
 const validationMessage = computed(() => squadStore.validation.errors[0] ?? '')
 
 const positionLabels: Record<PlayerPosition, string> = {
@@ -111,6 +118,7 @@ const tacticLabels: Record<TacticalStyle, string> = {
   attacking: 'Атака',
 }
 
+// ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
 const ratingClass = (rating: number): string => {
   if (rating >= 75) {
     return 'bg-emerald-700'
@@ -121,16 +129,20 @@ const ratingClass = (rating: number): string => {
   return 'bg-orange-700'
 }
 
+// ВОЗВРАЩАЕТ ИГРОКА НА УКАЗАННОЙ ПОЗИЦИИ
 const slotPlayer = (slotId: string): Player | undefined => assignedPlayerBySlot.value[slotId]
 
+// ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
 const setFormation = (event: Event): void => {
   squadStore.setFormation((event.target as HTMLSelectElement).value as Formation)
 }
 
+// ИЗМЕНЯЕТ ТАКТИЧЕСКИЙ СТИЛЬ
 const setTactic = (event: Event): void => {
   squadStore.setTacticalStyle((event.target as HTMLSelectElement).value as TacticalStyle)
 }
 
+// ИЗВЛЕКАЕТ ДАННЫЕ ИГРОКА ИЗ СОБЫТИЯ ПЕРЕТАСКИВАНИЯ
 const dragPayload = (event: DragEvent): DragPayload | undefined => {
   const raw = event.dataTransfer?.getData('application/json')
   if (!raw) {
@@ -148,6 +160,7 @@ const dragPayload = (event: DragEvent): DragPayload | undefined => {
   }
 }
 
+// ЗАПУСКАЕТ ДЕСКТОПНОЕ ПЕРЕТАСКИВАНИЕ ИГРОКА
 const startPlayerDrag = (
   event: DragEvent,
   player: Player,
@@ -163,16 +176,19 @@ const startPlayerDrag = (
   }
 }
 
+// ЗАВЕРШАЕТ ПЕРЕТАСКИВАНИЕ И СБРАСЫВАЕТ ПОДСВЕТКУ
 const endPlayerDrag = (): void => {
   draggingPlayerId.value = null
   dragOverSlotId.value = null
   dragOverGroup.value = null
 }
 
+// ПЕРЕМЕЩАЕТ ИГРОКА НА ПОЗИЦИЮ
 const movePayloadToSlot = (payload: DragPayload, slotId: string): void => {
   squadStore.movePlayerToSlot(slotId, payload.playerId, payload.source, payload.slotId)
 }
 
+// МЕНЯЕТ ПЕРЕТАСКИВАЕМОГО ИГРОКА С ЗАПАСНЫМ
 const movePayloadToSubstitutePlayer = (payload: DragPayload, targetPlayer: Player): void => {
   if (payload.playerId === targetPlayer.id) {
     return
@@ -185,6 +201,7 @@ const movePayloadToSubstitutePlayer = (payload: DragPayload, targetPlayer: Playe
   }
 }
 
+// МЕНЯЕТ ПЕРЕТАСКИВАЕМОГО ИГРОКА С РЕЗЕРВИСТОМ
 const movePayloadToReservePlayer = (payload: DragPayload, targetPlayer: Player): void => {
   if (payload.playerId === targetPlayer.id) {
     return
@@ -197,6 +214,7 @@ const movePayloadToReservePlayer = (payload: DragPayload, targetPlayer: Player):
   }
 }
 
+// ОБРАБАТЫВАЕТ СБРОС ИГРОКА НА ПОЗИЦИЮ
 const dropOnSlot = (event: DragEvent, slotId: string): void => {
   const payload = dragPayload(event)
   if (!payload) {
@@ -206,6 +224,7 @@ const dropOnSlot = (event: DragEvent, slotId: string): void => {
   endPlayerDrag()
 }
 
+// ОБРАБАТЫВАЕТ СБРОС НА ЗАПАСНОГО ИГРОКА
 const dropOnSubstitutePlayer = (event: DragEvent, targetPlayer: Player): void => {
   const payload = dragPayload(event)
   if (!payload) {
@@ -216,6 +235,7 @@ const dropOnSubstitutePlayer = (event: DragEvent, targetPlayer: Player): void =>
   endPlayerDrag()
 }
 
+// ОБРАБАТЫВАЕТ СБРОС НА ИГРОКА РЕЗЕРВА
 const dropOnReservePlayer = (event: DragEvent, targetPlayer: Player): void => {
   const payload = dragPayload(event)
   if (!payload) {
@@ -226,6 +246,7 @@ const dropOnReservePlayer = (event: DragEvent, targetPlayer: Player): void => {
   endPlayerDrag()
 }
 
+// ОБРАБАТЫВАЕТ СБРОС В ОБЛАСТЬ ЗАПАСНЫХ
 const dropOnSubstitutes = (event: DragEvent): void => {
   const payload = dragPayload(event)
   if (!payload) {
@@ -235,6 +256,7 @@ const dropOnSubstitutes = (event: DragEvent): void => {
   endPlayerDrag()
 }
 
+// ОБРАБАТЫВАЕТ СБРОС В ОБЛАСТЬ РЕЗЕРВА
 const dropOnReserve = (event: DragEvent): void => {
   const payload = dragPayload(event)
   if (!payload) {
@@ -244,14 +266,17 @@ const dropOnReserve = (event: DragEvent): void => {
   endPlayerDrag()
 }
 
+// СРАВНИВАЕТ ДВА ОПИСАНИЯ ПЕРЕМЕЩЕНИЯ
 const samePayload = (left: DragPayload, right: DragPayload): boolean =>
   left.playerId === right.playerId && left.source === right.source && left.slotId === right.slotId
 
+// ВОЗВРАЩАЕТ ИГРОКА ИЗ МОБИЛЬНОЙ ЦЕЛИ КАСАНИЯ
 const playerFromTouchTarget = (element: HTMLElement): Player | undefined => {
   const playerId = element.dataset.substitutePlayerId ?? element.dataset.reservePlayerId
   return playerId ? playersById.value.get(playerId) : undefined
 }
 
+// ПРИМЕНЯЕТ МОБИЛЬНОЕ ПЕРЕМЕЩЕНИЕ К ВЫБРАННОЙ ЦЕЛИ
 const applyTouchDrop = (payload: DragPayload, element: HTMLElement): void => {
   const slotId = element.dataset.slotId
   if (slotId) {
@@ -276,15 +301,18 @@ const applyTouchDrop = (payload: DragPayload, element: HTMLElement): void => {
   }
 }
 
+// НАХОДИТ ЦЕЛЬ ПЕРЕМЕЩЕНИЯ ПОД УКАЗАННОЙ ТОЧКОЙ
 const touchDropTargetAt = (x: number, y: number): HTMLElement | null =>
   document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-touch-drop]') ?? null
 
+// ОБНОВЛЯЕТ ПОДСВЕТКУ МОБИЛЬНОЙ ЦЕЛИ
 const updateTouchDropHighlight = (element: HTMLElement | null): void => {
   dragOverSlotId.value = element?.dataset.slotId ?? null
   const group = element?.dataset.dropGroup
   dragOverGroup.value = group === 'substitutes' || group === 'reserve' ? group : null
 }
 
+// ОБРАБАТЫВАЕТ МОБИЛЬНУЮ ЗАМЕНУ ЧЕРЕЗ ДВА КАСАНИЯ
 const handleTouchTap = (payload: DragPayload, targetElement: HTMLElement): void => {
   const selected = selectedTouchPayload.value
   if (!selected) {
@@ -300,6 +328,7 @@ const handleTouchTap = (payload: DragPayload, targetElement: HTMLElement): void 
   selectedTouchPayload.value = null
 }
 
+// ЗАПУСКАЕТ МОБИЛЬНОЕ ПЕРЕТАСКИВАНИЕ УКАЗАТЕЛЕМ
 const startPointerDrag = (
   event: PointerEvent,
   player: Player,
@@ -320,6 +349,7 @@ const startPointerDrag = (
   ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
 }
 
+// ОБНОВЛЯЕТ МОБИЛЬНОЕ ПЕРЕТАСКИВАНИЕ
 const movePointerDrag = (event: PointerEvent): void => {
   const state = pointerDragState
   if (!state || state.pointerId !== event.pointerId) {
@@ -336,6 +366,7 @@ const movePointerDrag = (event: PointerEvent): void => {
   updateTouchDropHighlight(touchDropTargetAt(event.clientX, event.clientY))
 }
 
+// ЗАВЕРШАЕТ МОБИЛЬНОЕ ПЕРЕТАСКИВАНИЕ
 const finishPointerDrag = (event: PointerEvent): void => {
   const state = pointerDragState
   if (!state || state.pointerId !== event.pointerId) {
@@ -361,11 +392,13 @@ const finishPointerDrag = (event: PointerEvent): void => {
   endPlayerDrag()
 }
 
+// ОТМЕНЯЕТ МОБИЛЬНОЕ ПЕРЕТАСКИВАНИЕ
 const cancelPointerDrag = (): void => {
   pointerDragState = null
   endPlayerDrag()
 }
 
+// ПЕРЕМЕЩАЕТ ВЫБРАННОГО КАСАНИЕМ ИГРОКА НА ПОЗИЦИЮ
 const selectTouchSlot = (slotId: string): void => {
   if (suppressNextSlotClick || !selectedTouchPayload.value) {
     return
@@ -374,9 +407,11 @@ const selectTouchSlot = (slotId: string): void => {
   selectedTouchPayload.value = null
 }
 
+// ПРОВЕРЯЕТ ВЫБОР ИГРОКА НА МОБИЛЬНОМ УСТРОЙСТВЕ
 const isTouchSelected = (playerId: string): boolean =>
   selectedTouchPayload.value?.playerId === playerId
 
+// ПОКАЗЫВАЕТ ПРЕДУПРЕЖДЕНИЕ ПРИ ОШИБКЕ СОСТАВА
 watch(
   validationMessage,
   (message, previousMessage) => {
@@ -388,6 +423,7 @@ watch(
   { immediate: true },
 )
 
+// ИСПРАВЛЯЕТ НЕКОРРЕКТНЫЙ СОСТАВ ПЕРЕД УХОДОМ СО СТРАНИЦЫ
 onBeforeRouteLeave(() => {
   if (squadStore.club && squadStore.lineup && !squadStore.validation.valid) {
     squadStore.resetLineup()
@@ -397,10 +433,12 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
+  <!-- СТРАНИЦА УПРАВЛЕНИЯ СОСТАВОМ -->
   <section
     v-if="squadStore.club && squadStore.lineup"
     class="flex flex-col gap-3 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
+    <!-- НАСТРОЙКИ ФОРМАЦИИ И ТАКТИКИ -->
     <div
       class="shrink-0 rounded-lg border border-white/70 bg-white/90 px-4 py-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)]"
     >
@@ -459,13 +497,15 @@ onBeforeRouteLeave(() => {
       </p>
     </div>
 
+    <!-- ТАКТИЧЕСКАЯ СХЕМА И СПИСОК КОМАНДЫ -->
     <div
       class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]"
     >
-      <!-- СОСТАВ -->
+      <!-- СТАРТОВЫЙ СОСТАВ И ЗАПАСНЫЕ -->
       <div
         class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
       >
+        <!-- ТАКТИЧЕСКОЕ ПОЛЕ -->
         <div
           class="relative min-h-0 overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)]"
         >
@@ -576,6 +616,7 @@ onBeforeRouteLeave(() => {
           </button>
         </div>
 
+        <!-- ЛЕНТА ЗАПАСНЫХ ИГРОКОВ -->
         <div
           data-touch-drop
           data-drop-group="substitutes"
@@ -644,7 +685,7 @@ onBeforeRouteLeave(() => {
         </div>
       </div>
 
-      <!-- ЗАМЕНЫ -->
+      <!-- РЕЗЕРВНЫЕ ИГРОКИ -->
       <aside
         class="flex h-[420px] min-h-0 flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_12px_32px_rgba(20,46,38,0.08)] xl:h-auto"
       >
