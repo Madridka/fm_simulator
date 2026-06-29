@@ -19,7 +19,7 @@ interface StarterView {
 const squadStore = useSquadStore()
 const { t } = useI18n()
 
-const mobileLineY = [15, 35, 55, 76, 93]
+const mobileLineY = [15, 35, 48, 76, 93]
 
 // ВОЗВРАЩАЕТ ЛИНИЮ ИГРОКА НА МОБИЛЬНОМ ПОЛЕ
 const getMobileLine = (y: number): number => {
@@ -75,11 +75,11 @@ const starters = computed<StarterView[]>(() => {
   })
 })
 
-// ВОЗВРАЩАЕТ ШИРИНУ МОБИЛЬНОЙ КАРТОЧКИ
+// ВОЗВРАЩАЕТ ШИРИНУ КАРТОЧКИ ИГРОКА
 const mobileCardClass = (lineSize: number): string => {
-  if (lineSize >= 5) return 'w-15'
-  if (lineSize === 4) return 'w-[65px]'
-  return 'w-[80px]'
+  if (lineSize >= 5) return 'w-[60px] sm:w-[78px]'
+  if (lineSize === 4) return 'w-[65px] sm:w-[92px]'
+  return 'w-[80px] sm:w-[92px]'
 }
 
 // ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
@@ -133,13 +133,11 @@ const ratingClass = (rating?: number): string => {
       <div
         v-for="starter in starters"
         :key="starter.key"
-        class="absolute left-[var(--mobile-x)] top-[var(--mobile-y)] grid -translate-x-1/2 -translate-y-1/2 justify-items-center gap-0.5 rounded-md border border-white/15 bg-slate-950/80 px-1 py-1.5 text-center text-white shadow-[0_10px_22px_rgba(2,6,23,0.24)] sm:left-[var(--desktop-x)] sm:top-[var(--desktop-y)] sm:w-[92px] sm:gap-1 sm:rounded-lg sm:px-2 sm:py-1.5"
+        class="absolute left-[var(--mobile-x)] top-[var(--mobile-y)] grid -translate-x-1/2 -translate-y-1/2 justify-items-center gap-0.5 rounded-md border border-white/15 bg-slate-950/80 px-1 py-1.5 text-center text-white shadow-[0_10px_22px_rgba(2,6,23,0.24)] sm:gap-1 sm:rounded-lg sm:px-2 sm:py-1.5"
         :class="mobileCardClass(starter.mobileLineSize)"
         :style="{
           '--mobile-x': `${starter.mobileX}%`,
           '--mobile-y': `${starter.mobileY}%`,
-          '--desktop-x': `${starter.x}%`,
-          '--desktop-y': `${starter.y}%`,
         }"
       >
         <span
