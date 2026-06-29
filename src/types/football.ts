@@ -77,14 +77,44 @@ export interface GoalEvent {
   playerName: string
 }
 
+export type MatchSimulationDetail = 'full' | 'medium' | 'fast'
+
+export interface CardEvent {
+  minute?: number
+  clubId: string
+  playerId: string
+  card: 'yellow' | 'red'
+}
+
+export interface InjuryEvent {
+  minute?: number
+  clubId: string
+  playerId: string
+}
+
+export interface SubstitutionEvent {
+  minute: number
+  clubId: string
+  playerOutId: string
+  playerInId: string
+}
+
+export interface CommentaryEvent {
+  minute: number
+  text: string
+}
+
 export interface MatchTeamStats {
   possession: number
   shots: number
   shotsOnTarget: number
   yellowCards: number
+  redCards?: number
+  xG?: number
 }
 
 export interface MatchResult {
+  detail?: MatchSimulationDetail
   homeGoals: number
   awayGoals: number
   winnerClubId?: string
@@ -95,6 +125,10 @@ export interface MatchResult {
     away: MatchTeamStats
   }
   bestPlayerId: string
+  cards?: CardEvent[]
+  injuries?: InjuryEvent[]
+  substitutions?: SubstitutionEvent[]
+  commentary?: CommentaryEvent[]
 }
 
 export interface Match {

@@ -29,6 +29,9 @@ const clubStore = useClubStore()
 const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
+const isCalculating = ref(false)
+const calculationError = ref('')
+let matchCompletionPromise: Promise<void> | null = null
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -186,6 +189,18 @@ const visibleSnapshot = computed<MatchSnapshot>(() => {
 // ВОЗВРАЩАЕТ ВИДИМЫЕ СОБЫТИЯ С ГОЛАМИ
 const visibleGoals = computed(() => match.value?.result?.goals ?? visibleSnapshot.value.goals)
 
+// ВОЗВРАЩАЕТ ДЕТАЛИ ПОЛНОЙ СИМУЛЯЦИИ
+const detailedResult = computed<MatchResult | undefined>(
+  () => match.value?.result ?? timeline.value?.finalResult,
+)
+
+// ВОЗВРАЩАЕТ ДОСТУПНУЮ ТЕКСТОВУЮ ТРАНСЛЯЦИЮ
+const visibleCommentary = computed(() =>
+  (detailedResult.value?.commentary ?? []).filter(
+    (event) => match.value?.status === 'played' || event.minute <= currentMinute.value,
+  ),
+)
+
 // ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
   const home = homeClub.value?.squad ?? []
@@ -239,11 +254,32 @@ const clearTimer = (): void => {
 }
 
 // ЗАВЕРШАЕТ МАТЧ И СОХРАНЯЕТ РЕЗУЛЬТАТ
-const finish = (result: MatchResult): void => {
+const finish = async (result: MatchResult): Promise<void> => {
   clearTimer()
   const currentMatch = match.value
-  if (currentMatch?.status === 'scheduled' && isPlayableMatch.value) {
-    gameStore.completeMatch(currentMatch.id, result)
+  if (
+    !currentMatch ||
+    currentMatch.status !== 'scheduled' ||
+    !isPlayableMatch.value ||
+    isCalculating.value
+  ) {
+    return
+  }
+
+  isCalculating.value = true
+  calculationError.value = ''
+  const completion = gameStore.completeMatchAsync(currentMatch.id, result)
+  matchCompletionPromise = completion
+  try {
+    await completion
+  } catch (error) {
+    calculationError.value =
+      error instanceof Error ? error.message : 'Не удалось рассчитать игровой день.'
+  } finally {
+    if (matchCompletionPromise === completion) {
+      matchCompletionPromise = null
+    }
+    isCalculating.value = false
   }
 }
 
@@ -256,7 +292,7 @@ const nextMinute = (): void => {
 
   currentMinute.value = Math.min(90, currentMinute.value + 1)
   if (currentMinute.value >= 90) {
-    finish(currentTimeline.finalResult)
+    void finish(currentTimeline.finalResult)
   }
 }
 
@@ -274,7 +310,7 @@ const startSimulation = (): void => {
 
 // МГНОВЕННО ЗАВЕРШАЕТ СИМУЛЯЦИЮ
 const instantResult = (): void => {
-  if (!canSimulate.value) {
+  if (!canSimulate.value || isCalculating.value) {
     return
   }
   const currentTimeline = ensureTimeline()
@@ -282,13 +318,18 @@ const instantResult = (): void => {
     return
   }
   currentMinute.value = 90
-  finish(currentTimeline.finalResult)
+  void finish(currentTimeline.finalResult)
 }
 
 // ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА ГЛАВНУЮ СТРАНИЦУ
-const goBack = (): void => {
+const goBack = async (): Promise<void> => {
+  try {
+    await matchCompletionPromise
+  } catch {
+    return
+  }
   gameStore.clearActiveMatch()
-  void router.push('/dashboard')
+  await router.push('/dashboard')
 }
 
 // СБРАСЫВАЕТ СИМУЛЯЦИЮ ПРИ СМЕНЕ МАТЧА
@@ -298,7 +339,18 @@ watch(
     clearTimer()
     timeline.value = null
     currentMinute.value = 0
+    isCalculating.value = false
+    calculationError.value = ''
+    matchCompletionPromise = null
+    const currentMatch = match.value
+    if (currentMatch?.status === 'scheduled') {
+      void gameStore.prepareMatchDay(currentMatch.id).catch((error: unknown) => {
+        calculationError.value =
+          error instanceof Error ? error.message : 'Не удалось подготовить игровой день.'
+      })
+    }
   },
+  { immediate: true },
 )
 
 // АВТОМАТИЧЕСКИ ЗАПУСКАЕТ ИЛИ ОСТАНАВЛИВАЕТ СИМУЛЯЦИЮ
@@ -320,10 +372,13 @@ onBeforeUnmount(clearTimer)
 
 <template>
   <!-- СТРАНИЦА МАТЧА -->
-  <section v-if="match && homeClub && awayClub" class="space-y-5">
+  <section
+    v-if="match && homeClub && awayClub"
+    class="space-y-5 xl:flex xl:h-full xl:min-h-0 xl:flex-col xl:gap-3 xl:space-y-0"
+  >
     <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
     <div
-      class="rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5"
+      class="shrink-0 rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5 xl:p-3"
     >
       <div
         class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-4"
@@ -350,7 +405,11 @@ onBeforeUnmount(clearTimer)
             }}
           </div>
           <div class="mt-1 text-[10px] font-semibold text-slate-500 sm:text-sm">
-            {{ match.status === 'played' ? 'Матч завершен' : `${visibleSnapshot.minute}'` }}
+            {{
+              match.status === 'played' || currentMinute >= 90
+                ? 'Матч завершен'
+                : `${visibleSnapshot.minute}'`
+            }}
           </div>
         </div>
         <div class="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
@@ -370,7 +429,9 @@ onBeforeUnmount(clearTimer)
 
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
-        <template v-if="match.status === 'scheduled' && isPlayableMatch">
+        <template
+          v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90"
+        >
           <div
             v-if="canSimulate"
             class="rounded-lg bg-emerald-50 px-2 py-1.5 text-xs font-extrabold text-emerald-800 sm:px-3 sm:py-2 sm:text-sm"
@@ -379,9 +440,9 @@ onBeforeUnmount(clearTimer)
           </div>
           <Button
             class="w-full max-w-[180px] sm:min-w-[220px]"
-            :disabled="!canSimulate"
+            :disabled="!canSimulate || isCalculating"
             severity="success"
-            label="Мгновенный расчет"
+            :label="isCalculating ? 'Расчет...' : 'Мгновенный расчет'"
             @click="instantResult"
           />
           <RouterLink v-if="!userValidation.valid" to="/squad" class="w-full text-center">
@@ -392,13 +453,20 @@ onBeforeUnmount(clearTimer)
             />
           </RouterLink>
         </template>
-        <template v-else-if="match.status === 'played'">
+        <template v-else-if="match.status === 'played' || currentMinute >= 90">
           <Button
             class="w-full max-w-[180px] sm:min-w-[220px]"
             label="Назад к обзору"
             @click="goBack"
           />
         </template>
+      </div>
+
+      <div
+        v-if="calculationError"
+        class="mt-2 rounded-md bg-rose-50 px-3 py-2 text-center text-xs font-semibold text-rose-800"
+      >
+        {{ calculationError }}
       </div>
 
       <div
@@ -422,37 +490,39 @@ onBeforeUnmount(clearTimer)
       </div>
     </div>
 
-    <!-- СОСТАВЫ И СТАТИСТИКА МАТЧА -->
-    <div class="grid gap-5 lg:grid-cols-2">
+    <!-- СОСТАВЫ СТАТИСТИКА И ТРАНСЛЯЦИЯ -->
+    <div
+      class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.2fr_0.8fr_0.9fr] xl:gap-3"
+    >
       <!-- СОСТАВЫ КОМАНД -->
       <div
-        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950">Составы</h2>
-        <div class="mt-4 grid gap-4 md:grid-cols-2">
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Составы</h2>
+        <div class="mt-4 grid gap-4 md:grid-cols-2 xl:mt-3 xl:gap-3">
           <div>
-            <div class="mb-2 font-semibold text-slate-950">
+            <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
               {{ homeClub.shortName }} · {{ preparedLineups?.home.formation }}
             </div>
-            <div class="space-y-1 text-sm text-slate-700">
+            <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
               <div
                 v-for="playerId in preparedLineups?.home.starters"
                 :key="playerId"
-                class="rounded bg-slate-50 px-2 py-1"
+                class="truncate rounded bg-slate-50 px-2 py-1 xl:py-0.5"
               >
                 {{ playerName(playerId) }}
               </div>
             </div>
           </div>
           <div>
-            <div class="mb-2 font-semibold text-slate-950">
+            <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
               {{ awayClub.shortName }} · {{ preparedLineups?.away.formation }}
             </div>
-            <div class="space-y-1 text-sm text-slate-700">
+            <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
               <div
                 v-for="playerId in preparedLineups?.away.starters"
                 :key="playerId"
-                class="rounded bg-slate-50 px-2 py-1"
+                class="truncate rounded bg-slate-50 px-2 py-1 xl:py-0.5"
               >
                 {{ playerName(playerId) }}
               </div>
@@ -463,10 +533,10 @@ onBeforeUnmount(clearTimer)
 
       <!-- СТАТИСТИКА И СОБЫТИЯ МАТЧА -->
       <div
-        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950">Статистика</h2>
-        <div class="mt-4 space-y-3">
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Статистика</h2>
+        <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
             <span class="text-right font-semibold"
               >{{
@@ -479,6 +549,15 @@ onBeforeUnmount(clearTimer)
                 match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
               }}%</span
             >
+          </div>
+          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+            <span class="text-right font-semibold">
+              {{ match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0 }}
+            </span>
+            <span class="text-slate-500">xG</span>
+            <span class="font-semibold">
+              {{ match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0 }}
+            </span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
             <span class="text-right font-semibold">{{
@@ -507,21 +586,33 @@ onBeforeUnmount(clearTimer)
               match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
             }}</span>
           </div>
+          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
+            }}</span>
+            <span class="text-slate-500">Красные</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
+            }}</span>
+          </div>
         </div>
-        <div v-if="currentResult" class="mt-5 rounded-md bg-slate-50 p-3 text-sm">
+        <div
+          v-if="currentResult"
+          class="mt-5 rounded-md bg-slate-50 p-3 text-sm xl:mt-3 xl:p-2 xl:text-xs"
+        >
           Лучший игрок:
           <span class="font-semibold text-slate-950">{{
             playerName(currentResult.bestPlayerId)
           }}</span>
         </div>
 
-        <div class="mt-5 border-t border-slate-100 pt-4">
+        <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
           <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Голы</h3>
-          <div v-if="visibleGoals.length" class="mt-3 space-y-2">
+          <div v-if="visibleGoals.length" class="mt-3 space-y-2 xl:mt-2 xl:space-y-1">
             <div
               v-for="goal in visibleGoals"
               :key="`${goal.minute}-${goal.playerId}`"
-              class="rounded-md bg-slate-50 px-3 py-2 text-sm"
+              class="rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
             >
               {{ goal.minute }}' · {{ goal.playerName }} ·
               {{ clubStore.getClubById(goal.clubId)?.name }}
@@ -536,6 +627,55 @@ onBeforeUnmount(clearTimer)
         >
           Победитель серии пенальти:
           {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+        </div>
+
+        <div
+          v-if="detailedResult?.injuries?.length || detailedResult?.substitutions?.length"
+          class="mt-5 grid gap-4 border-t border-slate-100 pt-4 sm:grid-cols-2 xl:mt-3 xl:gap-3 xl:pt-3"
+        >
+          <div v-if="detailedResult?.injuries?.length">
+            <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Травмы</h3>
+            <div class="mt-2 space-y-1 text-sm text-slate-700">
+              <div v-for="injury in detailedResult.injuries" :key="injury.playerId">
+                {{ injury.minute ? `${injury.minute}' · ` : '' }}{{ playerName(injury.playerId) }}
+              </div>
+            </div>
+          </div>
+          <div v-if="detailedResult?.substitutions?.length">
+            <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Замены</h3>
+            <div class="mt-2 space-y-1 text-sm text-slate-700">
+              <div
+                v-for="substitution in detailedResult.substitutions"
+                :key="`${substitution.minute}-${substitution.playerOutId}`"
+              >
+                {{ substitution.minute }}' · {{ playerName(substitution.playerOutId) }} →
+                {{ playerName(substitution.playerInId) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ТЕКСТОВАЯ ТРАНСЛЯЦИЯ -->
+      <div
+        class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
+      >
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Текстовая трансляция</h2>
+        <div
+          v-if="visibleCommentary.length"
+          class="mt-4 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-3"
+        >
+          <div
+            v-for="event in visibleCommentary"
+            :key="`${event.minute}-${event.text}`"
+            class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+          >
+            <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
+            <span>{{ event.text }}</span>
+          </div>
+        </div>
+        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">
+          Событий пока нет.
         </div>
       </div>
     </div>

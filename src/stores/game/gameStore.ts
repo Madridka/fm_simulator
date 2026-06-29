@@ -14,10 +14,22 @@ import {
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
 import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
 
+type MatchDayWorkerResponse =
+  | { type: 'ready' }
+  | { type: 'complete'; state: GameState }
+  | { type: 'error'; error: string }
+
 export const useGameStore = defineStore('game', () => {
   const savedGame = gameSaveRepository.load()
   const game = ref<GameState | null>(savedGame ? ensureWorldCompetitions(savedGame) : null)
   const activeMatchId = ref<string | null>(null)
+  let matchDayWorker: Worker | null = null
+  let preparedMatchId: string | null = null
+  let preparationPromise: Promise<void> | null = null
+  let preparationResolve: (() => void) | null = null
+  let preparationReject: ((error: Error) => void) | null = null
+  let completionResolve: (() => void) | null = null
+  let completionReject: ((error: Error) => void) | null = null
 
   const selectedClub = computed<Club | undefined>(() => {
     if (!game.value) {
@@ -72,12 +84,14 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const startNewGame = (championshipId: ChampionshipId, clubId: string): void => {
+    disposeMatchDayWorker()
     activeMatchId.value = null
     game.value = createInitialGameState(championshipId, clubId)
     save()
   }
 
   const resetGame = (): void => {
+    disposeMatchDayWorker()
     activeMatchId.value = null
     game.value = null
     gameSaveRepository.clear()
@@ -90,6 +104,9 @@ export const useGameStore = defineStore('game', () => {
     }
 
     activeMatchId.value = match.id
+    if (match.status === 'scheduled') {
+      void prepareMatchDay(match.id).catch(() => undefined)
+    }
     return true
   }
 
@@ -107,6 +124,7 @@ export const useGameStore = defineStore('game', () => {
       return
     }
 
+    disposeMatchDayWorker()
     updateGame({
       ...game.value,
       lineups: {
@@ -146,6 +164,102 @@ export const useGameStore = defineStore('game', () => {
     updateGame(completeUserMatchDay(game.value, matchId, result))
   }
 
+  // СОЗДАЁТ ДАННЫЕ БЕЗ VUE PROXY
+  const createWorkerData = <T>(data: T): T => JSON.parse(JSON.stringify(data)) as T
+
+  // ОСТАНАВЛИВАЕТ ФОНОВЫЙ РАСЧЁТ
+  function disposeMatchDayWorker(): void {
+    matchDayWorker?.terminate()
+    matchDayWorker = null
+    preparedMatchId = null
+    preparationPromise = null
+    preparationResolve = null
+    preparationReject = null
+    completionResolve = null
+    completionReject = null
+  }
+
+  // ЗАВЕРШАЕТ ФОНОВЫЙ РАСЧЁТ С ОШИБКОЙ
+  const rejectMatchDayWorker = (error: Error): void => {
+    preparationReject?.(error)
+    completionReject?.(error)
+    disposeMatchDayWorker()
+  }
+
+  // ЗАРАНЕЕ ГОТОВИТ ОСТАЛЬНЫЕ МАТЧИ ТУРА
+  const prepareMatchDay = (matchId: string): Promise<void> => {
+    if (preparedMatchId === matchId && preparationPromise) {
+      return preparationPromise
+    }
+
+    const currentGame = game.value
+    const nextUserMatch = currentGame ? getNextUserMatch(currentGame) : undefined
+    if (!currentGame || !nextUserMatch || nextUserMatch.id !== matchId) {
+      return Promise.resolve()
+    }
+
+    if (matchDayWorker) {
+      rejectMatchDayWorker(new Error('Фоновый расчет заменен новым матчем.'))
+    }
+
+    preparedMatchId = matchId
+    matchDayWorker = new Worker(new URL('../../workers/matchDayWorker.ts', import.meta.url), {
+      type: 'module',
+    })
+    const pendingPreparation = new Promise<void>((resolve, reject) => {
+      preparationResolve = resolve
+      preparationReject = reject
+    })
+    preparationPromise = pendingPreparation
+
+    matchDayWorker.onmessage = (event: MessageEvent<MatchDayWorkerResponse>) => {
+      if (event.data.type === 'error') {
+        rejectMatchDayWorker(new Error(event.data.error))
+        return
+      }
+
+      if (event.data.type === 'ready') {
+        preparationResolve?.()
+        preparationResolve = null
+        preparationReject = null
+        return
+      }
+
+      game.value = event.data.state
+      save()
+      const resolve = completionResolve
+      completionResolve = null
+      completionReject = null
+      disposeMatchDayWorker()
+      resolve?.()
+    }
+
+    matchDayWorker.onerror = (event) => {
+      rejectMatchDayWorker(
+        new Error(event.message || 'Не удалось запустить расчет игрового дня.'),
+      )
+    }
+
+    matchDayWorker.postMessage(
+      createWorkerData({ type: 'prepare', state: currentGame, matchId }),
+    )
+    return pendingPreparation
+  }
+
+  // ДОБАВЛЯЕТ ИТОГ ПОЛЬЗОВАТЕЛЯ В ГОТОВЫЙ ТУР
+  const completeMatchAsync = async (matchId: string, result: MatchResult): Promise<void> => {
+    await prepareMatchDay(matchId)
+    if (!matchDayWorker || preparedMatchId !== matchId) {
+      throw new Error('Игровой день не был подготовлен.')
+    }
+
+    return new Promise((resolve, reject) => {
+      completionResolve = resolve
+      completionReject = reject
+      matchDayWorker?.postMessage(createWorkerData({ type: 'complete', result }))
+    })
+  }
+
   const finishCurrentSeason = (): void => {
     if (!game.value || !isSeasonReadyToFinish(game.value)) {
       return
@@ -168,6 +282,8 @@ export const useGameStore = defineStore('game', () => {
     updateLineup,
     replaceClubs,
     completeMatch,
+    prepareMatchDay,
+    completeMatchAsync,
     finishCurrentSeason,
   }
 })

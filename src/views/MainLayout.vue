@@ -92,8 +92,8 @@ const resetGame = (): void => {
       <!-- РАБОЧАЯ ОБЛАСТЬ ПРИЛОЖЕНИЯ -->
       <div class="flex min-h-screen flex-col md:pl-[228px] xl:h-screen xl:min-h-0">
         <TopBar
-          :next-match="matchStore.nextMatch"
-          :next-opponent="matchStore.nextOpponent"
+          :next-match="route.name === 'match' ? undefined : matchStore.nextMatch"
+          :next-opponent="route.name === 'match' ? undefined : matchStore.nextOpponent"
           :season="gameStore.game.season"
           :selected-club="gameStore.selectedClub"
           @open-menu="appStore.openDrawer"

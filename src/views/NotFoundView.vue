@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
 
 <template>
   <main
-    class="relative isolate flex min-h-screen min-h-[100svh] items-center overflow-hidden bg-[#07121b] text-[#f4f7f2] max-[1000px]:items-end max-[1000px]:justify-center max-[1000px]:overflow-y-auto max-[1000px]:px-5 max-[1000px]:py-[46px] max-[580px]:px-3 max-[580px]:py-6"
+    class="relative isolate flex min-h-screen items-center overflow-hidden bg-[#07121b] text-[#f4f7f2] max-[1000px]:items-end max-[1000px]:justify-center max-[1000px]:overflow-y-auto max-[1000px]:px-5 max-[1000px]:py-[46px] max-[580px]:px-3 max-[580px]:py-6"
   >
     <!-- ФОНОВОЕ ИЗОБРАЖЕНИЕ -->
     <picture class="absolute inset-0 -z-[2] block overflow-hidden" aria-hidden="true">
@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
         class="relative z-[2] px-[clamp(36px,4vw,66px)] pb-[clamp(30px,5vh,56px)] pt-[clamp(34px,5.3vh,64px)] text-center max-[1000px]:pt-10 max-[580px]:px-5 max-[580px]:pb-7 max-[580px]:pt-[34px]"
       >
         <div
-          class="scale-x-[1.04] font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(136px,14.5vw,224px)] font-black leading-[0.77] tracking-[0.035em] text-[#eef0ed] [text-shadow:3px_4px_0_#a1bd70,7px_9px_0_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.1)] max-[1000px]:text-[clamp(116px,27vw,190px)] max-[580px]:text-[clamp(96px,31vw,146px)]"
+          class="scale-x-[1.04] font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(136px,14.5vw,224px)] leading-[0.77] tracking-[0.035em] text-[#eef0ed] [text-shadow:3px_4px_0_#a1bd70,7px_9px_0_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.1)] max-[1000px]:text-[clamp(116px,27vw,190px)] max-[580px]:text-[clamp(96px,31vw,146px)]"
           aria-label="Ошибка 404"
         >
           404
@@ -105,20 +105,16 @@ onBeforeUnmount(() => {
           class="mx-auto mb-3 mt-[30px] grid w-[min(88%,470px)] grid-cols-[1fr_auto_auto_auto_1fr] items-center gap-[13px] text-[#a7dc45] max-[580px]:mt-6 max-[580px]:gap-2"
           aria-hidden="true"
         >
-          <span
-            class="h-px bg-[linear-gradient(90deg,transparent,rgba(167,220,69,0.8))]"
-          ></span>
+          <span class="h-px bg-[linear-gradient(90deg,transparent,rgba(167,220,69,0.8))]"></span>
           <b class="text-[19px] leading-none [text-shadow:0_0_12px_rgba(167,220,69,0.55)]">★</b>
           <b class="text-[19px] leading-none [text-shadow:0_0_12px_rgba(167,220,69,0.55)]">★</b>
           <b class="text-[19px] leading-none [text-shadow:0_0_12px_rgba(167,220,69,0.55)]">★</b>
-          <span
-            class="h-px bg-[linear-gradient(90deg,rgba(167,220,69,0.8),transparent)]"
-          ></span>
+          <span class="h-px bg-[linear-gradient(90deg,rgba(167,220,69,0.8),transparent)]"></span>
         </div>
 
         <h1
           id="not-found-title"
-          class="m-0 font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(34px,3.2vw,52px)] font-black uppercase leading-[1.08] tracking-[0.055em] text-[#a7dc45] [text-shadow:0_0_18px_rgba(167,220,69,0.2)] max-[580px]:text-[clamp(29px,8.4vw,38px)]"
+          class="m-0 font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(34px,3.2vw,52px)] uppercase leading-[1.08] tracking-[0.055em] text-[#a7dc45] [text-shadow:0_0_18px_rgba(167,220,69,0.2)] max-[580px]:text-[clamp(29px,8.4vw,38px)]"
         >
           Не попал в створ
         </h1>

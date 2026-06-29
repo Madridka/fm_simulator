@@ -1,8 +1,9 @@
 import { gameConfig } from '@/config/gameConfig'
 import { championships, getChampionshipClubs } from '@/data/clubs'
 import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupService'
+import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
-import { simulateMatch } from '@/domain/match/matchSimulator'
+import { simulateFastMatch, simulateMatch } from '@/domain/match/matchSimulator'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
 import {
   autoSelectLineup,
@@ -43,6 +44,10 @@ const cloneMatch = (match: Match): Match => ({
           home: { ...match.result.stats.home },
           away: { ...match.result.stats.away },
         },
+        cards: match.result.cards?.map((card) => ({ ...card })),
+        injuries: match.result.injuries?.map((injury) => ({ ...injury })),
+        substitutions: match.result.substitutions?.map((substitution) => ({ ...substitution })),
+        commentary: match.result.commentary?.map((event) => ({ ...event })),
       }
     : undefined,
   lineups: match.lineups
@@ -336,20 +341,29 @@ const applyMatchEffects = (
     return counts
   }, {})
   const bookingCounts: Record<string, number> = {}
+  const recordedYellowCards = result.cards?.filter((card) => card.card === 'yellow') ?? []
 
-  for (let index = 0; index < result.stats.home.yellowCards; index += 1) {
-    const bookedPlayerId = lineups.home.starters[random.int(0, lineups.home.starters.length - 1)]
-    if (bookedPlayerId) {
-      bookingCounts[bookedPlayerId] = (bookingCounts[bookedPlayerId] ?? 0) + 1
+  if (recordedYellowCards.length) {
+    for (const card of recordedYellowCards) {
+      bookingCounts[card.playerId] = (bookingCounts[card.playerId] ?? 0) + 1
+    }
+  } else {
+    for (let index = 0; index < result.stats.home.yellowCards; index += 1) {
+      const bookedPlayerId = lineups.home.starters[random.int(0, lineups.home.starters.length - 1)]
+      if (bookedPlayerId) {
+        bookingCounts[bookedPlayerId] = (bookingCounts[bookedPlayerId] ?? 0) + 1
+      }
+    }
+
+    for (let index = 0; index < result.stats.away.yellowCards; index += 1) {
+      const bookedPlayerId = lineups.away.starters[random.int(0, lineups.away.starters.length - 1)]
+      if (bookedPlayerId) {
+        bookingCounts[bookedPlayerId] = (bookingCounts[bookedPlayerId] ?? 0) + 1
+      }
     }
   }
 
-  for (let index = 0; index < result.stats.away.yellowCards; index += 1) {
-    const bookedPlayerId = lineups.away.starters[random.int(0, lineups.away.starters.length - 1)]
-    if (bookedPlayerId) {
-      bookingCounts[bookedPlayerId] = (bookingCounts[bookedPlayerId] ?? 0) + 1
-    }
-  }
+  const injuredPlayerIds = new Set(result.injuries?.map((injury) => injury.playerId) ?? [])
 
   const homeWon = result.homeGoals > result.awayGoals || result.winnerClubId === match.homeClubId
   const awayWon = result.awayGoals > result.homeGoals || result.winnerClubId === match.awayClubId
@@ -375,6 +389,7 @@ const applyMatchEffects = (
 
     updatePlayerById(clubs, playerId, (player) => ({
       ...player,
+      isInjured: player.isInjured || injuredPlayerIds.has(player.id),
       fitness: clamp(player.fitness - random.int(6, 14), 1, 100),
       form: clamp(
         player.form +
@@ -437,30 +452,41 @@ const simulateScheduledMatch = (
 
   return {
     lineups,
-    result: simulateMatch({
-      matchId: match.id,
-      homeClub,
-      awayClub,
-      homeLineup: lineups.home,
-      awayLineup: lineups.away,
-      neutralVenue: match.neutralVenue,
-      allowPenaltyShootout: match.type === 'cup',
-      seed: hashString(match.id) + state.season * 10_000,
-    }),
+    result: simulateMatch(
+      {
+        matchId: match.id,
+        homeClub,
+        awayClub,
+        homeLineup: lineups.home,
+        awayLineup: lineups.away,
+        neutralVenue: match.neutralVenue,
+        allowPenaltyShootout: match.type === 'cup',
+        seed: hashString(match.id) + state.season * 10_000,
+      },
+      'medium',
+    ),
   }
 }
 
-const getAutoLineupsForMatch = (clubs: readonly Club[], match: Match): MatchLineups => {
-  const homeClub = getClub(clubs, match.homeClubId)
-  const awayClub = getClub(clubs, match.awayClubId)
-  const homeLineup = autoSelectLineup(homeClub)
-  const awayLineup = autoSelectLineup(awayClub)
-
-  return {
-    home: getPlayedLineup(homeClub, homeLineup),
-    away: getPlayedLineup(awayClub, awayLineup),
+// ПРОВЕРЯЕТ НУЖЕН ЛИ МАТЧУ БЫСТРЫЙ РЕЖИМ
+const isFastLocalMatch = (state: GameState, match: Match): boolean => {
+  if (match.type !== 'league') {
+    return false
   }
+  const selectedClub = getClub(state.clubs, state.selectedClubId)
+  return match.competitionId !== getClubCompetitionId(selectedClub)
 }
+
+// БЫСТРО РАССЧИТЫВАЕТ МАТЧ ДРУГОГО ДИВИЗИОНА
+const simulateFastScheduledMatch = (state: GameState, match: Match): MatchResult =>
+  simulateFastMatch({
+    matchId: match.id,
+    homeClub: getClub(state.clubs, match.homeClubId),
+    awayClub: getClub(state.clubs, match.awayClubId),
+    neutralVenue: match.neutralVenue,
+    allowPenaltyShootout: false,
+    seed: hashString(match.id) + state.season * 10_000,
+  })
 
 const simulateWorldLeagueOrder = (state: GameState, order: number): GameState => {
   const hydrated = ensureWorldCompetitions(state)
@@ -480,6 +506,7 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
     }
 
     const clubs = worldClubs[championshipId]
+    const injuredPlayerIds = new Set<string>()
     worldMatches[championshipId] = worldMatches[championshipId].map((match) => {
       if (match.order !== order || match.status !== 'scheduled') {
         return match
@@ -487,25 +514,32 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
 
       const homeClub = getClub(clubs, match.homeClubId)
       const awayClub = getClub(clubs, match.awayClubId)
-      const lineups = getAutoLineupsForMatch(clubs, match)
-      const result = simulateMatch({
+      const result = simulateFastMatch({
         matchId: match.id,
         homeClub,
         awayClub,
-        homeLineup: lineups.home,
-        awayLineup: lineups.away,
         neutralVenue: match.neutralVenue,
         allowPenaltyShootout: false,
         seed: hashString(match.id) + hydrated.season * 10_000,
       })
+      for (const injury of result.injuries ?? []) {
+        injuredPlayerIds.add(injury.playerId)
+      }
 
       return {
         ...match,
         status: 'played' as const,
         result,
-        lineups,
       }
     })
+    if (injuredPlayerIds.size) {
+      worldClubs[championshipId] = clubs.map((club) => ({
+        ...club,
+        squad: club.squad.map((player) =>
+          injuredPlayerIds.has(player.id) ? { ...player, isInjured: true } : player,
+        ),
+      }))
+    }
   }
 
   return {
@@ -579,9 +613,15 @@ const simulateOrder = (
   )
 
   for (const match of matchesForOrder) {
-    const lineups = getLineupsForMatch(nextState, match)
     if (userResult && match.id === userResult.matchId) {
+      const lineups = getLineupsForMatch(nextState, match)
       nextState = completeMatch(nextState, match, userResult.result, lineups)
+    } else if (isFastLocalMatch(nextState, match)) {
+      nextState = completeFastMatch(
+        nextState,
+        match,
+        simulateFastScheduledMatch(nextState, match),
+      )
     } else {
       const simulated = simulateScheduledMatch(nextState, match)
       nextState = completeMatch(nextState, match, simulated.result, simulated.lineups)
@@ -589,6 +629,69 @@ const simulateOrder = (
   }
 
   return simulateWorldLeagueOrder(advanceCupAndRefreshTables(nextState), order)
+}
+
+// ЗАРАНЕЕ РАССЧИТЫВАЕТ ФОНОВЫЕ МАТЧИ ИГРОВОГО ДНЯ
+export const prepareUserMatchDay = (state: GameState, matchId: string): GameState => {
+  const userMatch = state.matches.find((match) => match.id === matchId)
+  if (!userMatch) {
+    throw new Error(`Match not found: ${matchId}`)
+  }
+
+  const orders = [
+    ...new Set(
+      state.matches
+        .filter(
+          (match) =>
+            match.status === 'scheduled' && match.id !== matchId && match.order <= userMatch.order,
+        )
+        .map((match) => match.order),
+    ),
+    userMatch.order,
+  ].sort((left, right) => left - right)
+
+  let nextState = state
+  for (const order of [...new Set(orders)]) {
+    const matchesForOrder = nextState.matches.filter(
+      (match) => match.order === order && match.status === 'scheduled' && match.id !== matchId,
+    )
+
+    for (const match of matchesForOrder) {
+      if (isFastLocalMatch(nextState, match)) {
+        nextState = completeFastMatch(
+          nextState,
+          match,
+          simulateFastScheduledMatch(nextState, match),
+        )
+      } else {
+        const simulated = simulateScheduledMatch(nextState, match)
+        nextState = completeMatch(nextState, match, simulated.result, simulated.lineups)
+      }
+    }
+
+    if (order < userMatch.order) {
+      nextState = advanceCupAndRefreshTables(nextState)
+    }
+    nextState = simulateWorldLeagueOrder(nextState, order)
+  }
+
+  return nextState
+}
+
+// ДОБАВЛЯЕТ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЯ В ГОТОВЫЙ ИГРОВОЙ ДЕНЬ
+export const completePreparedUserMatchDay = (
+  state: GameState,
+  matchId: string,
+  result: MatchResult,
+): GameState => {
+  const match = state.matches.find((candidate) => candidate.id === matchId)
+  if (!match) {
+    throw new Error(`Match not found: ${matchId}`)
+  }
+
+  const lineups = getLineupsForMatch(state, match)
+  const completed = completeMatch(state, match, result, lineups)
+  return simulateWorldLeagueOrder(advanceCupAndRefreshTables(completed), match.order)
 }
 
 export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState => {
@@ -624,13 +727,32 @@ export const completeUserMatchDay = (
   matchId: string,
   result: MatchResult,
 ): GameState => {
-  const match = state.matches.find((candidate) => candidate.id === matchId)
-  if (!match) {
-    throw new Error(`Match not found: ${matchId}`)
-  }
+  const prepared = prepareUserMatchDay(state, matchId)
+  return settleAiOnlyDaysUntilNextUserMatch(
+    completePreparedUserMatchDay(prepared, matchId, result),
+  )
+}
 
-  const afterOrder = simulateOrder(state, match.order, { matchId, result })
-  return settleAiOnlyDaysUntilNextUserMatch(afterOrder)
+// СОХРАНЯЕТ БЫСТРЫЙ РЕЗУЛЬТАТ БЕЗ СТАТИСТИКИ ИГРОКОВ
+const completeFastMatch = (state: GameState, match: Match, result: MatchResult): GameState => {
+  const injuredPlayerIds = new Set(result.injuries?.map((injury) => injury.playerId) ?? [])
+  return {
+    ...state,
+    clubs: injuredPlayerIds.size
+      ? state.clubs.map((club) => ({
+          ...club,
+          squad: club.squad.map((player) =>
+            injuredPlayerIds.has(player.id) ? { ...player, isInjured: true } : player,
+          ),
+        }))
+      : state.clubs,
+    matches: state.matches.map((candidate) =>
+      candidate.id === match.id
+        ? { ...candidate, status: 'played' as const, result, lineups: undefined }
+        : candidate,
+    ),
+    lastCompletedOrder: Math.max(state.lastCompletedOrder, match.order),
+  }
 }
 
 export const getNextUserMatch = (state: GameState): Match | undefined => {
