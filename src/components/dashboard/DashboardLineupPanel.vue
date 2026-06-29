@@ -11,10 +11,24 @@ interface StarterView {
   player?: Player
   x: number
   y: number
+  mobileX: number
+  mobileY: number
+  mobileLineSize: number
 }
 
 const squadStore = useSquadStore()
 const { t } = useI18n()
+
+const mobileLineY = [15, 35, 55, 76, 93]
+
+// ВОЗВРАЩАЕТ ЛИНИЮ ИГРОКА НА МОБИЛЬНОМ ПОЛЕ
+const getMobileLine = (y: number): number => {
+  if (y <= 28) return 0
+  if (y <= 43) return 1
+  if (y <= 65) return 2
+  if (y <= 85) return 3
+  return 4
+}
 
 // СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
@@ -29,17 +43,44 @@ const starters = computed<StarterView[]>(() => {
     return []
   }
 
-  return squadStore.slots.map((slot) => {
+  const slots = squadStore.slots
+  const lines = slots.reduce<Map<number, typeof slots>>((result, slot) => {
+    const line = getMobileLine(slot.y)
+    result.set(line, [...(result.get(line) ?? []), slot])
+    return result
+  }, new Map())
+
+  return slots.map((slot) => {
     const playerId = lineup.starters[slot.id]
+    const line = getMobileLine(slot.y)
+    const lineSlots = [...(lines.get(line) ?? [])].sort((first, second) => first.x - second.x)
+    const lineIndex = lineSlots.findIndex((lineSlot) => lineSlot.id === slot.id)
+    const mobilePadding = lineSlots.length <= 2 ? 35 : lineSlots.length === 3 ? 20 : 10
+    const mobileX =
+      lineSlots.length === 1
+        ? 50
+        : mobilePadding +
+          lineIndex * ((100 - mobilePadding * 2) / Math.max(1, lineSlots.length - 1))
+
     return {
       key: slot.id,
       label: slot.label,
       player: playerId ? playersById.value.get(playerId) : undefined,
       x: slot.x,
       y: slot.y,
+      mobileX,
+      mobileY: mobileLineY[line] ?? slot.y,
+      mobileLineSize: lineSlots.length,
     }
   })
 })
+
+// ВОЗВРАЩАЕТ ШИРИНУ МОБИЛЬНОЙ КАРТОЧКИ
+const mobileCardClass = (lineSize: number): string => {
+  if (lineSize >= 5) return 'w-15'
+  if (lineSize === 4) return 'w-[65px]'
+  return 'w-[80px]'
+}
 
 // ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
 const ratingClass = (rating?: number): string => {
@@ -92,16 +133,24 @@ const ratingClass = (rating?: number): string => {
       <div
         v-for="starter in starters"
         :key="starter.key"
-        class="absolute grid w-[92px] -translate-x-1/2 -translate-y-1/2 justify-items-center gap-1 rounded-lg border border-white/15 bg-slate-950/80 px-2 py-1.5 text-center text-white shadow-[0_10px_22px_rgba(2,6,23,0.24)]"
-        :style="{ left: `${starter.x}%`, top: `${starter.y}%` }"
+        class="absolute left-[var(--mobile-x)] top-[var(--mobile-y)] grid -translate-x-1/2 -translate-y-1/2 justify-items-center gap-0.5 rounded-md border border-white/15 bg-slate-950/80 px-1 py-1.5 text-center text-white shadow-[0_10px_22px_rgba(2,6,23,0.24)] sm:left-[var(--desktop-x)] sm:top-[var(--desktop-y)] sm:w-[92px] sm:gap-1 sm:rounded-lg sm:px-2 sm:py-1.5"
+        :class="mobileCardClass(starter.mobileLineSize)"
+        :style="{
+          '--mobile-x': `${starter.mobileX}%`,
+          '--mobile-y': `${starter.mobileY}%`,
+          '--desktop-x': `${starter.x}%`,
+          '--desktop-y': `${starter.y}%`,
+        }"
       >
         <span
-          class="grid h-7 min-w-7 place-items-center rounded-full border-2 border-white/75 text-[0.68rem] font-black"
+          class="grid h-6 min-w-6 place-items-center rounded-full border border-white/75 text-[9px] font-black sm:h-7 sm:min-w-7 sm:border-2 sm:text-[0.68rem]"
           :class="ratingClass(starter.player?.rating)"
         >
           {{ starter.player?.rating ?? '?' }}
         </span>
-        <span class="max-w-full truncate text-[0.68rem] font-black uppercase">
+        <span
+          class="max-w-full truncate text-[8px] font-black uppercase leading-none sm:text-[0.68rem] sm:leading-normal"
+        >
           {{ starter.player?.lastName ?? starter.label }}
         </span>
       </div>

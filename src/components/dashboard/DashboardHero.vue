@@ -38,8 +38,10 @@ const { t } = useI18n()
     ></div>
 
     <!-- ОСНОВНАЯ ИНФОРМАЦИЯ И ПОКАЗАТЕЛИ КЛУБА -->
-    <div class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:p-8">
-      <div class="flex items-center gap-5">
+    <div
+      class="grid gap-4 p-3 sm:gap-6 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:p-8"
+    >
+      <div class="flex items-center gap-3 sm:gap-5">
         <ClubBadge
           :club="club"
           size="lg"
@@ -57,36 +59,42 @@ const { t } = useI18n()
         </div>
       </div>
 
-      <div class="grid grid-cols-3 gap-2 sm:gap-3">
+      <div class="grid min-w-0 grid-cols-3 gap-1.5 sm:gap-3">
         <div
-          class="min-w-24 rounded-xl border border-white/10 bg-white/[0.07] px-3 py-3 backdrop-blur sm:min-w-28 sm:px-4"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
         >
-          <div class="text-[9px] font-black uppercase tracking-widest text-slate-400">
+          <div
+            class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
+          >
             {{ t('dashboard.place') }}
           </div>
-          <div class="mt-1 text-xl font-black">
+          <div class="mt-1 truncate text-base font-black sm:text-xl">
             {{ position ?? t('common.dash')
-            }}<span class="text-xs text-slate-400"> / {{ leagueRowsCount }}</span>
+            }}<span class="text-[9px] text-slate-400 sm:text-xs"> / {{ leagueRowsCount }}</span>
           </div>
         </div>
         <div
-          class="min-w-24 rounded-xl border border-white/10 bg-white/[0.07] px-3 py-3 backdrop-blur sm:min-w-28 sm:px-4"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
         >
-          <div class="text-[9px] font-black uppercase tracking-widest text-slate-400">
+          <div
+            class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
+          >
             {{ t('dashboard.budget') }}
           </div>
-          <div class="mt-1 truncate text-lg font-black text-emerald-300">
+          <div class="mt-1 truncate text-sm font-black text-emerald-300 sm:text-lg">
             {{ formatMoney(club.budget) }}
           </div>
         </div>
         <div
-          class="min-w-24 rounded-xl border border-white/10 bg-white/[0.07] px-3 py-3 backdrop-blur sm:min-w-28 sm:px-4"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
         >
-          <div class="text-[9px] font-black uppercase tracking-widest text-slate-400">
+          <div
+            class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
+          >
             {{ t('dashboard.rating') }}
           </div>
-          <div class="mt-1 flex items-baseline gap-1 text-xl font-black">
-            {{ club.rating }}<span class="text-xs text-slate-400">/ 100</span>
+          <div class="mt-1 flex items-baseline gap-0.5 truncate text-base font-black sm:gap-1 sm:text-xl">
+            {{ club.rating }}<span class="text-[9px] text-slate-400 sm:text-xs">/ 100</span>
           </div>
         </div>
       </div>

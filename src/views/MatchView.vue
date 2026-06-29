@@ -323,58 +323,82 @@ onBeforeUnmount(clearTimer)
   <section v-if="match && homeClub && awayClub" class="space-y-5">
     <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
     <div
-      class="rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
+      class="rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5"
     >
-      <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
-        <div class="flex items-center gap-3">
-          <ClubBadge :club="homeClub" size="lg" />
-          <div>
-            <h1 class="text-xl font-bold text-slate-950">{{ homeClub.name }}</h1>
-            <div class="text-sm text-slate-500">Хозяева</div>
+      <div
+        class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-4"
+      >
+        <div class="flex min-w-0 items-center gap-1.5 sm:gap-3">
+          <ClubBadge
+            :club="homeClub"
+            size="lg"
+            class="!h-10 !w-10 !text-xs sm:!h-16 sm:!w-16 sm:!text-lg"
+          />
+          <div class="min-w-0">
+            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
+              {{ homeClub.name }}
+            </h1>
+            <div class="hidden text-sm text-slate-500 sm:block">Хозяева</div>
           </div>
         </div>
         <div class="text-center">
           <div
-            class="min-w-[156px] rounded-lg bg-[linear-gradient(135deg,#10251f,#17603d)] px-5 py-2.5 text-[2.75rem] font-black leading-none text-emerald-50 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]"
+            class="min-w-[72px] rounded-lg bg-[linear-gradient(135deg,#10251f,#17603d)] px-2 py-2 text-[1.75rem] font-black leading-none text-emerald-50 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] sm:min-w-[156px] sm:px-5 sm:py-2.5 sm:text-[2.75rem]"
           >
             {{ match.result?.homeGoals ?? visibleSnapshot.homeGoals }}:{{
               match.result?.awayGoals ?? visibleSnapshot.awayGoals
             }}
           </div>
-          <div class="mt-1 text-sm font-semibold text-slate-500">
+          <div class="mt-1 text-[10px] font-semibold text-slate-500 sm:text-sm">
             {{ match.status === 'played' ? 'Матч завершен' : `${visibleSnapshot.minute}'` }}
           </div>
-          <div class="mt-3 grid min-w-[220px] justify-items-center gap-2">
-            <template v-if="match.status === 'scheduled' && isPlayableMatch">
-              <div
-                v-if="canSimulate"
-                class="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-extrabold text-emerald-800"
-              >
-                Симуляция идет автоматически
-              </div>
-              <Button
-                class="min-w-[220px]"
-                :disabled="!canSimulate"
-                severity="success"
-                label="Мгновенный расчет"
-                @click="instantResult"
-              />
-              <RouterLink v-if="!userValidation.valid" to="/squad">
-                <Button class="min-w-[220px]" severity="danger" label="Исправить состав" />
-              </RouterLink>
-            </template>
-            <template v-else-if="match.status === 'played'">
-              <Button class="min-w-[220px]" label="Назад к обзору" @click="goBack" />
-            </template>
-          </div>
         </div>
-        <div class="flex items-center gap-3 md:justify-end">
-          <div class="text-right">
-            <h1 class="text-xl font-bold text-slate-950">{{ awayClub.name }}</h1>
-            <div class="text-sm text-slate-500">Гости</div>
+        <div class="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
+          <div class="min-w-0 text-right">
+            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
+              {{ awayClub.name }}
+            </h1>
+            <div class="hidden text-sm text-slate-500 sm:block">Гости</div>
           </div>
-          <ClubBadge :club="awayClub" size="lg" />
+          <ClubBadge
+            :club="awayClub"
+            size="lg"
+            class="!h-10 !w-10 !text-xs sm:!h-16 sm:!w-16 sm:!text-lg"
+          />
         </div>
+      </div>
+
+      <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
+      <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
+        <template v-if="match.status === 'scheduled' && isPlayableMatch">
+          <div
+            v-if="canSimulate"
+            class="rounded-lg bg-emerald-50 px-2 py-1.5 text-xs font-extrabold text-emerald-800 sm:px-3 sm:py-2 sm:text-sm"
+          >
+            Симуляция идет автоматически
+          </div>
+          <Button
+            class="w-full max-w-[180px] sm:min-w-[220px]"
+            :disabled="!canSimulate"
+            severity="success"
+            label="Мгновенный расчет"
+            @click="instantResult"
+          />
+          <RouterLink v-if="!userValidation.valid" to="/squad" class="w-full text-center">
+            <Button
+              class="w-full max-w-[180px] sm:min-w-[220px]"
+              severity="danger"
+              label="Исправить состав"
+            />
+          </RouterLink>
+        </template>
+        <template v-else-if="match.status === 'played'">
+          <Button
+            class="w-full max-w-[180px] sm:min-w-[220px]"
+            label="Назад к обзору"
+            @click="goBack"
+          />
+        </template>
       </div>
 
       <div
