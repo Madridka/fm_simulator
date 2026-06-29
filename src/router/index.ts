@@ -63,10 +63,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: () => {
-      const gameStore = useGameStore()
-      return gameStore.game ? { name: 'dashboard' } : { name: 'select-club' }
-    },
+    name: 'not-found',
+    component: () => import('@/views/NotFoundView.vue'),
   },
 ]
 
@@ -77,7 +75,12 @@ export const router = createRouter({
 
 router.beforeEach((to) => {
   const gameStore = useGameStore()
-  if (!gameStore.game && to.name !== 'home' && to.name !== 'select-club') {
+  if (
+    !gameStore.game &&
+    to.name !== 'home' &&
+    to.name !== 'select-club' &&
+    to.name !== 'not-found'
+  ) {
     return { name: 'select-club' }
   }
 

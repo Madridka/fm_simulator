@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>404 — Страница не найдена | Футбольный менеджер</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; margin: 0; }
+      body {
+        position: relative;
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 24px;
+        overflow: hidden;
+        background: #07121b;
+        color: #f4f7f2;
+        font-family: Arial, sans-serif;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: url('/fm_simulator/images/404-stadium-desktop-v2.png') center / cover no-repeat;
+      }
+      main {
+        width: min(620px, 100%);
+        padding: 42px 28px;
+        border: 1px solid rgba(167, 220, 69, .45);
+        background: rgba(5, 15, 22, .94);
+        text-align: center;
+      }
+      strong {
+        display: block;
+        color: #eef0ed;
+        font: 900 clamp(110px, 28vw, 190px) / .8 Impact, sans-serif;
+        text-shadow: 3px 4px 0 #a1bd70;
+      }
+      h1 { margin: 34px 0 12px; color: #a7dc45; text-transform: uppercase; }
+      p { margin: 0; color: #c8ced0; font-size: 18px; line-height: 1.5; }
+      a {
+        display: inline-block;
+        margin-top: 26px;
+        padding: 16px 28px;
+        border: 1px solid #c8f37a;
+        background: #5d8f25;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      @media (max-width: 700px), (max-width: 1000px) and (orientation: portrait) {
+        body::before {
+          background-image: url('/fm_simulator/images/404-stadium-mobile.png');
+          background-position: 60% center;
+        }
+      }
+    </style>
+    <script>
+      ;(() => {
+        const appBase = '/fm_simulator/'
+        const redirectKey = 'fm-simulator:404-path'
+        const requestedPath = window.location.pathname + window.location.search + window.location.hash
+
+        try {
+          window.sessionStorage.setItem(redirectKey, requestedPath)
+        } catch {
+          // A direct root redirect remains available without sessionStorage.
+        }
+
+        window.location.replace(appBase)
+      })()
+    </script>
+  </head>
+  <body>
+    <main>
+      <strong>404</strong>
+      <h1>Не попал в створ</h1>
+      <p>Похоже, эта страница пробила мимо ворот.</p>
+      <a href="/fm_simulator/">На главную</a>
+    </main>
+  </body>
+</html>
