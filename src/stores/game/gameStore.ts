@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
+import { gameConfig } from '@/config/gameConfig'
 import { getChampionship } from '@/data/clubs'
 import {
   completeUserMatchDay,
@@ -12,6 +13,7 @@ import {
   refreshLineupsAfterSquadChange,
 } from '@/domain/season/seasonService'
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
+import { useToastStore } from '@/stores/ui/toastStore'
 import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
 
 type MatchDayWorkerResponse =
@@ -20,8 +22,9 @@ type MatchDayWorkerResponse =
   | { type: 'error'; error: string }
 
 export const useGameStore = defineStore('game', () => {
+  const toastStore = useToastStore()
   const savedGame = gameSaveRepository.load()
-  const game = ref<GameState | null>(savedGame ? ensureWorldCompetitions(savedGame) : null)
+  const game = ref<GameState | null>(savedGame)
   const activeMatchId = ref<string | null>(null)
   let matchDayWorker: Worker | null = null
   let preparedMatchId: string | null = null
@@ -74,12 +77,24 @@ export const useGameStore = defineStore('game', () => {
   )
 
   const seasonCanFinish = computed<boolean>(() =>
-    game.value ? isSeasonReadyToFinish(game.value) : false,
+    game.value
+      ? game.value.season < gameConfig.maximumSeasons && isSeasonReadyToFinish(game.value)
+      : false,
+  )
+
+  const isFinalSeason = computed<boolean>(
+    () => (game.value?.season ?? 0) >= gameConfig.maximumSeasons,
   )
 
   const save = (): void => {
     if (game.value) {
-      gameSaveRepository.save(game.value)
+      const result = gameSaveRepository.save(game.value)
+      if (!result.saved) {
+        toastStore.show(
+          'Игра продолжена, но сохранение не записано: хранилище браузера переполнено.',
+          'warning',
+        )
+      }
     }
   }
 
@@ -261,7 +276,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const finishCurrentSeason = (): void => {
-    if (!game.value || !isSeasonReadyToFinish(game.value)) {
+    if (!game.value || !seasonCanFinish.value) {
       return
     }
     updateGame(finishSeason(game.value))
@@ -274,6 +289,7 @@ export const useGameStore = defineStore('game', () => {
     nextMatch,
     activeMatch,
     seasonCanFinish,
+    isFinalSeason,
     startNewGame,
     resetGame,
     openMatch,

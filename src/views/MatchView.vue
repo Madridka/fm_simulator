@@ -623,19 +623,6 @@ onBeforeUnmount(clearTimer)
           {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
         </div>
 
-        <div
-          v-if="detailedResult?.injuries?.length"
-          class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3"
-        >
-          <div v-if="detailedResult?.injuries?.length">
-            <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Травмы</h3>
-            <div class="mt-2 space-y-1 text-sm text-slate-700">
-              <div v-for="injury in detailedResult.injuries" :key="injury.playerId">
-                {{ injury.minute ? `${injury.minute}' · ` : '' }}{{ playerName(injury.playerId) }}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- ТЕКСТОВАЯ ТРАНСЛЯЦИЯ -->

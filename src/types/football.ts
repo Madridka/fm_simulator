@@ -15,6 +15,7 @@ export interface Player {
   value: number
   salary: number
   isInjured: boolean
+  injuryUntilOrder?: number
 }
 
 export interface Club {
@@ -90,6 +91,7 @@ export interface InjuryEvent {
   minute?: number
   clubId: string
   playerId: string
+  durationMatchdays?: number
 }
 
 export interface SubstitutionEvent {

@@ -1,9 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import {
+  completePreparedUserMatchDay,
   createInitialGameState,
   finishSeason,
+  getNextUserMatch,
   getNextDivisionId,
+  getUserStarterIds,
+  prepareUserMatchDay,
+  recoverInjuredPlayersBeforeOrder,
 } from '@/domain/season/seasonService'
+import { gameConfig } from '@/config/gameConfig'
+import type { MatchResult } from '@/types/football'
 
 describe('seasonService', () => {
   it('promotes top two and relegates bottom two with top and bottom division limits', () => {
@@ -32,5 +39,73 @@ describe('seasonService', () => {
     expect(nextSeason.season).toBe(2)
     expect(nextSeason.clubs).toHaveLength(clubsCount)
     expect(nextSeason.matches.length).toBeGreaterThan(0)
+  })
+
+  it('keeps an injured player out for the configured matchdays and then recovers him', () => {
+    const initial = createInitialGameState('russia', 'zenit')
+    const match = getNextUserMatch(initial)
+    expect(match).toBeDefined()
+
+    const prepared = prepareUserMatchDay(initial, match!.id)
+    const playerId = getUserStarterIds(prepared)[0]
+    expect(playerId).toBeDefined()
+
+    const result: MatchResult = {
+      detail: 'full',
+      homeGoals: 0,
+      awayGoals: 0,
+      goals: [],
+      stats: {
+        home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+        away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+      },
+      bestPlayerId: playerId!,
+      injuries: [
+        {
+          clubId: initial.selectedClubId,
+          playerId: playerId!,
+          durationMatchdays: 2,
+        },
+      ],
+    }
+    const completed = completePreparedUserMatchDay(prepared, match!.id, result)
+    const injuredPlayer = completed.clubs
+      .flatMap((club) => club.squad)
+      .find((player) => player.id === playerId)
+
+    expect(injuredPlayer?.isInjured).toBe(true)
+    expect(injuredPlayer?.injuryUntilOrder).toBe(match!.order + 2)
+
+    const stillInjured = recoverInjuredPlayersBeforeOrder(
+      completed.clubs,
+      match!.order + 2,
+    )
+      .flatMap((club) => club.squad)
+      .find((player) => player.id === playerId)
+    const recovered = recoverInjuredPlayersBeforeOrder(
+      completed.clubs,
+      match!.order + 3,
+    )
+      .flatMap((club) => club.squad)
+      .find((player) => player.id === playerId)
+
+    expect(stillInjured?.isInjured).toBe(true)
+    expect(recovered?.isInjured).toBe(false)
+    expect(recovered?.injuryUntilOrder).toBeUndefined()
+  })
+
+  it('does not create a season beyond the configured career limit', () => {
+    const state = createInitialGameState('russia', 'zenit')
+    const finalSeasonState = {
+      ...state,
+      season: gameConfig.maximumSeasons,
+      matches: state.matches.map((match) => ({ ...match, status: 'played' as const })),
+      cup: { ...state.cup, championClubId: state.selectedClubId },
+    }
+
+    const result = finishSeason(finalSeasonState)
+
+    expect(result).toBe(finalSeasonState)
+    expect(result.season).toBe(gameConfig.maximumSeasons)
   })
 })

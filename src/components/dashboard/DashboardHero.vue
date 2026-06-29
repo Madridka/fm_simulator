@@ -13,6 +13,7 @@ const props = defineProps<{
   position?: number
   season: number
   seasonCanFinish: boolean
+  isFinalSeason: boolean
 }>()
 
 const emit = defineEmits<{
@@ -110,6 +111,9 @@ const { t } = useI18n()
       <span
         >{{ t('dashboard.season') }}: <strong class="text-white">{{ season }}</strong></span
       >
+      <span v-if="isFinalSeason" class="font-black text-amber-300">
+        {{ t('dashboard.finalSeason') }}
+      </span>
       <button
         v-if="seasonCanFinish"
         type="button"

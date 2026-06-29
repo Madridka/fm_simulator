@@ -132,6 +132,16 @@ const ratingClass = (rating: number): string => {
 // ВОЗВРАЩАЕТ ИГРОКА НА УКАЗАННОЙ ПОЗИЦИИ
 const slotPlayer = (slotId: string): Player | undefined => assignedPlayerBySlot.value[slotId]
 
+// ПОКАЗЫВАЕТ СРОК ВОЗВРАЩЕНИЯ ТРАВМИРОВАННОГО ИГРОКА
+const injuryLabel = (player: Player | undefined): string => {
+  if (!player?.isInjured) {
+    return ''
+  }
+  return player.injuryUntilOrder
+    ? `Вернется после ${player.injuryUntilOrder}-го тура`
+    : 'Травма'
+}
+
 // ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
 const setFormation = (event: Event): void => {
   squadStore.setFormation((event.target as HTMLSelectElement).value as Formation)
@@ -582,8 +592,13 @@ onBeforeRouteLeave(() => {
               <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
               >
-                Форма {{ slotPlayer(slot.id)?.form }} · Готовность
-                {{ slotPlayer(slot.id)?.fitness }}
+                <template v-if="slotPlayer(slot.id)?.isInjured">
+                  {{ injuryLabel(slotPlayer(slot.id)) }}
+                </template>
+                <template v-else>
+                  Форма {{ slotPlayer(slot.id)?.form }} · Готовность
+                  {{ slotPlayer(slot.id)?.fitness }}
+                </template>
               </span>
               <span class="hidden h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35 sm:block">
                 <span
@@ -670,7 +685,11 @@ onBeforeRouteLeave(() => {
             >
             <span
               class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.58rem] font-bold text-slate-200/75"
-              >Форма {{ player.form }} · Готовность {{ player.fitness }}</span
+              >{{
+                player.isInjured
+                  ? injuryLabel(player)
+                  : `Форма ${player.form} · Готовность ${player.fitness}`
+              }}</span
             >
             <span class="h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35"
               ><span
@@ -742,8 +761,11 @@ onBeforeRouteLeave(() => {
                 >
                 <span
                   class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] text-slate-500"
-                  >Форма {{ player.form }} · Готовность {{ player.fitness }} ·
-                  {{ player.age }} лет</span
+                  >{{
+                    player.isInjured
+                      ? injuryLabel(player)
+                      : `Форма ${player.form} · Готовность ${player.fitness} · ${player.age} лет`
+                  }}</span
                 >
               </span>
               <span

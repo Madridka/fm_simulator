@@ -1,4 +1,5 @@
 export interface GameConfig {
+  maximumSeasons: number
   divisionsCount: number
   clubsPerDivision: number
   promotedClubsCount: number
@@ -44,6 +45,7 @@ export const cupRoundOrders: Record<string, number> = {
 }
 
 export const gameConfig: GameConfig = {
+  maximumSeasons: 6,
   divisionsCount: 4,
   clubsPerDivision: 10,
   promotedClubsCount: 2,

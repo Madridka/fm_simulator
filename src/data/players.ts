@@ -130,6 +130,8 @@ const realPlayerNames: RealPlayerName[] = [
   { firstName: 'Raul', lastName: 'Jimenez' },
   { firstName: 'Alphonso', lastName: 'Davies' },
   { firstName: 'Jonathan', lastName: 'David' },
+  { firstName: 'Бухающий', lastName: 'Фонден' },
+  { firstName: 'Сергей', lastName: 'Гей' },
 ]
 
 const squadPositions: PlayerPosition[] = [

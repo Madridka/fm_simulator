@@ -1,4 +1,5 @@
 import { gameConfig } from '@/config/gameConfig'
+import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import { championships, getChampionshipClubs } from '@/data/clubs'
 import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupService'
 import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
@@ -31,6 +32,86 @@ const cloneClub = (club: Club): Club => ({
   ...club,
   squad: club.squad.map(clonePlayer),
 })
+
+const getInjuryDuration = (durationMatchdays: number | undefined): number =>
+  durationMatchdays ?? matchSimulationConfig.injury.minDurationMatchdays
+
+const applyInjuriesToClubs = (
+  clubs: Club[],
+  injuries: MatchResult['injuries'],
+  matchOrder: number,
+): Club[] => {
+  if (!injuries?.length) {
+    return clubs
+  }
+
+  const injuryUntilOrderByPlayer = new Map(
+    injuries.map((injury) => [
+      injury.playerId,
+      matchOrder + getInjuryDuration(injury.durationMatchdays),
+    ]),
+  )
+
+  return clubs.map((club) => ({
+    ...club,
+    squad: club.squad.map((player) => {
+      const newInjuryUntilOrder = injuryUntilOrderByPlayer.get(player.id)
+      if (newInjuryUntilOrder === undefined) {
+        return { ...player }
+      }
+
+      return {
+        ...player,
+        isInjured: true,
+        injuryUntilOrder: Math.max(player.injuryUntilOrder ?? 0, newInjuryUntilOrder),
+      }
+    }),
+  }))
+}
+
+// ВОССТАНАВЛИВАЕТ ИГРОКОВ ПЕРЕД ПЕРВЫМ МАТЧЕМ ПОСЛЕ СРОКА ТРАВМЫ
+export const recoverInjuredPlayersBeforeOrder = (
+  clubs: readonly Club[],
+  order: number,
+): Club[] =>
+  clubs.map((club) => ({
+    ...club,
+    squad: club.squad.map((player) => {
+      if (!player.isInjured) {
+        return { ...player, injuryUntilOrder: undefined }
+      }
+
+      // Старые сохранения не содержат срок травмы: такой игрок вернется в ближайшем туре.
+      if (player.injuryUntilOrder === undefined || player.injuryUntilOrder < order) {
+        return { ...player, isInjured: false, injuryUntilOrder: undefined }
+      }
+
+      return { ...player }
+    }),
+  }))
+
+const recoverStateBeforeOrder = (state: GameState, order: number): GameState =>
+  order > state.lastCompletedOrder
+    ? { ...state, clubs: recoverInjuredPlayersBeforeOrder(state.clubs, order) }
+    : state
+
+const recoverStateAfterCompletedOrder = (state: GameState, order: number): GameState => {
+  const clubs = recoverInjuredPlayersBeforeOrder(state.clubs, order + 1)
+  const worldClubs = state.worldClubs
+    ? Object.fromEntries(
+        Object.entries(state.worldClubs).map(([championshipId, championshipClubs]) => [
+          championshipId,
+          championshipId === state.championshipId
+            ? clubs.map(cloneClub)
+            : championshipClubs
+              ? recoverInjuredPlayersBeforeOrder(championshipClubs, order + 1)
+              : championshipClubs,
+        ]),
+      )
+    : undefined
+
+  return { ...state, clubs, worldClubs }
+}
 
 const championshipIds = Object.keys(championships) as ChampionshipId[]
 
@@ -193,13 +274,14 @@ export const createInitialGameState = (
 }
 
 export const ensureWorldCompetitions = (state: GameState): GameState => {
+  const clubs = recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1)
   const existingWorldClubs = state.worldClubs ?? {}
   const worldClubs = championshipIds.reduce<Record<ChampionshipId, Club[]>>(
     (result, championshipId) => {
       const existingClubs = existingWorldClubs[championshipId]
       result[championshipId] =
         championshipId === state.championshipId
-          ? state.clubs.map(cloneClub)
+          ? clubs.map(cloneClub)
           : existingClubs?.map(cloneClub) ??
             getChampionshipClubs(championshipId).map(cloneClub)
       return result
@@ -230,7 +312,8 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
 
   return {
     ...state,
-    leagueTables: calculateLeagueTables(state.clubs, state.matches),
+    clubs,
+    leagueTables: calculateLeagueTables(clubs, state.matches),
     worldClubs,
     worldMatches,
     worldLeagueTables,
@@ -363,7 +446,9 @@ const applyMatchEffects = (
     }
   }
 
-  const injuredPlayerIds = new Set(result.injuries?.map((injury) => injury.playerId) ?? [])
+  const injuryByPlayerId = new Map(
+    result.injuries?.map((injury) => [injury.playerId, injury]) ?? [],
+  )
 
   const homeWon = result.homeGoals > result.awayGoals || result.winnerClubId === match.homeClubId
   const awayWon = result.awayGoals > result.homeGoals || result.winnerClubId === match.awayClubId
@@ -387,19 +472,30 @@ const applyMatchEffects = (
       10,
     )
 
-    updatePlayerById(clubs, playerId, (player) => ({
-      ...player,
-      isInjured: player.isInjured || injuredPlayerIds.has(player.id),
-      fitness: clamp(player.fitness - random.int(6, 14), 1, 100),
-      form: clamp(
-        player.form +
-          goals * 3 -
-          yellowCards +
-          (teamWon ? random.int(1, 4) : teamLost ? random.int(-4, 0) : random.int(-1, 2)),
-        1,
-        100,
-      ),
-    }))
+    updatePlayerById(clubs, playerId, (player) => {
+      const injury = injuryByPlayerId.get(player.id)
+      const injuryUntilOrder = injury
+        ? Math.max(
+            player.injuryUntilOrder ?? 0,
+            match.order + getInjuryDuration(injury.durationMatchdays),
+          )
+        : player.injuryUntilOrder
+
+      return {
+        ...player,
+        isInjured: player.isInjured || Boolean(injury),
+        injuryUntilOrder,
+        fitness: clamp(player.fitness - random.int(6, 14), 1, 100),
+        form: clamp(
+          player.form +
+            goals * 3 -
+            yellowCards +
+            (teamWon ? random.int(1, 4) : teamLost ? random.int(-4, 0) : random.int(-1, 2)),
+          1,
+          100,
+        ),
+      }
+    })
 
     updatePlayerStats(playerStats, playerId, goals, yellowCards, matchRating)
   }
@@ -505,8 +601,8 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
       continue
     }
 
-    const clubs = worldClubs[championshipId]
-    const injuredPlayerIds = new Set<string>()
+    const clubs = recoverInjuredPlayersBeforeOrder(worldClubs[championshipId], order)
+    worldClubs[championshipId] = clubs
     worldMatches[championshipId] = worldMatches[championshipId].map((match) => {
       if (match.order !== order || match.status !== 'scheduled') {
         return match
@@ -522,9 +618,11 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
         allowPenaltyShootout: false,
         seed: hashString(match.id) + hydrated.season * 10_000,
       })
-      for (const injury of result.injuries ?? []) {
-        injuredPlayerIds.add(injury.playerId)
-      }
+      worldClubs[championshipId] = applyInjuriesToClubs(
+        worldClubs[championshipId],
+        result.injuries,
+        match.order,
+      )
 
       return {
         ...match,
@@ -532,14 +630,6 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
         result,
       }
     })
-    if (injuredPlayerIds.size) {
-      worldClubs[championshipId] = clubs.map((club) => ({
-        ...club,
-        squad: club.squad.map((player) =>
-          injuredPlayerIds.has(player.id) ? { ...player, isInjured: true } : player,
-        ),
-      }))
-    }
   }
 
   return {
@@ -607,7 +697,7 @@ const simulateOrder = (
   order: number,
   userResult?: { matchId: string; result: MatchResult },
 ): GameState => {
-  let nextState = state
+  let nextState = recoverStateBeforeOrder(state, order)
   const matchesForOrder = nextState.matches.filter(
     (match) => match.order === order && match.status === 'scheduled',
   )
@@ -628,7 +718,10 @@ const simulateOrder = (
     }
   }
 
-  return simulateWorldLeagueOrder(advanceCupAndRefreshTables(nextState), order)
+  return recoverStateAfterCompletedOrder(
+    simulateWorldLeagueOrder(advanceCupAndRefreshTables(nextState), order),
+    order,
+  )
 }
 
 // ЗАРАНЕЕ РАССЧИТЫВАЕТ ФОНОВЫЕ МАТЧИ ИГРОВОГО ДНЯ
@@ -652,6 +745,7 @@ export const prepareUserMatchDay = (state: GameState, matchId: string): GameStat
 
   let nextState = state
   for (const order of [...new Set(orders)]) {
+    nextState = recoverStateBeforeOrder(nextState, order)
     const matchesForOrder = nextState.matches.filter(
       (match) => match.order === order && match.status === 'scheduled' && match.id !== matchId,
     )
@@ -673,6 +767,9 @@ export const prepareUserMatchDay = (state: GameState, matchId: string): GameStat
       nextState = advanceCupAndRefreshTables(nextState)
     }
     nextState = simulateWorldLeagueOrder(nextState, order)
+    if (order < userMatch.order) {
+      nextState = recoverStateAfterCompletedOrder(nextState, order)
+    }
   }
 
   return nextState
@@ -691,7 +788,10 @@ export const completePreparedUserMatchDay = (
 
   const lineups = getLineupsForMatch(state, match)
   const completed = completeMatch(state, match, result, lineups)
-  return simulateWorldLeagueOrder(advanceCupAndRefreshTables(completed), match.order)
+  return recoverStateAfterCompletedOrder(
+    simulateWorldLeagueOrder(advanceCupAndRefreshTables(completed), match.order),
+    match.order,
+  )
 }
 
 export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState => {
@@ -735,17 +835,9 @@ export const completeUserMatchDay = (
 
 // СОХРАНЯЕТ БЫСТРЫЙ РЕЗУЛЬТАТ БЕЗ СТАТИСТИКИ ИГРОКОВ
 const completeFastMatch = (state: GameState, match: Match, result: MatchResult): GameState => {
-  const injuredPlayerIds = new Set(result.injuries?.map((injury) => injury.playerId) ?? [])
   return {
     ...state,
-    clubs: injuredPlayerIds.size
-      ? state.clubs.map((club) => ({
-          ...club,
-          squad: club.squad.map((player) =>
-            injuredPlayerIds.has(player.id) ? { ...player, isInjured: true } : player,
-          ),
-        }))
-      : state.clubs,
+    clubs: applyInjuriesToClubs(state.clubs, result.injuries, match.order),
     matches: state.matches.map((candidate) =>
       candidate.id === match.id
         ? { ...candidate, status: 'played' as const, result, lineups: undefined }
@@ -793,6 +885,7 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
         fitness: clamp(player.fitness + 24, 1, 100),
         form: clamp(player.form + random.int(-6, 8), 1, 100),
         isInjured: false,
+        injuryUntilOrder: undefined,
       }
     }),
   }
@@ -897,6 +990,10 @@ const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
 }
 
 export const finishSeason = (state: GameState): GameState => {
+  if (state.season >= gameConfig.maximumSeasons) {
+    return state
+  }
+
   const rewardedAndMoved = applySeasonRewardsAndMovement({
     ...state,
     leagueTables: calculateLeagueTables(state.clubs, state.matches),

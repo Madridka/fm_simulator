@@ -46,6 +46,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
       :position="competitionStore.selectedClubRow?.position"
       :season="gameStore.game.season"
       :season-can-finish="gameStore.seasonCanFinish"
+      :is-final-season="gameStore.isFinalSeason"
       @finish-season="gameStore.finishCurrentSeason()"
     />
 

@@ -1,4 +1,5 @@
 import { gameConfig } from '@/config/gameConfig'
+import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import type {
   CardEvent,
   Club,
@@ -258,12 +259,16 @@ const processAttack = (
   state: RunningState,
   random: RandomGenerator,
 ): void => {
+  const attackConfig = matchSimulationConfig.attack
   const edge = attacking.attack - defending.defense
   const randomness = (random.next() - 0.5) * gameConfig.randomnessFactor
   const shotChance = clamp(
-    0.062 + attacking.attack * 0.00042 + edge * 0.0012 + randomness * 0.035,
-    0.035,
-    0.22,
+    attackConfig.shotChance.base +
+      attacking.attack * attackConfig.shotChance.attackRatingFactor +
+      edge * attackConfig.shotChance.defenseEdgeFactor +
+      randomness * attackConfig.shotChance.randomnessFactor,
+    attackConfig.shotChance.min,
+    attackConfig.shotChance.max,
   )
 
   if (!random.chance(shotChance)) {
@@ -272,8 +277,20 @@ const processAttack = (
 
   attackingStats.shots += 1
 
-  const onTargetChance = clamp(0.34 + edge * 0.0023 + attacking.midfield * 0.0009, 0.23, 0.62)
-  const chanceQuality = clamp(0.08 + edge * 0.0015 + attacking.attack * 0.0007, 0.04, 0.38)
+  const onTargetChance = clamp(
+    attackConfig.shotOnTargetChance.base +
+      edge * attackConfig.shotOnTargetChance.defenseEdgeFactor +
+      attacking.midfield * attackConfig.shotOnTargetChance.midfieldRatingFactor,
+    attackConfig.shotOnTargetChance.min,
+    attackConfig.shotOnTargetChance.max,
+  )
+  const chanceQuality = clamp(
+    attackConfig.xGPerShot.base +
+      edge * attackConfig.xGPerShot.defenseEdgeFactor +
+      attacking.attack * attackConfig.xGPerShot.attackRatingFactor,
+    attackConfig.xGPerShot.min,
+    attackConfig.xGPerShot.max,
+  )
   attackingStats.xG = Number(((attackingStats.xG ?? 0) + chanceQuality).toFixed(2))
   if (!random.chance(onTargetChance)) {
     return
@@ -281,7 +298,13 @@ const processAttack = (
 
   attackingStats.shotsOnTarget += 1
 
-  const goalChance = clamp(0.23 + edge * 0.002 + attacking.attack * 0.0008, 0.08, 0.46)
+  const goalChance = clamp(
+    attackConfig.goalChance.base +
+      edge * attackConfig.goalChance.defenseEdgeFactor +
+      attacking.attack * attackConfig.goalChance.attackRatingFactor,
+    attackConfig.goalChance.min,
+    attackConfig.goalChance.max,
+  )
   if (!random.chance(goalChance)) {
     return
   }
@@ -302,8 +325,16 @@ const processDiscipline = (
   state: RunningState,
   random: RandomGenerator,
 ): void => {
-  const defensiveStylePenalty = team.lineup.tacticalStyle === 'defensive' ? 0.006 : 0
-  const chance = clamp(0.014 + defensiveStylePenalty + (100 - team.defense) * 0.00008, 0.008, 0.035)
+  const config = matchSimulationConfig.yellowCard
+  const defensiveStylePenalty =
+    team.lineup.tacticalStyle === 'defensive' ? config.defensiveStylePenalty : 0
+  const chance = clamp(
+    config.baseChancePerMinute +
+      defensiveStylePenalty +
+      (100 - team.defense) * config.defenseRatingFactor,
+    config.minChancePerMinute,
+    config.maxChancePerMinute,
+  )
   if (!random.chance(chance)) {
     return
   }
@@ -378,7 +409,7 @@ const createCardEvents = (
       card: 'yellow' as const,
     }))
 
-    if (random.chance(0.035)) {
+    if (random.chance(matchSimulationConfig.redCard.chancePerTeam)) {
       cards.push({
         minute: includeMinutes ? random.int(35, 89) : undefined,
         clubId,
@@ -403,19 +434,22 @@ const createInjuryEvents = (
   random: RandomGenerator,
   includeMinutes: boolean,
 ): InjuryEvent[] => {
+  const config = matchSimulationConfig.injury
   const injuries: InjuryEvent[] = []
-  if (random.chance(0.13)) {
+  if (random.chance(config.chancePerTeam)) {
     injuries.push({
-      minute: includeMinutes ? random.int(12, 88) : undefined,
+      minute: includeMinutes ? random.int(config.minMinute, config.maxMinute) : undefined,
       clubId: homeClubId,
       playerId: random.pick(home.players).id,
+      durationMatchdays: random.int(config.minDurationMatchdays, config.maxDurationMatchdays),
     })
   }
-  if (random.chance(0.13)) {
+  if (random.chance(config.chancePerTeam)) {
     injuries.push({
-      minute: includeMinutes ? random.int(12, 88) : undefined,
+      minute: includeMinutes ? random.int(config.minMinute, config.maxMinute) : undefined,
       clubId: awayClubId,
       playerId: random.pick(away.players).id,
+      durationMatchdays: random.int(config.minDurationMatchdays, config.maxDurationMatchdays),
     })
   }
   return injuries
@@ -426,11 +460,16 @@ const createSubstitutions = (
   lineup: PlayedLineup,
   random: RandomGenerator,
 ): SubstitutionEvent[] => {
+  const config = matchSimulationConfig.substitutions
   const substitutes = club.squad.filter(
     (player) => !lineup.starters.includes(player.id) && !player.isInjured,
   )
   const starters = [...lineup.starters]
-  const count = Math.min(random.int(2, 4), substitutes.length, starters.length)
+  const count = Math.min(
+    random.int(config.minCount, config.maxCount),
+    substitutes.length,
+    starters.length,
+  )
 
   return Array.from({ length: count }, (_, index) => {
     const playerOutIndex = random.int(0, starters.length - 1)
@@ -438,7 +477,11 @@ const createSubstitutions = (
     const playerOutId = starters.splice(playerOutIndex, 1)[0] ?? lineup.starters[0] ?? ''
     const playerInId = substitutes.splice(playerInIndex, 1)[0]?.id ?? ''
     return {
-      minute: clamp(random.int(55, 82) + index, 55, 85),
+      minute: clamp(
+        random.int(config.minMinute, config.maxMinute - config.maxCount + 1) + index,
+        config.minMinute,
+        config.maxMinute,
+      ),
       clubId: club.id,
       playerOutId,
       playerInId,
@@ -454,6 +497,27 @@ const createCommentary = (
   homeClub: Club,
   awayClub: Club,
 ): CommentaryEvent[] => {
+  const getPlayerName = (clubId: string, playerId: string): string => {
+    const club = clubId === homeClub.id ? homeClub : awayClub
+    const player = club.squad.find((candidate) => candidate.id === playerId)
+    return player ? formatPlayerName(player.firstName, player.lastName) : playerId
+  }
+
+  const formatMatchdays = (duration: number): string => {
+    const lastTwoDigits = duration % 100
+    const lastDigit = duration % 10
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+      return `${duration} матчей`
+    }
+    if (lastDigit === 1) {
+      return `${duration} матч`
+    }
+    if (lastDigit >= 2 && lastDigit <= 4) {
+      return `${duration} матча`
+    }
+    return `${duration} матчей`
+  }
+
   const substitutionText = (substitution: SubstitutionEvent): string => {
     const club = substitution.clubId === homeClub.id ? homeClub : awayClub
     const playerOut = club.squad.find((player) => player.id === substitution.playerOutId)
@@ -473,9 +537,15 @@ const createCommentary = (
     ...goals.map((goal) => ({ minute: goal.minute, text: `Гол! ${goal.playerName}.` })),
     ...cards.map((card) => ({
       minute: card.minute ?? 0,
-      text: card.card === 'red' ? 'Удаление с поля.' : 'Игрок получает желтую карточку.',
+      text:
+        card.card === 'red'
+          ? `Красная карточка! ${getPlayerName(card.clubId, card.playerId)} удален с поля.`
+          : `Желтая карточка: ${getPlayerName(card.clubId, card.playerId)}.`,
     })),
-    ...injuries.map((injury) => ({ minute: injury.minute ?? 0, text: 'Игрок получил травму.' })),
+    ...injuries.map((injury) => ({
+      minute: injury.minute ?? 0,
+      text: `${getPlayerName(injury.clubId, injury.playerId)} получил травму и пропустит ${formatMatchdays(injury.durationMatchdays ?? matchSimulationConfig.injury.minDurationMatchdays)}.`,
+    })),
     ...substitutions.map((substitution) => ({
       minute: substitution.minute,
       text: substitutionText(substitution),
@@ -632,8 +702,21 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
   const away = createTeamMetrics(input.awayClub, input.awayLineup, false, input.neutralVenue)
   const midfieldDifference = home.midfield - away.midfield
   const homePossession = Math.round(clamp(50 + midfieldDifference * 0.4, 35, 65))
-  const homeXG = clamp(1.2 + (home.attack - away.defense) * 0.025 + (home.overall - away.overall) * 0.01, 0.2, 4.2)
-  const awayXG = clamp(1.05 + (away.attack - home.defense) * 0.025 + (away.overall - home.overall) * 0.01, 0.2, 4.2)
+  const mediumConfig = matchSimulationConfig.mediumMatch
+  const homeXG = clamp(
+    mediumConfig.homeBaseXG +
+      (home.attack - away.defense) * mediumConfig.attackDefenseFactor +
+      (home.overall - away.overall) * mediumConfig.overallRatingFactor,
+    mediumConfig.minXG,
+    mediumConfig.maxXG,
+  )
+  const awayXG = clamp(
+    mediumConfig.awayBaseXG +
+      (away.attack - home.defense) * mediumConfig.attackDefenseFactor +
+      (away.overall - home.overall) * mediumConfig.overallRatingFactor,
+    mediumConfig.minXG,
+    mediumConfig.maxXG,
+  )
   const homeGoals = sampleGoals(homeXG, random)
   const awayGoals = sampleGoals(awayXG, random)
   const goals = [
@@ -642,8 +725,14 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
   ].sort((left, right) => left.minute - right.minute)
   const homeShots = Math.max(homeGoals, Math.round(homeXG * 3.5) + random.int(3, 7))
   const awayShots = Math.max(awayGoals, Math.round(awayXG * 3.5) + random.int(3, 7))
-  const homeYellowCards = random.int(0, 4)
-  const awayYellowCards = random.int(0, 4)
+  const homeYellowCards = random.int(
+    matchSimulationConfig.yellowCard.mediumMatchMin,
+    matchSimulationConfig.yellowCard.mediumMatchMax,
+  )
+  const awayYellowCards = random.int(
+    matchSimulationConfig.yellowCard.mediumMatchMin,
+    matchSimulationConfig.yellowCard.mediumMatchMax,
+  )
   const cards = createCardEvents(
     home,
     away,
@@ -708,20 +797,41 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
 
 export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult => {
   const random = createSeededRandom(input.seed ?? hashString(input.matchId))
-  const homeAdvantage = input.neutralVenue ? 0 : gameConfig.homeAdvantage * 0.018
+  const config = matchSimulationConfig.fastMatch
+  const homeAdvantage = input.neutralVenue
+    ? 0
+    : gameConfig.homeAdvantage * config.homeAdvantageFactor
   const ratingDifference = input.homeClub.rating - input.awayClub.rating
-  const homeXG = clamp(1.15 + ratingDifference * 0.022 + homeAdvantage, 0.15, 4)
-  const awayXG = clamp(1.05 - ratingDifference * 0.022, 0.15, 4)
+  const homeXG = clamp(
+    config.homeBaseXG + ratingDifference * config.ratingFactor + homeAdvantage,
+    config.minXG,
+    config.maxXG,
+  )
+  const awayXG = clamp(
+    config.awayBaseXG - ratingDifference * config.ratingFactor,
+    config.minXG,
+    config.maxXG,
+  )
   const homeGoals = sampleGoals(homeXG, random)
   const awayGoals = sampleGoals(awayXG, random)
   const injuries: InjuryEvent[] = []
   const cards: CardEvent[] = []
 
-  if (random.chance(0.07)) {
+  if (random.chance(matchSimulationConfig.injury.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
-    injuries.push({ clubId: club.id, playerId: random.pick(club.squad).id })
+    const availablePlayers = club.squad.filter((player) => !player.isInjured)
+    if (availablePlayers.length) {
+      injuries.push({
+        clubId: club.id,
+        playerId: random.pick(availablePlayers).id,
+        durationMatchdays: random.int(
+          matchSimulationConfig.injury.minDurationMatchdays,
+          matchSimulationConfig.injury.maxDurationMatchdays,
+        ),
+      })
+    }
   }
-  if (random.chance(0.025)) {
+  if (random.chance(matchSimulationConfig.redCard.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
     cards.push({ clubId: club.id, playerId: random.pick(club.squad).id, card: 'red' })
   }
