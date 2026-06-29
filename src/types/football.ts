@@ -102,6 +102,10 @@ export interface SubstitutionEvent {
 export interface CommentaryEvent {
   minute: number
   text: string
+  kind?: 'substitution'
+  clubId?: string
+  playerOutId?: string
+  playerInId?: string
 }
 
 export interface MatchTeamStats {

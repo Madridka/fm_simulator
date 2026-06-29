@@ -380,9 +380,7 @@ onBeforeUnmount(clearTimer)
     <div
       class="shrink-0 rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5 xl:p-3"
     >
-      <div
-        class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-4"
-      >
+      <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-4">
         <div class="flex min-w-0 items-center gap-1.5 sm:gap-3">
           <ClubBadge
             :club="homeClub"
@@ -429,9 +427,7 @@ onBeforeUnmount(clearTimer)
 
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
-        <template
-          v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90"
-        >
+        <template v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90">
           <div
             v-if="canSimulate"
             class="rounded-lg bg-emerald-50 px-2 py-1.5 text-xs font-extrabold text-emerald-800 sm:px-3 sm:py-2 sm:text-sm"
@@ -491,9 +487,7 @@ onBeforeUnmount(clearTimer)
     </div>
 
     <!-- СОСТАВЫ СТАТИСТИКА И ТРАНСЛЯЦИЯ -->
-    <div
-      class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.2fr_0.8fr_0.9fr] xl:gap-3"
-    >
+    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[0.8fr_1.2fr_1fr] xl:gap-3">
       <!-- СОСТАВЫ КОМАНД -->
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
@@ -630,26 +624,14 @@ onBeforeUnmount(clearTimer)
         </div>
 
         <div
-          v-if="detailedResult?.injuries?.length || detailedResult?.substitutions?.length"
-          class="mt-5 grid gap-4 border-t border-slate-100 pt-4 sm:grid-cols-2 xl:mt-3 xl:gap-3 xl:pt-3"
+          v-if="detailedResult?.injuries?.length"
+          class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3"
         >
           <div v-if="detailedResult?.injuries?.length">
             <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Травмы</h3>
             <div class="mt-2 space-y-1 text-sm text-slate-700">
               <div v-for="injury in detailedResult.injuries" :key="injury.playerId">
                 {{ injury.minute ? `${injury.minute}' · ` : '' }}{{ playerName(injury.playerId) }}
-              </div>
-            </div>
-          </div>
-          <div v-if="detailedResult?.substitutions?.length">
-            <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Замены</h3>
-            <div class="mt-2 space-y-1 text-sm text-slate-700">
-              <div
-                v-for="substitution in detailedResult.substitutions"
-                :key="`${substitution.minute}-${substitution.playerOutId}`"
-              >
-                {{ substitution.minute }}' · {{ playerName(substitution.playerOutId) }} →
-                {{ playerName(substitution.playerInId) }}
               </div>
             </div>
           </div>
@@ -671,12 +653,27 @@ onBeforeUnmount(clearTimer)
             class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
           >
             <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
-            <span>{{ event.text }}</span>
+            <span
+              v-if="event.kind === 'substitution'"
+              class="flex min-w-0 flex-wrap items-center gap-1"
+            >
+              <span class="font-semibold">
+                Замена {{ clubStore.getClubById(event.clubId ?? '')?.shortName }}:
+              </span>
+              <span>{{ playerName(event.playerOutId) }}</span>
+              <span
+                class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
+                aria-label="заменён на"
+              >
+                <span class="text-rose-600">→</span>
+                <span class="text-emerald-600">←</span>
+              </span>
+              <span>{{ playerName(event.playerInId) }}</span>
+            </span>
+            <span v-else>{{ event.text }}</span>
           </div>
         </div>
-        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">
-          Событий пока нет.
-        </div>
+        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">Событий пока нет.</div>
       </div>
     </div>
   </section>

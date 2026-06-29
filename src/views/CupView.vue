@@ -5,6 +5,7 @@ import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { CupRound, CupTie, Match } from '@/types/football'
 import { useI18n } from 'vue-i18n'
+import { formatDate } from '@/utils/format'
 
 const gameStore = useGameStore()
 const clubStore = useClubStore()
@@ -176,13 +177,14 @@ const penaltyWinnerName = (tie: CupTie): string | undefined => {
 // ВОЗВРАЩАЕТ ДАТУ МАТЧА ПАРЫ
 const tieDate = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
-  return match?.date ?? t('cup.dateTbd')
+  return match?.date ? formatDate(match.date) : t('cup.dateTbd')
 }
 
 // ВОЗВРАЩАЕТ СТАТУС МАТЧА ПАРЫ
 const tieStatusLabel = (tie: CupTie): string => {
   const match = tie.matchId ? matchById(tie.matchId) : undefined
-  return match?.status === 'played' ? t('cup.tiePlayed') : t('cup.tieScheduled')
+
+  return match?.status === 'played' ? t('cup.tiePlayed') + ' ·' : ''
 }
 </script>
 
@@ -311,13 +313,13 @@ const tieStatusLabel = (tie: CupTie): string => {
                   class="flex items-center justify-center gap-2 text-2xl font-black leading-none text-slate-950 sm:text-3xl"
                 >
                   <span>{{ teamScore(tie, 'home') }}</span>
-                  <span class="text-slate-300">-</span>
+                  <span class="text-slate-300">:</span>
                   <span>{{ teamScore(tie, 'away') }}</span>
                 </div>
                 <div
                   class="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-black uppercase tracking-wide text-cyan-600"
                 >
-                  {{ tieStatusLabel(tie) }} · {{ tieDate(tie) }}
+                  {{ tieStatusLabel(tie) }} {{ tieDate(tie) }}
                 </div>
                 <div
                   v-if="penaltyWinnerName(tie)"

@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Club, Match } from '@/types/football'
+import { formatDate } from '@/utils/format'
 
 export const useMatchDisplay = () => {
   const gameStore = useGameStore()
@@ -10,12 +11,7 @@ export const useMatchDisplay = () => {
 
   const opponent = (match: Match): Club | undefined => matchStore.getOpponent(match)
 
-  const matchDate = (match: Match): string => {
-    const date = new Date(`${match.date}T12:00:00`)
-    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short' })
-      .format(date)
-      .replace('.', '')
-  }
+  const matchDate = (match: Match): string => formatDate(match.date)
 
   const matchCompetition = (match: Match): string =>
     match.type === 'league' ? t('match.round', { round: match.round }) : t('match.cup')

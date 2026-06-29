@@ -451,7 +451,23 @@ const createCommentary = (
   cards: readonly CardEvent[],
   injuries: readonly InjuryEvent[],
   substitutions: readonly SubstitutionEvent[],
+  homeClub: Club,
+  awayClub: Club,
 ): CommentaryEvent[] => {
+  const substitutionText = (substitution: SubstitutionEvent): string => {
+    const club = substitution.clubId === homeClub.id ? homeClub : awayClub
+    const playerOut = club.squad.find((player) => player.id === substitution.playerOutId)
+    const playerIn = club.squad.find((player) => player.id === substitution.playerInId)
+    const playerOutName = playerOut
+      ? formatPlayerName(playerOut.firstName, playerOut.lastName)
+      : substitution.playerOutId
+    const playerInName = playerIn
+      ? formatPlayerName(playerIn.firstName, playerIn.lastName)
+      : substitution.playerInId
+
+    return `Замена ${club.shortName}: ${playerOutName} ↕ ${playerInName}`
+  }
+
   const events: CommentaryEvent[] = [
     { minute: 1, text: 'Матч начался.' },
     ...goals.map((goal) => ({ minute: goal.minute, text: `Гол! ${goal.playerName}.` })),
@@ -462,7 +478,11 @@ const createCommentary = (
     ...injuries.map((injury) => ({ minute: injury.minute ?? 0, text: 'Игрок получил травму.' })),
     ...substitutions.map((substitution) => ({
       minute: substitution.minute,
-      text: 'Команда проводит замену.',
+      text: substitutionText(substitution),
+      kind: 'substitution' as const,
+      clubId: substitution.clubId,
+      playerOutId: substitution.playerOutId,
+      playerInId: substitution.playerInId,
     })),
     { minute: 90, text: 'Матч завершен.' },
   ]
@@ -584,7 +604,14 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
     cards,
     injuries,
     substitutions,
-    commentary: createCommentary(state.goals, cards, injuries, substitutions),
+    commentary: createCommentary(
+      state.goals,
+      cards,
+      injuries,
+      substitutions,
+      input.homeClub,
+      input.awayClub,
+    ),
   }
 
   if (input.allowPenaltyShootout && result.homeGoals === result.awayGoals) {

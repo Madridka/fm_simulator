@@ -5,6 +5,7 @@ import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { Club, Match } from '@/types/football'
+import { formatDate } from '@/utils/format'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 
@@ -159,15 +160,9 @@ const activeMonthMatchCells = computed<CalendarCell[]>(() =>
   (activeMonth.value?.cells ?? []).filter((cell) => cell.matches.length > 0),
 )
 
-const mobileDateFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'long',
-  weekday: 'short',
-})
-
 // ФОРМАТИРУЕТ ДАТУ ДЛЯ МОБИЛЬНОГО СПИСКА МАТЧЕЙ
 const mobileDateLabel = (cell: CalendarCell): string =>
-  cell.isoDate ? mobileDateFormatter.format(dateFromIso(cell.isoDate)) : ''
+  cell.isoDate ? formatDate(cell.isoDate) : ''
 
 // СИНХРОНИЗИРУЕТ АКТИВНЫЙ МЕСЯЦ С ТЕКУЩИМ МАТЧЕМ
 watch(

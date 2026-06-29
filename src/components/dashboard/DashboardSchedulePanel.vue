@@ -51,12 +51,9 @@ const openMatch = (match: Match): void => {
         class="group flex items-center gap-3 px-1 py-3.5"
         @click="index === 0 && openMatch(match)"
       >
-        <div class="w-10 shrink-0 text-center">
-          <div class="text-sm font-black text-slate-900">
-            {{ matchDate(match).split(' ')[0] }}
-          </div>
-          <div class="text-[9px] font-black uppercase text-slate-400">
-            {{ matchDate(match).split(' ')[1] }}
+        <div class="w-20 shrink-0 text-center">
+          <div class="text-xs font-black text-slate-900">
+            {{ matchDate(match) }}
           </div>
         </div>
         <ClubBadge v-if="opponent(match)" :club="opponent(match)!" size="sm" />
