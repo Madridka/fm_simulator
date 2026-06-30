@@ -1,8 +1,8 @@
 import type { CareerConfig } from '@/data/gameConfig/types'
 
 export const careerConfig: CareerConfig = {
-  maximumSeasons: 30,
+  maximumSeasons: 70,
   minimumSquadSize: 16,
-  maximumSquadSize: 26,
+  maximumSquadSize: 35,
   transferSaleCoefficient: 0.8,
 }

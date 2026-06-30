@@ -20,10 +20,7 @@ import {
   getFormationSlots,
   getStarterIds,
 } from '@/domain/season/squadSelectionService'
-import {
-  applySuspensionsAfterMatch,
-  isPlayerUnavailable,
-} from '@/domain/season/playerAvailability'
+import { applySuspensionsAfterMatch, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import type {
   ChampionshipId,
   Club,
@@ -87,10 +84,7 @@ const applyInjuriesToClubs = (
 }
 
 // ВОССТАНАВЛИВАЕТ ИГРОКОВ ПЕРЕД ПЕРВЫМ МАТЧЕМ ПОСЛЕ СРОКА ТРАВМЫ
-export const recoverInjuredPlayersBeforeOrder = (
-  clubs: readonly Club[],
-  order: number,
-): Club[] =>
+export const recoverInjuredPlayersBeforeOrder = (clubs: readonly Club[], order: number): Club[] =>
   clubs.map((club) => ({
     ...club,
     squad: club.squad.map((player) => {
@@ -175,8 +169,14 @@ const prefixLeagueMatch = (championshipId: ChampionshipId, match: Match): Match 
 })
 
 // СОЗДАЁТ КАЛЕНДАРЬ ЛИГИ ОДНОГО ЧЕМПИОНАТА
-const createLeagueMatches = (clubs: readonly Club[], season: number, championshipId: ChampionshipId): Match[] =>
-  generateLeagueSchedule(clubs, season, championshipId).map((match) => prefixLeagueMatch(championshipId, match))
+const createLeagueMatches = (
+  clubs: readonly Club[],
+  season: number,
+  championshipId: ChampionshipId,
+): Match[] =>
+  generateLeagueSchedule(clubs, season, championshipId).map((match) =>
+    prefixLeagueMatch(championshipId, match),
+  )
 
 // СОЗДАЁТ НЕЗАВИСИМЫЕ СОСТАВЫ КЛУБОВ ДЛЯ ВСЕХ ЧЕМПИОНАТОВ
 const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
@@ -196,7 +196,11 @@ const createWorldMatches = (
 ): Record<ChampionshipId, Match[]> => {
   return championshipIds.reduce<Record<ChampionshipId, Match[]>>(
     (result, championshipId) => {
-      result[championshipId] = createLeagueMatches(worldClubs[championshipId], season, championshipId)
+      result[championshipId] = createLeagueMatches(
+        worldClubs[championshipId],
+        season,
+        championshipId,
+      )
       return result
     },
     {} as Record<ChampionshipId, Match[]>,
@@ -322,8 +326,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
       result[championshipId] =
         championshipId === state.championshipId
           ? clubs.map(cloneClub)
-          : existingClubs?.map(cloneClub) ??
-            getChampionshipClubs(championshipId).map(cloneClub)
+          : (existingClubs?.map(cloneClub) ?? getChampionshipClubs(championshipId).map(cloneClub))
       return result
     },
     {} as Record<ChampionshipId, Club[]>,
@@ -342,8 +345,8 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
       result[championshipId] =
         championshipId === state.championshipId
           ? selectedLeagueMatches
-          : existingWorldMatches[championshipId]?.map(cloneMatch) ??
-            generatedWorldMatches[championshipId]
+          : (existingWorldMatches[championshipId]?.map(cloneMatch) ??
+            generatedWorldMatches[championshipId])
       return result
     },
     {} as Record<ChampionshipId, Match[]>,
@@ -580,7 +583,7 @@ const applyMatchEffects = (
         ? player
         : {
             ...player,
-            fitness: clamp(player.fitness + random.int(10, 25), 1, 100),
+            fitness: clamp(player.fitness + random.int(25, 45), 1, 100),
           },
     )
   }
@@ -645,8 +648,7 @@ const simulateScheduledMatch = (
         .find((tie) => tie.id === match.playoffTieId)
     : undefined
   const isDecisiveKnockoutMatch =
-    match.type === 'cup' ||
-    (match.type === 'playoff' && playoffTie?.matchIds.at(-1) === match.id)
+    match.type === 'cup' || (match.type === 'playoff' && playoffTie?.matchIds.at(-1) === match.id)
 
   return {
     lineups,
@@ -762,7 +764,8 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
       .filter((clubId): clubId is string => typeof clubId === 'string'),
   )
 
-  const extraWinnerReward = completedRoundId === 'final' ? (cupConfig?.rewards.winnerReward ?? 0) : 0
+  const extraWinnerReward =
+    completedRoundId === 'final' ? (cupConfig?.rewards.winnerReward ?? 0) : 0
 
   return {
     ...state,
@@ -793,7 +796,9 @@ const advanceCupAndRefreshTables = (state: GameState): GameState => {
   }
 
   const config = getCountryCompetitionConfig(state.championshipId)
-  const leagueFinished = matches.every((match) => match.type !== 'league' || match.status === 'played')
+  const leagueFinished = matches.every(
+    (match) => match.type !== 'league' || match.status === 'played',
+  )
   if (leagueFinished) {
     const tables = calculateLeagueTables(nextState.clubs, matches)
     if ((nextState.playoffs?.length ?? 0) === 0) {
@@ -845,11 +850,7 @@ const simulateOrder = (
       const lineups = getLineupsForMatch(nextState, match)
       nextState = completeMatch(nextState, match, userResult.result, lineups)
     } else if (isFastLocalMatch(nextState, match)) {
-      nextState = completeFastMatch(
-        nextState,
-        match,
-        simulateFastScheduledMatch(nextState, match),
-      )
+      nextState = completeFastMatch(nextState, match, simulateFastScheduledMatch(nextState, match))
     } else {
       const simulated = simulateScheduledMatch(nextState, match)
       nextState = completeMatch(nextState, match, simulated.result, simulated.lineups)
@@ -968,9 +969,7 @@ export const completeUserMatchDay = (
   result: MatchResult,
 ): GameState => {
   const prepared = prepareUserMatchDay(state, matchId)
-  return settleAiOnlyDaysUntilNextUserMatch(
-    completePreparedUserMatchDay(prepared, matchId, result),
-  )
+  return settleAiOnlyDaysUntilNextUserMatch(completePreparedUserMatchDay(prepared, matchId, result))
 }
 
 // СОХРАНЯЕТ БЫСТРЫЙ РЕЗУЛЬТАТ БЕЗ СТАТИСТИКИ ИГРОКОВ
@@ -1039,7 +1038,7 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
         ...player,
         age: player.age + 1,
         rating,
-        fitness: clamp(player.fitness + 24, 1, 100),
+        fitness: clamp(player.fitness + 55, 1, 100),
         form: clamp(player.form + random.int(-6, 8), 1, 100),
         isInjured: false,
         injuryUntilOrder: undefined,
