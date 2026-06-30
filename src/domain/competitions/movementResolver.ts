@@ -62,30 +62,35 @@ export const resolveCompetitionMovements = (
   const groupRelegations: Extract<TransitionRule, { type: 'group-relegation' }>[] = []
 
   for (const rule of getRules(config)) {
-    if (rule.type === 'promotion-playoff' || rule.type === 'relegation-playoff') {
-      movements.push(...playoffMovements(rule, playoffs, config))
-      continue
+    switch (rule.type) {
+      case 'promotion-playoff':
+      case 'relegation-playoff':
+        movements.push(...playoffMovements(rule, playoffs, config))
+        break
+      case 'group-relegation':
+        groupRelegations.push(rule)
+        break
+      case 'internal-group-swap': {
+        const sourceRows = tables[rule.sourceCompetitionId] ?? []
+        const targetRows = tables[rule.targetCompetitionId] ?? []
+        movements.push(
+          ...selectTableRows(sourceRows, rule.sourceSelector).map((row) => ({ clubId: row.clubId, targetCompetitionId: rule.targetCompetitionId, promoted: false })),
+          ...selectTableRows(targetRows, rule.targetSelector).map((row) => ({ clubId: row.clubId, targetCompetitionId: rule.sourceCompetitionId, promoted: true })),
+        )
+        break
+      }
+      case 'direct-promotion':
+      case 'direct-relegation':
+      case 'group-promotion': {
+        const rows = tables[rule.sourceCompetitionId] ?? []
+        movements.push(...selectTableRows(rows, rule.selector).map((row) => ({
+          clubId: row.clubId,
+          targetCompetitionId: rule.targetCompetitionId,
+          promoted: rule.type === 'direct-promotion' || rule.type === 'group-promotion',
+        })))
+        break
+      }
     }
-    if (rule.type === 'group-relegation') {
-      groupRelegations.push(rule)
-      continue
-    }
-    if (rule.type === 'internal-group-swap') {
-      const sourceRows = tables[rule.sourceCompetitionId] ?? []
-      const targetRows = tables[rule.targetCompetitionId] ?? []
-      movements.push(
-        ...selectTableRows(sourceRows, rule.sourceSelector).map((row) => ({ clubId: row.clubId, targetCompetitionId: rule.targetCompetitionId, promoted: false })),
-        ...selectTableRows(targetRows, rule.targetSelector).map((row) => ({ clubId: row.clubId, targetCompetitionId: rule.sourceCompetitionId, promoted: true })),
-      )
-      continue
-    }
-
-    const rows = tables[rule.sourceCompetitionId] ?? []
-    movements.push(...selectTableRows(rows, rule.selector).map((row) => ({
-      clubId: row.clubId,
-      targetCompetitionId: rule.targetCompetitionId,
-      promoted: rule.type === 'direct-promotion' || rule.type === 'group-promotion',
-    })))
   }
 
   for (const rule of groupRelegations) {

@@ -7,6 +7,7 @@ import {
 } from '@/domain/competitions/playoffResolver'
 import { selectTableRows } from '@/domain/competitions/selectors'
 import { validateCompetitionParticipants } from '@/domain/competitions/participantValidator'
+import type { PlayoffTransitionRule } from '@/data/gameConfig/types'
 import type { LeagueTableRow, Match, MatchResult } from '@/types/football'
 
 const table = (competitionId: string, count: number): LeagueTableRow[] =>
@@ -139,7 +140,7 @@ describe('country competition configs', () => {
   it('stores the Italian playout threshold and closed missing lower tiers', () => {
     const config = getCountryCompetitionConfig('italy')
     const rules = config.competitions[C.italySerieB]?.transitions.rules ?? []
-    const playout = rules.find((rule) => rule.type === 'relegation-playoff')
+    const playout = rules.find((rule): rule is PlayoffTransitionRule => rule.type === 'relegation-playoff')
     expect(playout?.maximumPointsGapForPlayout).toBe(4)
     expect(config.competitions[C.italySerieB]?.bottomBoundaryPolicy).toBe('closed')
     expect(getCountryCompetitionConfig('spain').competitions[C.spainSegunda]?.bottomBoundaryPolicy).toBe('closed')
