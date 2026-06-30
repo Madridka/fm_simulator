@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, Ref, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { gameConfig } from '@/config/gameConfig'
+import { careerConfig } from '@/data/gameConfig/career'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
 import type { PlayerPosition } from '@/types/football'
@@ -146,7 +146,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               :label="t('transfers.buy')"
               :disabled="
                 gameStore.selectedClub.budget < item.player.value ||
-                gameStore.selectedClub.squad.length >= gameConfig.maximumSquadSize
+                gameStore.selectedClub.squad.length >= careerConfig.maximumSquadSize
               "
               @click="transferStore.buy(item.player.id)"
             />
@@ -212,7 +212,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
             <div class="mt-2 text-sm text-slate-600">
               {{
                 t('transfers.salePrice', {
-                  price: formatMoney(Math.round(player.value * 0.8)),
+                  price: formatMoney(Math.round(player.value * careerConfig.transferSaleCoefficient)),
                 })
               }}
             </div>

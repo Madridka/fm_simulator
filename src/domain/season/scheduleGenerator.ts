@@ -1,151 +1,26 @@
-import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
+import { getCountryCompetitionConfig } from '@/data/gameConfig'
+import type { CountryId } from '@/data/gameConfig/types'
+import {
+  generateLeagueRoundPairings,
+  generateLeagueSchedule as generateConfiguredLeagueSchedule,
+} from '@/domain/schedule/leagueScheduleGenerator'
+import { assignLeagueRoundDates } from '@/domain/schedule/calendarSlotResolver'
 import type { Club, Match } from '@/types/football'
 
-export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24]
+// Compatibility aliases retained while callers migrate to the schedule domain.
+export const generateDivisionPairings = generateLeagueRoundPairings
 
-const cupOrders = new Set([3, 7, 11, 15, 19, 23, 27])
-
-// ПЕРЕВОДИТ ИНДЕКС ТУРА В ОБЩИЙ ПОРЯДКОВЫЙ НОМЕР ИГРОВОГО ДНЯ
-const getLeagueRoundOrder = (roundIndex: number): number => {
-  if (leagueRoundOrders[roundIndex] !== undefined) return leagueRoundOrders[roundIndex]
-
-  let order = leagueRoundOrders.at(-1) ?? 0
-  let missingIndex = roundIndex - leagueRoundOrders.length
-  do {
-    order += 1
-    if (!cupOrders.has(order)) missingIndex -= 1
-  } while (missingIndex >= 0)
-  return order
+export const getSeasonMatchDate = (
+  season: number,
+  order: number,
+  countryId: CountryId = 'england',
+): string => {
+  const calendar = getCountryCompetitionConfig(countryId).calendar
+  return assignLeagueRoundDates(order, season, calendar)[order - 1]!
 }
 
-const seasonBaseYear = 2026
-const septemberMonthIndex = 8
-
-// ФОРМАТИРУЕТ ДАТУ МАТЧА В КОМПАКТНЫЙ ISO-ФОРМАТ
-const toIsoDate = (date: Date): string => date.toISOString().slice(0, 10)
-
-// НАХОДИТ СТАРТОВУЮ СУББОТУ СЕЗОНА ДЛЯ ПОСТРОЕНИЯ КАЛЕНДАРЯ
-const getFirstSaturdayOfSeptember = (season: number): Date => {
-  const date = new Date(Date.UTC(seasonBaseYear + season - 1, septemberMonthIndex, 1))
-  const daysUntilSaturday = (6 - date.getUTCDay() + 7) % 7
-  date.setUTCDate(date.getUTCDate() + daysUntilSaturday)
-  return date
-}
-
-// ВЫЧИСЛЯЕТ КАЛЕНДАРНУЮ ДАТУ ПО СЕЗОНУ И ПОРЯДКУ ИГРОВОГО ДНЯ
-export const getSeasonMatchDate = (season: number, order: number): string => {
-  const date = getFirstSaturdayOfSeptember(season)
-  date.setUTCDate(date.getUTCDate() + Math.max(0, order - 1) * 7)
-  return toIsoDate(date)
-}
-
-interface Pairing {
-  homeClubId: string
-  awayClubId: string
-}
-
-// ПОВОРАЧИВАЕТ СПИСОК КОМАНД ДЛЯ КРУГОВОГО АЛГОРИТМА ПАР
-const rotateTeams = (teams: readonly string[]): string[] => {
-  const fixed = teams[0]
-  if (!fixed) {
-    return []
-  }
-  const tail = teams.slice(1)
-  const last = tail[tail.length - 1]
-  const middle = tail.slice(0, -1)
-
-  return last ? [fixed, last, ...middle] : [fixed]
-}
-
-// СОЗДАЁТ ПАРЫ КОМАНД ДЛЯ КАЖДОГО ТУРА ОДНОЙ ЛИГИ
-export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][] => {
-  if (clubIds.length < 2) {
-    throw new Error('A division must contain at least two clubs')
-  }
-
-  const byeClubId = '__bye__'
-  let teams = clubIds.length % 2 === 0 ? [...clubIds] : [...clubIds, byeClubId]
-  const rounds: Pairing[][] = []
-  const roundsCount = teams.length - 1
-
-  for (let roundIndex = 0; roundIndex < roundsCount; roundIndex += 1) {
-    const pairings: Pairing[] = []
-    const half = teams.length / 2
-
-    for (let index = 0; index < half; index += 1) {
-      const left = teams[index]
-      const right = teams[teams.length - 1 - index]
-      if (!left || !right) {
-        throw new Error('Invalid round-robin state')
-      }
-
-      if (left === byeClubId || right === byeClubId) {
-        continue
-      }
-
-      const swapHome = (roundIndex + index) % 2 === 1
-      pairings.push({
-        homeClubId: swapHome ? right : left,
-        awayClubId: swapHome ? left : right,
-      })
-    }
-
-    rounds.push(pairings)
-    teams = rotateTeams(teams)
-  }
-
-  const reverseRounds = rounds.map((round) =>
-    round.map((pairing) => ({
-      homeClubId: pairing.awayClubId,
-      awayClubId: pairing.homeClubId,
-    })),
-  )
-
-  return [...rounds, ...reverseRounds]
-}
-
-// ФОРМИРУЕТ ПОЛНЫЙ ДВУХКРУГОВОЙ КАЛЕНДАРЬ ВСЕХ ДИВИЗИОНОВ
-export const generateLeagueSchedule = (clubs: readonly Club[], season: number): Match[] => {
-  const matches: Match[] = []
-  const clubsByCompetition = clubs.reduce<Record<string, Club[]>>((result, club) => {
-    const competitionId = getClubCompetitionId(club)
-    result[competitionId] = [...(result[competitionId] ?? []), club]
-    return result
-  }, {})
-  const competitionIds = Object.keys(clubsByCompetition).sort(
-    (left, right) =>
-      Number(left.split(':')[0]) - Number(right.split(':')[0]) || left.localeCompare(right),
-  )
-
-  for (const competitionId of competitionIds) {
-    const competitionClubs = clubsByCompetition[competitionId] ?? []
-    const divisionId = competitionClubs[0]?.divisionId ?? Number(competitionId.split(':')[0])
-    const competitionClubIds = competitionClubs
-      .map((club) => club.id)
-      .sort((left, right) => left.localeCompare(right))
-    const matchIdCompetition = competitionId.replace(/[^a-z0-9-]/gi, '_')
-
-    const rounds = generateDivisionPairings(competitionClubIds)
-
-    rounds.forEach((round, roundIndex) => {
-      round.forEach((pairing, matchIndex) => {
-        matches.push({
-          id: `s${season}-c${matchIdCompetition}-r${roundIndex + 1}-m${matchIndex + 1}`,
-          season,
-          type: 'league',
-          date: getSeasonMatchDate(season, getLeagueRoundOrder(roundIndex)),
-          order: getLeagueRoundOrder(roundIndex),
-          round: roundIndex + 1,
-          divisionId,
-          competitionId,
-          homeClubId: pairing.homeClubId,
-          awayClubId: pairing.awayClubId,
-          neutralVenue: false,
-          status: 'scheduled',
-        })
-      })
-    })
-  }
-
-  return matches
-}
+export const generateLeagueSchedule = (
+  clubs: readonly Club[],
+  season: number,
+  countryId: CountryId = 'russia',
+): Match[] => generateConfiguredLeagueSchedule(clubs, season, countryId)

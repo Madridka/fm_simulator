@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
+import { getCompetitionConfig } from '@/data/gameConfig'
 import {
   getClubCompetitionId,
   getCompetitionNames,
@@ -67,7 +68,8 @@ const leagueOptions = computed((): LeagueOption[] =>
       }))
       .sort(
         (left, right) =>
-          Number(left.competitionId.split(':')[0]) - Number(right.competitionId.split(':')[0]) ||
+          getCompetitionConfig(left.championshipId, left.competitionId).level -
+            getCompetitionConfig(right.championshipId, right.competitionId).level ||
           left.competitionId.localeCompare(right.competitionId),
       )
   }),
@@ -202,6 +204,8 @@ const selectedClubId = computed((): string | undefined =>
         :rows="selectedRows"
         :clubs="selectedClubs"
         :selected-club-id="selectedClubId"
+        :country-id="selectedLeague.championshipId"
+        :competition-id="selectedLeague.competitionId"
       />
     </article>
   </section>

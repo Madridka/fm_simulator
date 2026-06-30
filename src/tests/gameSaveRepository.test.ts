@@ -17,6 +17,32 @@ const resultWithCommentary = (text: string): MatchResult => ({
 })
 
 describe('gameSaveRepository', () => {
+  it('migrates a legacy division-based save without replacing the career', () => {
+    const storage = createMemoryStorage()
+    const initial = createInitialGameState('russia', 'zenit')
+    const legacyClubs = initial.clubs.map((club) => {
+      const { competitionId: _competitionId, ...legacyClub } = club
+      return legacyClub
+    })
+    const legacyMatches = initial.matches.map((match) => {
+      const { competitionId: _competitionId, roundNumber: _roundNumber, ...legacyMatch } = match
+      return legacyMatch
+    })
+    const { configVersion: _configVersion, ...legacyState } = initial
+    storage.setItem(
+      'football-manager-mvp-save',
+      JSON.stringify({ ...legacyState, clubs: legacyClubs, matches: legacyMatches }),
+    )
+
+    const loaded = gameSaveRepository.load(storage)
+
+    expect(loaded?.configVersion).toBe(2)
+    expect(loaded?.season).toBe(initial.season)
+    expect(loaded?.selectedClubId).toBe(initial.selectedClubId)
+    expect(loaded?.clubs.map((club) => club.id)).toEqual(initial.clubs.map((club) => club.id))
+    expect(loaded?.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
+  })
+
   it('saves a compact state and restores all calculated world data', () => {
     const storage = createMemoryStorage()
     const state = createInitialGameState('russia', 'zenit')
@@ -27,6 +53,8 @@ describe('gameSaveRepository', () => {
     expect(saveResult.saved).toBe(true)
     expect(saveResult.size).toBeLessThan(JSON.stringify(state).length)
     expect(loaded?.championshipId).toBe(state.championshipId)
+    expect(loaded?.configVersion).toBe(2)
+    expect(loaded?.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
     expect(loaded?.selectedClubId).toBe(state.selectedClubId)
     expect(loaded?.clubs).toHaveLength(state.clubs.length)
     expect(loaded?.matches.map((match) => match.id)).toEqual(

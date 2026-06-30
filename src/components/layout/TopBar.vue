@@ -22,7 +22,11 @@ const { t } = useI18n()
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ТУРНИРА СЛЕДУЮЩЕГО МАТЧА
 const matchCompetition = (match: Match): string =>
-  match.type === 'league' ? t('match.round', { round: match.round }) : t('match.cup')
+  match.type === 'league'
+    ? t('match.round', { round: match.roundNumber ?? match.round })
+    : match.type === 'playoff'
+      ? t('match.playoff')
+      : t('match.cup')
 </script>
 
 <template>

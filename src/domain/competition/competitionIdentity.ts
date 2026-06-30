@@ -1,5 +1,6 @@
 import { t } from '@/plugins/i18n/i18n'
 import type { Club, Match } from '@/types/football'
+import { countryCompetitionConfigs } from '@/data/gameConfig'
 
 export type CompetitionId = string
 
@@ -10,8 +11,27 @@ export interface ChampionshipCompetitionNames {
 }
 
 // ОПРЕДЕЛЯЕТ УНИКАЛЬНЫЙ ИДЕНТИФИКАТОР ЛИГИ ИЛИ ГРУППЫ КЛУБА
-export const getClubCompetitionId = (club: Pick<Club, 'divisionId' | 'groupId'>): CompetitionId =>
-  club.groupId ? `${club.divisionId}:${club.groupId}` : String(club.divisionId)
+export const resolveLegacyCompetitionId = (
+  leagueId: string | undefined,
+  groupId: string | undefined,
+  divisionId: number,
+): CompetitionId => {
+  for (const country of Object.values(countryCompetitionConfigs)) {
+    const match = Object.values(country.competitions).find(
+      (competition) =>
+        competition.legacyLeagueId === leagueId &&
+        (competition.legacyGroupId ?? undefined) === (groupId ?? undefined),
+    )
+    if (match) return match.id
+  }
+  return groupId ? `${divisionId}:${groupId}` : String(divisionId)
+}
+
+export const getClubCompetitionId = (
+  club: Pick<Club, 'competitionId' | 'divisionId' | 'leagueId' | 'groupId'>,
+): CompetitionId =>
+  club.competitionId ??
+  resolveLegacyCompetitionId(club.leagueId, club.groupId, club.divisionId)
 
 // ОПРЕДЕЛЯЕТ СОРЕВНОВАНИЕ, К КОТОРОМУ ОТНОСИТСЯ МАТЧ
 export const getMatchCompetitionId = (
@@ -34,6 +54,12 @@ export const getMatchCompetitionId = (
 export const getCompetitionNames = (
   championship: ChampionshipCompetitionNames,
 ): Record<string, string> => {
+  if (championship.id && championship.id in countryCompetitionConfigs) {
+    const config = countryCompetitionConfigs[championship.id as keyof typeof countryCompetitionConfigs]
+    return Object.fromEntries(
+      Object.values(config.competitions).map((competition) => [competition.id, t(competition.nameKey)]),
+    )
+  }
   return (
     championship.competitionNames ??
     Object.fromEntries(

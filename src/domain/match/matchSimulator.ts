@@ -1,4 +1,4 @@
-import { gameConfig } from '@/config/gameConfig'
+import { matchEngineConfig } from '@/data/gameConfig/matchEngine'
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import { t } from '@/plugins/i18n/i18n'
 import type {
@@ -153,7 +153,7 @@ const createTeamMetrics = (
 ): TeamMetrics => {
   const players = getLineupPlayers(club, lineup)
   const modifiers = tacticalModifiers[lineup.tacticalStyle]
-  const homeBonus = isHome && !neutralVenue ? gameConfig.homeAdvantage : 0
+  const homeBonus = isHome && !neutralVenue ? matchEngineConfig.homeAdvantage : 0
   const attack =
     getLineAverage(players, 'attack', club.attackRating) + modifiers.attack + homeBonus * 0.45
   const midfield =
@@ -275,7 +275,7 @@ const processAttack = (
 ): void => {
   const attackConfig = matchSimulationConfig.attack
   const edge = attacking.attack - defending.defense
-  const randomness = (random.next() - 0.5) * gameConfig.randomnessFactor
+  const randomness = (random.next() - 0.5) * matchEngineConfig.randomnessFactor
   const shotChance = clamp(
     attackConfig.shotChance.base +
       attacking.attack * attackConfig.shotChance.attackRatingFactor +
@@ -880,7 +880,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   const config = matchSimulationConfig.fastMatch
   const homeAdvantage = input.neutralVenue
     ? 0
-    : gameConfig.homeAdvantage * config.homeAdvantageFactor
+    : matchEngineConfig.homeAdvantage * config.homeAdvantageFactor
   const ratingDifference = input.homeClub.rating - input.awayClub.rating
   const homeXG = clamp(
     config.homeBaseXG + ratingDifference * config.ratingFactor + homeAdvantage,

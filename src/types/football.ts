@@ -26,6 +26,7 @@ export interface Club {
   shortName: string
   city: string
   divisionId: number
+  competitionId?: string
   leagueId?: string
   groupId?: string
   rating: number
@@ -71,7 +72,7 @@ export interface MatchLineups {
 }
 
 // ТИПЫ МАТЧЕЙ И СОБЫТИЙ СИМУЛЯЦИИ
-export type MatchType = 'league' | 'cup'
+export type MatchType = 'league' | 'cup' | 'playoff'
 
 export type MatchStatus = 'scheduled' | 'played'
 
@@ -150,9 +151,15 @@ export interface Match {
   date: string
   order: number
   round: number
+  roundNumber?: number
+  kickoffTime?: string
   divisionId?: number
   competitionId?: string
   cupRoundId?: string
+  playoffId?: string
+  playoffStageId?: string
+  playoffTieId?: string
+  leg?: 1 | 2
   homeClubId: string
   awayClubId: string
   neutralVenue: boolean
@@ -192,6 +199,7 @@ export interface CupRound {
   id: string
   name: string
   order: number
+  scheduledDate?: string
   status: CupRoundStatus
   byes: string[]
   ties: CupTie[]
@@ -199,6 +207,8 @@ export interface CupRound {
 
 export interface CupState {
   season: number
+  countryId?: ChampionshipId
+  cupId?: string
   rounds: CupRound[]
   championClubId?: string
 }
@@ -214,6 +224,7 @@ export interface PlayerStats {
 
 // КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
 export interface GameState {
+  configVersion: number
   championshipId: ChampionshipId
   selectedClubId: string
   season: number
@@ -224,6 +235,8 @@ export interface GameState {
   worldMatches?: Partial<Record<ChampionshipId, Match[]>>
   worldLeagueTables?: Partial<Record<ChampionshipId, Record<string, LeagueTableRow[]>>>
   cup: CupState
+  playoffs?: import('@/data/gameConfig/types').PlayoffState[]
+  scheduleConflictResolutions?: import('@/data/gameConfig/types').ScheduleConflictResolution[]
   lineups: Record<string, ClubLineup>
   playerStats: Record<string, PlayerStats>
   lastCompletedOrder: number

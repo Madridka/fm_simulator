@@ -18,7 +18,11 @@ export const useMatchDisplay = () => {
 
   // ФОРМИРУЕТ ПОДПИСЬ ТУРА ЛИГИ ИЛИ КУБКА
   const matchCompetition = (match: Match): string =>
-    match.type === 'league' ? t('match.round', { round: match.round }) : t('match.cup')
+    match.type === 'league'
+      ? t('match.round', { round: match.roundNumber ?? match.round })
+      : match.type === 'playoff'
+        ? t('match.playoff')
+        : t('match.cup')
 
   // ОПРЕДЕЛЯЕТ, ИГРАЕТ ЛИ КЛУБ ДОМА ИЛИ В ГОСТЯХ
   const venue = (match: Match): string =>

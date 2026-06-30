@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
-import { gameConfig } from '@/config/gameConfig'
+import { careerConfig } from '@/data/gameConfig/career'
 import { getChampionship } from '@/data/clubs'
 import {
   completeUserMatchDay,
@@ -89,13 +89,13 @@ export const useGameStore = defineStore('game', () => {
   // ОПРЕДЕЛЯЕТ ДОСТУПНОСТЬ ПЕРЕХОДА К СЛЕДУЮЩЕМУ СЕЗОНУ
   const seasonCanFinish = computed<boolean>(() =>
     game.value
-      ? game.value.season < gameConfig.maximumSeasons && isSeasonReadyToFinish(game.value)
+      ? (careerConfig.maximumSeasons === null || game.value.season < careerConfig.maximumSeasons) && isSeasonReadyToFinish(game.value)
       : false,
   )
 
   // ПОКАЗЫВАЕТ, ДОСТИГНУТ ЛИ ЛИМИТ ПРОДОЛЖИТЕЛЬНОСТИ КАРЬЕРЫ
   const isFinalSeason = computed<boolean>(
-    () => (game.value?.season ?? 0) >= gameConfig.maximumSeasons,
+    () => careerConfig.maximumSeasons !== null && (game.value?.season ?? 0) >= careerConfig.maximumSeasons,
   )
 
   // СОХРАНЯЕТ ТЕКУЩУЮ КАРЬЕРУ И УВЕДОМЛЯЕТ О ПЕРЕПОЛНЕНИИ ХРАНИЛИЩА

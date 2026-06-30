@@ -5,5 +5,12 @@
   "draws": "Н",
   "losses": "П",
   "goals": "М",
-  "points": "О"
+  "points": "О",
+  "zones": {
+    "champion": "Чемпион",
+    "directPromotion": "Прямое повышение",
+    "promotionPlayoff": "Плей-офф за повышение",
+    "relegationPlayoff": "Стыки за сохранение",
+    "directRelegation": "Прямой вылет"
+  }
 }

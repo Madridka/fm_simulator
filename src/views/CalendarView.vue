@@ -245,7 +245,11 @@ const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ТИПА МАТЧА
 const matchTypeLabel = (match: Match): string =>
-  match.type === 'league' ? t('calendar.round', { round: match.round }) : t('calendar.cup')
+  match.type === 'league'
+    ? t('calendar.round', { round: match.roundNumber ?? match.round })
+    : match.type === 'playoff'
+      ? t('calendar.playoff')
+      : t('calendar.cup')
 
 // ВОЗВРАЩАЕТ ПРИЗНАК ДОМАШНЕГО ИЛИ ВЫЕЗДНОГО МАТЧА
 const homeAwayLabel = (match: Match): string => {

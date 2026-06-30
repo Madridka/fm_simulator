@@ -1,10 +1,13 @@
-import { cupRoundNames, cupRoundOrders } from '@/config/gameConfig'
+import { getCountryCompetitionConfig } from '@/data/gameConfig'
+import type { CountryId, CupCompetitionConfig } from '@/data/gameConfig/types'
+import { assignCupRoundDates } from '@/domain/schedule/cupScheduleGenerator'
+import { getSeasonOrderFromDate } from '@/domain/schedule/calendarSlotResolver'
 import { t } from '@/plugins/i18n/i18n'
-import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
 import { createSeededRandom } from '@/utils/random'
 
 export const cupRoundIds = [
+  'preliminary',
   'round_of_128',
   'round_of_64',
   'round_of_32',
@@ -14,55 +17,32 @@ export const cupRoundIds = [
   'final',
 ] as const
 
-// НАХОДИТ МАКСИМАЛЬНЫЙ РАЗМЕР СТАНДАРТНОЙ СЕТКИ ДЛЯ ЧИСЛА КЛУБОВ
 const highestPowerOfTwoAtMost = (value: number): number => {
   let power = 1
-  while (power * 2 <= value) {
-    power *= 2
-  }
+  while (power * 2 <= value) power *= 2
   return power
 }
 
-// СОПОСТАВЛЯЕТ РАЗМЕР СЕТКИ С ИДЕНТИФИКАТОРОМ СТАДИИ КУБКА
 const getRoundIdForBracketSize = (bracketSize: number): string => {
-  if (bracketSize >= 128) {
-    return 'round_of_128'
-  }
-  if (bracketSize >= 64) {
-    return 'round_of_64'
-  }
-  if (bracketSize >= 32) {
-    return 'round_of_32'
-  }
-  if (bracketSize >= 16) {
-    return 'round_of_16'
-  }
-  if (bracketSize >= 8) {
-    return 'quarter_final'
-  }
-  if (bracketSize >= 4) {
-    return 'semi_final'
-  }
+  if (bracketSize >= 128) return 'round_of_128'
+  if (bracketSize >= 64) return 'round_of_64'
+  if (bracketSize >= 32) return 'round_of_32'
+  if (bracketSize >= 16) return 'round_of_16'
+  if (bracketSize >= 8) return 'quarter_final'
+  if (bracketSize >= 4) return 'semi_final'
   return 'final'
 }
 
-// ОПРЕДЕЛЯЕТ СТАДИЮ ПРЕДВАРИТЕЛЬНОГО РАУНДА ДЛЯ НЕПОЛНОЙ СЕТКИ
-const getRoundIdForPlayInSize = (bracketSizeAfterRound: number): string => {
-  const playInSize = bracketSizeAfterRound * 2
-  return getRoundIdForBracketSize(playInSize)
+const getActiveRoundIds = (bracketSize: number, hasPreliminary: boolean): string[] => {
+  const firstStandard = getRoundIdForBracketSize(bracketSize)
+  const firstIndex = cupRoundIds.indexOf(firstStandard as (typeof cupRoundIds)[number])
+  const standard = cupRoundIds.slice(Math.max(1, firstIndex))
+  return hasPreliminary ? ['preliminary', ...standard] : [...standard]
 }
 
-// ВОЗВРАЩАЕТ ПОСЛЕДОВАТЕЛЬНОСТЬ СТАДИЙ ОТ СТАРТА ДО ФИНАЛА
-const getActiveRoundIdsFrom = (firstRoundId: string): string[] => {
-  const firstRoundIndex = cupRoundIds.indexOf(firstRoundId as (typeof cupRoundIds)[number])
-  return firstRoundIndex >= 0 ? [...cupRoundIds.slice(firstRoundIndex)] : [...cupRoundIds]
-}
-
-// ДЕТЕРМИНИРОВАННО ПЕРЕМЕШИВАЕТ УЧАСТНИКОВ ДЛЯ ЖЕРЕБЬЁВКИ
 const shuffle = <T>(items: readonly T[], seed: number): T[] => {
   const random = createSeededRandom(seed)
   const result = [...items]
-
   for (let index = result.length - 1; index > 0; index -= 1) {
     const swapIndex = random.int(0, index)
     const current = result[index]
@@ -72,11 +52,9 @@ const shuffle = <T>(items: readonly T[], seed: number): T[] => {
       result[swapIndex] = current
     }
   }
-
   return result
 }
 
-// СОЗДАЁТ ОДНУ ПАРУ УЧАСТНИКОВ КУБКОВОГО РАУНДА
 const createTie = (
   season: number,
   roundId: string,
@@ -90,19 +68,28 @@ const createTie = (
   awayClubId,
 })
 
-// ПРЕОБРАЗУЕТ КУБКОВУЮ ПАРУ В МАТЧ КАЛЕНДАРЯ
-const createMatchFromTie = (season: number, roundId: string, round: number, tie: CupTie): Match => {
+const createMatchFromTie = (
+  season: number,
+  countryId: CountryId,
+  roundId: string,
+  roundNumber: number,
+  scheduledDate: string,
+  tie: CupTie,
+): Match => {
   if (!tie.matchId || !tie.homeClubId || !tie.awayClubId) {
     throw new Error('Cannot create a cup match without both clubs')
   }
-
+  const calendar = getCountryCompetitionConfig(countryId).calendar
   return {
     id: tie.matchId,
+    championshipId: countryId,
     season,
     type: 'cup',
-    date: getSeasonMatchDate(season, cupRoundOrders[roundId] ?? round),
-    order: cupRoundOrders[roundId] ?? round,
-    round,
+    date: scheduledDate,
+    kickoffTime: roundId === 'final' ? '18:00' : '19:45',
+    order: getSeasonOrderFromDate(season, scheduledDate, calendar),
+    round: roundNumber,
+    roundNumber,
     cupRoundId: roundId,
     homeClubId: tie.homeClubId,
     awayClubId: tie.awayClubId,
@@ -111,33 +98,30 @@ const createMatchFromTie = (season: number, roundId: string, round: number, tie:
   }
 }
 
-// ФОРМИРУЕТ КУБКОВЫЙ РАУНД, ЕГО ПАРЫ И МАТЧИ
 const createRound = (
   id: string,
   season: number,
+  countryId: CountryId,
   participants: readonly string[],
-  round: number,
+  roundNumber: number,
+  scheduledDate: string,
 ): { round: CupRound; matches: Match[] } => {
   const ties: CupTie[] = []
   const matches: Match[] = []
-
   for (let index = 0; index < participants.length; index += 2) {
     const homeClubId = participants[index]
     const awayClubId = participants[index + 1]
-    if (!homeClubId || !awayClubId) {
-      throw new Error('Cup round requires an even number of participants')
-    }
-
+    if (!homeClubId || !awayClubId) throw new Error('Cup round requires an even number of participants')
     const tie = createTie(season, id, index / 2, homeClubId, awayClubId)
     ties.push(tie)
-    matches.push(createMatchFromTie(season, id, round, tie))
+    matches.push(createMatchFromTie(season, countryId, id, roundNumber, scheduledDate, tie))
   }
-
   return {
     round: {
       id,
-      name: cupRoundNames[id] ?? id,
-      order: cupRoundOrders[id] ?? round,
+      name: `cup.roundNames.${id}`,
+      order: roundNumber,
+      scheduledDate,
       status: 'scheduled',
       byes: [],
       ties,
@@ -146,193 +130,118 @@ const createRound = (
   }
 }
 
-// СОЗДАЁТ ЗАГОТОВКУ БУДУЩЕЙ СТАДИИ ДО ОПРЕДЕЛЕНИЯ УЧАСТНИКОВ
-const createEmptyRound = (id: string): CupRound => ({
+const createEmptyRound = (id: string, order: number, scheduledDate: string): CupRound => ({
   id,
-  name: cupRoundNames[id] ?? id,
-  order: cupRoundOrders[id] ?? 0,
+  name: `cup.roundNames.${id}`,
+  order,
+  scheduledDate,
   status: 'scheduled',
   byes: [],
   ties: [],
 })
 
-// ИНИЦИАЛИЗИРУЕТ КУБОК С УЧЁТОМ ЧИСЛА КЛУБОВ И ПЕРВОГО РАУНДА
+const getCupConfig = (countryId: CountryId, cupId?: string): CupCompetitionConfig => {
+  const country = getCountryCompetitionConfig(countryId)
+  const cup = cupId ? country.cups[cupId] : Object.values(country.cups)[0]
+  if (!cup) throw new Error(`No cup config for ${countryId}`)
+  return cup
+}
+
 export const initializeCup = (
   clubs: readonly Club[],
   season: number,
+  countryId: CountryId = 'russia',
 ): { cup: CupState; matches: Match[] } => {
   const bracketSize = highestPowerOfTwoAtMost(clubs.length)
   const playInTeamsCount = (clubs.length - bracketSize) * 2
-  const sortedClubs = [...clubs].sort((left, right) => {
-    if (right.divisionId !== left.divisionId) {
-      return right.divisionId - left.divisionId
-    }
-    return left.rating - right.rating
-  })
-
-  const initialRoundId =
-    playInTeamsCount > 0
-      ? getRoundIdForPlayInSize(bracketSize)
-      : getRoundIdForBracketSize(bracketSize)
-  const initialClubIds =
-    playInTeamsCount > 0
-      ? sortedClubs.slice(0, playInTeamsCount).map((club) => club.id)
-      : sortedClubs.map((club) => club.id)
-  const byes =
-    playInTeamsCount > 0 ? sortedClubs.slice(playInTeamsCount).map((club) => club.id) : []
-  const initialParticipants = shuffle(initialClubIds, season * 101 + 7)
-  const initial = createRound(initialRoundId, season, initialParticipants, 1)
-
-  const activeRoundIds = getActiveRoundIdsFrom(initialRoundId)
-  const rounds: CupRound[] = activeRoundIds.map((roundId) => createEmptyRound(roundId))
-  rounds[0] = {
-    ...initial.round,
-    byes,
-  }
-
+  const hasPreliminary = playInTeamsCount > 0
+  const activeRoundIds = getActiveRoundIds(bracketSize, hasPreliminary)
+  const cupConfig = getCupConfig(countryId)
+  const country = getCountryCompetitionConfig(countryId)
+  const dates = assignCupRoundDates(activeRoundIds, season, country.calendar, cupConfig)
+  const sortedClubs = [...clubs].sort((left, right) =>
+    right.divisionId - left.divisionId || left.rating - right.rating || left.id.localeCompare(right.id),
+  )
+  const initialClubIds = hasPreliminary
+    ? sortedClubs.slice(0, playInTeamsCount).map((club) => club.id)
+    : sortedClubs.map((club) => club.id)
+  const byes = hasPreliminary
+    ? sortedClubs.slice(playInTeamsCount).map((club) => club.id)
+    : []
+  const initialRoundId = activeRoundIds[0]
+  if (!initialRoundId) throw new Error('A cup requires at least one round')
+  const initial = createRound(
+    initialRoundId,
+    season,
+    countryId,
+    shuffle(initialClubIds, season * 101 + 7),
+    1,
+    dates[initialRoundId]!,
+  )
+  const rounds = activeRoundIds.map((roundId, index) =>
+    createEmptyRound(roundId, index + 1, dates[roundId]!),
+  )
+  rounds[0] = { ...initial.round, byes }
   return {
-    cup: {
-      season,
-      rounds,
-    },
+    cup: { season, countryId, cupId: cupConfig.id, rounds },
     matches: initial.matches,
   }
 }
 
-// ИЗВЛЕКАЕТ ПОБЕДИТЕЛЯ МАТЧА, ВКЛЮЧАЯ СЕРИЮ ПЕНАЛЬТИ
-const getCupMatchWinner = (match: Match): string | undefined => {
-  if (!match.result) {
-    return undefined
-  }
-  return match.result.winnerClubId ?? match.result.penaltyWinnerClubId
-}
+const getCupMatchWinner = (match: Match): string | undefined =>
+  match.result?.winnerClubId ?? match.result?.penaltyWinnerClubId
 
-// ПРОВЕРЯЕТ, ЧТО ВО ВСЕХ ПАРАХ РАУНДА ОПРЕДЕЛЕНЫ ПОБЕДИТЕЛИ
-const isRoundCompleted = (round: CupRound, matches: readonly Match[]): boolean => {
-  if (round.ties.length === 0) {
-    return false
-  }
-
-  return round.ties.every((tie) => {
-    if (tie.winnerClubId) {
-      return true
-    }
-    if (!tie.matchId) {
-      return false
-    }
-    const match = matches.find((candidate) => candidate.id === tie.matchId)
+const isRoundCompleted = (round: CupRound, matches: readonly Match[]): boolean =>
+  round.ties.length > 0 && round.ties.every((tie) => {
+    if (tie.winnerClubId) return true
+    const match = tie.matchId ? matches.find((candidate) => candidate.id === tie.matchId) : undefined
     return Boolean(match && match.status === 'played' && getCupMatchWinner(match))
   })
-}
 
-// ЗАВЕРШАЕТ СЫГРАННЫЙ РАУНД И СОЗДАЁТ СЛЕДУЮЩУЮ СТАДИЮ ИЛИ ЧЕМПИОНА
 export const advanceCupIfPossible = (
   cup: CupState,
   matches: readonly Match[],
 ): { cup: CupState; newMatches: Match[]; completedRoundId?: string } => {
-  const rounds = cup.rounds.map((round) => ({
-    ...round,
-    byes: [...round.byes],
-    ties: round.ties.map((tie) => ({ ...tie })),
-  }))
-
-  const currentRoundIndex = rounds.findIndex(
-    (round) => round.status === 'scheduled' && round.ties.length > 0,
-  )
-  if (currentRoundIndex === -1) {
-    return { cup: { ...cup, rounds }, newMatches: [] }
-  }
-
+  const rounds = cup.rounds.map((round) => ({ ...round, byes: [...round.byes], ties: round.ties.map((tie) => ({ ...tie })) }))
+  const currentRoundIndex = rounds.findIndex((round) => round.status === 'scheduled' && round.ties.length > 0)
+  if (currentRoundIndex === -1) return { cup: { ...cup, rounds }, newMatches: [] }
   const currentRound = rounds[currentRoundIndex]
-  if (!currentRound || !isRoundCompleted(currentRound, matches)) {
-    return { cup: { ...cup, rounds }, newMatches: [] }
-  }
+  if (!currentRound || !isRoundCompleted(currentRound, matches)) return { cup: { ...cup, rounds }, newMatches: [] }
 
   const winners = currentRound.ties.map((tie) => {
-    if (tie.matchId) {
-      const match = matches.find((candidate) => candidate.id === tie.matchId)
-      const winner = match ? getCupMatchWinner(match) : undefined
-      if (winner) {
-        tie.winnerClubId = winner
-        return winner
-      }
-    }
-    if (!tie.winnerClubId) {
-      throw new Error('Completed cup tie has no winner')
-    }
-    return tie.winnerClubId
+    const match = tie.matchId ? matches.find((candidate) => candidate.id === tie.matchId) : undefined
+    const winner = match ? getCupMatchWinner(match) : tie.winnerClubId
+    if (!winner) throw new Error(`Completed cup tie ${tie.id} has no winner`)
+    tie.winnerClubId = winner
+    return winner
   })
-
   currentRound.status = 'completed'
-
   if (currentRound.id === 'final') {
-    return {
-      cup: {
-        ...cup,
-        championClubId: winners[0],
-        rounds,
-      },
-      newMatches: [],
-      completedRoundId: currentRound.id,
-    }
+    return { cup: { ...cup, championClubId: winners[0], rounds }, newMatches: [], completedRoundId: currentRound.id }
   }
 
-  const nextRoundIndex = currentRoundIndex + 1
-  const nextRound = rounds[nextRoundIndex]
-  if (!nextRound) {
-    return { cup: { ...cup, rounds }, newMatches: [], completedRoundId: currentRound.id }
-  }
-
-  const participants = shuffle(
-    [...winners, ...currentRound.byes],
-    cup.season * 313 + nextRoundIndex * 19,
-  )
-  const created = createRound(nextRound.id, cup.season, participants, nextRoundIndex + 1)
-  rounds[nextRoundIndex] = created.round
-
-  return {
-    cup: {
-      ...cup,
-      rounds,
-    },
-    newMatches: created.matches,
-    completedRoundId: currentRound.id,
-  }
+  const nextRound = rounds[currentRoundIndex + 1]
+  if (!nextRound?.scheduledDate) return { cup: { ...cup, rounds }, newMatches: [], completedRoundId: currentRound.id }
+  const countryId = cup.countryId ?? 'russia'
+  const participants = shuffle([...winners, ...currentRound.byes], cup.season * 313 + currentRoundIndex * 19)
+  const created = createRound(nextRound.id, cup.season, countryId, participants, currentRoundIndex + 2, nextRound.scheduledDate)
+  rounds[currentRoundIndex + 1] = created.round
+  return { cup: { ...cup, rounds }, newMatches: created.matches, completedRoundId: currentRound.id }
 }
 
-// НАХОДИТ СТАДИЮ КУБКА ПО ИДЕНТИФИКАТОРУ МАТЧА
-export const getCupRoundForMatch = (cup: CupState, matchId: string): CupRound | undefined => {
-  return cup.rounds.find((round) => round.ties.some((tie) => tie.matchId === matchId))
-}
+export const getCupRoundForMatch = (cup: CupState, matchId: string): CupRound | undefined =>
+  cup.rounds.find((round) => round.ties.some((tie) => tie.matchId === matchId))
 
-// ФОРМИРУЕТ КРАТКОЕ ОПИСАНИЕ ДОСТИГНУТОЙ КЛУБОМ СТАДИИ
 export const getClubCupProgress = (cup: CupState, clubId: string): string => {
-  if (cup.championClubId === clubId) {
-    return t('cup.progress.winner')
-  }
-
-  const latestRound = [...cup.rounds].reverse().find((round) => {
-    return (
-      round.byes.includes(clubId) ||
-      round.ties.some(
-        (tie) =>
-          tie.homeClubId === clubId || tie.awayClubId === clubId || tie.winnerClubId === clubId,
-      )
-    )
-  })
-
-  if (!latestRound) {
-    return t('cup.progress.notStarted')
-  }
-
-  const tie = latestRound.ties.find(
-    (candidate) => candidate.homeClubId === clubId || candidate.awayClubId === clubId,
+  if (cup.championClubId === clubId) return t('cup.progress.winner')
+  const latestRound = [...cup.rounds].reverse().find((round) =>
+    round.byes.includes(clubId) || round.ties.some((tie) =>
+      tie.homeClubId === clubId || tie.awayClubId === clubId || tie.winnerClubId === clubId,
+    ),
   )
-  if (tie?.winnerClubId && tie.winnerClubId !== clubId) {
-    return t('cup.progress.eliminated', { round: latestRound.name })
-  }
-
-  return latestRound.status === 'completed'
-    ? t('cup.progress.advanced', { round: latestRound.name })
-    : latestRound.name
+  if (!latestRound) return t('cup.progress.notStarted')
+  const tie = latestRound.ties.find((candidate) => candidate.homeClubId === clubId || candidate.awayClubId === clubId)
+  const roundName = t(latestRound.name)
+  if (tie?.winnerClubId && tie.winnerClubId !== clubId) return t('cup.progress.eliminated', { round: roundName })
+  return latestRound.status === 'completed' ? t('cup.progress.advanced', { round: roundName }) : roundName
 }

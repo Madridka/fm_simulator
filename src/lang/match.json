@@ -1,6 +1,7 @@
 {
   "round": "тур {round}",
   "cup": "кубок",
+  "playoff": "стыковой матч",
   "home": "Дома",
   "away": "В гостях",
   "winLetter": "В",

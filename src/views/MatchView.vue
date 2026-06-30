@@ -321,6 +321,12 @@ const ensureTimeline = (): MatchTimeline | undefined => {
   }
 
   if (!timeline.value) {
+    const playoffTie = currentMatch.playoffId
+      ? game.playoffs
+          ?.find((playoff) => playoff.id === currentMatch.playoffId)
+          ?.stages.flatMap((stage) => stage.ties)
+          .find((tie) => tie.id === currentMatch.playoffTieId)
+      : undefined
     timeline.value = createMatchTimeline({
       matchId: currentMatch.id,
       homeClub: home,
@@ -328,7 +334,8 @@ const ensureTimeline = (): MatchTimeline | undefined => {
       homeLineup: lineups.home,
       awayLineup: lineups.away,
       neutralVenue: currentMatch.neutralVenue,
-      allowPenaltyShootout: currentMatch.type === 'cup',
+      allowPenaltyShootout:
+        currentMatch.type === 'cup' || playoffTie?.matchIds.at(-1) === currentMatch.id,
       seed: hashString(currentMatch.id) + game.season * 10_000,
     })
   }

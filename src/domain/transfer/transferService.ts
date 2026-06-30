@@ -1,4 +1,4 @@
-import { gameConfig } from '@/config/gameConfig'
+import { careerConfig } from '@/data/gameConfig/career'
 import { t } from '@/plugins/i18n/i18n'
 import type { Club, Player } from '@/types/football'
 
@@ -58,7 +58,7 @@ export const buyPlayer = (
     }
   }
 
-  if (buyerSource.squad.length >= gameConfig.maximumSquadSize) {
+  if (buyerSource.squad.length >= careerConfig.maximumSquadSize) {
     return {
       success: false,
       message: t('transfers.messages.squadFull'),
@@ -102,7 +102,7 @@ export const buyPlayer = (
 
 // ПРОВЕРЯЕТ, МОЖНО ЛИ ПРОДАТЬ ИГРОКА БЕЗ НАРУШЕНИЯ ОГРАНИЧЕНИЙ СОСТАВА
 const canSellPlayer = (club: Club, player: Player): string | undefined => {
-  if (club.squad.length <= gameConfig.minimumSquadSize) {
+  if (club.squad.length <= careerConfig.minimumSquadSize) {
     return t('transfers.messages.minimumSquad')
   }
 
@@ -124,7 +124,7 @@ const findMarketBuyer = (
     .filter(
       (club) =>
         club.id !== sellerClubId &&
-        club.squad.length < gameConfig.maximumSquadSize &&
+        club.squad.length < careerConfig.maximumSquadSize &&
         club.budget >= price,
     )
     .sort((left, right) => right.budget - left.budget)[0]
@@ -148,7 +148,7 @@ export const sellPlayer = (
     return { success: false, message: validationError, clubs: clubs.map(cloneClub) }
   }
 
-  const price = Math.round(player.value * gameConfig.transferSaleCoefficient)
+  const price = Math.round(player.value * careerConfig.transferSaleCoefficient)
   const buyerSource = findMarketBuyer(clubs, sellerClubId, price)
 
   if (!buyerSource) {

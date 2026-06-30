@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+import { getCompetitionConfig } from '@/data/gameConfig'
+import type { CountryId, TableZoneType } from '@/data/gameConfig/types'
+import { getTableZoneType } from '@/domain/competitions/selectors'
 import type { Club, LeagueTableRow } from '@/types/football'
 
 const props = defineProps<{
   rows: LeagueTableRow[]
   clubs: Club[]
   selectedClubId?: string
+  countryId: CountryId
+  competitionId: string
 }>()
 
 const { t } = useI18n()
@@ -13,6 +19,29 @@ const { t } = useI18n()
 // ВОЗВРАЩАЕТ НАЗВАНИЕ КЛУБА ПО ИДЕНТИФИКАТОРУ
 const clubName = (clubId: string): string =>
   props.clubs.find((club) => club.id === clubId)?.name ?? clubId
+
+const competition = computed(() => getCompetitionConfig(props.countryId, props.competitionId))
+
+const zoneFor = (position: number): TableZoneType | undefined =>
+  getTableZoneType(position, props.rows.length, competition.value.tableZones)
+
+const zoneClass = (position: number): string => {
+  const classes: Partial<Record<TableZoneType, string>> = {
+    champion: 'border-l-4 border-l-amber-400',
+    'direct-promotion': 'border-l-4 border-l-emerald-500',
+    'promotion-playoff': 'border-l-4 border-l-sky-500',
+    'relegation-playoff': 'border-l-4 border-l-orange-500',
+    'direct-relegation': 'border-l-4 border-l-rose-500',
+  }
+  const zone = zoneFor(position)
+  return zone ? (classes[zone] ?? '') : ''
+}
+
+const zoneLabel = (position: number): string | undefined => {
+  const type = zoneFor(position)
+  const zone = type ? competition.value.tableZones.find((candidate) => candidate.type === type) : undefined
+  return zone ? t(zone.labelKey) : undefined
+}
 </script>
 
 <template>
@@ -48,11 +77,13 @@ const clubName = (clubId: string): string =>
           v-for="row in rows"
           :key="row.clubId"
           class="border-b border-slate-100"
-          :class="
+          :class="[
             row.clubId === selectedClubId
               ? 'bg-emerald-50 font-semibold text-emerald-900'
-              : 'text-slate-700'
-          "
+              : 'text-slate-700',
+            zoneClass(row.position),
+          ]"
+          :title="zoneLabel(row.position)"
         >
           <td class="whitespace-nowrap px-3 py-2 text-sm">{{ row.position }}</td>
           <td class="whitespace-nowrap px-3 py-2 text-sm">{{ clubName(row.clubId) }}</td>

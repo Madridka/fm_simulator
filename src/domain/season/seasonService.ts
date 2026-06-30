@@ -1,11 +1,19 @@
-import { gameConfig } from '@/config/gameConfig'
+import { careerConfig } from '@/data/gameConfig/career'
+import { getCountryCompetitionConfig } from '@/data/gameConfig'
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import { championships, getChampionshipClubs } from '@/data/clubs'
 import { advanceCupIfPossible, initializeCup } from '@/domain/competition/cupService'
 import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
+import { resolveCompetitionMovements } from '@/domain/competitions/movementResolver'
+import {
+  advanceCompetitionPlayoffs,
+  getPlayoffRules,
+  initializeCompetitionPlayoffs,
+} from '@/domain/competitions/playoffResolver'
 import { simulateFastMatch, simulateMatch } from '@/domain/match/matchSimulator'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
+import { resolveScheduleConflicts } from '@/domain/schedule/calendarSlotResolver'
 import {
   autoSelectLineup,
   getFormationSlots,
@@ -163,7 +171,7 @@ const prefixLeagueMatch = (championshipId: ChampionshipId, match: Match): Match 
 
 // СОЗДАЁТ КАЛЕНДАРЬ ЛИГИ ОДНОГО ЧЕМПИОНАТА
 const createLeagueMatches = (clubs: readonly Club[], season: number, championshipId: ChampionshipId): Match[] =>
-  generateLeagueSchedule(clubs, season).map((match) => prefixLeagueMatch(championshipId, match))
+  generateLeagueSchedule(clubs, season, championshipId).map((match) => prefixLeagueMatch(championshipId, match))
 
 // СОЗДАЁТ НЕЗАВИСИМЫЕ СОСТАВЫ КЛУБОВ ДЛЯ ВСЕХ ЧЕМПИОНАТОВ
 const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
@@ -263,17 +271,24 @@ export const createInitialGameState = (
   }
   const worldMatches = createWorldMatches(worldClubs, 1)
   const leagueMatches = worldMatches[championshipId].map(cloneMatch)
-  const cup = initializeCup(clubs, 1)
-  const matches = [...leagueMatches, ...cup.matches].sort(
+  const cup = initializeCup(clubs, 1, championshipId)
+  const scheduled = resolveScheduleConflicts(
+    [...leagueMatches, ...cup.matches],
+    1,
+    getCountryCompetitionConfig(championshipId).calendar,
+  )
+  const matches = scheduled.matches.sort(
     (left, right) => left.order - right.order || left.id.localeCompare(right.id),
   )
+  const scheduledLeagueMatches = matches.filter((match) => match.type === 'league')
   const syncedWorldMatches = {
     ...worldMatches,
-    [championshipId]: leagueMatches.map(cloneMatch),
+    [championshipId]: scheduledLeagueMatches.map(cloneMatch),
   }
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
+    configVersion: 2,
     championshipId,
     selectedClubId,
     season: 1,
@@ -284,6 +299,8 @@ export const createInitialGameState = (
     worldMatches: syncedWorldMatches,
     worldLeagueTables,
     cup: cup.cup,
+    playoffs: [],
+    scheduleConflictResolutions: scheduled.resolutions,
     lineups: createDefaultLineups(clubs),
     playerStats: createInitialPlayerStats(clubs),
     lastCompletedOrder: 0,
@@ -602,6 +619,16 @@ const simulateScheduledMatch = (
   const awayClub = getClub(state.clubs, match.awayClubId)
   const lineups = getLineupsForMatch(state, match)
 
+  const playoffTie = match.playoffId
+    ? state.playoffs
+        ?.find((playoff) => playoff.id === match.playoffId)
+        ?.stages.flatMap((stage) => stage.ties)
+        .find((tie) => tie.id === match.playoffTieId)
+    : undefined
+  const isDecisiveKnockoutMatch =
+    match.type === 'cup' ||
+    (match.type === 'playoff' && playoffTie?.matchIds.at(-1) === match.id)
+
   return {
     lineups,
     result: simulateMatch(
@@ -612,7 +639,7 @@ const simulateScheduledMatch = (
         homeLineup: lineups.home,
         awayLineup: lineups.away,
         neutralVenue: match.neutralVenue,
-        allowPenaltyShootout: match.type === 'cup',
+        allowPenaltyShootout: isDecisiveKnockoutMatch,
         seed: hashString(match.id) + state.season * 10_000,
       },
       'medium',
@@ -699,7 +726,8 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
 
 // НАЧИСЛЯЕТ ПРИЗОВЫЕ ЗА ПРОХОЖДЕНИЕ СТАДИИ КУБКА
 const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameState => {
-  const reward = gameConfig.cupRoundRewards[completedRoundId] ?? 0
+  const cupConfig = Object.values(getCountryCompetitionConfig(state.championshipId).cups)[0]
+  const reward = cupConfig?.rewards.roundRewards[completedRoundId] ?? 0
   if (reward <= 0) {
     return state
   }
@@ -715,7 +743,7 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
       .filter((clubId): clubId is string => typeof clubId === 'string'),
   )
 
-  const extraWinnerReward = completedRoundId === 'final' ? gameConfig.cupWinnerReward : 0
+  const extraWinnerReward = completedRoundId === 'final' ? (cupConfig?.rewards.winnerReward ?? 0) : 0
 
   return {
     ...state,
@@ -731,7 +759,7 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
 // ПРОДВИГАЕТ КУБКОВУЮ СЕТКУ И ПЕРЕСЧИТЫВАЕТ ТАБЛИЦЫ
 const advanceCupAndRefreshTables = (state: GameState): GameState => {
   const advanced = advanceCupIfPossible(state.cup, state.matches)
-  const matches = [...state.matches, ...advanced.newMatches].sort(
+  let matches = [...state.matches, ...advanced.newMatches].sort(
     (left, right) => left.order - right.order || left.id.localeCompare(right.id),
   )
   let nextState: GameState = {
@@ -745,9 +773,40 @@ const advanceCupAndRefreshTables = (state: GameState): GameState => {
     nextState = applyCupRoundRewards(nextState, advanced.completedRoundId)
   }
 
+  const config = getCountryCompetitionConfig(state.championshipId)
+  const leagueFinished = matches.every((match) => match.type !== 'league' || match.status === 'played')
+  if (leagueFinished) {
+    const tables = calculateLeagueTables(nextState.clubs, matches)
+    if ((nextState.playoffs?.length ?? 0) === 0) {
+      const initialized = initializeCompetitionPlayoffs(config, tables, state.season)
+      nextState = { ...nextState, playoffs: initialized.playoffs }
+      matches = [...matches, ...initialized.matches]
+    } else {
+      const advancedPlayoffs = advanceCompetitionPlayoffs(
+        nextState.playoffs ?? [],
+        matches,
+        tables,
+        config,
+        state.season,
+      )
+      nextState = { ...nextState, playoffs: advancedPlayoffs.playoffs }
+      matches = [...matches, ...advancedPlayoffs.newMatches]
+    }
+  }
+
+  const resolved = resolveScheduleConflicts(matches, state.season, config.calendar)
+  matches = resolved.matches.sort(
+    (left, right) => left.order - right.order || left.id.localeCompare(right.id),
+  )
+
   return {
     ...nextState,
-    leagueTables: calculateLeagueTables(nextState.clubs, nextState.matches),
+    matches,
+    scheduleConflictResolutions: [
+      ...(nextState.scheduleConflictResolutions ?? []),
+      ...resolved.resolutions,
+    ],
+    leagueTables: calculateLeagueTables(nextState.clubs, matches),
   }
 }
 
@@ -859,7 +918,7 @@ export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState 
   let nextState = state
   let safety = 0
 
-  while (safety < 32) {
+  while (safety < 512) {
     safety += 1
     const nextUserMatch = getNextUserMatch(nextState)
     const nextUserOrder = nextUserMatch?.order ?? Number.POSITIVE_INFINITY
@@ -926,7 +985,12 @@ export const isSeasonReadyToFinish = (state: GameState): boolean => {
     (match) => match.type !== 'league' || match.status === 'played',
   )
   const cupFinished = Boolean(state.cup.championClubId)
-  return leagueFinished && cupFinished
+  const playoffRules = getPlayoffRules(getCountryCompetitionConfig(state.championshipId))
+  const playoffsFinished =
+    playoffRules.length === 0 ||
+    (state.playoffs?.length === playoffRules.length &&
+      state.playoffs.every((playoff) => playoff.status === 'completed'))
+  return leagueFinished && cupFinished && playoffsFinished
 }
 
 // СОСТАРИВАЕТ ИГРОКОВ И ОБНОВЛЯЕТ ИХ РЕЙТИНГ, ФОРМУ И ГОТОВНОСТЬ
@@ -957,112 +1021,27 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
 }
 
 // ОПРЕДЕЛЯЕТ ДИВИЗИОН ПО ИТОГАМ ПОВЫШЕНИЯ ИЛИ ВЫЛЕТА
-export const getNextDivisionId = (
-  divisionId: number,
-  position: number,
-  clubsInDivision = gameConfig.clubsPerDivision,
-  divisionsCount = gameConfig.divisionsCount,
-): number => {
-  if (position <= gameConfig.promotedClubsCount && divisionId > 1) {
-    return divisionId - 1
-  }
-
-  if (
-    position > clubsInDivision - gameConfig.relegatedClubsCount &&
-    divisionId < divisionsCount
-  ) {
-    return divisionId + 1
-  }
-
-  return divisionId
-}
-
 // ОПРЕДЕЛЯЕТ, ИСПОЛЬЗУЕТ ЛИ КЛУБ РОССИЙСКУЮ СТРУКТУРУ ЛИГ
-const isRussianClub = (club: Club): boolean => Boolean(club.leagueId || club.groupId)
-
 // СОПОСТАВЛЯЕТ ДИВИЗИОН РОССИЙСКОГО КЛУБА С ИДЕНТИФИКАТОРОМ ЛИГИ
-const getRussianLeagueIdForDivision = (club: Club, divisionId: number): string | undefined => {
-  if (!isRussianClub(club)) {
-    return undefined
-  }
-
-  if (divisionId === 1) return 'rpl'
-  if (divisionId === 2) return 'first-league'
-  if (divisionId === 3) return 'second-league-a'
-  if (divisionId === 4) return 'second-league-b'
-  return undefined
-}
-
 // ВЫБИРАЕТ ГРУППУ ПРИ ПЕРЕХОДЕ МЕЖДУ НИЗШИМИ ЛИГАМИ
-const getRussianGroupIdForDivision = (
-  club: Club,
-  nextDivisionId: number,
-): string | undefined => {
-  if (!isRussianClub(club)) {
-    return undefined
-  }
-
-  if (nextDivisionId === 3) {
-    if (club.divisionId < nextDivisionId) {
-      return 'gold'
-    }
-
-    if (club.divisionId > nextDivisionId) {
-      return 'silver'
-    }
-
-    return club.groupId === 'gold' || club.groupId === 'silver' ? club.groupId : 'silver'
-  }
-
-  if (nextDivisionId === 4) {
-    return club.groupId?.startsWith('group-') ? club.groupId : 'group-1'
-  }
-
-  return undefined
-}
-
 // НАЧИСЛЯЕТ ПРИЗОВЫЕ И ПЕРЕМЕЩАЕТ КЛУБЫ МЕЖДУ ДИВИЗИОНАМИ
 const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
-  const tableRows = Object.values(state.leagueTables).flat()
-  const rowByClubId = new Map(tableRows.map((row) => [row.clubId, row]))
-  const competitionSizes = Object.fromEntries(
-    Object.entries(state.leagueTables).map(([competitionId, rows]) => [competitionId, rows.length]),
+  return resolveCompetitionMovements(
+    state.clubs,
+    state.leagueTables,
+    getCountryCompetitionConfig(state.championshipId),
+    state.playoffs ?? [],
   )
-  const divisionSizes = state.clubs.reduce<Record<number, number>>((sizes, club) => {
-    sizes[club.divisionId] = (sizes[club.divisionId] ?? 0) + 1
-    return sizes
-  }, {})
-  const divisionsCount = Math.max(...Object.keys(divisionSizes).map(Number))
-
-  return state.clubs.map((club) => {
-    const row = rowByClubId.get(club.id)
-    if (!row) {
-      return cloneClub(club)
-    }
-
-    const reward = gameConfig.seasonRewards[club.divisionId]?.[row.position - 1] ?? 0
-    const divisionId = getNextDivisionId(
-      club.divisionId,
-      row.position,
-      competitionSizes[row.competitionId] ?? divisionSizes[club.divisionId],
-      divisionsCount,
-    )
-    const promoted = divisionId < club.divisionId
-
-    return {
-      ...cloneClub(club),
-      divisionId,
-      leagueId: getRussianLeagueIdForDivision(club, divisionId) ?? club.leagueId,
-      groupId: getRussianGroupIdForDivision(club, divisionId),
-      budget: club.budget + reward + (promoted ? gameConfig.promotionReward : 0),
-    }
-  })
 }
 
 // ЗАВЕРШАЕТ СЕЗОН И СОЗДАЁТ СОСТОЯНИЕ СЛЕДУЮЩЕГО СЕЗОНА
 export const finishSeason = (state: GameState): GameState => {
-  if (state.season >= gameConfig.maximumSeasons) {
+  if (careerConfig.maximumSeasons !== null && state.season >= careerConfig.maximumSeasons) {
     return state
+  }
+
+  if (!isSeasonReadyToFinish(state)) {
+    throw new Error('Season cannot finish before all league, cup and playoff matches are completed')
   }
 
   const rewardedAndMoved = applySeasonRewardsAndMovement({
@@ -1077,23 +1056,33 @@ export const finishSeason = (state: GameState): GameState => {
   worldClubs[state.championshipId] = progressedClubs.map(cloneClub)
   const worldMatches = createWorldMatches(worldClubs, nextSeason)
   const leagueMatches = worldMatches[state.championshipId].map(cloneMatch)
-  const cup = initializeCup(progressedClubs, nextSeason)
-  const matches = [...leagueMatches, ...cup.matches].sort(
+  const config = getCountryCompetitionConfig(state.championshipId)
+  const cup = initializeCup(progressedClubs, nextSeason, state.championshipId)
+  const scheduled = resolveScheduleConflicts(
+    [...leagueMatches, ...cup.matches],
+    nextSeason,
+    config.calendar,
+  )
+  const matches = scheduled.matches.sort(
     (left, right) => left.order - right.order || left.id.localeCompare(right.id),
   )
+  const scheduledLeagueMatches = matches.filter((match) => match.type === 'league')
   const syncedWorldMatches = {
     ...worldMatches,
-    [state.championshipId]: leagueMatches.map(cloneMatch),
+    [state.championshipId]: scheduledLeagueMatches.map(cloneMatch),
   }
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
+    configVersion: 2,
     championshipId: state.championshipId,
     selectedClubId: state.selectedClubId,
     season: nextSeason,
     clubs: progressedClubs,
     matches,
     cup: cup.cup,
+    playoffs: [],
+    scheduleConflictResolutions: scheduled.resolutions,
     lineups: createDefaultLineups(progressedClubs, state.lineups),
     leagueTables: calculateLeagueTables(progressedClubs, matches),
     worldClubs,

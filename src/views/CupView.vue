@@ -117,7 +117,7 @@ const roundLabel = (round?: CupRound): string => {
 
   const key = `cup.roundLabels.${round.id}`
   const label = t(key)
-  return label === key ? round.name : label
+  return label === key ? t(round.name) : label
 }
 
 // ВОЗВРАЩАЕТ ТЕКСТОВЫЙ СТАТУС РАУНДА

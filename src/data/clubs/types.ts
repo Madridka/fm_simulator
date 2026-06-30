@@ -16,6 +16,7 @@ export interface ClubConfig {
   shortName: string
   city: string
   divisionId: number
+  competitionId?: string
   leagueId: string
   groupId?: string
   rating: number

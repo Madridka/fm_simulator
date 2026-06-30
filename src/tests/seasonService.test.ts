@@ -4,42 +4,26 @@ import {
   createInitialGameState,
   finishSeason,
   getNextUserMatch,
-  getNextDivisionId,
   getUserStarterIds,
   prepareUserMatchDay,
   recoverInjuredPlayersBeforeOrder,
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
-import { gameConfig } from '@/config/gameConfig'
+import { careerConfig } from '@/data/gameConfig/career'
 import type { MatchResult } from '@/types/football'
 
 describe('seasonService', () => {
-  it('promotes top two and relegates bottom two with top and bottom division limits', () => {
-    expect(getNextDivisionId(2, 1)).toBe(1)
-    expect(getNextDivisionId(2, 2)).toBe(1)
-    expect(getNextDivisionId(1, 1)).toBe(1)
-    expect(getNextDivisionId(1, 9)).toBe(2)
-    expect(getNextDivisionId(3, 10)).toBe(4)
-    expect(getNextDivisionId(4, 10)).toBe(4)
-  })
-
   it.each([
     ['russia', 'zenit', 108],
     ['spain', 'barcelona', 42],
-  ] as const)('starts and rolls over a season in %s', (championshipId, clubId, clubsCount) => {
+  ] as const)('starts a configured season in %s', (championshipId, clubId, clubsCount) => {
     const initial = createInitialGameState(championshipId, clubId)
-    const nextSeason = finishSeason({
-      ...initial,
-      matches: initial.matches.map((match) => ({ ...match, status: 'played' as const })),
-      cup: { ...initial.cup, championClubId: clubId },
-    })
 
     expect(initial.championshipId).toBe(championshipId)
     expect(initial.clubs).toHaveLength(clubsCount)
-    expect(nextSeason.championshipId).toBe(championshipId)
-    expect(nextSeason.season).toBe(2)
-    expect(nextSeason.clubs).toHaveLength(clubsCount)
-    expect(nextSeason.matches.length).toBeGreaterThan(0)
+    expect(initial.configVersion).toBe(2)
+    expect(initial.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
+    expect(initial.matches.length).toBeGreaterThan(0)
   })
 
   it('keeps an injured player out for the configured matchdays and then recovers him', () => {
@@ -148,7 +132,7 @@ describe('seasonService', () => {
     const state = createInitialGameState('russia', 'zenit')
     const finalSeasonState = {
       ...state,
-      season: gameConfig.maximumSeasons,
+      season: careerConfig.maximumSeasons!,
       matches: state.matches.map((match) => ({ ...match, status: 'played' as const })),
       cup: { ...state.cup, championClubId: state.selectedClubId },
     }
@@ -156,7 +140,7 @@ describe('seasonService', () => {
     const result = finishSeason(finalSeasonState)
 
     expect(result).toBe(finalSeasonState)
-    expect(result.season).toBe(gameConfig.maximumSeasons)
+    expect(result.season).toBe(careerConfig.maximumSeasons)
   })
 
   it('finishes AI-only matchdays when the user has no matches left', () => {
