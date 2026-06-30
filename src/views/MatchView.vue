@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
 import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
 import {
@@ -27,6 +28,7 @@ type MatchSnapshot = MatchTimeline['minutes'][number]
 const router = useRouter()
 const gameStore = useGameStore()
 const clubStore = useClubStore()
+const { t } = useI18n()
 // ИЗМЕНЯЕМОЕ СОСТОЯНИЕ ПОМИНУТНОЙ СИМУЛЯЦИИ И ФОНОВОГО ЗАВЕРШЕНИЯ
 const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
@@ -122,13 +124,13 @@ const userValidation = computed(() => {
   const game = gameStore.game
   const currentMatch = match.value
   if (!game || !currentMatch) {
-    return { valid: false, errors: ['Матч не найден.'] }
+    return { valid: false, errors: [t('match.notFound')] }
   }
 
   const userClub = clubStore.getClubById(game.selectedClubId)
   const lineup = game.lineups[game.selectedClubId]
   if (!userClub || !lineup) {
-    return { valid: false, errors: ['Состав не выбран.'] }
+    return { valid: false, errors: [t('match.lineupNotSelected')] }
   }
 
   return validateLineup(userClub, lineup)
@@ -229,33 +231,35 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
       markers.push({
         key: `goal-${goal.minute}-${index}`,
         label: '⚽',
-        title: `Гол, ${goal.minute}'`,
+        title: t('match.markers.goal', { minute: goal.minute }),
         className: 'bg-emerald-100 text-emerald-800',
       }),
     )
-
   ;(result.cards ?? [])
     .filter((card) => card.playerId === playerId && isMatchEventVisible(card.minute))
     .forEach((card, index) =>
       markers.push({
         key: `${card.card}-${card.minute ?? 0}-${index}`,
         label: card.card === 'red' ? '🟥' : '🟨',
-        title: `${card.card === 'red' ? 'Красная' : 'Жёлтая'} карточка${card.minute ? `, ${card.minute}'` : ''}`,
-        className: card.card === 'red' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800',
+        title: t(card.card === 'red' ? 'match.markers.redCard' : 'match.markers.yellowCard', {
+          minute: card.minute ? t('match.markers.minuteSuffix', { minute: card.minute }) : '',
+        }),
+        className:
+          card.card === 'red' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800',
       }),
     )
-
   ;(result.injuries ?? [])
     .filter((injury) => injury.playerId === playerId && isMatchEventVisible(injury.minute))
     .forEach((injury, index) =>
       markers.push({
         key: `injury-${injury.minute ?? 0}-${index}`,
         label: '✚',
-        title: `Травма${injury.minute ? `, ${injury.minute}'` : ''}`,
+        title: t('match.markers.injury', {
+          minute: injury.minute ? t('match.markers.minuteSuffix', { minute: injury.minute }) : '',
+        }),
         className: 'bg-orange-100 text-orange-800',
       }),
     )
-
   ;(result.substitutions ?? [])
     .filter((substitution) => isMatchEventVisible(substitution.minute))
     .forEach((substitution, index) => {
@@ -263,7 +267,7 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
         markers.push({
           key: `sub-out-${substitution.minute}-${index}`,
           label: `${substitution.minute}' ↓`,
-          title: `Заменён, ${substitution.minute}'`,
+          title: t('match.markers.substituted', { minute: substitution.minute }),
           className: 'bg-rose-100 text-rose-700',
         })
       }
@@ -271,7 +275,7 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
         markers.push({
           key: `sub-in-${substitution.minute}-${index}`,
           label: `${substitution.minute}' ↑`,
-          title: `Вышел на замену, ${substitution.minute}'`,
+          title: t('match.markers.cameOn', { minute: substitution.minute }),
           className: 'bg-sky-100 text-sky-700',
         })
       }
@@ -282,9 +286,7 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
 
 // ВОЗВРАЩАЕТ ДОСТУПНЫХ ЗАПАСНЫХ, НЕ ВХОДЯЩИХ В СТАРТОВЫЙ СОСТАВ
 const benchPlayers = (club: Club, starters: readonly string[] = []): Player[] =>
-  club.squad.filter(
-    (player) => !starters.includes(player.id) && !player.isInjured,
-  )
+  club.squad.filter((player) => !starters.includes(player.id) && !player.isInjured)
 
 // ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
@@ -300,7 +302,7 @@ const playerPosition = (playerId: string): string =>
 // ВОЗВРАЩАЕТ ИМЯ ИГРОКА ПО ИДЕНТИФИКАТОРУ
 const playerName = (playerId?: string): string => {
   if (!playerId) {
-    return '-'
+    return t('common.dash')
   }
   const player = allPlayers.value.find((candidate) => candidate.id === playerId)
   return player ? `${player.firstName} ${player.lastName}` : playerId
@@ -362,8 +364,7 @@ const finish = async (result: MatchResult): Promise<void> => {
   try {
     await completion
   } catch (error) {
-    calculationError.value =
-      error instanceof Error ? error.message : 'Не удалось рассчитать игровой день.'
+    calculationError.value = error instanceof Error ? error.message : t('match.errors.calculateDay')
   } finally {
     if (matchCompletionPromise === completion) {
       matchCompletionPromise = null
@@ -435,7 +436,7 @@ watch(
     if (currentMatch?.status === 'scheduled') {
       void gameStore.prepareMatchDay(currentMatch.id).catch((error: unknown) => {
         calculationError.value =
-          error instanceof Error ? error.message : 'Не удалось подготовить игровой день.'
+          error instanceof Error ? error.message : t('match.errors.prepareDay')
       })
     }
   },
@@ -480,7 +481,7 @@ onBeforeUnmount(clearTimer)
             <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
               {{ homeClub.name }}
             </h1>
-            <div class="hidden text-sm text-slate-500 sm:block">Хозяева</div>
+            <div class="hidden text-sm text-slate-500 sm:block">{{ t('match.homeTeam') }}</div>
           </div>
         </div>
         <div class="text-center">
@@ -494,7 +495,7 @@ onBeforeUnmount(clearTimer)
           <div class="mt-1 text-[10px] font-semibold text-slate-500 sm:text-sm">
             {{
               match.status === 'played' || currentMinute >= 90
-                ? 'Матч завершен'
+                ? t('match.finished')
                 : `${visibleSnapshot.minute}'`
             }}
           </div>
@@ -504,7 +505,7 @@ onBeforeUnmount(clearTimer)
             <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
               {{ awayClub.name }}
             </h1>
-            <div class="hidden text-sm text-slate-500 sm:block">Гости</div>
+            <div class="hidden text-sm text-slate-500 sm:block">{{ t('match.awayTeam') }}</div>
           </div>
           <ClubBadge
             :club="awayClub"
@@ -521,27 +522,27 @@ onBeforeUnmount(clearTimer)
             v-if="canSimulate"
             class="rounded-lg bg-emerald-50 px-2 py-1.5 text-xs font-extrabold text-emerald-800 sm:px-3 sm:py-2 sm:text-sm"
           >
-            Симуляция идет автоматически
+            {{ t('match.simulationRunning') }}
           </div>
           <Button
             class="w-full max-w-[180px] sm:min-w-[220px]"
             :disabled="!canSimulate || isCalculating"
             severity="success"
-            :label="isCalculating ? 'Расчет...' : 'Мгновенный расчет'"
+            :label="isCalculating ? t('match.calculating') : t('match.instantResult')"
             @click="instantResult"
           />
           <RouterLink v-if="!userValidation.valid" to="/squad" class="w-full text-center">
             <Button
               class="w-full max-w-[180px] sm:min-w-[220px]"
               severity="danger"
-              label="Исправить состав"
+              :label="t('match.fixLineup')"
             />
           </RouterLink>
         </template>
         <template v-else-if="match.status === 'played' || currentMinute >= 90">
           <Button
             class="w-full max-w-[180px] sm:min-w-[220px]"
-            label="Назад к обзору"
+            :label="t('match.backToOverview')"
             @click="goBack"
           />
         </template>
@@ -558,7 +559,7 @@ onBeforeUnmount(clearTimer)
         v-if="match.status === 'scheduled' && isUserMatch && !isPlayableMatch"
         class="mt-5 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
       >
-        Этот матч еще не доступен. Сначала сыграйте ближайший матч сезона.
+        {{ t('match.notAvailable') }}
       </div>
 
       <div
@@ -581,14 +582,19 @@ onBeforeUnmount(clearTimer)
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Составы</h2>
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+          {{ t('match.lineups') }}
+        </h2>
         <!-- ЛЕГЕНДА СОБЫТИЙ, КОТОРЫЕ ПОЯВЛЯЮТСЯ У ИГРОКОВ ПО ХОДУ МАТЧА -->
         <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
-          <span>⚽ Гол</span>
-          <span>🟨 ЖК</span>
-          <span>🟥 КК</span>
-          <span>✚ Травма</span>
-          <span><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b> Замена</span>
+          <span>{{ t('match.legend.goal') }}</span>
+          <span>{{ t('match.legend.yellowCard') }}</span>
+          <span>{{ t('match.legend.redCard') }}</span>
+          <span>{{ t('match.legend.injury') }}</span>
+          <span
+            ><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b>
+            {{ t('match.legend.substitution') }}</span
+          >
         </div>
         <!-- ОСНОВА И СКАМЕЙКА ХОЗЯЕВ И ГОСТЕЙ -->
         <div class="mt-4 grid gap-4 md:grid-cols-2 xl:mt-3 xl:gap-3">
@@ -625,7 +631,7 @@ onBeforeUnmount(clearTimer)
               class="mt-3 border-t border-slate-200 pt-2"
             >
               <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
-                Запасные
+                {{ t('match.substitutes') }}
               </div>
               <div class="space-y-1 text-xs text-slate-700">
                 <div
@@ -644,7 +650,8 @@ onBeforeUnmount(clearTimer)
                     :aria-label="marker.title"
                     class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
                     :class="marker.className"
-                  >{{ marker.label }}</span>
+                    >{{ marker.label }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -682,7 +689,7 @@ onBeforeUnmount(clearTimer)
               class="mt-3 border-t border-slate-200 pt-2"
             >
               <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
-                Запасные
+                {{ t('match.substitutes') }}
               </div>
               <div class="space-y-1 text-xs text-slate-700">
                 <div
@@ -701,7 +708,8 @@ onBeforeUnmount(clearTimer)
                     :aria-label="marker.title"
                     class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
                     :class="marker.className"
-                  >{{ marker.label }}</span>
+                    >{{ marker.label }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -713,7 +721,9 @@ onBeforeUnmount(clearTimer)
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Статистика</h2>
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+          {{ t('match.statistics') }}
+        </h2>
         <!-- СРАВНЕНИЕ КЛЮЧЕВЫХ МАТЧЕВЫХ ПОКАЗАТЕЛЕЙ ОБЕИХ КОМАНД -->
         <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
@@ -722,7 +732,7 @@ onBeforeUnmount(clearTimer)
                 match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
               }}%</span
             >
-            <span class="text-slate-500">Владение</span>
+            <span class="text-slate-500">{{ t('match.possession') }}</span>
             <span class="font-semibold"
               >{{
                 match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
@@ -733,7 +743,7 @@ onBeforeUnmount(clearTimer)
             <span class="text-right font-semibold">
               {{ match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0 }}
             </span>
-            <span class="text-slate-500">xG</span>
+            <span class="text-slate-500">{{ t('match.expectedGoals') }}</span>
             <span class="font-semibold">
               {{ match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0 }}
             </span>
@@ -742,7 +752,7 @@ onBeforeUnmount(clearTimer)
             <span class="text-right font-semibold">{{
               match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
             }}</span>
-            <span class="text-slate-500">Удары</span>
+            <span class="text-slate-500">{{ t('match.shots') }}</span>
             <span class="font-semibold">{{
               match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
             }}</span>
@@ -751,7 +761,7 @@ onBeforeUnmount(clearTimer)
             <span class="text-right font-semibold">{{
               match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
             }}</span>
-            <span class="text-slate-500">В створ</span>
+            <span class="text-slate-500">{{ t('match.shotsOnTarget') }}</span>
             <span class="font-semibold">{{
               match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
             }}</span>
@@ -760,7 +770,7 @@ onBeforeUnmount(clearTimer)
             <span class="text-right font-semibold">{{
               match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
             }}</span>
-            <span class="text-slate-500">Желтые</span>
+            <span class="text-slate-500">{{ t('match.yellowCards') }}</span>
             <span class="font-semibold">{{
               match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
             }}</span>
@@ -769,7 +779,7 @@ onBeforeUnmount(clearTimer)
             <span class="text-right font-semibold">{{
               match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
             }}</span>
-            <span class="text-slate-500">Красные</span>
+            <span class="text-slate-500">{{ t('match.redCards') }}</span>
             <span class="font-semibold">{{
               match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
             }}</span>
@@ -780,7 +790,7 @@ onBeforeUnmount(clearTimer)
           v-if="currentResult"
           class="mt-5 rounded-md bg-slate-50 p-3 text-sm xl:mt-3 xl:p-2 xl:text-xs"
         >
-          Лучший игрок:
+          {{ t('match.bestPlayer') }}
           <span class="font-semibold text-slate-950">{{
             playerName(currentResult.bestPlayerId)
           }}</span>
@@ -788,16 +798,10 @@ onBeforeUnmount(clearTimer)
 
         <!-- ХРОНОЛОГИЯ ГОЛОВ С РАЗДЕЛЕНИЕМ ХОЗЯЕВ И ГОСТЕЙ ПО СТОРОНАМ -->
         <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
-          <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Голы</h3>
+          <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">
+            {{ t('match.goals') }}
+          </h3>
           <div v-if="visibleGoals.length" class="mt-3 xl:mt-2">
-            <div class="mb-1 grid grid-cols-2 gap-2">
-              <div class="truncate px-1 text-xs font-black text-slate-500">
-                {{ homeClub.shortName }}
-              </div>
-              <div class="truncate px-1 text-right text-xs font-black text-slate-500">
-                {{ awayClub.shortName }}
-              </div>
-            </div>
             <div class="space-y-2 xl:space-y-1">
               <div
                 v-for="goal in visibleGoals"
@@ -821,7 +825,7 @@ onBeforeUnmount(clearTimer)
               </div>
             </div>
           </div>
-          <div v-else class="mt-3 text-sm text-slate-600">Голов пока нет.</div>
+          <div v-else class="mt-3 text-sm text-slate-600">{{ t('match.noGoals') }}</div>
         </div>
 
         <!-- РЕЗУЛЬТАТ СЕРИИ ПЕНАЛЬТИ ДЛЯ КУБКОВОГО МАТЧА -->
@@ -829,17 +833,18 @@ onBeforeUnmount(clearTimer)
           v-if="match.result?.penaltyWinnerClubId"
           class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
         >
-          Победитель серии пенальти:
+          {{ t('match.penaltyWinner') }}
           {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
         </div>
-
       </div>
 
       <!-- ТЕКСТОВАЯ ТРАНСЛЯЦИЯ -->
       <div
         class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Текстовая трансляция</h2>
+        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+          {{ t('match.commentaryTitle') }}
+        </h2>
         <!-- ПОМИНУТНЫЙ ПОТОК УЖЕ НАСТУПИВШИХ СОБЫТИЙ МАТЧА -->
         <div
           v-if="visibleCommentary.length"
@@ -856,12 +861,16 @@ onBeforeUnmount(clearTimer)
               class="flex min-w-0 flex-wrap items-center gap-1"
             >
               <span class="font-semibold">
-                Замена {{ clubStore.getClubById(event.clubId ?? '')?.shortName }}:
+                {{
+                  t('match.substitution', {
+                    club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '',
+                  })
+                }}
               </span>
               <span>{{ playerName(event.playerOutId) }}</span>
               <span
                 class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
-                aria-label="заменён на"
+                :aria-label="t('match.substitutedFor')"
               >
                 <span class="text-rose-600">→</span>
                 <span class="text-emerald-600">←</span>
@@ -871,7 +880,9 @@ onBeforeUnmount(clearTimer)
             <span v-else>{{ event.text }}</span>
           </div>
         </div>
-        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">Событий пока нет.</div>
+        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">
+          {{ t('match.noEvents') }}
+        </div>
       </div>
     </div>
   </section>
@@ -880,6 +891,6 @@ onBeforeUnmount(clearTimer)
     v-else
     class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)]"
   >
-    Матч не найден.
+    {{ t('match.notFound') }}
   </section>
 </template>

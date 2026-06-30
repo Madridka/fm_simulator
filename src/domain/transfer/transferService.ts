@@ -1,4 +1,5 @@
 import { gameConfig } from '@/config/gameConfig'
+import { t } from '@/plugins/i18n/i18n'
 import type { Club, Player } from '@/types/football'
 
 export interface TransferResult {
@@ -46,13 +47,13 @@ export const buyPlayer = (
   const buyerSource = findClub(clubs, buyerClubId)
 
   if (!playerOwner || !buyerSource) {
-    return { success: false, message: 'Игрок или клуб не найден.', clubs: clubs.map(cloneClub) }
+    return { success: false, message: t('transfers.messages.notFound'), clubs: clubs.map(cloneClub) }
   }
 
   if (playerOwner.club.id === buyerClubId) {
     return {
       success: false,
-      message: 'Игрок уже находится в вашем клубе.',
+      message: t('transfers.messages.alreadyInClub'),
       clubs: clubs.map(cloneClub),
     }
   }
@@ -60,7 +61,7 @@ export const buyPlayer = (
   if (buyerSource.squad.length >= gameConfig.maximumSquadSize) {
     return {
       success: false,
-      message: 'В составе уже максимальное количество игроков.',
+      message: t('transfers.messages.squadFull'),
       clubs: clubs.map(cloneClub),
     }
   }
@@ -68,7 +69,7 @@ export const buyPlayer = (
   if (buyerSource.budget < playerOwner.player.value) {
     return {
       success: false,
-      message: 'Недостаточно бюджета для покупки.',
+      message: t('transfers.messages.insufficientBudget'),
       clubs: clubs.map(cloneClub),
     }
   }
@@ -84,7 +85,9 @@ export const buyPlayer = (
 
   return {
     success: true,
-    message: `${player.firstName} ${player.lastName} куплен.`,
+    message: t('transfers.messages.bought', {
+      player: `${player.firstName} ${player.lastName}`,
+    }),
     clubs: clubs.map((club) => {
       if (club.id === buyer.id) {
         return buyer
@@ -100,12 +103,12 @@ export const buyPlayer = (
 // ПРОВЕРЯЕТ, МОЖНО ЛИ ПРОДАТЬ ИГРОКА БЕЗ НАРУШЕНИЯ ОГРАНИЧЕНИЙ СОСТАВА
 const canSellPlayer = (club: Club, player: Player): string | undefined => {
   if (club.squad.length <= gameConfig.minimumSquadSize) {
-    return 'Нельзя оставить в составе менее 16 игроков.'
+    return t('transfers.messages.minimumSquad')
   }
 
   const goalkeepers = club.squad.filter((candidate) => candidate.position === 'GK')
   if (player.position === 'GK' && goalkeepers.length <= 1) {
-    return 'Нельзя продать последнего вратаря.'
+    return t('transfers.messages.lastGoalkeeper')
   }
 
   return undefined
@@ -137,7 +140,7 @@ export const sellPlayer = (
   const player = sellerSource?.squad.find((candidate) => candidate.id === playerId)
 
   if (!sellerSource || !player) {
-    return { success: false, message: 'Игрок или клуб не найден.', clubs: clubs.map(cloneClub) }
+    return { success: false, message: t('transfers.messages.notFound'), clubs: clubs.map(cloneClub) }
   }
 
   const validationError = canSellPlayer(sellerSource, player)
@@ -151,7 +154,7 @@ export const sellPlayer = (
   if (!buyerSource) {
     return {
       success: false,
-      message: 'На рынке нет клуба с бюджетом для покупки.',
+      message: t('transfers.messages.noBuyer'),
       clubs: clubs.map(cloneClub),
     }
   }
@@ -166,7 +169,10 @@ export const sellPlayer = (
 
   return {
     success: true,
-    message: `${player.firstName} ${player.lastName} продан за ${price}.`,
+    message: t('transfers.messages.sold', {
+      player: `${player.firstName} ${player.lastName}`,
+      price,
+    }),
     clubs: clubs.map((club) => {
       if (club.id === seller.id) {
         return seller

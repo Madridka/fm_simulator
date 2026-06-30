@@ -1,7 +1,11 @@
+import { t } from '@/plugins/i18n/i18n'
+
 // ФОРМАТИРУЕТ БЮДЖЕТ И СТОИМОСТЬ В МИЛЛИОНАХ
 export const formatMoney = (value: number): string => {
   const millions = value / 1_000_000
-  return `${millions.toFixed(millions >= 10 ? 0 : 1)} млн`
+  return t('common.moneyMillions', {
+    value: millions.toFixed(millions >= 10 ? 0 : 1),
+  })
 }
 
 // ОБЪЕДИНЯЕТ ИМЯ И ФАМИЛИЮ ИГРОКА ДЛЯ ОТОБРАЖЕНИЯ

@@ -3,6 +3,7 @@ import {
   prepareUserMatchDay,
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
+import { t } from '@/plugins/i18n/i18n'
 import type { GameState, MatchResult } from '@/types/football'
 
 type MatchDayRequest =
@@ -35,7 +36,7 @@ workerScope.onmessage = ({ data }): void => {
     }
 
     if (!preparedState || !preparedMatchId) {
-      throw new Error('Игровой день не был подготовлен.')
+      throw new Error(t('match.errors.dayNotPrepared'))
     }
 
     workerScope.postMessage({
@@ -47,7 +48,7 @@ workerScope.onmessage = ({ data }): void => {
   } catch (error) {
     workerScope.postMessage({
       type: 'error',
-      error: error instanceof Error ? error.message : 'Не удалось рассчитать игровой день.',
+      error: error instanceof Error ? error.message : t('match.errors.calculateDay'),
     })
   }
 }

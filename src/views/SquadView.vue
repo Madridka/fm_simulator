@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
@@ -25,6 +26,7 @@ interface PointerDragState {
 // ХРАНИЛИЩА СОСТАВА И ПОЛЬЗОВАТЕЛЬСКИХ УВЕДОМЛЕНИЙ
 const squadStore = useSquadStore()
 const toastStore = useToastStore()
+const { t } = useI18n()
 // СОСТОЯНИЕ МЫШИ, КАСАНИЯ И ЦЕЛИ ПЕРЕТАСКИВАНИЯ ИГРОКА
 const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
@@ -102,22 +104,22 @@ const totalValue = computed(
 const validationMessage = computed(() => squadStore.validation.errors[0] ?? '')
 
 const positionLabels: Record<PlayerPosition, string> = {
-  GK: 'ВР',
-  LB: 'ЛЗ',
-  CB: 'ЦЗ',
-  RB: 'ПЗ',
-  CDM: 'ЦОП',
-  CM: 'ЦП',
-  CAM: 'ЦАП',
-  LW: 'ЛФА',
-  RW: 'ПФА',
-  ST: 'ФРВ',
+  GK: t('common.positionShort.GK'),
+  LB: t('common.positionShort.LB'),
+  CB: t('common.positionShort.CB'),
+  RB: t('common.positionShort.RB'),
+  CDM: t('common.positionShort.CDM'),
+  CM: t('common.positionShort.CM'),
+  CAM: t('common.positionShort.CAM'),
+  LW: t('common.positionShort.LW'),
+  RW: t('common.positionShort.RW'),
+  ST: t('common.positionShort.ST'),
 }
 
 const tacticLabels: Record<TacticalStyle, string> = {
-  defensive: 'Оборона',
-  balanced: 'Баланс',
-  attacking: 'Атака',
+  defensive: t('squad.styles.defensive'),
+  balanced: t('squad.styles.balanced'),
+  attacking: t('squad.styles.attacking'),
 }
 
 // ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
@@ -140,9 +142,21 @@ const injuryLabel = (player: Player | undefined): string => {
     return ''
   }
   return player.injuryUntilOrder
-    ? `Вернется после ${player.injuryUntilOrder}-го тура`
-    : 'Травма'
+    ? t('squad.injuryReturn', { round: player.injuryUntilOrder })
+    : t('squad.injury')
 }
+
+// ФОРМИРУЕТ ПОДПИСЬ ТЕКУЩЕЙ ФОРМЫ И ГОТОВНОСТИ ИГРОКА
+const conditionLabel = (player: Player): string =>
+  t('squad.formFitness', { form: player.form, fitness: player.fitness })
+
+// ДОБАВЛЯЕТ ВОЗРАСТ К ПОДПИСИ СОСТОЯНИЯ ИГРОКА
+const conditionWithAgeLabel = (player: Player): string =>
+  t('squad.formFitnessAge', {
+    form: player.form,
+    fitness: player.fitness,
+    age: t('common.age', { age: player.age }),
+  })
 
 // ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
 const setFormation = (event: Event): void => {
@@ -439,7 +453,7 @@ watch(
 onBeforeRouteLeave(() => {
   if (squadStore.club && squadStore.lineup && !squadStore.validation.valid) {
     squadStore.resetLineup()
-    toastStore.show('Состав был исправлен автоматически.', 'warning')
+    toastStore.show(t('squad.lineupFixed'), 'warning')
   }
 })
 </script>
@@ -456,16 +470,17 @@ onBeforeRouteLeave(() => {
     >
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 class="text-xl font-bold leading-tight text-slate-950">Состав</h1>
+          <h1 class="text-xl font-bold leading-tight text-slate-950">{{ t('squad.title') }}</h1>
           <p class="mt-0.5 text-xs text-slate-600">
-            {{ squadStore.club.name }} · {{ squadStore.club.squad.length }} игроков ·
-            {{ formatMoney(totalValue) }}
+            {{ squadStore.club.name }} {{ t('common.separator') }}
+            {{ t('common.playersCount', { count: squadStore.club.squad.length }) }}
+            {{ t('common.separator') }} {{ formatMoney(totalValue) }}
           </p>
         </div>
 
         <div class="flex flex-wrap items-end gap-2">
           <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
-            Формация
+            {{ t('squad.formation') }}
             <select
               class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
               :value="squadStore.lineup.formation"
@@ -481,7 +496,7 @@ onBeforeRouteLeave(() => {
             </select>
           </label>
           <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
-            Тактика
+            {{ t('squad.tactic') }}
             <select
               class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
               :value="squadStore.lineup.tacticalStyle"
@@ -495,7 +510,7 @@ onBeforeRouteLeave(() => {
           <Button
             class="!h-9 self-end"
             severity="secondary"
-            label="Автосостав"
+            :label="t('squad.autoLineup')"
             @click="squadStore.resetLineup"
           />
         </div>
@@ -503,8 +518,8 @@ onBeforeRouteLeave(() => {
       <p class="mt-3 text-xs font-medium text-slate-500 xl:hidden">
         {{
           selectedTouchPayload
-            ? 'Теперь коснитесь позиции или другого игрока для замены.'
-            : 'Перетащите игрока или коснитесь его, а затем нужной позиции.'
+            ? t('squad.touchSelectedHint')
+            : t('squad.touchHint')
         }}
       </p>
     </div>
@@ -598,8 +613,7 @@ onBeforeRouteLeave(() => {
                   {{ injuryLabel(slotPlayer(slot.id)) }}
                 </template>
                 <template v-else>
-                  Форма {{ slotPlayer(slot.id)?.form }} · Готовность
-                  {{ slotPlayer(slot.id)?.fitness }}
+                  {{ conditionLabel(slotPlayer(slot.id)!) }}
                 </template>
               </span>
               <span class="hidden h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35 sm:block">
@@ -623,11 +637,11 @@ onBeforeRouteLeave(() => {
               </span>
               <span
                 class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.55rem] font-black uppercase sm:text-[0.68rem] xl:text-[0.78rem]"
-                >Пусто</span
+                >{{ t('squad.empty') }}</span
               >
               <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
-                >Перетащите игрока</span
+                >{{ t('squad.dragPlayer') }}</span
               >
             </template>
           </button>
@@ -690,7 +704,7 @@ onBeforeRouteLeave(() => {
               >{{
                 player.isInjured
                   ? injuryLabel(player)
-                  : `Форма ${player.form} · Готовность ${player.fitness}`
+                  : conditionLabel(player)
               }}</span
             >
             <span class="h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35"
@@ -701,7 +715,7 @@ onBeforeRouteLeave(() => {
             ></span>
           </button>
           <div v-if="!substitutePlayers.length" class="px-4 py-6 text-sm text-slate-500">
-            Перетащите сюда игроков замены.
+            {{ t('squad.dragSubstitutes') }}
           </div>
         </div>
       </div>
@@ -712,8 +726,8 @@ onBeforeRouteLeave(() => {
       >
         <div class="flex items-start justify-between gap-3 px-4 pb-2.5 pt-4">
           <div>
-            <h2 class="text-base font-semibold text-slate-950">Команда</h2>
-            <p class="mt-0.5 text-xs text-slate-500">Игроки вне заявки</p>
+            <h2 class="text-base font-semibold text-slate-950">{{ t('squad.team') }}</h2>
+            <p class="mt-0.5 text-xs text-slate-500">{{ t('squad.outsideLineup') }}</p>
           </div>
         </div>
 
@@ -727,7 +741,9 @@ onBeforeRouteLeave(() => {
           @dragleave="dragOverGroup === 'reserve' && (dragOverGroup = null)"
           @drop.prevent="dropOnReserve"
         >
-          <h3 class="mb-2 text-xs font-black uppercase text-slate-700">Резерв</h3>
+          <h3 class="mb-2 text-xs font-black uppercase text-slate-700">
+            {{ t('squad.reserve') }}
+          </h3>
           <div class="grid max-h-full gap-1.5 overflow-y-auto pr-0.5">
             <button
               v-for="player in reservePlayers"
@@ -766,7 +782,7 @@ onBeforeRouteLeave(() => {
                   >{{
                     player.isInjured
                       ? injuryLabel(player)
-                      : `Форма ${player.form} · Готовность ${player.fitness} · ${player.age} лет`
+                      : conditionWithAgeLabel(player)
                   }}</span
                 >
               </span>

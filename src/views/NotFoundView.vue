@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 // ПОДГОТАВЛИВАЕТ НАВИГАЦИЮ И АДАПТИВНЫЕ ФОНЫ СТРАНИЦЫ 404
 const router = useRouter()
+const { t } = useI18n()
 const desktopBackground = `${import.meta.env.BASE_URL}images/404-stadium-desktop-v2.png`
 const mobileBackground = `${import.meta.env.BASE_URL}images/404-stadium-mobile.png`
 
@@ -21,7 +23,7 @@ const goHome = (): void => {
 // ЗАПРЕЩАЕТ ИНДЕКСАЦИЮ НЕСУЩЕСТВУЮЩЕГО МАРШРУТА И МЕНЯЕТ ЗАГОЛОВОК
 onMounted(() => {
   previousTitle = document.title
-  document.title = '404 — Страница не найдена | Футбольный менеджер'
+  document.title = t('router.notFound.documentTitle')
 
   robotsMeta = document.querySelector<HTMLMetaElement>('meta[name="robots"]')
   if (!robotsMeta) {
@@ -96,7 +98,7 @@ onBeforeUnmount(() => {
       >
         <div
           class="scale-x-[1.04] font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(136px,14.5vw,224px)] leading-[0.77] tracking-[0.035em] text-[#eef0ed] [text-shadow:3px_4px_0_#a1bd70,7px_9px_0_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.1)] max-[1000px]:text-[clamp(116px,27vw,190px)] max-[580px]:text-[clamp(96px,31vw,146px)]"
-          aria-label="Ошибка 404"
+          :aria-label="t('router.notFound.errorLabel')"
         >
           404
         </div>
@@ -116,13 +118,13 @@ onBeforeUnmount(() => {
           id="not-found-title"
           class="m-0 font-[Impact,Haettenschweiler,Arial_Narrow_Bold,sans-serif] text-[clamp(34px,3.2vw,52px)] uppercase leading-[1.08] tracking-[0.055em] text-[#a7dc45] [text-shadow:0_0_18px_rgba(167,220,69,0.2)] max-[580px]:text-[clamp(29px,8.4vw,38px)]"
         >
-          Не попал в створ
+          {{ t('router.notFound.title') }}
         </h1>
         <p
           class="mx-auto mb-0 mt-[18px] text-[clamp(17px,1.45vw,22px)] leading-[1.38] text-[#c8ced0] max-[580px]:text-base"
         >
-          Похоже, эта страница пробила мимо ворот.<br />
-          Вернёмся в игру?
+          {{ t('router.notFound.description') }}<br />
+          {{ t('router.notFound.question') }}
         </p>
 
         <div class="mt-8 flex justify-center max-[580px]:mt-[26px]">
@@ -142,7 +144,7 @@ onBeforeUnmount(() => {
                 fill="#111820"
               />
             </svg>
-            <span>На главную</span>
+            <span>{{ t('router.notFound.home') }}</span>
           </button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import { getClubCupProgress } from '@/domain/competition/cupService'
 import { getClubPosition } from '@/domain/competition/leagueTableService'
+import { t } from '@/plugins/i18n/i18n'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { CupState, LeagueTableRow } from '@/types/football'
 
@@ -26,7 +27,7 @@ export const useCompetitionStore = defineStore('competitions', () => {
   // ФОРМИРУЕТ ТЕКСТОВОЕ ОПИСАНИЕ РЕЗУЛЬТАТА КЛУБА В КУБКЕ
   const cupProgress = computed<string>(() => {
     const game = gameStore.game
-    return game ? getClubCupProgress(game.cup, game.selectedClubId) : 'Нет сохранения'
+    return game ? getClubCupProgress(game.cup, game.selectedClubId) : t('cup.progress.noSave')
   })
 
   return {

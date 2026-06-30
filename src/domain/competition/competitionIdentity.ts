@@ -1,4 +1,4 @@
-import { championshipTranslations } from '@/lang/championships'
+import { t } from '@/plugins/i18n/i18n'
 import type { Club, Match } from '@/types/football'
 
 export type CompetitionId = string
@@ -8,8 +8,6 @@ export interface ChampionshipCompetitionNames {
   divisionNames: Record<number, string>
   competitionNames?: Record<string, string>
 }
-
-const russianCompetitionNames = championshipTranslations.russia.competitionNames
 
 // ОПРЕДЕЛЯЕТ УНИКАЛЬНЫЙ ИДЕНТИФИКАТОР ЛИГИ ИЛИ ГРУППЫ КЛУБА
 export const getClubCompetitionId = (club: Pick<Club, 'divisionId' | 'groupId'>): CompetitionId =>
@@ -36,10 +34,6 @@ export const getMatchCompetitionId = (
 export const getCompetitionNames = (
   championship: ChampionshipCompetitionNames,
 ): Record<string, string> => {
-  if (championship.id === 'russia') {
-    return russianCompetitionNames
-  }
-
   return (
     championship.competitionNames ??
     Object.fromEntries(
@@ -54,7 +48,7 @@ export const getCompetitionName = (
   competitionId: CompetitionId,
 ): string => {
   if (!championship) {
-    return `Competition ${competitionId}`
+    return t('common.competitionFallback', { competition: competitionId })
   }
 
   const competitionName = getCompetitionNames(championship)[competitionId]
@@ -63,5 +57,8 @@ export const getCompetitionName = (
   }
 
   const divisionId = Number(competitionId.split(':')[0])
-  return championship.divisionNames[divisionId] ?? `Competition ${competitionId}`
+  return (
+    championship.divisionNames[divisionId] ??
+    t('common.competitionFallback', { competition: competitionId })
+  )
 }

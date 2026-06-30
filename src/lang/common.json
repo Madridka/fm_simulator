@@ -1,0 +1,37 @@
+{
+  "dash": "-",
+  "separator": "·",
+  "moneyMillions": "{value} млн",
+  "age": "{age} лет",
+  "playersCount": "{count} игроков",
+  "teamsCount": "{count} команд",
+  "seasonNumber": "сезон {season}",
+  "ratingValue": "Р{rating}",
+  "divisionFallback": "Дивизион {division}",
+  "competitionFallback": "Соревнование {competition}",
+  "positions": {
+    "all": "Все позиции",
+    "GK": "Вратарь",
+    "LB": "Левый защитник",
+    "CB": "Центральный защитник",
+    "RB": "Правый защитник",
+    "CDM": "Опорник",
+    "CM": "Центр поля",
+    "CAM": "Атакующий полузащитник",
+    "LW": "Левый вингер",
+    "RW": "Правый вингер",
+    "ST": "Нападающий"
+  },
+  "positionShort": {
+    "GK": "ВР",
+    "LB": "ЛЗ",
+    "CB": "ЦЗ",
+    "RB": "ПЗ",
+    "CDM": "ЦОП",
+    "CM": "ЦП",
+    "CAM": "ЦАП",
+    "LW": "ЛФА",
+    "RW": "ПФА",
+    "ST": "ФРВ"
+  }
+}

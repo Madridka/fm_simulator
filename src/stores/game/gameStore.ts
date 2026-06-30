@@ -14,6 +14,7 @@ import {
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
+import { t } from '@/plugins/i18n/i18n'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
 
@@ -103,7 +104,7 @@ export const useGameStore = defineStore('game', () => {
       const result = gameSaveRepository.save(game.value)
       if (!result.saved) {
         toastStore.show(
-          'Игра продолжена, но сохранение не записано: хранилище браузера переполнено.',
+          t('app.saveStorageFull'),
           'warning',
         )
       }
@@ -234,7 +235,7 @@ export const useGameStore = defineStore('game', () => {
     }
 
     if (matchDayWorker) {
-      rejectMatchDayWorker(new Error('Фоновый расчет заменен новым матчем.'))
+      rejectMatchDayWorker(new Error(t('match.errors.dayReplaced')))
     }
 
     preparedMatchId = matchId
@@ -271,7 +272,7 @@ export const useGameStore = defineStore('game', () => {
 
     matchDayWorker.onerror = (event) => {
       rejectMatchDayWorker(
-        new Error(event.message || 'Не удалось запустить расчет игрового дня.'),
+        new Error(event.message || t('match.errors.workerStart')),
       )
     }
 
@@ -285,7 +286,7 @@ export const useGameStore = defineStore('game', () => {
   const completeMatchAsync = async (matchId: string, result: MatchResult): Promise<void> => {
     await prepareMatchDay(matchId)
     if (!matchDayWorker || preparedMatchId !== matchId) {
-      throw new Error('Игровой день не был подготовлен.')
+      throw new Error(t('match.errors.dayNotPrepared'))
     }
 
     return new Promise((resolve, reject) => {

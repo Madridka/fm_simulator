@@ -1,5 +1,6 @@
 import { gameConfig } from '@/config/gameConfig'
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
+import { t } from '@/plugins/i18n/i18n'
 import type {
   CardEvent,
   Club,
@@ -566,15 +567,15 @@ const createCommentary = (
     const lastTwoDigits = duration % 100
     const lastDigit = duration % 10
     if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
-      return `${duration} матчей`
+      return t('match.commentary.matchesMany', { count: duration })
     }
     if (lastDigit === 1) {
-      return `${duration} матч`
+      return t('match.commentary.matchesOne', { count: duration })
     }
     if (lastDigit >= 2 && lastDigit <= 4) {
-      return `${duration} матча`
+      return t('match.commentary.matchesFew', { count: duration })
     }
-    return `${duration} матчей`
+    return t('match.commentary.matchesMany', { count: duration })
   }
 
   // ФОРМИРУЕТ ЧИТАЕМУЮ СТРОКУ ЗАМЕНЫ ДЛЯ ТРАНСЛЯЦИИ
@@ -589,22 +590,38 @@ const createCommentary = (
       ? formatPlayerName(playerIn.firstName, playerIn.lastName)
       : substitution.playerInId
 
-    return `Замена ${club.shortName}: ${playerOutName} ↕ ${playerInName}`
+    return t('match.commentary.substitution', {
+      club: club.shortName,
+      playerOut: playerOutName,
+      playerIn: playerInName,
+    })
   }
 
   const events: CommentaryEvent[] = [
-    { minute: 1, text: 'Матч начался.' },
-    ...goals.map((goal) => ({ minute: goal.minute, text: `Гол! ${goal.playerName}.` })),
+    { minute: 1, text: t('match.commentary.started') },
+    ...goals.map((goal) => ({
+      minute: goal.minute,
+      text: t('match.commentary.goal', { player: goal.playerName }),
+    })),
     ...cards.map((card) => ({
       minute: card.minute ?? 0,
       text:
         card.card === 'red'
-          ? `Красная карточка! ${getPlayerName(card.clubId, card.playerId)} удален с поля.`
-          : `Желтая карточка: ${getPlayerName(card.clubId, card.playerId)}.`,
+          ? t('match.commentary.redCard', {
+              player: getPlayerName(card.clubId, card.playerId),
+            })
+          : t('match.commentary.yellowCard', {
+              player: getPlayerName(card.clubId, card.playerId),
+            }),
     })),
     ...injuries.map((injury) => ({
       minute: injury.minute ?? 0,
-      text: `${getPlayerName(injury.clubId, injury.playerId)} получил травму и пропустит ${formatMatchdays(injury.durationMatchdays ?? matchSimulationConfig.injury.minDurationMatchdays)}.`,
+      text: t('match.commentary.injury', {
+        player: getPlayerName(injury.clubId, injury.playerId),
+        matches: formatMatchdays(
+          injury.durationMatchdays ?? matchSimulationConfig.injury.minDurationMatchdays,
+        ),
+      }),
     })),
     ...substitutions.map((substitution) => ({
       minute: substitution.minute,
@@ -614,7 +631,7 @@ const createCommentary = (
       playerOutId: substitution.playerOutId,
       playerInId: substitution.playerInId,
     })),
-    { minute: 90, text: 'Матч завершен.' },
+    { minute: 90, text: t('match.commentary.finished') },
   ]
 
   return events.sort((left, right) => left.minute - right.minute)

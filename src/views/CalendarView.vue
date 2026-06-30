@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import { useClubStore } from '@/stores/clubs/clubsStore'
@@ -25,25 +26,13 @@ interface CalendarMonth {
 // ИСТОЧНИКИ МАТЧЕЙ И ДАННЫХ КЛУБОВ ДЛЯ КАЛЕНДАРЯ
 const gameStore = useGameStore()
 const clubStore = useClubStore()
+const { t } = useI18n()
 // ТЕКУЩИЙ МЕСЯЦ, ОТКРЫТЫЙ В СЕЗОННОМ КАЛЕНДАРЕ
 const activeMonthIndex = ref(0)
 
 // ЛОКАЛИЗОВАННЫЕ ПОДПИСИ КАЛЕНДАРНОЙ СЕТКИ
-const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-const monthNames = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
-]
+const weekDays = Array.from({ length: 7 }, (_, index) => t(`calendar.weekDays.${index}`))
+const monthNames = Array.from({ length: 12 }, (_, index) => t(`calendar.months.${index}`))
 
 // ФОРМИРУЕТ СПИСОК МАТЧЕЙ ВЫБРАННОГО КЛУБА
 const userMatches = computed<Match[]>(() => {
@@ -209,7 +198,7 @@ const opponentId = (match: Match): string => {
 const opponentClub = (match: Match): Club => {
   const club = clubStore.getClubById(opponentId(match))
   if (!club) {
-    throw new Error(`Opponent club not found for match ${match.id}`)
+    throw new Error(t('calendar.opponentNotFound', { match: match.id }))
   }
   return club
 }
@@ -217,7 +206,7 @@ const opponentClub = (match: Match): Club => {
 // ФОРМАТИРУЕТ СЧЁТ МАТЧА
 const score = (match: Match): string => {
   if (!match.result) {
-    return '-'
+    return t('common.dash')
   }
   return `${match.result.homeGoals}:${match.result.awayGoals}`
 }
@@ -256,7 +245,7 @@ const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ТИПА МАТЧА
 const matchTypeLabel = (match: Match): string =>
-  match.type === 'league' ? `Тур ${match.round}` : 'Кубок'
+  match.type === 'league' ? t('calendar.round', { round: match.round }) : t('calendar.cup')
 
 // ВОЗВРАЩАЕТ ПРИЗНАК ДОМАШНЕГО ИЛИ ВЫЕЗДНОГО МАТЧА
 const homeAwayLabel = (match: Match): string => {
@@ -264,7 +253,7 @@ const homeAwayLabel = (match: Match): string => {
   if (!game) {
     return ''
   }
-  return match.homeClubId === game.selectedClubId ? 'дом' : 'выезд'
+  return match.homeClubId === game.selectedClubId ? t('calendar.home') : t('calendar.away')
 }
 </script>
 
@@ -276,9 +265,9 @@ const homeAwayLabel = (match: Match): string => {
       class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between"
     >
       <div>
-        <h1 class="text-2xl font-bold text-slate-950">Календарь</h1>
+        <h1 class="text-2xl font-bold text-slate-950">{{ t('calendar.title') }}</h1>
         <p class="mt-1 text-sm text-slate-600">
-          Сезон начинается в сентябре. Матчи идут по субботам, следующий доступный матч подсвечен.
+          {{ t('calendar.description') }}
         </p>
       </div>
 
@@ -294,7 +283,7 @@ const homeAwayLabel = (match: Match): string => {
         <div
           class="min-w-40 rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-black text-white"
         >
-          {{ activeMonth?.title ?? 'Сезон' }}
+          {{ activeMonth?.title ?? t('calendar.season') }}
         </div>
         <button
           type="button"
@@ -359,7 +348,7 @@ const homeAwayLabel = (match: Match): string => {
         </div>
         <!-- МОБИЛЬНОЕ СОСТОЯНИЕ БЕЗ МАТЧЕЙ -->
         <div v-else class="p-6 text-center text-sm text-slate-500 md:hidden">
-          В этом месяце матчей нет.
+          {{ t('calendar.emptyMonth') }}
         </div>
 
         <!-- ЗАГОЛОВКИ ДНЕЙ НЕДЕЛИ -->

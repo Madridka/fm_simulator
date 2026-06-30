@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
 import {
   getClubCompetitionId,
@@ -23,6 +24,7 @@ interface LeagueOption {
 // ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ТУРНИРНЫХ ТАБЛИЦ
 const gameStore = useGameStore()
 const competitionStore = useCompetitionStore()
+const { t } = useI18n()
 
 // СОЗДАЁТ УНИКАЛЬНЫЙ КЛЮЧ ЛИГИ
 const makeLeagueKey = (championshipId: ChampionshipId, competitionId: string): string =>
@@ -141,11 +143,13 @@ const selectedClubId = computed((): string | undefined =>
     <header class="flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-          Чемпионаты
+          {{ t('league.eyebrow') }}
         </div>
-        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">Таблица лиги</h1>
+        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">
+          {{ t('league.title') }}
+        </h1>
         <p class="mt-1 text-sm text-slate-600">
-          Выберите страну и лигу, чтобы посмотреть таблицу любого доступного чемпионата.
+          {{ t('league.description') }}
         </p>
       </div>
 
@@ -155,7 +159,7 @@ const selectedClubId = computed((): string | undefined =>
         <span
           class="mb-1 block px-1 text-[9px] font-black uppercase tracking-widest text-slate-400"
         >
-          Страна - лига
+          {{ t('league.selector') }}
         </span>
         <select
           v-model="selectedLeagueKey"
@@ -183,7 +187,12 @@ const selectedClubId = computed((): string | undefined =>
             </h2>
           </div>
           <p class="mt-1 text-xs font-semibold text-slate-400">
-            {{ selectedRows.length }} команд · сезон {{ gameStore.game.season }}
+            {{
+              t('league.summary', {
+                teams: t('common.teamsCount', { count: selectedRows.length }),
+                season: t('common.seasonNumber', { season: gameStore.game.season }),
+              })
+            }}
           </p>
         </div>
       </div>

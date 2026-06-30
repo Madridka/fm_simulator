@@ -1,4 +1,5 @@
 import { cupRoundNames, cupRoundOrders } from '@/config/gameConfig'
+import { t } from '@/plugins/i18n/i18n'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
 import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
 import { createSeededRandom } from '@/utils/random'
@@ -307,7 +308,7 @@ export const getCupRoundForMatch = (cup: CupState, matchId: string): CupRound | 
 // ФОРМИРУЕТ КРАТКОЕ ОПИСАНИЕ ДОСТИГНУТОЙ КЛУБОМ СТАДИИ
 export const getClubCupProgress = (cup: CupState, clubId: string): string => {
   if (cup.championClubId === clubId) {
-    return 'Победитель кубка'
+    return t('cup.progress.winner')
   }
 
   const latestRound = [...cup.rounds].reverse().find((round) => {
@@ -321,15 +322,17 @@ export const getClubCupProgress = (cup: CupState, clubId: string): string => {
   })
 
   if (!latestRound) {
-    return 'Не стартовал'
+    return t('cup.progress.notStarted')
   }
 
   const tie = latestRound.ties.find(
     (candidate) => candidate.homeClubId === clubId || candidate.awayClubId === clubId,
   )
   if (tie?.winnerClubId && tie.winnerClubId !== clubId) {
-    return `Выбыл: ${latestRound.name}`
+    return t('cup.progress.eliminated', { round: latestRound.name })
   }
 
-  return latestRound.status === 'completed' ? `Прошел: ${latestRound.name}` : latestRound.name
+  return latestRound.status === 'completed'
+    ? t('cup.progress.advanced', { round: latestRound.name })
+    : latestRound.name
 }

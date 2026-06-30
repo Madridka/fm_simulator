@@ -7,9 +7,7 @@ import { russiaSecondLeagueBGroup1ClubProfiles } from '@/data/championships/russ
 import { russiaSecondLeagueBGroup2ClubProfiles } from '@/data/championships/russia/6. LEON B - 2/clubs'
 import { russiaSecondLeagueBGroup3ClubProfiles } from '@/data/championships/russia/7. LEON B - 3/clubs'
 import { russiaSecondLeagueBGroup4ClubProfiles } from '@/data/championships/russia/8. LEON B - 4/clubs'
-import { championshipTranslations } from '@/lang/championships'
-
-const russianTranslation = championshipTranslations.russia
+import { t } from '@/plugins/i18n/i18n'
 
 export const russiaClubConfigs: ClubProfile[] = [
   ...russiaPremierLeagueClubProfiles,
@@ -26,39 +24,39 @@ export const russianDivisions = [
   {
     id: 1,
     leagueId: 'rpl',
-    name: russianTranslation.divisionNames[1],
-    shortName: russianTranslation.divisionShortNames[1],
+    name: t('championships.russia.divisionNames.1'),
+    shortName: t('championships.russia.divisionShortNames.1'),
     level: 1,
   },
   {
     id: 2,
     leagueId: 'first-league',
-    name: russianTranslation.divisionNames[2],
-    shortName: russianTranslation.divisionShortNames[2],
+    name: t('championships.russia.divisionNames.2'),
+    shortName: t('championships.russia.divisionShortNames.2'),
     level: 2,
   },
   {
     id: 3,
     leagueId: 'second-league-a',
-    name: russianTranslation.divisionNames[3],
-    shortName: russianTranslation.divisionShortNames[3],
+    name: t('championships.russia.divisionNames.3'),
+    shortName: t('championships.russia.divisionShortNames.3'),
     level: 3,
     groups: [
-      { id: 'gold', name: russianTranslation.groupNames.gold },
-      { id: 'silver', name: russianTranslation.groupNames.silver },
+      { id: 'gold', name: t('championships.russia.groupNames.gold') },
+      { id: 'silver', name: t('championships.russia.groupNames.silver') },
     ],
   },
   {
     id: 4,
     leagueId: 'second-league-b',
-    name: russianTranslation.divisionNames[4],
-    shortName: russianTranslation.divisionShortNames[4],
+    name: t('championships.russia.divisionNames.4'),
+    shortName: t('championships.russia.divisionShortNames.4'),
     level: 4,
     groups: [
-      { id: 'group-1', name: russianTranslation.groupNames['group-1'] },
-      { id: 'group-2', name: russianTranslation.groupNames['group-2'] },
-      { id: 'group-3', name: russianTranslation.groupNames['group-3'] },
-      { id: 'group-4', name: russianTranslation.groupNames['group-4'] },
+      { id: 'group-1', name: t('championships.russia.groupNames.group-1') },
+      { id: 'group-2', name: t('championships.russia.groupNames.group-2') },
+      { id: 'group-3', name: t('championships.russia.groupNames.group-3') },
+      { id: 'group-4', name: t('championships.russia.groupNames.group-4') },
     ],
   },
 ] as const

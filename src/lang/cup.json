@@ -1,0 +1,49 @@
+{
+  "roundLabels": {
+    "preliminary": "1/128",
+    "round_of_128": "1/128",
+    "round_of_64": "1/64",
+    "round_of_32": "1/32",
+    "round_of_16": "1/16",
+    "quarter_final": "1/4",
+    "semi_final": "1/2",
+    "final": "Финал"
+  },
+  "roundNames": {
+    "preliminary": "1/128 финала",
+    "round_of_128": "1/128 финала",
+    "round_of_64": "1/64 финала",
+    "round_of_32": "1/32 финала",
+    "round_of_16": "1/16 финала",
+    "quarter_final": "1/4 финала",
+    "semi_final": "1/2 финала",
+    "final": "Финал"
+  },
+  "awaitingClub": "Ожидается",
+  "roundCompleted": "Сыграно",
+  "roundPending": "Ожидает матчей",
+  "dateTbd": "Дата будет назначена",
+  "tiePlayed": "Сыгран",
+  "tieScheduled": "Запланирован",
+  "heading": "Кубок: {name}",
+  "title": "Расписание кубка",
+  "description": "Стадии открываются по порядку от ранних раундов к финалу.",
+  "champion": "Победитель: {club}",
+  "stageProgress": "Стадия {current} из {total}",
+  "previousRound": "Предыдущая стадия",
+  "nextRound": "Следующая стадия",
+  "tiesTitle": "Пары стадии",
+  "matchesCount": "{count} матчей",
+  "penalties": "Пенальти: {club}",
+  "emptyTiesTitle": "Пары ещё не сформированы",
+  "emptyTiesHint": "Они появятся после завершения предыдущей стадии.",
+  "byesTitle": "Проходят дальше",
+  "byesHint": "Команды, которые начинают со следующей стадии.",
+  "progress": {
+    "winner": "Победитель кубка",
+    "notStarted": "Не стартовал",
+    "eliminated": "Выбыл: {round}",
+    "advanced": "Прошел: {round}",
+    "noSave": "Нет сохранения"
+  }
+}

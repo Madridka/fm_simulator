@@ -1,6 +1,7 @@
 import type { ChampionshipId, GameState, MatchResult } from '@/types/football'
 import { championships } from '@/data/clubs'
 import { ensureWorldCompetitions } from '@/domain/season/seasonService'
+import { t } from '@/plugins/i18n/i18n'
 
 const SAVE_KEY = 'football-manager-mvp-save'
 
@@ -174,7 +175,7 @@ const restorePersistedState = (persisted: PersistedGameState): GameState => {
 
 // ПРЕОБРАЗУЕТ НЕИЗВЕСТНУЮ ОШИБКУ СОХРАНЕНИЯ В ПОНЯТНЫЙ ТЕКСТ
 const errorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : 'Не удалось записать сохранение.'
+  error instanceof Error ? error.message : t('app.saveWriteFailed')
 
 // ИНКАПСУЛИРУЕТ ЗАГРУЗКУ, КОМПАКТНОЕ СОХРАНЕНИЕ И УДАЛЕНИЕ КАРЬЕРЫ
 export const gameSaveRepository = {

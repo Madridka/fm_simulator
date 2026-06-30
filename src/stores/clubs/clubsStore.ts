@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import { getClubCompetitionId, getCompetitionName } from '@/domain/competition/competitionIdentity'
+import { t } from '@/plugins/i18n/i18n'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { Club } from '@/types/football'
 
@@ -34,7 +35,8 @@ export const useClubStore = defineStore('clubs', () => {
 
   // ВОЗВРАЩАЕТ ЛОКАЛИЗОВАННОЕ НАЗВАНИЕ ДИВИЗИОНА
   const getDivisionName = (divisionId: number): string =>
-    gameStore.championship?.divisionNames[divisionId] ?? `Дивизион ${divisionId}`
+    gameStore.championship?.divisionNames[divisionId] ??
+    t('common.divisionFallback', { division: divisionId })
 
   // ВОЗВРАЩАЕТ НАЗВАНИЕ ЛИГИ ИЛИ ГРУППЫ КЛУБА
   const getClubCompetitionName = (club: Club): string =>

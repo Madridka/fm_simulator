@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, Ref, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { gameConfig } from '@/config/gameConfig'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
@@ -9,6 +10,7 @@ import { formatMoney } from '@/utils/format'
 // ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ОПЕРАЦИЙ ТРАНСФЕРНОГО РЫНКА
 const gameStore = useGameStore()
 const transferStore = useTransferStore()
+const { t } = useI18n()
 
 const toastMessage: Ref<string> = ref('')
 let toastTimer: number | undefined
@@ -30,30 +32,12 @@ const sortOptions: TransferSortKey[] = ['rating', 'age', 'value']
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ПОЗИЦИИ ИГРОКА
 const positionLabel = (position: PlayerPosition | 'all'): string => {
-  const labels: Record<PlayerPosition | 'all', string> = {
-    all: 'Все позиции',
-    GK: 'Вратарь',
-    LB: 'Левый защитник',
-    CB: 'Центральный защитник',
-    RB: 'Правый защитник',
-    CDM: 'Опорник',
-    CM: 'Центр поля',
-    CAM: 'Атакующий полузащитник',
-    LW: 'Левый вингер',
-    RW: 'Правый вингер',
-    ST: 'Нападающий',
-  }
-  return labels[position]
+  return t(`common.positions.${position}`)
 }
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ВАРИАНТА СОРТИРОВКИ
 const sortLabel = (sort: TransferSortKey): string => {
-  const labels: Record<TransferSortKey, string> = {
-    rating: 'Рейтинг',
-    age: 'Возраст',
-    value: 'Стоимость',
-  }
-  return labels[sort]
+  return t(`transfers.sort.${sort}`)
 }
 
 // ОТСЛЕЖИВАЕТ НОВЫЕ СООБЩЕНИЯ О ТРАНСФЕРАХ
@@ -85,9 +69,9 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     <!-- ЗАГОЛОВОК И ТЕКУЩИЙ БЮДЖЕТ -->
     <div class="flex shrink-0 flex-col gap-1">
       <div>
-        <h1 class="text-2xl font-bold text-slate-950">Трансферы</h1>
+        <h1 class="text-2xl font-bold text-slate-950">{{ t('transfers.title') }}</h1>
         <p class="mt-1 text-sm text-slate-600">
-          Бюджет: {{ formatMoney(gameStore.selectedClub.budget) }}
+          {{ t('transfers.budget', { budget: formatMoney(gameStore.selectedClub.budget) }) }}
         </p>
       </div>
     </div>
@@ -110,10 +94,10 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
         class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
       >
         <div class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <h2 class="text-lg font-semibold text-slate-950">Рынок игроков</h2>
+          <h2 class="text-lg font-semibold text-slate-950">{{ t('transfers.market') }}</h2>
           <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:w-auto">
             <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
-              Позиция
+              {{ t('transfers.position') }}
               <select
                 v-model="transferStore.marketPositionFilter"
                 class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
@@ -124,7 +108,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               </select>
             </label>
             <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
-              Сортировка
+              {{ t('transfers.sorting') }}
               <select
                 v-model="transferStore.marketSortKey"
                 class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
@@ -150,12 +134,16 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
                 {{ item.clubName }} · {{ positionLabel(item.player.position) }}
               </div>
             </div>
-            <div class="text-sm text-slate-700">Р{{ item.player.rating }}</div>
-            <div class="text-sm text-slate-700">{{ item.player.age }} лет</div>
+            <div class="text-sm text-slate-700">
+              {{ t('common.ratingValue', { rating: item.player.rating }) }}
+            </div>
+            <div class="text-sm text-slate-700">
+              {{ t('common.age', { age: item.player.age }) }}
+            </div>
             <div class="font-semibold text-slate-950">{{ formatMoney(item.player.value) }}</div>
             <Button
               size="small"
-              label="Купить"
+              :label="t('transfers.buy')"
               :disabled="
                 gameStore.selectedClub.budget < item.player.value ||
                 gameStore.selectedClub.squad.length >= gameConfig.maximumSquadSize
@@ -171,10 +159,10 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
         class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
       >
         <div class="flex shrink-0 flex-col gap-3 2xl:flex-row 2xl:items-end 2xl:justify-between">
-          <h2 class="text-lg font-semibold text-slate-950">Продажа игроков</h2>
+          <h2 class="text-lg font-semibold text-slate-950">{{ t('transfers.sales') }}</h2>
           <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 2xl:w-auto">
             <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
-              Позиция
+              {{ t('transfers.position') }}
               <select
                 v-model="transferStore.squadPositionFilter"
                 class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
@@ -185,7 +173,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               </select>
             </label>
             <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
-              Сортировка
+              {{ t('transfers.sorting') }}
               <select
                 v-model="transferStore.squadSortKey"
                 class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
@@ -209,18 +197,24 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
                   {{ player.firstName }} {{ player.lastName }}
                 </div>
                 <div class="text-sm text-slate-500">
-                  {{ positionLabel(player.position) }} · Р{{ player.rating }} · {{ player.age }} лет
+                  {{ positionLabel(player.position) }} {{ t('common.separator') }}
+                  {{ t('common.ratingValue', { rating: player.rating }) }}
+                  {{ t('common.separator') }} {{ t('common.age', { age: player.age }) }}
                 </div>
               </div>
               <Button
                 size="small"
                 severity="secondary"
-                label="Продать"
+                :label="t('transfers.sell')"
                 @click="transferStore.sell(player.id)"
               />
             </div>
             <div class="mt-2 text-sm text-slate-600">
-              Цена продажи: {{ formatMoney(Math.round(player.value * 0.8)) }}
+              {{
+                t('transfers.salePrice', {
+                  price: formatMoney(Math.round(player.value * 0.8)),
+                })
+              }}
             </div>
           </div>
         </div>

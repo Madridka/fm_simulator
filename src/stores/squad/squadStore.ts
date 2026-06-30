@@ -9,6 +9,7 @@ import {
   validateLineup,
 } from '@/domain/season/squadSelectionService'
 import { useGameStore } from '@/stores/game/gameStore'
+import { t } from '@/plugins/i18n/i18n'
 import type { Club, ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 
@@ -36,7 +37,7 @@ export const useSquadStore = defineStore('squad', () => {
   // ПРОВЕРЯЕТ ГОТОВНОСТЬ СОСТАВА К МАТЧУ
   const validation = computed(() => {
     if (!club.value || !lineup.value) {
-      return { valid: false, errors: ['Клуб не выбран.'] }
+      return { valid: false, errors: [t('squad.validation.clubNotSelected')] }
     }
     return validateLineup(club.value, lineup.value)
   })

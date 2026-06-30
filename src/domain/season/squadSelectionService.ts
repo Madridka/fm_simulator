@@ -1,3 +1,4 @@
+import { t } from '@/plugins/i18n/i18n'
 import type {
   Club,
   ClubLineup,
@@ -165,15 +166,15 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   const players = getPlayersByIds(club, ids)
 
   if (ids.length !== 11) {
-    errors.push('В стартовом составе должно быть ровно 11 игроков.')
+    errors.push(t('squad.validation.startersCount'))
   }
 
   if (uniqueIds.size !== ids.length) {
-    errors.push('Один игрок выбран на несколько позиций.')
+    errors.push(t('squad.validation.duplicatePlayer'))
   }
 
   if (players.length !== ids.length) {
-    errors.push('В составе есть игрок, которого уже нет в клубе.')
+    errors.push(t('squad.validation.missingPlayer'))
   }
 
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
@@ -184,15 +185,15 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   )
 
   if (goalkeeper?.position !== 'GK') {
-    errors.push('В стартовом составе должен быть вратарь.')
+    errors.push(t('squad.validation.goalkeeperRequired'))
   }
 
   if (goalkeeperInOutfield) {
-    errors.push('Вратарь не может занимать позицию полевого игрока.')
+    errors.push(t('squad.validation.goalkeeperOutfield'))
   }
 
   if (players.some((player) => player.isInjured)) {
-    errors.push('Травмированный игрок не может выйти в стартовом составе.')
+    errors.push(t('squad.validation.injuredStarter'))
   }
 
   return {

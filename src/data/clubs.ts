@@ -7,7 +7,7 @@ import { franceClubConfigs } from '@/data/championships/france'
 import { italyClubConfigs } from '@/data/championships/italy'
 import type { ChampionshipId, Club } from '@/types/football'
 import type { ClubProfile } from '@/data/clubs/types'
-import { championshipTranslations } from '@/lang/championships'
+import { t } from '@/plugins/i18n/i18n'
 export type { ChampionshipId } from '@/types/football'
 
 export interface ChampionshipConfig {
@@ -22,50 +22,81 @@ export interface ChampionshipConfig {
 export const championships: Record<ChampionshipId, ChampionshipConfig> = {
   russia: {
     id: 'russia',
-    name: championshipTranslations.russia.name,
-    description: championshipTranslations.russia.description,
-    divisionNames: championshipTranslations.russia.divisionNames,
-    competitionNames: championshipTranslations.russia.competitionNames,
+    name: t('championships.russia.name'),
+    description: t('championships.russia.description'),
+    divisionNames: {
+      1: t('championships.russia.divisionNames.1'),
+      2: t('championships.russia.divisionNames.2'),
+      3: t('championships.russia.divisionNames.3'),
+      4: t('championships.russia.divisionNames.4'),
+    },
+    competitionNames: {
+      1: t('championships.russia.competitionNames.1'),
+      2: t('championships.russia.competitionNames.2'),
+      '3:gold': t('championships.russia.competitionNames.3:gold'),
+      '3:silver': t('championships.russia.competitionNames.3:silver'),
+      '4:group-1': t('championships.russia.competitionNames.4:group-1'),
+      '4:group-2': t('championships.russia.competitionNames.4:group-2'),
+      '4:group-3': t('championships.russia.competitionNames.4:group-3'),
+      '4:group-4': t('championships.russia.competitionNames.4:group-4'),
+    },
     clubProfiles: russiaClubConfigs,
   },
 
   spain: {
     id: 'spain',
-    name: championshipTranslations.spain.name,
-    description: championshipTranslations.spain.description,
-    divisionNames: championshipTranslations.spain.divisionNames,
+    name: t('championships.spain.name'),
+    description: t('championships.spain.description'),
+    divisionNames: {
+      1: t('championships.spain.divisionNames.1'),
+      2: t('championships.spain.divisionNames.2'),
+    },
     clubProfiles: spainClubConfigs,
   },
 
   england: {
     id: 'england',
-    name: championshipTranslations.england.name,
-    description: championshipTranslations.england.description,
-    divisionNames: championshipTranslations.england.divisionNames,
+    name: t('championships.england.name'),
+    description: t('championships.england.description'),
+    divisionNames: {
+      1: t('championships.england.divisionNames.1'),
+      2: t('championships.england.divisionNames.2'),
+      3: t('championships.england.divisionNames.3'),
+      4: t('championships.england.divisionNames.4'),
+    },
     clubProfiles: englandClubConfigs,
   },
 
   germany: {
     id: 'germany',
-    name: championshipTranslations.germany.name,
-    description: championshipTranslations.germany.description,
-    divisionNames: championshipTranslations.germany.divisionNames,
+    name: t('championships.germany.name'),
+    description: t('championships.germany.description'),
+    divisionNames: {
+      1: t('championships.germany.divisionNames.1'),
+      2: t('championships.germany.divisionNames.2'),
+    },
     clubProfiles: germanyClubConfigs,
   },
 
   france: {
     id: 'france',
-    name: championshipTranslations.france.name,
-    description: championshipTranslations.france.description,
-    divisionNames: championshipTranslations.france.divisionNames,
+    name: t('championships.france.name'),
+    description: t('championships.france.description'),
+    divisionNames: {
+      1: t('championships.france.divisionNames.1'),
+      2: t('championships.france.divisionNames.2'),
+    },
     clubProfiles: franceClubConfigs,
   },
 
   italy: {
     id: 'italy',
-    name: championshipTranslations.italy.name,
-    description: championshipTranslations.italy.description,
-    divisionNames: championshipTranslations.italy.divisionNames,
+    name: t('championships.italy.name'),
+    description: t('championships.italy.description'),
+    divisionNames: {
+      1: t('championships.italy.divisionNames.1'),
+      2: t('championships.italy.divisionNames.2'),
+    },
     clubProfiles: italyClubConfigs,
   },
 }

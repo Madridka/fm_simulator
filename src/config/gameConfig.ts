@@ -18,22 +18,22 @@ export interface GameConfig {
 
 // РЕЗЕРВНЫЕ НАЗВАНИЯ УРОВНЕЙ ДИВИЗИОНОВ
 export const divisionNames: Record<number, string> = {
-  1: 'Высший дивизион',
-  2: 'Первый дивизион',
-  3: 'Второй дивизион',
-  4: 'Третий дивизион',
+  1: t('common.divisionFallback', { division: 1 }),
+  2: t('common.divisionFallback', { division: 2 }),
+  3: t('common.divisionFallback', { division: 3 }),
+  4: t('common.divisionFallback', { division: 4 }),
 }
 
 // ЧИТАЕМЫЕ НАЗВАНИЯ СТАДИЙ КУБКА
 export const cupRoundNames: Record<string, string> = {
-  preliminary: '1/128 финала',
-  round_of_128: '1/128 финала',
-  round_of_64: '1/64 финала',
-  round_of_32: '1/32 финала',
-  round_of_16: '1/16 финала',
-  quarter_final: '1/4 финала',
-  semi_final: '1/2 финала',
-  final: 'Финал',
+  preliminary: t('cup.roundNames.preliminary'),
+  round_of_128: t('cup.roundNames.round_of_128'),
+  round_of_64: t('cup.roundNames.round_of_64'),
+  round_of_32: t('cup.roundNames.round_of_32'),
+  round_of_16: t('cup.roundNames.round_of_16'),
+  quarter_final: t('cup.roundNames.quarter_final'),
+  semi_final: t('cup.roundNames.semi_final'),
+  final: t('cup.roundNames.final'),
 }
 
 // ИГРОВЫЕ ДНИ, ЗАРЕЗЕРВИРОВАННЫЕ ПОД СТАДИИ КУБКА
@@ -91,3 +91,4 @@ export const gameConfig: GameConfig = {
     final: 15_000_000,
   },
 }
+import { t } from '@/plugins/i18n/i18n'

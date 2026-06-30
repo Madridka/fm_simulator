@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
 import { clubProfilesById } from '@/data/clubDatabase'
@@ -35,6 +36,7 @@ interface BoardExpectation {
 // ЗАВИСИМОСТИ, НЕОБХОДИМЫЕ ДЛЯ СОЗДАНИЯ И ПЕРЕХОДА В НОВУЮ КАРЬЕРУ
 const gameStore = useGameStore()
 const router = useRouter()
+const { locale, t } = useI18n()
 
 // ТЕКУЩИЙ ВЫБОР ЧЕМПИОНАТА, ДИВИЗИОНА И КЛУБА
 const selectedChampionship = ref<ChampionshipId>('russia')
@@ -130,14 +132,17 @@ const stadiumName = computed(() => selectedClubProfile.value?.stadium?.name ?? '
 const stadiumDetails = computed(() => {
   const stadium = selectedClubProfile.value?.stadium
   if (!stadium) {
-    return `Город: ${selectedClub.value.city}`
+    return t('selectClub.stadiumCity', { city: selectedClub.value.city })
   }
 
   if (!stadium?.capacity) {
-    return `${stadium.city}, вместимость уточняется`
+    return t('selectClub.capacityUnknown', { city: stadium.city })
   }
 
-  return `${stadium.city}, ${stadium.capacity.toLocaleString('ru-RU')} мест`
+  return t('selectClub.capacity', {
+    city: stadium.city,
+    capacity: stadium.capacity.toLocaleString(locale.value),
+  })
 })
 
 // ВОЗВРАЩАЕТ ГОД ОСНОВАНИЯ КЛУБА
@@ -149,15 +154,19 @@ const foundedYear = computed(
 const historicalSummary = computed(() => {
   const stats = selectedClubProfile.value?.historicalStats
   if (!stats) {
-    return 'История клуба уточняется'
+    return t('selectClub.historyUnknown')
   }
 
   const achievements = [
-    typeof stats.domesticTitles === 'number' ? `чемпионств: ${stats.domesticTitles}` : undefined,
-    typeof stats.domesticCups === 'number' ? `кубков: ${stats.domesticCups}` : undefined,
+    typeof stats.domesticTitles === 'number'
+      ? t('selectClub.titles', { count: stats.domesticTitles })
+      : undefined,
+    typeof stats.domesticCups === 'number'
+      ? t('selectClub.cups', { count: stats.domesticCups })
+      : undefined,
   ].filter((item): item is string => Boolean(item))
 
-  return achievements.length ? achievements.join(', ') : 'Трофеи уточняются'
+  return achievements.length ? achievements.join(', ') : t('selectClub.trophiesUnknown')
 })
 
 // ОПРЕДЕЛЯЕТ ОЖИДАНИЯ РУКОВОДСТВА ОТ КЛУБА
@@ -168,54 +177,54 @@ const boardExpectation = (club: Club): BoardExpectation => {
   if (club.divisionId === 1) {
     if (strengthScore >= 135) {
       return {
-        title: 'Победа в чемпионате',
-        description: 'Совет директоров ждет титул и доминирование в лиге.',
+        title: t('selectClub.expectations.champion.title'),
+        description: t('selectClub.expectations.champion.description'),
         tone: 'from-emerald-500/30 to-sky-500/20',
       }
     }
 
     if (strengthScore >= 112) {
       return {
-        title: 'Борьба за верх таблицы',
-        description: 'Нужно финишировать среди лидеров и держать высокий темп.',
+        title: t('selectClub.expectations.top.title'),
+        description: t('selectClub.expectations.top.description'),
         tone: 'from-cyan-500/30 to-emerald-500/15',
       }
     }
 
     if (strengthScore >= 92) {
       return {
-        title: 'Крепкая середина',
-        description: 'Ожидается стабильный сезон без затяжных спадов.',
+        title: t('selectClub.expectations.midtable.title'),
+        description: t('selectClub.expectations.midtable.description'),
         tone: 'from-amber-500/30 to-slate-500/20',
       }
     }
 
     return {
-      title: 'Сохранить прописку',
-      description: 'Главная задача - остаться в высшем дивизионе.',
+      title: t('selectClub.expectations.survival.title'),
+      description: t('selectClub.expectations.survival.description'),
       tone: 'from-rose-500/35 to-orange-500/20',
     }
   }
 
   if (strengthScore >= 108) {
     return {
-      title: 'Выход в дивизион выше',
-      description: 'Руководство ждет повышения в классе уже в этом сезоне.',
+      title: t('selectClub.expectations.promotion.title'),
+      description: t('selectClub.expectations.promotion.description'),
       tone: 'from-emerald-500/30 to-lime-500/20',
     }
   }
 
   if (strengthScore >= 82) {
     return {
-      title: 'Борьба за повышение',
-      description: 'Команда должна быть рядом с зоной продвижения.',
+      title: t('selectClub.expectations.promotionRace.title'),
+      description: t('selectClub.expectations.promotionRace.description'),
       tone: 'from-sky-500/30 to-cyan-500/15',
     }
   }
 
   return {
-    title: 'Закрепиться в дивизионе',
-    description: 'Приоритет - стабильность, развитие состава и безопасное место.',
+    title: t('selectClub.expectations.stability.title'),
+    description: t('selectClub.expectations.stability.description'),
     tone: 'from-slate-500/30 to-blue-500/20',
   }
 }
@@ -279,7 +288,7 @@ const startGame = (): void => {
       >
         <div class="border-b border-white/10 p-4 sm:p-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
-            Страна
+            {{ t('selectClub.country') }}
           </label>
           <select
             v-model="selectedChampionship"
@@ -300,7 +309,7 @@ const startGame = (): void => {
           <div
             class="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200/70"
           >
-            Клуб
+            {{ t('selectClub.club') }}
           </div>
 
           <div
@@ -363,7 +372,7 @@ const startGame = (): void => {
 
         <div class="border-t border-white/10 p-4 sm:p-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
-            Дивизион
+            {{ t('selectClub.division') }}
           </label>
           <select
             v-model="selectedCompetitionId"
@@ -388,11 +397,13 @@ const startGame = (): void => {
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
-            <div class="text-sm font-semibold text-slate-300">Город</div>
+            <div class="text-sm font-semibold text-slate-300">{{ t('selectClub.city') }}</div>
             <div class="mt-2 text-xl font-black uppercase sm:text-2xl">{{ selectedClub.city }}</div>
 
             <div class="mt-5 border-t border-white/10 pt-4 sm:mt-7 sm:pt-5">
-              <div class="text-sm font-semibold text-slate-300">Цвета клуба</div>
+              <div class="text-sm font-semibold text-slate-300">
+                {{ t('selectClub.clubColors') }}
+              </div>
               <div class="mt-4 flex items-center gap-3">
                 <span
                   class="h-12 w-12 rounded-xl border border-white/20 shadow-lg sm:h-14 sm:w-14"
@@ -410,7 +421,7 @@ const startGame = (): void => {
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
-            <div class="text-sm font-semibold text-slate-300">Стадион</div>
+            <div class="text-sm font-semibold text-slate-300">{{ t('selectClub.stadium') }}</div>
             <div class="mt-2 text-xl font-black uppercase sm:text-2xl">{{ stadiumName }}</div>
             <div class="mt-1 text-sm font-semibold text-slate-400">{{ stadiumDetails }}</div>
           </article>
@@ -423,7 +434,9 @@ const startGame = (): void => {
           >
             <div class="grid gap-5 xl:grid-cols-3">
               <div>
-                <div class="text-sm font-semibold text-slate-300">Основан</div>
+                <div class="text-sm font-semibold text-slate-300">
+                  {{ t('selectClub.founded') }}
+                </div>
                 <div class="mt-2 text-3xl font-black sm:text-4xl">
                   {{ foundedYear }}
                 </div>
@@ -432,11 +445,15 @@ const startGame = (): void => {
                 </div>
               </div>
               <div>
-                <div class="text-sm font-semibold text-slate-300">Рейтинг</div>
+                <div class="text-sm font-semibold text-slate-300">
+                  {{ t('selectClub.rating') }}
+                </div>
                 <div class="mt-2 text-3xl font-black sm:text-4xl">{{ selectedClub.rating }}</div>
               </div>
               <div>
-                <div class="text-sm font-semibold text-slate-300">Дивизион</div>
+                <div class="text-sm font-semibold text-slate-300">
+                  {{ t('selectClub.division') }}
+                </div>
                 <div class="mt-2 text-base font-black uppercase">{{ selectedDivisionName }}</div>
               </div>
             </div>
@@ -445,16 +462,22 @@ const startGame = (): void => {
 
             <div class="grid gap-5 xl:grid-cols-3">
               <div>
-                <div class="text-sm font-semibold text-slate-300">Стоимость клуба</div>
+                <div class="text-sm font-semibold text-slate-300">
+                  {{ t('selectClub.clubValue') }}
+                </div>
                 <div class="mt-2 text-xl font-black">{{ formatMoney(clubWorth) }}</div>
               </div>
               <div>
-                <div class="text-sm font-semibold text-slate-300">Трансферный бюджет</div>
+                <div class="text-sm font-semibold text-slate-300">
+                  {{ t('selectClub.transferBudget') }}
+                </div>
                 <div class="mt-2 text-xl font-black">{{ formatMoney(selectedClub.budget) }}</div>
               </div>
               <div>
-                <div class="text-sm font-semibold text-slate-300">Состав</div>
-                <div class="mt-2 text-xl font-black">{{ selectedClub.squad.length }} игроков</div>
+                <div class="text-sm font-semibold text-slate-300">{{ t('selectClub.squad') }}</div>
+                <div class="mt-2 text-xl font-black">
+                  {{ t('common.playersCount', { count: selectedClub.squad.length }) }}
+                </div>
               </div>
             </div>
           </article>
@@ -465,7 +488,9 @@ const startGame = (): void => {
             :class="expectation.tone"
           >
             <div class="rounded-xl bg-slate-950/55 px-4 py-4 text-center backdrop-blur-sm sm:px-5">
-              <div class="text-sm font-semibold text-slate-200">Ожидания руководства</div>
+              <div class="text-sm font-semibold text-slate-200">
+                {{ t('selectClub.boardExpectations') }}
+              </div>
               <div class="mt-3 text-2xl font-black uppercase text-white">
                 {{ expectation.title }}
               </div>
@@ -476,7 +501,11 @@ const startGame = (): void => {
           </article>
 
           <!-- КНОПКА ЗАПУСКА КАРЬЕРЫ -->
-          <Button class="h-12 w-full !font-black" label="Начать карьеру" @click="startGame" />
+          <Button
+            class="h-12 w-full !font-black"
+            :label="t('selectClub.startCareer')"
+            @click="startGame"
+          />
         </div>
       </div>
     </div>
