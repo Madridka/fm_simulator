@@ -1,4 +1,4 @@
-import { realMadridProfile } from '@/data/clubDatabase/spain/LaLiga/real_madrid'
+import { realMadridProfile } from '@/data/clubDatabase/spain/LaLiga/real-madrid'
 import { SpainLeagueId } from '@/data/clubs/enums'
 import type { ClubProfile } from '@/data/clubs/types'
 
