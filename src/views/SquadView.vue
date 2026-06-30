@@ -22,8 +22,10 @@ interface PointerDragState {
   startY: number
 }
 
+// ХРАНИЛИЩА СОСТАВА И ПОЛЬЗОВАТЕЛЬСКИХ УВЕДОМЛЕНИЙ
 const squadStore = useSquadStore()
 const toastStore = useToastStore()
+// СОСТОЯНИЕ МЫШИ, КАСАНИЯ И ЦЕЛИ ПЕРЕТАСКИВАНИЯ ИГРОКА
 const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)

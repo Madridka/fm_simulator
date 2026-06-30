@@ -1,6 +1,7 @@
 import { getClubCompetitionId, getMatchCompetitionId } from '@/domain/competition/competitionIdentity'
 import type { Club, LeagueTableRow, Match } from '@/types/football'
 
+// СОЗДАЁТ НУЛЕВУЮ СТРОКУ ТАБЛИЦЫ ДЛЯ КЛУБА ДО УЧЁТА РЕЗУЛЬТАТОВ
 const createEmptyRow = (
   clubId: string,
   divisionId: number,
@@ -20,6 +21,7 @@ const createEmptyRow = (
   position: 0,
 })
 
+// ДОБАВЛЯЕТ РЕЗУЛЬТАТ ОДНОГО МАТЧА К ПОКАЗАТЕЛЯМ КЛУБА
 const applyResultToRow = (row: LeagueTableRow, goalsFor: number, goalsAgainst: number): void => {
   row.played += 1
   row.goalsFor += goalsFor
@@ -37,6 +39,7 @@ const applyResultToRow = (row: LeagueTableRow, goalsFor: number, goalsAgainst: n
   }
 }
 
+// СОРТИРУЕТ ТАБЛИЦУ ПО ОЧКАМ, РАЗНИЦЕ МЯЧЕЙ И ДОПОЛНИТЕЛЬНЫМ КРИТЕРИЯМ
 export const sortLeagueRows = (rows: readonly LeagueTableRow[]): LeagueTableRow[] => {
   return [...rows]
     .sort((left, right) => {
@@ -60,6 +63,7 @@ export const sortLeagueRows = (rows: readonly LeagueTableRow[]): LeagueTableRow[
     }))
 }
 
+// ПЕРЕСЧИТЫВАЕТ ТАБЛИЦЫ ВСЕХ СОРЕВНОВАНИЙ ПО СЫГРАННЫМ МАТЧАМ
 export const calculateLeagueTables = (
   clubs: readonly Club[],
   matches: readonly Match[],
@@ -109,6 +113,7 @@ export const calculateLeagueTables = (
   return tables
 }
 
+// НАХОДИТ ТЕКУЩУЮ ПОЗИЦИЮ КЛУБА В ЕГО ТАБЛИЦЕ
 export const getClubPosition = (
   tables: Record<string, LeagueTableRow[]>,
   clubId: string,

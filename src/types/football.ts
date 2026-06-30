@@ -1,7 +1,9 @@
+// БАЗОВЫЕ СПРАВОЧНИКИ ПОЗИЦИЙ И ЧЕМПИОНАТОВ
 export type PlayerPosition = 'GK' | 'LB' | 'CB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'LW' | 'RW' | 'ST'
 
 export type ChampionshipId = 'russia' | 'spain' | 'england' | 'germany' | 'france' | 'italy'
 
+// ОСНОВНЫЕ ДОМЕННЫЕ СУЩНОСТИ ИГРОКА И КЛУБА
 export interface Player {
   id: string
   firstName: string
@@ -37,6 +39,7 @@ export interface Club {
   squad: Player[]
 }
 
+// ТАКТИЧЕСКИЕ СХЕМЫ, СЛОТЫ И СОСТАВЫ
 export type Formation = '4-4-2' | '4-3-3' | '4-2-3-1' | '3-5-2' | '4-5-1'
 
 export type TacticalStyle = 'defensive' | 'balanced' | 'attacking'
@@ -67,6 +70,7 @@ export interface MatchLineups {
   away: PlayedLineup
 }
 
+// ТИПЫ МАТЧЕЙ И СОБЫТИЙ СИМУЛЯЦИИ
 export type MatchType = 'league' | 'cup'
 
 export type MatchStatus = 'scheduled' | 'played'
@@ -110,6 +114,7 @@ export interface CommentaryEvent {
   playerInId?: string
 }
 
+// СТАТИСТИКА, РЕЗУЛЬТАТ И ПОЛНАЯ МОДЕЛЬ МАТЧА
 export interface MatchTeamStats {
   possession: number
   shots: number
@@ -156,6 +161,7 @@ export interface Match {
   lineups?: MatchLineups
 }
 
+// ТУРНИРНАЯ ТАБЛИЦА ЛИГИ
 export interface LeagueTableRow {
   clubId: string
   divisionId: number
@@ -171,6 +177,7 @@ export interface LeagueTableRow {
   position: number
 }
 
+// КУБКОВАЯ СЕТКА, РАУНДЫ И ПАРЫ
 export type CupRoundStatus = 'scheduled' | 'completed'
 
 export interface CupTie {
@@ -196,6 +203,7 @@ export interface CupState {
   championClubId?: string
 }
 
+// НАКОПИТЕЛЬНАЯ СЕЗОННАЯ СТАТИСТИКА ИГРОКА
 export interface PlayerStats {
   appearances: number
   goals: number
@@ -204,6 +212,7 @@ export interface PlayerStats {
   matchesRated: number
 }
 
+// КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
 export interface GameState {
   championshipId: ChampionshipId
   selectedClubId: string

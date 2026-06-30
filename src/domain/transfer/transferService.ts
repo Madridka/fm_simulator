@@ -7,18 +7,22 @@ export interface TransferResult {
   clubs: Club[]
 }
 
+// КЛОНИРУЕТ КЛУБ И СОСТАВ ПЕРЕД БЕЗОПАСНЫМ ИЗМЕНЕНИЕМ ТРАНСФЕРОВ
 const cloneClub = (club: Club): Club => ({
   ...club,
   squad: club.squad.map((player) => ({ ...player })),
 })
 
+// ЗАМЕНЯЕТ ОДИН КЛУБ В ОБЩЕМ СПИСКЕ ЕГО ОБНОВЛЁННОЙ ВЕРСИЕЙ
 const replaceClub = (clubs: readonly Club[], updatedClub: Club): Club[] => {
   return clubs.map((club) => (club.id === updatedClub.id ? updatedClub : cloneClub(club)))
 }
 
+// НАХОДИТ КЛУБ ПО ИДЕНТИФИКАТОРУ
 const findClub = (clubs: readonly Club[], clubId: string): Club | undefined =>
   clubs.find((club) => club.id === clubId)
 
+// ОПРЕДЕЛЯЕТ КЛУБ, КОТОРОМУ ПРИНАДЛЕЖИТ ИГРОК
 const findPlayerOwner = (
   clubs: readonly Club[],
   playerId: string,
@@ -32,6 +36,7 @@ const findPlayerOwner = (
   return undefined
 }
 
+// ПРОВОДИТ ПОКУПКУ И ОБНОВЛЯЕТ БЮДЖЕТЫ И СОСТАВЫ ОБОИХ КЛУБОВ
 export const buyPlayer = (
   clubs: readonly Club[],
   buyerClubId: string,
@@ -92,6 +97,7 @@ export const buyPlayer = (
   }
 }
 
+// ПРОВЕРЯЕТ, МОЖНО ЛИ ПРОДАТЬ ИГРОКА БЕЗ НАРУШЕНИЯ ОГРАНИЧЕНИЙ СОСТАВА
 const canSellPlayer = (club: Club, player: Player): string | undefined => {
   if (club.squad.length <= gameConfig.minimumSquadSize) {
     return 'Нельзя оставить в составе менее 16 игроков.'
@@ -105,6 +111,7 @@ const canSellPlayer = (club: Club, player: Player): string | undefined => {
   return undefined
 }
 
+// ПОДБИРАЕТ ПЛАТЁЖЕСПОСОБНЫЙ КЛУБ-ПОКУПАТЕЛЬ
 const findMarketBuyer = (
   clubs: readonly Club[],
   sellerClubId: string,
@@ -120,6 +127,7 @@ const findMarketBuyer = (
     .sort((left, right) => right.budget - left.budget)[0]
 }
 
+// ПРОВОДИТ ПРОДАЖУ ИГРОКА И ЗАЧИСЛЯЕТ ДОХОД КЛУБУ
 export const sellPlayer = (
   clubs: readonly Club[],
   sellerClubId: string,

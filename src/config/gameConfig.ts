@@ -1,3 +1,4 @@
+// ОПИСЫВАЕТ ГЛОБАЛЬНЫЕ ЛИМИТЫ, ЭКОНОМИКУ И ПРАВИЛА КАРЬЕРЫ
 export interface GameConfig {
   maximumSeasons: number
   divisionsCount: number
@@ -15,6 +16,7 @@ export interface GameConfig {
   cupRoundRewards: Record<string, number>
 }
 
+// РЕЗЕРВНЫЕ НАЗВАНИЯ УРОВНЕЙ ДИВИЗИОНОВ
 export const divisionNames: Record<number, string> = {
   1: 'Высший дивизион',
   2: 'Первый дивизион',
@@ -22,6 +24,7 @@ export const divisionNames: Record<number, string> = {
   4: 'Третий дивизион',
 }
 
+// ЧИТАЕМЫЕ НАЗВАНИЯ СТАДИЙ КУБКА
 export const cupRoundNames: Record<string, string> = {
   preliminary: '1/128 финала',
   round_of_128: '1/128 финала',
@@ -33,6 +36,7 @@ export const cupRoundNames: Record<string, string> = {
   final: 'Финал',
 }
 
+// ИГРОВЫЕ ДНИ, ЗАРЕЗЕРВИРОВАННЫЕ ПОД СТАДИИ КУБКА
 export const cupRoundOrders: Record<string, number> = {
   preliminary: 3,
   round_of_128: 3,
@@ -44,6 +48,7 @@ export const cupRoundOrders: Record<string, number> = {
   final: 27,
 }
 
+// ЕДИНАЯ ТОЧКА НАСТРОЙКИ ПРОДОЛЖИТЕЛЬНОСТИ, ТРАНСФЕРОВ И ПРИЗОВЫХ
 export const gameConfig: GameConfig = {
   maximumSeasons: 6,
   divisionsCount: 4,

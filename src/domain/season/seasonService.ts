@@ -26,16 +26,20 @@ import type {
 } from '@/types/football'
 import { clamp, createSeededRandom } from '@/utils/random'
 
+// КЛОНИРУЕТ ИГРОКА ПЕРЕД ИЗМЕНЕНИЕМ СОСТОЯНИЯ СЕЗОНА
 const clonePlayer = (player: Player): Player => ({ ...player })
 
+// ГЛУБОКО КЛОНИРУЕТ КЛУБ ВМЕСТЕ С ЕГО СОСТАВОМ
 const cloneClub = (club: Club): Club => ({
   ...club,
   squad: club.squad.map(clonePlayer),
 })
 
+// НОРМАЛИЗУЕТ ДЛИТЕЛЬНОСТЬ ТРАВМЫ ПО НАСТРОЙКАМ СИМУЛЯЦИИ
 const getInjuryDuration = (durationMatchdays: number | undefined): number =>
   durationMatchdays ?? matchSimulationConfig.injury.minDurationMatchdays
 
+// ПРИМЕНЯЕТ ТРАВМЫ К ИГРОКАМ И ЗАПОМИНАЕТ СРОК ВОССТАНОВЛЕНИЯ
 const applyInjuriesToClubs = (
   clubs: Club[],
   injuries: MatchResult['injuries'],
@@ -90,11 +94,13 @@ export const recoverInjuredPlayersBeforeOrder = (
     }),
   }))
 
+// ВОССТАНАВЛИВАЕТ ИГРОКОВ ПЕРЕД НАЧАЛОМ ИГРОВОГО ДНЯ
 const recoverStateBeforeOrder = (state: GameState, order: number): GameState =>
   order > state.lastCompletedOrder
     ? { ...state, clubs: recoverInjuredPlayersBeforeOrder(state.clubs, order) }
     : state
 
+// СИНХРОНИЗИРУЕТ ВОССТАНОВЛЕНИЕ ПОСЛЕ ЗАВЕРШЁННОГО ИГРОВОГО ДНЯ
 const recoverStateAfterCompletedOrder = (state: GameState, order: number): GameState => {
   const clubs = recoverInjuredPlayersBeforeOrder(state.clubs, order + 1)
   const worldClubs = state.worldClubs
@@ -115,6 +121,7 @@ const recoverStateAfterCompletedOrder = (state: GameState, order: number): GameS
 
 const championshipIds = Object.keys(championships) as ChampionshipId[]
 
+// ГЛУБОКО КЛОНИРУЕТ МАТЧ, РЕЗУЛЬТАТ, СОБЫТИЯ И СОСТАВЫ
 const cloneMatch = (match: Match): Match => ({
   ...match,
   result: match.result
@@ -147,15 +154,18 @@ const cloneMatch = (match: Match): Match => ({
     : undefined,
 })
 
+// ДОБАВЛЯЕТ ЧЕМПИОНАТ К ИДЕНТИФИКАТОРУ МАТЧА МИРОВОЙ ЛИГИ
 const prefixLeagueMatch = (championshipId: ChampionshipId, match: Match): Match => ({
   ...match,
   id: `${championshipId}-${match.id}`,
   championshipId,
 })
 
+// СОЗДАЁТ КАЛЕНДАРЬ ЛИГИ ОДНОГО ЧЕМПИОНАТА
 const createLeagueMatches = (clubs: readonly Club[], season: number, championshipId: ChampionshipId): Match[] =>
   generateLeagueSchedule(clubs, season).map((match) => prefixLeagueMatch(championshipId, match))
 
+// СОЗДАЁТ НЕЗАВИСИМЫЕ СОСТАВЫ КЛУБОВ ДЛЯ ВСЕХ ЧЕМПИОНАТОВ
 const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
   return championshipIds.reduce<Record<ChampionshipId, Club[]>>(
     (result, championshipId) => {
@@ -166,6 +176,7 @@ const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
   )
 }
 
+// ФОРМИРУЕТ КАЛЕНДАРИ ЛИГ ДЛЯ ВСЕГО ИГРОВОГО МИРА
 const createWorldMatches = (
   worldClubs: Record<ChampionshipId, Club[]>,
   season: number,
@@ -179,6 +190,7 @@ const createWorldMatches = (
   )
 }
 
+// РАССЧИТЫВАЕТ ТАБЛИЦЫ ЛИГ ДЛЯ ВСЕХ ЧЕМПИОНАТОВ
 const createWorldLeagueTables = (
   worldClubs: Record<ChampionshipId, Club[]>,
   worldMatches: Record<ChampionshipId, Match[]>,
@@ -195,6 +207,7 @@ const createWorldLeagueTables = (
   )
 }
 
+// ПРЕОБРАЗУЕТ СТРОКУ В SEED ДЛЯ ДЕТЕРМИНИРОВАННЫХ РАСЧЁТОВ
 const hashString = (value: string): number => {
   let hash = 0
   for (let index = 0; index < value.length; index += 1) {
@@ -203,6 +216,7 @@ const hashString = (value: string): number => {
   return hash || 1
 }
 
+// СОЗДАЁТ НУЛЕВУЮ СЕЗОННУЮ СТАТИСТИКУ ИГРОКА
 const createEmptyPlayerStats = (): PlayerStats => ({
   appearances: 0,
   goals: 0,
@@ -211,6 +225,7 @@ const createEmptyPlayerStats = (): PlayerStats => ({
   matchesRated: 0,
 })
 
+// ИНИЦИАЛИЗИРУЕТ СТАТИСТИКУ ДЛЯ ВСЕХ ИГРОКОВ
 export const createInitialPlayerStats = (clubs: readonly Club[]): Record<string, PlayerStats> => {
   return clubs.reduce<Record<string, PlayerStats>>((result, club) => {
     for (const player of club.squad) {
@@ -220,6 +235,7 @@ export const createInitialPlayerStats = (clubs: readonly Club[]): Record<string,
   }, {})
 }
 
+// СОЗДАЁТ АВТОСОСТАВЫ И ПО ВОЗМОЖНОСТИ СОХРАНЯЕТ ТАКТИКУ
 export const createDefaultLineups = (
   clubs: readonly Club[],
   existingLineups: Record<string, ClubLineup> = {},
@@ -235,6 +251,7 @@ export const createDefaultLineups = (
   }, {})
 }
 
+// СОБИРАЕТ ПОЛНОЕ НАЧАЛЬНОЕ СОСТОЯНИЕ НОВОЙ КАРЬЕРЫ
 export const createInitialGameState = (
   championshipId: ChampionshipId,
   selectedClubId: string,
@@ -273,6 +290,7 @@ export const createInitialGameState = (
   }
 }
 
+// ДОПОЛНЯЕТ НЕПОЛНОЕ СОХРАНЕНИЕ ДАННЫМИ МИРОВЫХ ЛИГ
 export const ensureWorldCompetitions = (state: GameState): GameState => {
   const clubs = recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1)
   const existingWorldClubs = state.worldClubs ?? {}
@@ -320,6 +338,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
   }
 }
 
+// НАХОДИТ КЛУБ И ПРЕРЫВАЕТ РАСЧЁТ ПРИ НАРУШЕНИИ ДАННЫХ
 const getClub = (clubs: readonly Club[], clubId: string): Club => {
   const club = clubs.find((candidate) => candidate.id === clubId)
   if (!club) {
@@ -328,6 +347,7 @@ const getClub = (clubs: readonly Club[], clubId: string): Club => {
   return club
 }
 
+// ПРЕОБРАЗУЕТ РЕДАКТИРУЕМЫЙ СОСТАВ В ФОРМАТ СИМУЛЯТОРА
 const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): PlayedLineup => {
   const lineup = stateLineup ?? autoSelectLineup(club)
   const starters = getFormationSlots(lineup.formation)
@@ -346,6 +366,7 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
   }
 }
 
+// ПОДГОТАВЛИВАЕТ СОСТАВЫ ОБЕИХ КОМАНД К МАТЧУ
 const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
   const homeClub = getClub(state.clubs, match.homeClubId)
   const awayClub = getClub(state.clubs, match.awayClubId)
@@ -372,6 +393,7 @@ const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
   }
 }
 
+// НАХОДИТ ИГРОКА В КЛУБАХ И ПРИМЕНЯЕТ К НЕМУ ОБНОВЛЕНИЕ
 const updatePlayerById = (
   clubs: Club[],
   playerId: string,
@@ -389,6 +411,7 @@ const updatePlayerById = (
   }
 }
 
+// НАКАПЛИВАЕТ СЕЗОННУЮ СТАТИСТИКУ И СРЕДНЮЮ ОЦЕНКУ
 const updatePlayerStats = (
   stats: Record<string, PlayerStats>,
   playerId: string,
@@ -409,6 +432,7 @@ const updatePlayerStats = (
   }
 }
 
+// ПРИМЕНЯЕТ К ИГРОКАМ ВСЕ ПОСЛЕДСТВИЯ ЗАВЕРШЁННОГО МАТЧА
 const applyMatchEffects = (
   state: GameState,
   match: Match,
@@ -507,6 +531,7 @@ const applyMatchEffects = (
   }
 }
 
+// СОХРАНЯЕТ РЕЗУЛЬТАТ МАТЧА И ЕГО ПОСЛЕДСТВИЯ В СОСТОЯНИЕ
 const completeMatch = (
   state: GameState,
   match: Match,
@@ -538,6 +563,7 @@ const completeMatch = (
   )
 }
 
+// СИМУЛИРУЕТ ЗАПЛАНИРОВАННЫЙ МАТЧ С ПОДГОТОВЛЕННЫМИ СОСТАВАМИ
 const simulateScheduledMatch = (
   state: GameState,
   match: Match,
@@ -584,6 +610,7 @@ const simulateFastScheduledMatch = (state: GameState, match: Match): MatchResult
     seed: hashString(match.id) + state.season * 10_000,
   })
 
+// РАССЧИТЫВАЕТ ИГРОВОЙ ДЕНЬ ВО ВСЕХ ФОНОВЫХ ЛИГАХ
 const simulateWorldLeagueOrder = (state: GameState, order: number): GameState => {
   const hydrated = ensureWorldCompetitions(state)
   const worldClubs = { ...hydrated.worldClubs } as Record<ChampionshipId, Club[]>
@@ -640,6 +667,7 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
   }
 }
 
+// НАЧИСЛЯЕТ ПРИЗОВЫЕ ЗА ПРОХОЖДЕНИЕ СТАДИИ КУБКА
 const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameState => {
   const reward = gameConfig.cupRoundRewards[completedRoundId] ?? 0
   if (reward <= 0) {
@@ -670,6 +698,7 @@ const applyCupRoundRewards = (state: GameState, completedRoundId: string): GameS
   }
 }
 
+// ПРОДВИГАЕТ КУБКОВУЮ СЕТКУ И ПЕРЕСЧИТЫВАЕТ ТАБЛИЦЫ
 const advanceCupAndRefreshTables = (state: GameState): GameState => {
   const advanced = advanceCupIfPossible(state.cup, state.matches)
   const matches = [...state.matches, ...advanced.newMatches].sort(
@@ -692,6 +721,7 @@ const advanceCupAndRefreshTables = (state: GameState): GameState => {
   }
 }
 
+// ПОЛНОСТЬЮ РАЗЫГРЫВАЕТ ОДИН ИГРОВОЙ ДЕНЬ
 const simulateOrder = (
   state: GameState,
   order: number,
@@ -794,6 +824,7 @@ export const completePreparedUserMatchDay = (
   )
 }
 
+// ДОИГРЫВАЕТ ДНИ БЕЗ ПОЛЬЗОВАТЕЛЯ ДО ЕГО СЛЕДУЮЩЕГО МАТЧА
 export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState => {
   let nextState = state
   let safety = 0
@@ -822,6 +853,7 @@ export const settleAiOnlyDaysUntilNextUserMatch = (state: GameState): GameState 
   return nextState
 }
 
+// ЗАВЕРШАЕТ МАТЧ ПОЛЬЗОВАТЕЛЯ И ДОИГРЫВАЕТ ФОНОВЫЕ ДНИ
 export const completeUserMatchDay = (
   state: GameState,
   matchId: string,
@@ -847,6 +879,7 @@ const completeFastMatch = (state: GameState, match: Match, result: MatchResult):
   }
 }
 
+// НАХОДИТ БЛИЖАЙШИЙ НЕСЫГРАННЫЙ МАТЧ КЛУБА ПОЛЬЗОВАТЕЛЯ
 export const getNextUserMatch = (state: GameState): Match | undefined => {
   return state.matches
     .filter(
@@ -857,6 +890,7 @@ export const getNextUserMatch = (state: GameState): Match | undefined => {
     .sort((left, right) => left.order - right.order || left.id.localeCompare(right.id))[0]
 }
 
+// ПРОВЕРЯЕТ ЗАВЕРШЕНИЕ ЛИГ И НАЛИЧИЕ ПОБЕДИТЕЛЯ КУБКА
 export const isSeasonReadyToFinish = (state: GameState): boolean => {
   const leagueFinished = state.matches.every(
     (match) => match.type !== 'league' || match.status === 'played',
@@ -865,6 +899,7 @@ export const isSeasonReadyToFinish = (state: GameState): boolean => {
   return leagueFinished && cupFinished
 }
 
+// СОСТАРИВАЕТ ИГРОКОВ И ОБНОВЛЯЕТ ИХ РЕЙТИНГ, ФОРМУ И ГОТОВНОСТЬ
 const progressPlayersForNewSeason = (club: Club, season: number): Club => {
   const random = createSeededRandom(hashString(club.id) + season * 501)
 
@@ -891,6 +926,7 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
   }
 }
 
+// ОПРЕДЕЛЯЕТ ДИВИЗИОН ПО ИТОГАМ ПОВЫШЕНИЯ ИЛИ ВЫЛЕТА
 export const getNextDivisionId = (
   divisionId: number,
   position: number,
@@ -911,8 +947,10 @@ export const getNextDivisionId = (
   return divisionId
 }
 
+// ОПРЕДЕЛЯЕТ, ИСПОЛЬЗУЕТ ЛИ КЛУБ РОССИЙСКУЮ СТРУКТУРУ ЛИГ
 const isRussianClub = (club: Club): boolean => Boolean(club.leagueId || club.groupId)
 
+// СОПОСТАВЛЯЕТ ДИВИЗИОН РОССИЙСКОГО КЛУБА С ИДЕНТИФИКАТОРОМ ЛИГИ
 const getRussianLeagueIdForDivision = (club: Club, divisionId: number): string | undefined => {
   if (!isRussianClub(club)) {
     return undefined
@@ -925,6 +963,7 @@ const getRussianLeagueIdForDivision = (club: Club, divisionId: number): string |
   return undefined
 }
 
+// ВЫБИРАЕТ ГРУППУ ПРИ ПЕРЕХОДЕ МЕЖДУ НИЗШИМИ ЛИГАМИ
 const getRussianGroupIdForDivision = (
   club: Club,
   nextDivisionId: number,
@@ -952,6 +991,7 @@ const getRussianGroupIdForDivision = (
   return undefined
 }
 
+// НАЧИСЛЯЕТ ПРИЗОВЫЕ И ПЕРЕМЕЩАЕТ КЛУБЫ МЕЖДУ ДИВИЗИОНАМИ
 const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
   const tableRows = Object.values(state.leagueTables).flat()
   const rowByClubId = new Map(tableRows.map((row) => [row.clubId, row]))
@@ -989,6 +1029,7 @@ const applySeasonRewardsAndMovement = (state: GameState): Club[] => {
   })
 }
 
+// ЗАВЕРШАЕТ СЕЗОН И СОЗДАЁТ СОСТОЯНИЕ СЛЕДУЮЩЕГО СЕЗОНА
 export const finishSeason = (state: GameState): GameState => {
   if (state.season >= gameConfig.maximumSeasons) {
     return state
@@ -1033,6 +1074,7 @@ export const finishSeason = (state: GameState): GameState => {
   }
 }
 
+// УДАЛЯЕТ УШЕДШИХ ИГРОКОВ ИЗ СОСТАВОВ ПОСЛЕ ТРАНСФЕРОВ
 export const refreshLineupsAfterSquadChange = (state: GameState): Record<string, ClubLineup> => {
   return state.clubs.reduce<Record<string, ClubLineup>>((result, club) => {
     const existing = state.lineups[club.id]
@@ -1067,6 +1109,7 @@ export const refreshLineupsAfterSquadChange = (state: GameState): Record<string,
   }, {})
 }
 
+// ВОЗВРАЩАЕТ СТАРТОВЫХ ИГРОКОВ УПРАВЛЯЕМОГО КЛУБА
 export const getUserStarterIds = (state: GameState): string[] => {
   const lineup = state.lineups[state.selectedClubId]
   return lineup ? getStarterIds(lineup) : []

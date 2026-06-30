@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useGameStore } from '@/stores/game/gameStore'
 
+// ОПИСЫВАЕТ ОСНОВНОЙ МАКЕТ, ЭКРАНЫ КАРЬЕРЫ И СТРАНИЦУ 404
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -68,11 +69,13 @@ const routes: RouteRecordRaw[] = [
   },
 ]
 
+// СОЗДАЁТ HTML5-МАРШРУТИЗАТОР С УЧЁТОМ БАЗОВОГО ПУТИ СБОРКИ
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
+// НЕ ДОПУСКАЕТ НА ЭКРАНЫ КАРЬЕРЫ ДО ВЫБОРА КЛУБА
 router.beforeEach((to) => {
   const gameStore = useGameStore()
   if (

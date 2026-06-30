@@ -7,11 +7,13 @@ import type { CupRound, CupTie, Match } from '@/types/football'
 import { useI18n } from 'vue-i18n'
 import { formatDate } from '@/utils/format'
 
+// ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ, КЛУБОВ И КУБКОВОЙ СЕТКИ
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()
 const { t } = useI18n()
 
+// ИНДЕКС СТАДИИ, ОТОБРАЖАЕМОЙ В КАРУСЕЛИ КУБКА
 const activeRoundIndex = ref(0)
 
 // ВОЗВРАЩАЕТ ВСЕ РАУНДЫ КУБКА

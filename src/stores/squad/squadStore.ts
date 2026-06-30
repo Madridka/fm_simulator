@@ -12,11 +12,14 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type { Club, ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 
+// УПРАВЛЯЕТ СХЕМОЙ, ТАКТИКОЙ И ПЕРЕМЕЩЕНИЕМ ИГРОКОВ МЕЖДУ ГРУППАМИ СОСТАВА
 export const useSquadStore = defineStore('squad', () => {
   const gameStore = useGameStore()
 
+  // ВОЗВРАЩАЕТ УПРАВЛЯЕМЫЙ КЛУБ
   const club = computed((): Club | undefined => gameStore.selectedClub)
 
+  // ВОЗВРАЩАЕТ СОХРАНЁННЫЙ СОСТАВ УПРАВЛЯЕМОГО КЛУБА
   const lineup = computed<ClubLineup | undefined>(() => {
     const game = gameStore.game
     if (!game) {
@@ -25,10 +28,12 @@ export const useSquadStore = defineStore('squad', () => {
     return game.lineups[game.selectedClubId]
   })
 
+  // ВОЗВРАЩАЕТ ТАКТИЧЕСКИЕ СЛОТЫ ТЕКУЩЕЙ СХЕМЫ
   const slots = computed<FormationSlot[]>(() =>
     lineup.value ? getFormationSlots(lineup.value.formation) : [],
   )
 
+  // ПРОВЕРЯЕТ ГОТОВНОСТЬ СОСТАВА К МАТЧУ
   const validation = computed(() => {
     if (!club.value || !lineup.value) {
       return { valid: false, errors: ['Клуб не выбран.'] }
@@ -36,6 +41,7 @@ export const useSquadStore = defineStore('squad', () => {
     return validateLineup(club.value, lineup.value)
   })
 
+  // СОХРАНЯЕТ ОБНОВЛЁННЫЙ СОСТАВ В ОСНОВНОМ ХРАНИЛИЩЕ ИГРЫ
   const saveLineup = (nextLineup: ClubLineup): void => {
     const game = gameStore.game
     if (!game) {
@@ -44,6 +50,7 @@ export const useSquadStore = defineStore('squad', () => {
     gameStore.updateLineup(game.selectedClubId, nextLineup)
   }
 
+  // МЕНЯЕТ СХЕМУ И АВТОМАТИЧЕСКИ ПЕРЕРАСПРЕДЕЛЯЕТ ИГРОКОВ
   const setFormation = (formation: Formation): void => {
     if (!club.value || !lineup.value) {
       return
@@ -51,6 +58,7 @@ export const useSquadStore = defineStore('squad', () => {
     saveLineup(autoSelectLineup(club.value, formation, lineup.value.tacticalStyle))
   }
 
+  // МЕНЯЕТ ТАКТИЧЕСКИЙ СТИЛЬ БЕЗ ПЕРЕСТРОЕНИЯ СОСТАВА
   const setTacticalStyle = (tacticalStyle: TacticalStyle): void => {
     if (!lineup.value) {
       return
@@ -61,6 +69,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // НАЗНАЧАЕТ ИГРОКА В СЛОТ И УДАЛЯЕТ ЕГО ИЗ ПРЕЖНЕГО МЕСТА
   const assignPlayerToSlot = (slotId: string, playerId: string | null): void => {
     if (!lineup.value) {
       return
@@ -81,6 +90,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // ДОБАВЛЯЕТ ИЛИ УДАЛЯЕТ ИГРОКА ИЗ СПИСКА ЗАПАСНЫХ
   const toggleSubstitute = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -104,12 +114,14 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // ВСТАВЛЯЕТ ЗАПАСНОГО В НУЖНУЮ ПОЗИЦИЮ С УЧЁТОМ ЛИМИТА СКАМЕЙКИ
   const insertSubstitute = (substitutes: string[], playerId: string, index?: number): string[] => {
     const result = substitutes.filter((id) => id !== playerId)
     result.splice(index ?? result.length, 0, playerId)
     return result.slice(0, 7)
   }
 
+  // ПЕРЕМЕЩАЕТ ИГРОКА В ОСНОВУ И КОРРЕКТНО ОБРАБАТЫВАЕТ ЗАНЯТЫЙ СЛОТ
   const movePlayerToSlot = (
     slotId: string,
     playerId: string,
@@ -153,6 +165,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // МЕНЯЕТ МЕСТАМИ ИГРОКА СКАМЕЙКИ И РЕЗЕРВИСТА
   const swapSubstituteWithReserve = (substituteId: string, reserveId: string): void => {
     if (!lineup.value) {
       return
@@ -172,6 +185,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // ПЕРЕМЕЩАЕТ ИГРОКА ИЗ ОСНОВЫ ИЛИ РЕЗЕРВА НА СКАМЕЙКУ
   const movePlayerToSubstitutes = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -195,6 +209,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // УБИРАЕТ ИГРОКА ИЗ ОСНОВЫ И СКАМЕЙКИ В РЕЗЕРВ
   const movePlayerToReserve = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -214,6 +229,7 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
+  // ВОССТАНАВЛИВАЕТ ОПТИМАЛЬНЫЙ АВТОМАТИЧЕСКИЙ СОСТАВ
   const resetLineup = (): void => {
     if (!club.value) {
       return

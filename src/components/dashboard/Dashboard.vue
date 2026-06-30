@@ -12,6 +12,7 @@ import DashboardLeaguePanel from '@/components/dashboard/DashboardLeaguePanel.vu
 import DashboardLineupPanel from '@/components/dashboard/DashboardLineupPanel.vue'
 import DashboardMatchesColumn from '@/components/dashboard/DashboardMatchesColumn.vue'
 
+// ХРАНИЛИЩА, ИЗ КОТОРЫХ СОБИРАЕТСЯ СВОДКА ГЛАВНОГО ЭКРАНА
 const gameStore = useGameStore()
 const clubStore = useClubStore()
 const competitionStore = useCompetitionStore()

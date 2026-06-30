@@ -10,6 +10,7 @@ import { useToastStore } from '@/stores/ui/toastStore'
 import MenuNav from '@/components/layout/MenuNav.vue'
 import TopBar from '@/components/layout/TopBar.vue'
 
+// ГЛОБАЛЬНЫЕ ХРАНИЛИЩА И МАРШРУТИЗАЦИЯ ОСНОВНОЙ ОБОЛОЧКИ
 const appStore = useAppStore()
 const gameStore = useGameStore()
 const matchStore = useMatchStore()

@@ -3,6 +3,7 @@ import { clubProfilesById } from '@/data/clubDatabase'
 import type { ClubConfig, ClubProfile } from '@/data/clubs/types'
 import type { Club } from '@/types/football'
 
+// ОБЪЕДИНЯЕТ БАЗОВЫЙ ПРОФИЛЬ КЛУБА С РАСШИРЕННЫМИ ДАННЫМИ ИЗ БАЗЫ
 const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): ClubProfile => ({
   ...baseProfile,
   ...overrideProfile,
@@ -12,6 +13,7 @@ const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): 
   },
 })
 
+// ПРЕОБРАЗУЕТ ПРОФИЛЬ В ИГРОВОЙ КЛУБ И ДОСТРАИВАЕТ СОСТАВ ПРИ НЕОБХОДИМОСТИ
 const createClub = (profile: ClubProfile, index: number): Club => {
   const sourceProfile = mergeProfile(profile, clubProfilesById[profile.config.id])
   const sourceConfig = sourceProfile.config
@@ -31,6 +33,7 @@ const createClub = (profile: ClubProfile, index: number): Club => {
   }
 }
 
+// СОЗДАЁТ ИГРОВЫЕ КЛУБЫ ИЗ КОНФИГУРАЦИИ ЧЕМПИОНАТА
 export const createClubs = (clubProfiles: readonly ClubProfile[]): Club[] =>
   clubProfiles.map((club, index) => createClub(club, index))
 

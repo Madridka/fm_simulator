@@ -7,6 +7,7 @@ import type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 
 export type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 
+// УПРАВЛЯЕТ ФИЛЬТРАМИ РЫНКА И ОПЕРАЦИЯМИ ПОКУПКИ И ПРОДАЖИ ИГРОКОВ
 export const useTransferStore = defineStore('transfers', () => {
   const gameStore = useGameStore()
   const marketPositionFilter = ref<PlayerPosition | 'all'>('all')
@@ -16,6 +17,7 @@ export const useTransferStore = defineStore('transfers', () => {
   const message = ref('')
   const messageId = ref(0)
 
+  // СОРТИРУЕТ ИГРОКОВ ПО ВОЗРАСТУ, СТОИМОСТИ ИЛИ РЕЙТИНГУ
   const sortPlayers = <T extends { player: Player }>(players: T[], sortKey: TransferSortKey): T[] =>
     [...players].sort((left, right) => {
       if (sortKey === 'age') {
@@ -27,6 +29,7 @@ export const useTransferStore = defineStore('transfers', () => {
       return right.player.rating - left.player.rating
     })
 
+  // ФОРМИРУЕТ ОТФИЛЬТРОВАННЫЙ СПИСОК ИГРОКОВ ДРУГИХ КЛУБОВ
   const marketPlayers = computed<MarketPlayer[]>(() => {
     const game = gameStore.game
     if (!game) {
@@ -51,6 +54,7 @@ export const useTransferStore = defineStore('transfers', () => {
     return sortPlayers(players, marketSortKey.value)
   })
 
+  // ФОРМИРУЕТ ОТФИЛЬТРОВАННЫЙ СПИСОК ИГРОКОВ СВОЕГО КЛУБА
   const squadPlayers = computed<Player[]>(() => {
     const players =
       gameStore.selectedClub?.squad
@@ -63,6 +67,7 @@ export const useTransferStore = defineStore('transfers', () => {
     return sortPlayers(players, squadSortKey.value).map((item) => item.player)
   })
 
+  // ПОКУПАЕТ ИГРОКА И ПРИМЕНЯЕТ ОБНОВЛЁННЫЕ СОСТАВЫ
   const buy = (playerId: string): void => {
     const game = gameStore.game
     if (!game) {
@@ -76,6 +81,7 @@ export const useTransferStore = defineStore('transfers', () => {
     }
   }
 
+  // ПРОДАЁТ ИГРОКА И ПРИМЕНЯЕТ ОБНОВЛЁННЫЕ СОСТАВЫ
   const sell = (playerId: string): void => {
     const game = gameStore.game
     if (!game) {

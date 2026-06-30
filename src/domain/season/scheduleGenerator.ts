@@ -5,6 +5,7 @@ export const leagueRoundOrders = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 1
 
 const cupOrders = new Set([3, 7, 11, 15, 19, 23, 27])
 
+// ПЕРЕВОДИТ ИНДЕКС ТУРА В ОБЩИЙ ПОРЯДКОВЫЙ НОМЕР ИГРОВОГО ДНЯ
 const getLeagueRoundOrder = (roundIndex: number): number => {
   if (leagueRoundOrders[roundIndex] !== undefined) return leagueRoundOrders[roundIndex]
 
@@ -20,8 +21,10 @@ const getLeagueRoundOrder = (roundIndex: number): number => {
 const seasonBaseYear = 2026
 const septemberMonthIndex = 8
 
+// ФОРМАТИРУЕТ ДАТУ МАТЧА В КОМПАКТНЫЙ ISO-ФОРМАТ
 const toIsoDate = (date: Date): string => date.toISOString().slice(0, 10)
 
+// НАХОДИТ СТАРТОВУЮ СУББОТУ СЕЗОНА ДЛЯ ПОСТРОЕНИЯ КАЛЕНДАРЯ
 const getFirstSaturdayOfSeptember = (season: number): Date => {
   const date = new Date(Date.UTC(seasonBaseYear + season - 1, septemberMonthIndex, 1))
   const daysUntilSaturday = (6 - date.getUTCDay() + 7) % 7
@@ -29,6 +32,7 @@ const getFirstSaturdayOfSeptember = (season: number): Date => {
   return date
 }
 
+// ВЫЧИСЛЯЕТ КАЛЕНДАРНУЮ ДАТУ ПО СЕЗОНУ И ПОРЯДКУ ИГРОВОГО ДНЯ
 export const getSeasonMatchDate = (season: number, order: number): string => {
   const date = getFirstSaturdayOfSeptember(season)
   date.setUTCDate(date.getUTCDate() + Math.max(0, order - 1) * 7)
@@ -40,6 +44,7 @@ interface Pairing {
   awayClubId: string
 }
 
+// ПОВОРАЧИВАЕТ СПИСОК КОМАНД ДЛЯ КРУГОВОГО АЛГОРИТМА ПАР
 const rotateTeams = (teams: readonly string[]): string[] => {
   const fixed = teams[0]
   if (!fixed) {
@@ -52,6 +57,7 @@ const rotateTeams = (teams: readonly string[]): string[] => {
   return last ? [fixed, last, ...middle] : [fixed]
 }
 
+// СОЗДАЁТ ПАРЫ КОМАНД ДЛЯ КАЖДОГО ТУРА ОДНОЙ ЛИГИ
 export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][] => {
   if (clubIds.length < 2) {
     throw new Error('A division must contain at least two clubs')
@@ -98,6 +104,7 @@ export const generateDivisionPairings = (clubIds: readonly string[]): Pairing[][
   return [...rounds, ...reverseRounds]
 }
 
+// ФОРМИРУЕТ ПОЛНЫЙ ДВУХКРУГОВОЙ КАЛЕНДАРЬ ВСЕХ ДИВИЗИОНОВ
 export const generateLeagueSchedule = (clubs: readonly Club[], season: number): Match[] => {
   const matches: Match[] = []
   const clubsByCompetition = clubs.reduce<Record<string, Club[]>>((result, club) => {

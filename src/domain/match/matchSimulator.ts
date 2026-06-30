@@ -17,6 +17,7 @@ import type {
 } from '@/types/football'
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
 import { formatPlayerName } from '@/utils/format'
+import { getPositionFit } from '@/domain/season/squadSelectionService'
 
 export interface MatchSimulationInput {
   matchId: string
@@ -90,6 +91,7 @@ const tacticalModifiers: Record<
   attacking: { attack: 6, midfield: 1, defense: -5 },
 }
 
+// ПРЕОБРАЗУЕТ ИДЕНТИФИКАТОР МАТЧА В СТАБИЛЬНОЕ ЧИСЛО ДЛЯ ГЕНЕРАТОРА
 const hashString = (value: string): number => {
   let hash = 0
   for (let index = 0; index < value.length; index += 1) {
@@ -98,12 +100,15 @@ const hashString = (value: string): number => {
   return hash || 1
 }
 
+// КЛОНИРУЕТ СТАТИСТИКУ КОМАНДЫ ДЛЯ НЕИЗМЕНЯЕМОГО СНИМКА МИНУТЫ
 const cloneStats = (stats: MatchTeamStats): MatchTeamStats => ({ ...stats })
 
+// РАССЧИТЫВАЕТ СИЛУ ИГРОКА С УЧЁТОМ ФОРМЫ И ФИЗИЧЕСКОГО СОСТОЯНИЯ
 const playerEffectiveRating = (player: Player): number => {
   return player.rating * 0.76 + player.form * 0.14 + player.fitness * 0.1
 }
 
+// ВЫЧИСЛЯЕТ СРЕДНЕЕ ЗНАЧЕНИЕ ИЛИ ВОЗВРАЩАЕТ РЕЗЕРВНОЕ
 const average = (values: readonly number[], fallback: number): number => {
   if (values.length === 0) {
     return fallback
@@ -111,6 +116,7 @@ const average = (values: readonly number[], fallback: number): number => {
   return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
+// ОЦЕНИВАЕТ СРЕДНЮЮ СИЛУ ЗАДАННОЙ ЛИНИИ КОМАНДЫ
 const getLineAverage = (
   players: readonly Player[],
   line: 'attack' | 'midfield' | 'defense',
@@ -123,6 +129,7 @@ const getLineAverage = (
   return average(ratings, fallback)
 }
 
+// ПОЛУЧАЕТ ИГРОКОВ СТАРТОВОГО СОСТАВА ИЗ СОСТАВА КЛУБА
 const getLineupPlayers = (club: Club, lineup: PlayedLineup): Player[] => {
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
   const players = lineup.starters
@@ -136,6 +143,7 @@ const getLineupPlayers = (club: Club, lineup: PlayedLineup): Player[] => {
   return players
 }
 
+// СОБИРАЕТ АТАКУ, ПОЛУЗАЩИТУ И ЗАЩИТУ КОМАНДЫ ДЛЯ СИМУЛЯЦИИ
 const createTeamMetrics = (
   club: Club,
   lineup: PlayedLineup,
@@ -162,6 +170,7 @@ const createTeamMetrics = (
   }
 }
 
+// СОЗДАЁТ НАЧАЛЬНОЕ СОСТОЯНИЕ ПОМИНУТНОЙ СИМУЛЯЦИИ
 const initializeRunningState = (
   home: TeamMetrics,
   away: TeamMetrics,
@@ -201,6 +210,7 @@ const initializeRunningState = (
   }
 }
 
+// ЗАДАЁТ ВЕС ВЕРОЯТНОСТИ ГОЛА В ЗАВИСИМОСТИ ОТ ПОЗИЦИИ
 const goalScorerWeight = (position: PlayerPosition): number => {
   if (position === 'ST') {
     return 5
@@ -223,6 +233,7 @@ const goalScorerWeight = (position: PlayerPosition): number => {
   return 0.45
 }
 
+// ВЫБИРАЕТ АВТОРА ГОЛА ПО ВЗВЕШЕННОЙ ВЕРОЯТНОСТИ
 const pickGoalScorer = (players: readonly Player[], random: RandomGenerator): Player => {
   const weighted = players.map((player) => ({
     player,
@@ -245,10 +256,12 @@ const pickGoalScorer = (players: readonly Player[], random: RandomGenerator): Pl
   return fallback
 }
 
+// ИЗМЕНЯЕТ ВНУТРЕННЮЮ ОЦЕНКУ ИГРОКА ДЛЯ ВЫБОРА ЛУЧШЕГО
 const addPlayerScore = (scores: Map<string, number>, playerId: string, delta: number): void => {
   scores.set(playerId, (scores.get(playerId) ?? 0) + delta)
 }
 
+// РАЗЫГРЫВАЕТ ОДНУ АТАКУ И ПРИ УСПЕХЕ ДОБАВЛЯЕТ УДАР И ГОЛ
 const processAttack = (
   minute: number,
   attackingClub: Club,
@@ -319,6 +332,7 @@ const processAttack = (
   })
 }
 
+// РАССЧИТЫВАЕТ ВЕРОЯТНОСТЬ НАРУШЕНИЯ И КАРТОЧКИ НА МИНУТЕ
 const processDiscipline = (
   team: TeamMetrics,
   stats: MatchTeamStats,
@@ -344,6 +358,7 @@ const processDiscipline = (
   addPlayerScore(state.playerScores, bookedPlayer.id, -6)
 }
 
+// ВЫБИРАЕТ ЛУЧШЕГО ИГРОКА ПО НАКОПЛЕННЫМ БАЛЛАМ СОБЫТИЙ
 const pickBestPlayer = (scores: Map<string, number>): string => {
   let bestPlayerId = ''
   let bestScore = Number.NEGATIVE_INFINITY
@@ -358,6 +373,7 @@ const pickBestPlayer = (scores: Map<string, number>): string => {
   return bestPlayerId
 }
 
+// ГЕНЕРИРУЕТ ЧИСЛО ГОЛОВ ИЗ XG ПО РАСПРЕДЕЛЕНИЮ ПУАССОНА
 const sampleGoals = (expectedGoals: number, random: RandomGenerator): number => {
   const limit = Math.exp(-expectedGoals)
   let product = 1
@@ -371,6 +387,7 @@ const sampleGoals = (expectedGoals: number, random: RandomGenerator): number => 
   return Math.max(0, count - 1)
 }
 
+// СОЗДАЁТ СОБЫТИЯ ГОЛОВ С АВТОРАМИ И МИНУТАМИ
 const createGoalEvents = (
   count: number,
   club: Club,
@@ -387,6 +404,7 @@ const createGoalEvents = (
     }
   })
 
+// РАСПРЕДЕЛЯЕТ ЖЁЛТЫЕ И КРАСНЫЕ КАРТОЧКИ МЕЖДУ ИГРОКАМИ
 const createCardEvents = (
   home: TeamMetrics,
   away: TeamMetrics,
@@ -397,6 +415,7 @@ const createCardEvents = (
   random: RandomGenerator,
   includeMinutes: boolean,
 ): CardEvent[] => {
+  // СОЗДАЁТ НАБОР КАРТОЧЕК ДЛЯ ОДНОЙ КОМАНДЫ
   const createForTeam = (
     team: TeamMetrics,
     clubId: string,
@@ -426,6 +445,7 @@ const createCardEvents = (
   ]
 }
 
+// ГЕНЕРИРУЕТ ТРАВМЫ И СРОКИ ВОССТАНОВЛЕНИЯ ДЛЯ ОБЕИХ КОМАНД
 const createInjuryEvents = (
   home: TeamMetrics,
   away: TeamMetrics,
@@ -455,6 +475,7 @@ const createInjuryEvents = (
   return injuries
 }
 
+// СОЗДАЁТ ПОЗИЦИОННО СОВМЕСТИМЫЕ ЗАМЕНЫ БЕЗ УЧАСТИЯ ВРАТАРЯ
 const createSubstitutions = (
   club: Club,
   lineup: PlayedLineup,
@@ -464,19 +485,52 @@ const createSubstitutions = (
   const substitutes = club.squad.filter(
     (player) => !lineup.starters.includes(player.id) && !player.isInjured,
   )
-  const starters = [...lineup.starters]
+  const playersById = new Map(club.squad.map((player) => [player.id, player]))
+  const starters = lineup.starters.filter(
+    (playerId) => playersById.get(playerId)?.position !== 'GK',
+  )
   const count = Math.min(
     random.int(config.minCount, config.maxCount),
     substitutes.length,
     starters.length,
   )
 
-  return Array.from({ length: count }, (_, index) => {
-    const playerOutIndex = random.int(0, starters.length - 1)
-    const playerInIndex = random.int(0, substitutes.length - 1)
-    const playerOutId = starters.splice(playerOutIndex, 1)[0] ?? lineup.starters[0] ?? ''
-    const playerInId = substitutes.splice(playerInIndex, 1)[0]?.id ?? ''
-    return {
+  const events: SubstitutionEvent[] = []
+
+  for (let index = 0; index < count; index += 1) {
+    const viableStarters = starters.filter((playerId) => {
+      const playerOut = playersById.get(playerId)
+      return Boolean(
+        playerOut &&
+          substitutes.some(
+            (playerIn) => getPositionFit(playerOut.position, playerIn.position) <= 1,
+          ),
+      )
+    })
+    if (viableStarters.length === 0) {
+      break
+    }
+
+    const playerOutId = random.pick(viableStarters)
+    const playerOut = playersById.get(playerOutId)
+    if (!playerOut) {
+      break
+    }
+
+    const compatibleSubstitutes = substitutes.filter(
+      (player) => getPositionFit(playerOut.position, player.position) <= 1,
+    )
+    const bestFit = Math.min(
+      ...compatibleSubstitutes.map((player) => getPositionFit(playerOut.position, player.position)),
+    )
+    const bestSubstitutes = compatibleSubstitutes.filter(
+      (player) => getPositionFit(playerOut.position, player.position) === bestFit,
+    )
+    const playerIn = random.pick(bestSubstitutes)
+
+    starters.splice(starters.indexOf(playerOutId), 1)
+    substitutes.splice(substitutes.findIndex((player) => player.id === playerIn.id), 1)
+    events.push({
       minute: clamp(
         random.int(config.minMinute, config.maxMinute - config.maxCount + 1) + index,
         config.minMinute,
@@ -484,11 +538,14 @@ const createSubstitutions = (
       ),
       clubId: club.id,
       playerOutId,
-      playerInId,
-    }
-  })
+      playerInId: playerIn.id,
+    })
+  }
+
+  return events
 }
 
+// ОБЪЕДИНЯЕТ ВСЕ СОБЫТИЯ В ТЕКСТОВУЮ ХРОНОЛОГИЮ МАТЧА
 const createCommentary = (
   goals: readonly GoalEvent[],
   cards: readonly CardEvent[],
@@ -497,12 +554,14 @@ const createCommentary = (
   homeClub: Club,
   awayClub: Club,
 ): CommentaryEvent[] => {
+  // НАХОДИТ ОТОБРАЖАЕМОЕ ИМЯ ИГРОКА В НУЖНОМ КЛУБЕ
   const getPlayerName = (clubId: string, playerId: string): string => {
     const club = clubId === homeClub.id ? homeClub : awayClub
     const player = club.squad.find((candidate) => candidate.id === playerId)
     return player ? formatPlayerName(player.firstName, player.lastName) : playerId
   }
 
+  // СКЛОНЯЕТ КОЛИЧЕСТВО ПРОПУЩЕННЫХ ИЗ-ЗА ТРАВМЫ МАТЧЕЙ
   const formatMatchdays = (duration: number): string => {
     const lastTwoDigits = duration % 100
     const lastDigit = duration % 10
@@ -518,6 +577,7 @@ const createCommentary = (
     return `${duration} матчей`
   }
 
+  // ФОРМИРУЕТ ЧИТАЕМУЮ СТРОКУ ЗАМЕНЫ ДЛЯ ТРАНСЛЯЦИИ
   const substitutionText = (substitution: SubstitutionEvent): string => {
     const club = substitution.clubId === homeClub.id ? homeClub : awayClub
     const playerOut = club.squad.find((player) => player.id === substitution.playerOutId)
@@ -560,6 +620,7 @@ const createCommentary = (
   return events.sort((left, right) => left.minute - right.minute)
 }
 
+// СТРОИТ ПОЛНУЮ ПОМИНУТНУЮ ТРАНСЛЯЦИЮ И ФИНАЛЬНЫЙ РЕЗУЛЬТАТ
 export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline => {
   const random = createSeededRandom(input.seed ?? hashString(input.matchId))
   const home = createTeamMetrics(input.homeClub, input.homeLineup, true, input.neutralVenue)
@@ -696,6 +757,7 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
   }
 }
 
+// СИМУЛИРУЕТ МАТЧ СО СТАТИСТИКОЙ БЕЗ ПОМИНУТНОГО ЦИКЛА
 const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
   const random = createSeededRandom(input.seed ?? hashString(input.matchId))
   const home = createTeamMetrics(input.homeClub, input.homeLineup, true, input.neutralVenue)
@@ -795,6 +857,7 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
   return result
 }
 
+// БЫСТРО РАССЧИТЫВАЕТ ФОНОВЫЙ МАТЧ С МИНИМАЛЬНЫМИ ДАННЫМИ
 export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult => {
   const random = createSeededRandom(input.seed ?? hashString(input.matchId))
   const config = matchSimulationConfig.fastMatch
@@ -857,6 +920,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   }
 }
 
+// ВЫБИРАЕТ ДЕТАЛИЗАЦИЮ И ЗАПУСКАЕТ СООТВЕТСТВУЮЩИЙ СИМУЛЯТОР
 export const simulateMatch = (
   input: MatchSimulationInput,
   detail: MatchSimulationDetail = 'medium',

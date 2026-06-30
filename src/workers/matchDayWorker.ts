@@ -1,6 +1,7 @@
 import {
   completePreparedUserMatchDay,
   prepareUserMatchDay,
+  settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import type { GameState, MatchResult } from '@/types/football'
 
@@ -18,6 +19,7 @@ interface WorkerScope {
   postMessage: (response: MatchDayResponse) => void
 }
 
+// ТИПИЗИРУЕТ ГЛОБАЛЬНУЮ ОБЛАСТЬ ФОНОВОГО ПОТОКА И ЕГО ПРОТОКОЛ
 const workerScope = self as unknown as WorkerScope
 let preparedState: GameState | null = null
 let preparedMatchId = ''
@@ -38,7 +40,9 @@ workerScope.onmessage = ({ data }): void => {
 
     workerScope.postMessage({
       type: 'complete',
-      state: completePreparedUserMatchDay(preparedState, preparedMatchId, data.result),
+      state: settleAiOnlyDaysUntilNextUserMatch(
+        completePreparedUserMatchDay(preparedState, preparedMatchId, data.result),
+      ),
     })
   } catch (error) {
     workerScope.postMessage({

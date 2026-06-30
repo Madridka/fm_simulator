@@ -22,10 +22,13 @@ interface CalendarMonth {
   cells: CalendarCell[]
 }
 
+// ИСТОЧНИКИ МАТЧЕЙ И ДАННЫХ КЛУБОВ ДЛЯ КАЛЕНДАРЯ
 const gameStore = useGameStore()
 const clubStore = useClubStore()
+// ТЕКУЩИЙ МЕСЯЦ, ОТКРЫТЫЙ В СЕЗОННОМ КАЛЕНДАРЕ
 const activeMonthIndex = ref(0)
 
+// ЛОКАЛИЗОВАННЫЕ ПОДПИСИ КАЛЕНДАРНОЙ СЕТКИ
 const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const monthNames = [
   'Январь',

@@ -23,9 +23,11 @@ import ClubBadge from '@/components/ui/ClubBadge.vue'
 
 type MatchSnapshot = MatchTimeline['minutes'][number]
 
+// ЗАВИСИМОСТИ ЭКРАНА И ИСТОЧНИКИ ДАННЫХ АКТИВНОГО МАТЧА
 const router = useRouter()
 const gameStore = useGameStore()
 const clubStore = useClubStore()
+// ИЗМЕНЯЕМОЕ СОСТОЯНИЕ ПОМИНУТНОЙ СИМУЛЯЦИИ И ФОНОВОГО ЗАВЕРШЕНИЯ
 const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
 const timerId = ref<number | null>(null)
@@ -201,12 +203,99 @@ const visibleCommentary = computed(() =>
   ),
 )
 
+interface PlayerEventMarker {
+  key: string
+  label: string
+  title: string
+  className: string
+}
+
+// ПРОВЕРЯЕТ, НАСТУПИЛА ЛИ МИНУТА СОБЫТИЯ В ТЕКУЩЕЙ ТРАНСЛЯЦИИ
+const isMatchEventVisible = (minute?: number): boolean =>
+  match.value?.status === 'played' || (minute ?? 0) <= currentMinute.value
+
+// СОБИРАЕТ ВИДИМЫЕ ГОЛЫ, КАРТОЧКИ, ТРАВМЫ И ЗАМЕНЫ ОДНОГО ИГРОКА
+const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
+  const result = detailedResult.value
+  if (!result) {
+    return []
+  }
+
+  const markers: PlayerEventMarker[] = []
+
+  result.goals
+    .filter((goal) => goal.playerId === playerId && isMatchEventVisible(goal.minute))
+    .forEach((goal, index) =>
+      markers.push({
+        key: `goal-${goal.minute}-${index}`,
+        label: '⚽',
+        title: `Гол, ${goal.minute}'`,
+        className: 'bg-emerald-100 text-emerald-800',
+      }),
+    )
+
+  ;(result.cards ?? [])
+    .filter((card) => card.playerId === playerId && isMatchEventVisible(card.minute))
+    .forEach((card, index) =>
+      markers.push({
+        key: `${card.card}-${card.minute ?? 0}-${index}`,
+        label: card.card === 'red' ? '🟥' : '🟨',
+        title: `${card.card === 'red' ? 'Красная' : 'Жёлтая'} карточка${card.minute ? `, ${card.minute}'` : ''}`,
+        className: card.card === 'red' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800',
+      }),
+    )
+
+  ;(result.injuries ?? [])
+    .filter((injury) => injury.playerId === playerId && isMatchEventVisible(injury.minute))
+    .forEach((injury, index) =>
+      markers.push({
+        key: `injury-${injury.minute ?? 0}-${index}`,
+        label: '✚',
+        title: `Травма${injury.minute ? `, ${injury.minute}'` : ''}`,
+        className: 'bg-orange-100 text-orange-800',
+      }),
+    )
+
+  ;(result.substitutions ?? [])
+    .filter((substitution) => isMatchEventVisible(substitution.minute))
+    .forEach((substitution, index) => {
+      if (substitution.playerOutId === playerId) {
+        markers.push({
+          key: `sub-out-${substitution.minute}-${index}`,
+          label: `${substitution.minute}' ↓`,
+          title: `Заменён, ${substitution.minute}'`,
+          className: 'bg-rose-100 text-rose-700',
+        })
+      }
+      if (substitution.playerInId === playerId) {
+        markers.push({
+          key: `sub-in-${substitution.minute}-${index}`,
+          label: `${substitution.minute}' ↑`,
+          title: `Вышел на замену, ${substitution.minute}'`,
+          className: 'bg-sky-100 text-sky-700',
+        })
+      }
+    })
+
+  return markers
+}
+
+// ВОЗВРАЩАЕТ ДОСТУПНЫХ ЗАПАСНЫХ, НЕ ВХОДЯЩИХ В СТАРТОВЫЙ СОСТАВ
+const benchPlayers = (club: Club, starters: readonly string[] = []): Player[] =>
+  club.squad.filter(
+    (player) => !starters.includes(player.id) && !player.isInjured,
+  )
+
 // ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
   const home = homeClub.value?.squad ?? []
   const away = awayClub.value?.squad ?? []
   return [...home, ...away]
 })
+
+// ВОЗВРАЩАЕТ РОДНУЮ ПОЗИЦИЮ ИГРОКА ДЛЯ СТРОКИ СОСТАВА
+const playerPosition = (playerId: string): string =>
+  allPlayers.value.find((player) => player.id === playerId)?.position ?? '—'
 
 // ВОЗВРАЩАЕТ ИМЯ ИГРОКА ПО ИДЕНТИФИКАТОРУ
 const playerName = (playerId?: string): string => {
@@ -493,7 +582,17 @@ onBeforeUnmount(clearTimer)
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
         <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Составы</h2>
+        <!-- ЛЕГЕНДА СОБЫТИЙ, КОТОРЫЕ ПОЯВЛЯЮТСЯ У ИГРОКОВ ПО ХОДУ МАТЧА -->
+        <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
+          <span>⚽ Гол</span>
+          <span>🟨 ЖК</span>
+          <span>🟥 КК</span>
+          <span>✚ Травма</span>
+          <span><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b> Замена</span>
+        </div>
+        <!-- ОСНОВА И СКАМЕЙКА ХОЗЯЕВ И ГОСТЕЙ -->
         <div class="mt-4 grid gap-4 md:grid-cols-2 xl:mt-3 xl:gap-3">
+          <!-- СОСТАВ ХОЗЯЕВ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
           <div>
             <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
               {{ homeClub.shortName }} · {{ preparedLineups?.home.formation }}
@@ -502,12 +601,55 @@ onBeforeUnmount(clearTimer)
               <div
                 v-for="playerId in preparedLineups?.home.starters"
                 :key="playerId"
-                class="truncate rounded bg-slate-50 px-2 py-1 xl:py-0.5"
+                class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
               >
-                {{ playerName(playerId) }}
+                <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
+                  {{ playerPosition(playerId) }}
+                </span>
+                <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
+                <span
+                  v-for="marker in playerEventMarkers(playerId)"
+                  :key="marker.key"
+                  :title="marker.title"
+                  :aria-label="marker.title"
+                  class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
+                  :class="marker.className"
+                >
+                  {{ marker.label }}
+                </span>
+              </div>
+            </div>
+            <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ХОЗЯЕВ -->
+            <div
+              v-if="benchPlayers(homeClub, preparedLineups?.home.starters).length"
+              class="mt-3 border-t border-slate-200 pt-2"
+            >
+              <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
+                Запасные
+              </div>
+              <div class="space-y-1 text-xs text-slate-700">
+                <div
+                  v-for="player in benchPlayers(homeClub, preparedLineups?.home.starters)"
+                  :key="player.id"
+                  class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
+                >
+                  <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
+                    {{ player.position }}
+                  </span>
+                  <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
+                  <span
+                    v-for="marker in playerEventMarkers(player.id)"
+                    :key="marker.key"
+                    :title="marker.title"
+                    :aria-label="marker.title"
+                    class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
+                    :class="marker.className"
+                  >{{ marker.label }}</span>
+                </div>
               </div>
             </div>
           </div>
+          <!-- СОСТАВ ГОСТЕЙ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
           <div>
             <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
               {{ awayClub.shortName }} · {{ preparedLineups?.away.formation }}
@@ -516,9 +658,51 @@ onBeforeUnmount(clearTimer)
               <div
                 v-for="playerId in preparedLineups?.away.starters"
                 :key="playerId"
-                class="truncate rounded bg-slate-50 px-2 py-1 xl:py-0.5"
+                class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
               >
-                {{ playerName(playerId) }}
+                <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
+                  {{ playerPosition(playerId) }}
+                </span>
+                <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
+                <span
+                  v-for="marker in playerEventMarkers(playerId)"
+                  :key="marker.key"
+                  :title="marker.title"
+                  :aria-label="marker.title"
+                  class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
+                  :class="marker.className"
+                >
+                  {{ marker.label }}
+                </span>
+              </div>
+            </div>
+            <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ГОСТЕЙ -->
+            <div
+              v-if="benchPlayers(awayClub, preparedLineups?.away.starters).length"
+              class="mt-3 border-t border-slate-200 pt-2"
+            >
+              <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
+                Запасные
+              </div>
+              <div class="space-y-1 text-xs text-slate-700">
+                <div
+                  v-for="player in benchPlayers(awayClub, preparedLineups?.away.starters)"
+                  :key="player.id"
+                  class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
+                >
+                  <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
+                    {{ player.position }}
+                  </span>
+                  <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
+                  <span
+                    v-for="marker in playerEventMarkers(player.id)"
+                    :key="marker.key"
+                    :title="marker.title"
+                    :aria-label="marker.title"
+                    class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
+                    :class="marker.className"
+                  >{{ marker.label }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -530,6 +714,7 @@ onBeforeUnmount(clearTimer)
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
         <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Статистика</h2>
+        <!-- СРАВНЕНИЕ КЛЮЧЕВЫХ МАТЧЕВЫХ ПОКАЗАТЕЛЕЙ ОБЕИХ КОМАНД -->
         <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
             <span class="text-right font-semibold"
@@ -590,6 +775,7 @@ onBeforeUnmount(clearTimer)
             }}</span>
           </div>
         </div>
+        <!-- ЛУЧШИЙ ИГРОК ПО ИТОГАМ НАКОПЛЕННЫХ МАТЧЕВЫХ ОЦЕНОК -->
         <div
           v-if="currentResult"
           class="mt-5 rounded-md bg-slate-50 p-3 text-sm xl:mt-3 xl:p-2 xl:text-xs"
@@ -600,21 +786,45 @@ onBeforeUnmount(clearTimer)
           }}</span>
         </div>
 
+        <!-- ХРОНОЛОГИЯ ГОЛОВ С РАЗДЕЛЕНИЕМ ХОЗЯЕВ И ГОСТЕЙ ПО СТОРОНАМ -->
         <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
           <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">Голы</h3>
-          <div v-if="visibleGoals.length" class="mt-3 space-y-2 xl:mt-2 xl:space-y-1">
-            <div
-              v-for="goal in visibleGoals"
-              :key="`${goal.minute}-${goal.playerId}`"
-              class="rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-            >
-              {{ goal.minute }}' · {{ goal.playerName }} ·
-              {{ clubStore.getClubById(goal.clubId)?.name }}
+          <div v-if="visibleGoals.length" class="mt-3 xl:mt-2">
+            <div class="mb-1 grid grid-cols-2 gap-2">
+              <div class="truncate px-1 text-xs font-black text-slate-500">
+                {{ homeClub.shortName }}
+              </div>
+              <div class="truncate px-1 text-right text-xs font-black text-slate-500">
+                {{ awayClub.shortName }}
+              </div>
+            </div>
+            <div class="space-y-2 xl:space-y-1">
+              <div
+                v-for="goal in visibleGoals"
+                :key="`${goal.minute}-${goal.playerId}`"
+                class="grid grid-cols-2 gap-2"
+              >
+                <div
+                  v-if="goal.clubId === homeClub.id"
+                  class="flex min-w-0 items-center gap-1 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+                >
+                  <span class="shrink-0 font-black text-emerald-700">{{ goal.minute }}'</span>
+                  <span class="min-w-0 truncate">{{ goal.playerName }}</span>
+                </div>
+                <div
+                  v-else
+                  class="col-start-2 flex min-w-0 items-center justify-end gap-1 rounded-md bg-slate-50 px-3 py-2 text-right text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+                >
+                  <span class="min-w-0 truncate">{{ goal.playerName }}</span>
+                  <span class="shrink-0 font-black text-emerald-700">{{ goal.minute }}'</span>
+                </div>
+              </div>
             </div>
           </div>
           <div v-else class="mt-3 text-sm text-slate-600">Голов пока нет.</div>
         </div>
 
+        <!-- РЕЗУЛЬТАТ СЕРИИ ПЕНАЛЬТИ ДЛЯ КУБКОВОГО МАТЧА -->
         <div
           v-if="match.result?.penaltyWinnerClubId"
           class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
@@ -630,6 +840,7 @@ onBeforeUnmount(clearTimer)
         class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
       >
         <h2 class="text-lg font-semibold text-slate-950 xl:text-base">Текстовая трансляция</h2>
+        <!-- ПОМИНУТНЫЙ ПОТОК УЖЕ НАСТУПИВШИХ СОБЫТИЙ МАТЧА -->
         <div
           v-if="visibleCommentary.length"
           class="mt-4 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-3"

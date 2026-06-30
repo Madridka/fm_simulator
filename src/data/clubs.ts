@@ -70,6 +70,7 @@ export const championships: Record<ChampionshipId, ChampionshipConfig> = {
   },
 }
 
+// СОЗДАЁТ НОВЫЙ НАБОР КЛУБОВ ВЫБРАННОГО ЧЕМПИОНАТА
 export const getChampionshipClubs = (championshipId: ChampionshipId): Club[] => {
   return createClubs(championships[championshipId].clubProfiles)
 }
@@ -77,4 +78,5 @@ export const getChampionshipClubs = (championshipId: ChampionshipId): Club[] => 
 // Compatibility for domain tests and code that needs the default club set.
 export const clubs = getChampionshipClubs('russia')
 
+// ВОЗВРАЩАЕТ МЕТАДАННЫЕ И КОНФИГУРАЦИЮ ЧЕМПИОНАТА
 export const getChampionship = (championshipId: ChampionshipId) => championships[championshipId]

@@ -6,6 +6,7 @@ import { useTransferStore, type TransferSortKey } from '@/stores/transfers/trans
 import type { PlayerPosition } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 
+// ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ОПЕРАЦИЙ ТРАНСФЕРНОГО РЫНКА
 const gameStore = useGameStore()
 const transferStore = useTransferStore()
 

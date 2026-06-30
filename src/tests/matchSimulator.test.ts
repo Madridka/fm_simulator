@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { createMatchTimeline, simulateMatch } from '@/domain/match/matchSimulator'
-import { autoSelectLineup, getFormationSlots } from '@/domain/season/squadSelectionService'
+import {
+  autoSelectLineup,
+  formations,
+  getFormationSlots,
+  getPositionFit,
+} from '@/domain/season/squadSelectionService'
 import { clubs } from '@/data/clubs'
 import type { Club, ClubLineup, PlayedLineup } from '@/types/football'
 
@@ -13,6 +18,18 @@ const playedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => ({
 })
 
 describe('matchSimulator', () => {
+  it('fills every formation slot with a player of the exact position when available', () => {
+    const club = clubs[0] as Club
+
+    for (const formation of formations) {
+      const lineup = autoSelectLineup(club, formation)
+      for (const slot of getFormationSlots(formation)) {
+        const player = club.squad.find((candidate) => candidate.id === lineup.starters[slot.id])
+        expect(player?.position).toBe(slot.position)
+      }
+    }
+  })
+
   it('produces reproducible results with the same seed', () => {
     const home = clubs[0] as Club
     const away = clubs[1] as Club
@@ -28,6 +45,32 @@ describe('matchSimulator', () => {
     }
 
     expect(simulateMatch(input)).toEqual(simulateMatch(input))
+  })
+
+  it('uses only position-compatible outfield players for substitutions', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const result = createMatchTimeline({
+      matchId: 'position-compatible-substitutions',
+      homeClub: home,
+      awayClub: away,
+      homeLineup: playedLineup(home, autoSelectLineup(home)),
+      awayLineup: playedLineup(away, autoSelectLineup(away)),
+      neutralVenue: false,
+      allowPenaltyShootout: false,
+      seed: 731,
+    }).finalResult
+
+    expect(result.substitutions?.length).toBeGreaterThan(0)
+    for (const substitution of result.substitutions ?? []) {
+      const club = substitution.clubId === home.id ? home : away
+      const playerOut = club.squad.find((player) => player.id === substitution.playerOutId)
+      const playerIn = club.squad.find((player) => player.id === substitution.playerInId)
+
+      expect(playerOut?.position).not.toBe('GK')
+      expect(playerIn?.position).not.toBe('GK')
+      expect(getPositionFit(playerOut!.position, playerIn!.position)).toBeLessThanOrEqual(1)
+    }
   })
 
   it('adds an injury with a recovery duration to the commentary', () => {

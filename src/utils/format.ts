@@ -1,11 +1,14 @@
+// ФОРМАТИРУЕТ БЮДЖЕТ И СТОИМОСТЬ В МИЛЛИОНАХ
 export const formatMoney = (value: number): string => {
   const millions = value / 1_000_000
   return `${millions.toFixed(millions >= 10 ? 0 : 1)} млн`
 }
 
+// ОБЪЕДИНЯЕТ ИМЯ И ФАМИЛИЮ ИГРОКА ДЛЯ ОТОБРАЖЕНИЯ
 export const formatPlayerName = (firstName: string, lastName: string): string =>
   `${firstName} ${lastName}`
 
+// ПРЕОБРАЗУЕТ ISO-ДАТУ В ПРИВЫЧНЫЙ ФОРМАТ ДД.ММ.ГГГГ
 export const formatDate = (isoDate: string): string => {
   const [year, month, day] = isoDate.split('-')
 

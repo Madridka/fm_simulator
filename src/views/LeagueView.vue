@@ -20,6 +20,7 @@ interface LeagueOption {
   label: string
 }
 
+// ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ТУРНИРНЫХ ТАБЛИЦ
 const gameStore = useGameStore()
 const competitionStore = useCompetitionStore()
 
@@ -39,6 +40,7 @@ const playerLeagueKey = computed((): string =>
   makeLeagueKey(gameStore.game?.championshipId ?? 'russia', playerCompetitionId.value),
 )
 
+// КЛЮЧ ЛИГИ, КОТОРУЮ ПОЛЬЗОВАТЕЛЬ ПРОСМАТРИВАЕТ СЕЙЧАС
 const selectedLeagueKey = ref(playerLeagueKey.value)
 
 // СИНХРОНИЗИРУЕТ ВЫБРАННУЮ ЛИГУ С КЛУБОМ ИГРОКА

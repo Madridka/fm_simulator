@@ -2,23 +2,23 @@
 import { onBeforeUnmount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-// ДЛЯ ФОНОВЫХ ИЗОБРАЖЕНИЙ
+// ПОДГОТАВЛИВАЕТ НАВИГАЦИЮ И АДАПТИВНЫЕ ФОНЫ СТРАНИЦЫ 404
 const router = useRouter()
 const desktopBackground = `${import.meta.env.BASE_URL}images/404-stadium-desktop-v2.png`
 const mobileBackground = `${import.meta.env.BASE_URL}images/404-stadium-mobile.png`
 
-// ДЛЯ СОХРАНЕНИЯ META-ДАННЫХ
+// ХРАНИТ ИСХОДНЫЕ META-ДАННЫЕ, ЧТОБЫ ВОССТАНОВИТЬ ИХ ПОСЛЕ УХОДА
 let previousTitle = ''
 let robotsMeta: HTMLMetaElement | null = null
 let previousRobotsContent: string | null = null
 let createdRobotsMeta = false
 
-// ДЛЯ ПУША НА "/"
+// ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА КОРНЕВОЙ МАРШРУТ ПРИЛОЖЕНИЯ
 const goHome = (): void => {
   void router.push('/')
 }
 
-// ДЛЯ META-ДАННЫХ 404
+// ЗАПРЕЩАЕТ ИНДЕКСАЦИЮ НЕСУЩЕСТВУЮЩЕГО МАРШРУТА И МЕНЯЕТ ЗАГОЛОВОК
 onMounted(() => {
   previousTitle = document.title
   document.title = '404 — Страница не найдена | Футбольный менеджер'
@@ -36,7 +36,7 @@ onMounted(() => {
   robotsMeta.content = 'noindex, nofollow'
 })
 
-// ДЛЯ ВОССТАНОВЛЕНИЯ META-ДАННЫХ
+// ВОССТАНАВЛИВАЕТ META-ДАННЫЕ ПРЕДЫДУЩЕЙ СТРАНИЦЫ ПЕРЕД УНИЧТОЖЕНИЕМ
 onBeforeUnmount(() => {
   document.title = previousTitle
 

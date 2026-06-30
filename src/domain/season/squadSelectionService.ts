@@ -13,6 +13,7 @@ export interface LineupValidationResult {
   errors: string[]
 }
 
+// СОЗДАЁТ ОПИСАНИЕ ПОЗИЦИИ НА ТАКТИЧЕСКОЙ СХЕМЕ
 const createSlot = (
   id: string,
   label: string,
@@ -97,10 +98,10 @@ const formationSlots: Record<Formation, FormationSlot[]> = {
 
 const adjacentPositions: Record<PlayerPosition, PlayerPosition[]> = {
   GK: [],
-  LB: ['CB', 'RB', 'CDM'],
+  LB: ['RB', 'CB'],
   CB: ['LB', 'RB', 'CDM'],
-  RB: ['CB', 'LB', 'CDM'],
-  CDM: ['CM', 'CB', 'LB', 'RB'],
+  RB: ['LB', 'CB'],
+  CDM: ['CM', 'CB'],
   CM: ['CDM', 'CAM', 'LW', 'RW'],
   CAM: ['CM', 'ST', 'LW', 'RW'],
   LW: ['RW', 'CAM', 'CM', 'ST'],
@@ -108,19 +109,23 @@ const adjacentPositions: Record<PlayerPosition, PlayerPosition[]> = {
   ST: ['CAM', 'LW', 'RW'],
 }
 
+// ИЗВЛЕКАЕТ ИДЕНТИФИКАТОРЫ ВСЕХ ИГРОКОВ СТАРТОВОГО СОСТАВА
 const starterIds = (lineup: ClubLineup): string[] => {
   return Object.values(lineup.starters).filter(
     (playerId): playerId is string => typeof playerId === 'string',
   )
 }
 
+// ПРЕДОСТАВЛЯЕТ СПИСОК ДОСТУПНЫХ ТАКТИЧЕСКИХ СХЕМ
 export const formations = Object.keys(formationSlots) as Formation[]
 
 export const tacticalStyles: TacticalStyle[] = ['defensive', 'balanced', 'attacking']
 
+// ВОЗВРАЩАЕТ НАБОР ПОЗИЦИЙ ДЛЯ ВЫБРАННОЙ СХЕМЫ
 export const getFormationSlots = (formation: Formation): FormationSlot[] =>
   formationSlots[formation]
 
+// СОЗДАЁТ ПУСТОЙ СОСТАВ С ЗАДАННОЙ СХЕМОЙ И ТАКТИКОЙ
 export const createEmptyLineup = (
   formation: Formation = '4-4-2',
   tacticalStyle: TacticalStyle = 'balanced',
@@ -141,6 +146,7 @@ export const createEmptyLineup = (
   }
 }
 
+// ПРЕОБРАЗУЕТ СПИСОК ИДЕНТИФИКАТОРОВ В ИГРОКОВ КЛУБА
 export const getPlayersByIds = (club: Club, playerIds: readonly string[]): Player[] => {
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
   return playerIds
@@ -148,8 +154,10 @@ export const getPlayersByIds = (club: Club, playerIds: readonly string[]): Playe
     .filter((player): player is Player => Boolean(player))
 }
 
+// ЭКСПОРТИРУЕТ ЕДИНЫЙ СПОСОБ ПОЛУЧЕНИЯ СТАРТОВЫХ ИГРОКОВ
 export const getStarterIds = starterIds
 
+// ПРОВЕРЯЕТ ПОЛНОТУ, УНИКАЛЬНОСТЬ И ДОПУСТИМОСТЬ ВЫБРАННОГО СОСТАВА
 export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidationResult => {
   const errors: string[] = []
   const ids = starterIds(lineup)
@@ -168,8 +176,19 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
     errors.push('В составе есть игрок, которого уже нет в клубе.')
   }
 
-  if (!players.some((player) => player.position === 'GK')) {
+  const playersById = new Map(club.squad.map((player) => [player.id, player]))
+  const slots = getFormationSlots(lineup.formation)
+  const goalkeeper = playersById.get(lineup.starters.gk ?? '')
+  const goalkeeperInOutfield = slots.some(
+    (slot) => slot.position !== 'GK' && playersById.get(lineup.starters[slot.id] ?? '')?.position === 'GK',
+  )
+
+  if (goalkeeper?.position !== 'GK') {
     errors.push('В стартовом составе должен быть вратарь.')
+  }
+
+  if (goalkeeperInOutfield) {
+    errors.push('Вратарь не может занимать позицию полевого игрока.')
   }
 
   if (players.some((player) => player.isInjured)) {
@@ -182,33 +201,46 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   }
 }
 
-const positionPenalty = (slotPosition: PlayerPosition, playerPosition: PlayerPosition): number => {
+// ОЦЕНИВАЕТ СОВМЕСТИМОСТЬ РОДНОЙ ПОЗИЦИИ ИГРОКА С ПОЗИЦИЕЙ СЛОТА
+export const getPositionFit = (
+  slotPosition: PlayerPosition,
+  playerPosition: PlayerPosition,
+): number => {
   if (slotPosition === playerPosition) {
     return 0
   }
-  return adjacentPositions[slotPosition].includes(playerPosition) ? 6 : 18
+  if (slotPosition === 'GK' || playerPosition === 'GK') {
+    return Number.POSITIVE_INFINITY
+  }
+  return adjacentPositions[slotPosition].includes(playerPosition) ? 1 : 2
 }
 
+// ВЫБИРАЕТ ЛУЧШЕГО ДОСТУПНОГО ИГРОКА С ПРИОРИТЕТОМ ПРОФИЛЬНОЙ ПОЗИЦИИ
 const pickBestPlayerForSlot = (
   squad: readonly Player[],
   usedPlayerIds: ReadonlySet<string>,
   slotPosition: PlayerPosition,
 ): Player => {
   const available = squad.filter((player) => !usedPlayerIds.has(player.id) && !player.isInjured)
-  const candidates =
-    available.length > 0 ? available : squad.filter((player) => !usedPlayerIds.has(player.id))
+  const unused = squad.filter((player) => !usedPlayerIds.has(player.id))
+  // ОСТАВЛЯЕТ КАНДИДАТОВ С НАИЛУЧШИМ ДОСТУПНЫМ СООТВЕТСТВИЕМ ПОЗИЦИИ
+  const selectBestPositionPool = (players: readonly Player[]): Player[] => {
+    const eligible = players.filter(
+      (player) => Number.isFinite(getPositionFit(slotPosition, player.position)),
+    )
+    const bestFit = Math.min(
+      ...eligible.map((player) => getPositionFit(slotPosition, player.position)),
+    )
+    return eligible.filter(
+      (player) => getPositionFit(slotPosition, player.position) === bestFit,
+    )
+  }
+  const healthyCandidates = selectBestPositionPool(available)
+  const candidates = healthyCandidates.length > 0 ? healthyCandidates : selectBestPositionPool(unused)
 
   const sorted = [...candidates].sort((left, right) => {
-    const leftScore =
-      left.rating +
-      left.form * 0.08 +
-      left.fitness * 0.05 -
-      positionPenalty(slotPosition, left.position)
-    const rightScore =
-      right.rating +
-      right.form * 0.08 +
-      right.fitness * 0.05 -
-      positionPenalty(slotPosition, right.position)
+    const leftScore = left.rating + left.form * 0.08 + left.fitness * 0.05
+    const rightScore = right.rating + right.form * 0.08 + right.fitness * 0.05
     return rightScore - leftScore
   })
 
@@ -219,6 +251,7 @@ const pickBestPlayerForSlot = (
   return selected
 }
 
+// АВТОМАТИЧЕСКИ ЗАПОЛНЯЕТ ОСНОВУ И СКАМЕЙКУ С УЧЁТОМ ПОЗИЦИЙ И ФОРМЫ
 export const autoSelectLineup = (
   club: Club,
   formation: Formation = '4-4-2',

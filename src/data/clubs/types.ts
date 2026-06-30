@@ -1,5 +1,6 @@
 import type { Player } from '@/types/football'
 
+// РАСШИРЕННЫЙ ПРОФИЛЬ КЛУБА, ОБЪЕДИНЯЮЩИЙ ИГРОВЫЕ И СПРАВОЧНЫЕ ДАННЫЕ
 export interface ClubProfile {
   config: ClubConfig
   assets?: ClubAssets
@@ -8,6 +9,7 @@ export interface ClubProfile {
   squad?: Player[]
 }
 
+// ОБЯЗАТЕЛЬНАЯ ИГРОВАЯ КОНФИГУРАЦИЯ КЛУБА
 export interface ClubConfig {
   id: string
   name: string
@@ -26,16 +28,19 @@ export interface ClubConfig {
   logoUrl?: string
 }
 
+// ВНЕШНИЕ ГРАФИЧЕСКИЕ РЕСУРСЫ КЛУБА
 export interface ClubAssets {
   crestUrl?: string
 }
 
+// СПРАВОЧНЫЕ ДАННЫЕ ДОМАШНЕГО СТАДИОНА
 export interface ClubStadium {
   name: string
   city: string
   capacity?: number
 }
 
+// КРАТКАЯ ИСТОРИЧЕСКАЯ СТАТИСТИКА КЛУБА
 export interface ClubHistoricalStats {
   foundedYear?: number
   domesticTitles?: number

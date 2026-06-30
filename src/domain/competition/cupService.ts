@@ -13,6 +13,7 @@ export const cupRoundIds = [
   'final',
 ] as const
 
+// НАХОДИТ МАКСИМАЛЬНЫЙ РАЗМЕР СТАНДАРТНОЙ СЕТКИ ДЛЯ ЧИСЛА КЛУБОВ
 const highestPowerOfTwoAtMost = (value: number): number => {
   let power = 1
   while (power * 2 <= value) {
@@ -21,6 +22,7 @@ const highestPowerOfTwoAtMost = (value: number): number => {
   return power
 }
 
+// СОПОСТАВЛЯЕТ РАЗМЕР СЕТКИ С ИДЕНТИФИКАТОРОМ СТАДИИ КУБКА
 const getRoundIdForBracketSize = (bracketSize: number): string => {
   if (bracketSize >= 128) {
     return 'round_of_128'
@@ -43,16 +45,19 @@ const getRoundIdForBracketSize = (bracketSize: number): string => {
   return 'final'
 }
 
+// ОПРЕДЕЛЯЕТ СТАДИЮ ПРЕДВАРИТЕЛЬНОГО РАУНДА ДЛЯ НЕПОЛНОЙ СЕТКИ
 const getRoundIdForPlayInSize = (bracketSizeAfterRound: number): string => {
   const playInSize = bracketSizeAfterRound * 2
   return getRoundIdForBracketSize(playInSize)
 }
 
+// ВОЗВРАЩАЕТ ПОСЛЕДОВАТЕЛЬНОСТЬ СТАДИЙ ОТ СТАРТА ДО ФИНАЛА
 const getActiveRoundIdsFrom = (firstRoundId: string): string[] => {
   const firstRoundIndex = cupRoundIds.indexOf(firstRoundId as (typeof cupRoundIds)[number])
   return firstRoundIndex >= 0 ? [...cupRoundIds.slice(firstRoundIndex)] : [...cupRoundIds]
 }
 
+// ДЕТЕРМИНИРОВАННО ПЕРЕМЕШИВАЕТ УЧАСТНИКОВ ДЛЯ ЖЕРЕБЬЁВКИ
 const shuffle = <T>(items: readonly T[], seed: number): T[] => {
   const random = createSeededRandom(seed)
   const result = [...items]
@@ -70,6 +75,7 @@ const shuffle = <T>(items: readonly T[], seed: number): T[] => {
   return result
 }
 
+// СОЗДАЁТ ОДНУ ПАРУ УЧАСТНИКОВ КУБКОВОГО РАУНДА
 const createTie = (
   season: number,
   roundId: string,
@@ -83,6 +89,7 @@ const createTie = (
   awayClubId,
 })
 
+// ПРЕОБРАЗУЕТ КУБКОВУЮ ПАРУ В МАТЧ КАЛЕНДАРЯ
 const createMatchFromTie = (season: number, roundId: string, round: number, tie: CupTie): Match => {
   if (!tie.matchId || !tie.homeClubId || !tie.awayClubId) {
     throw new Error('Cannot create a cup match without both clubs')
@@ -103,6 +110,7 @@ const createMatchFromTie = (season: number, roundId: string, round: number, tie:
   }
 }
 
+// ФОРМИРУЕТ КУБКОВЫЙ РАУНД, ЕГО ПАРЫ И МАТЧИ
 const createRound = (
   id: string,
   season: number,
@@ -137,6 +145,7 @@ const createRound = (
   }
 }
 
+// СОЗДАЁТ ЗАГОТОВКУ БУДУЩЕЙ СТАДИИ ДО ОПРЕДЕЛЕНИЯ УЧАСТНИКОВ
 const createEmptyRound = (id: string): CupRound => ({
   id,
   name: cupRoundNames[id] ?? id,
@@ -146,6 +155,7 @@ const createEmptyRound = (id: string): CupRound => ({
   ties: [],
 })
 
+// ИНИЦИАЛИЗИРУЕТ КУБОК С УЧЁТОМ ЧИСЛА КЛУБОВ И ПЕРВОГО РАУНДА
 export const initializeCup = (
   clubs: readonly Club[],
   season: number,
@@ -188,6 +198,7 @@ export const initializeCup = (
   }
 }
 
+// ИЗВЛЕКАЕТ ПОБЕДИТЕЛЯ МАТЧА, ВКЛЮЧАЯ СЕРИЮ ПЕНАЛЬТИ
 const getCupMatchWinner = (match: Match): string | undefined => {
   if (!match.result) {
     return undefined
@@ -195,6 +206,7 @@ const getCupMatchWinner = (match: Match): string | undefined => {
   return match.result.winnerClubId ?? match.result.penaltyWinnerClubId
 }
 
+// ПРОВЕРЯЕТ, ЧТО ВО ВСЕХ ПАРАХ РАУНДА ОПРЕДЕЛЕНЫ ПОБЕДИТЕЛИ
 const isRoundCompleted = (round: CupRound, matches: readonly Match[]): boolean => {
   if (round.ties.length === 0) {
     return false
@@ -212,6 +224,7 @@ const isRoundCompleted = (round: CupRound, matches: readonly Match[]): boolean =
   })
 }
 
+// ЗАВЕРШАЕТ СЫГРАННЫЙ РАУНД И СОЗДАЁТ СЛЕДУЮЩУЮ СТАДИЮ ИЛИ ЧЕМПИОНА
 export const advanceCupIfPossible = (
   cup: CupState,
   matches: readonly Match[],
@@ -286,10 +299,12 @@ export const advanceCupIfPossible = (
   }
 }
 
+// НАХОДИТ СТАДИЮ КУБКА ПО ИДЕНТИФИКАТОРУ МАТЧА
 export const getCupRoundForMatch = (cup: CupState, matchId: string): CupRound | undefined => {
   return cup.rounds.find((round) => round.ties.some((tie) => tie.matchId === matchId))
 }
 
+// ФОРМИРУЕТ КРАТКОЕ ОПИСАНИЕ ДОСТИГНУТОЙ КЛУБОМ СТАДИИ
 export const getClubCupProgress = (cup: CupState, clubId: string): string => {
   if (cup.championClubId === clubId) {
     return 'Победитель кубка'

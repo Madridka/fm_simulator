@@ -10,8 +10,10 @@ import i18n from './plugins/i18n/i18n'
 import { router } from './router'
 import './styles/main.css'
 
+// СОЗДАЁТ КОРНЕВОЙ ЭКЗЕМПЛЯР VUE-ПРИЛОЖЕНИЯ
 const app = createApp(App)
 
+// ПОДКЛЮЧАЕТ СОСТОЯНИЕ, МАРШРУТЫ, ЛОКАЛИЗАЦИЮ И ТЕМУ PRIMEVUE
 app.use(createPinia())
 app.use(router)
 app.use(i18n)
@@ -21,7 +23,9 @@ app.use(PrimeVue, {
   },
 })
 
+// РЕГИСТРИРУЕТ ОБЩИЕ КОМПОНЕНТЫ PRIMEVUE ДЛЯ ВСЕХ ШАБЛОНОВ
 app.component('Button', Button)
 app.component('Select', Select)
 
+// МОНТИРУЕТ ПРИЛОЖЕНИЕ В DOM-КОНТЕЙНЕР
 app.mount('#app')

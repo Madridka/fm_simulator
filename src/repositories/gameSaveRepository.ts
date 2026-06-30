@@ -26,16 +26,20 @@ export interface StorageLike {
   removeItem(key: string): void
 }
 
+// СОЗДАЁТ ПАМЯТЬ-ЗАМЕНУ LOCALSTORAGE ДЛЯ СРЕД БЕЗ БРАУЗЕРА
 export const createMemoryStorage = (): StorageLike => {
   const memory = new Map<string, string>()
 
   return {
+    // ЧИТАЕТ ЗНАЧЕНИЕ ИЗ ПАМЯТИ ПО КЛЮЧУ
     getItem(key: string): string | null {
       return memory.get(key) ?? null
     },
+    // ЗАПИСЫВАЕТ ЗНАЧЕНИЕ В ПАМЯТЬ
     setItem(key: string, value: string): void {
       memory.set(key, value)
     },
+    // УДАЛЯЕТ ЗНАЧЕНИЕ ИЗ ПАМЯТИ
     removeItem(key: string): void {
       memory.delete(key)
     },
@@ -44,6 +48,7 @@ export const createMemoryStorage = (): StorageLike => {
 
 const fallbackStorage = createMemoryStorage()
 
+// ВЫБИРАЕТ БРАУЗЕРНОЕ ХРАНИЛИЩЕ ИЛИ РЕЗЕРВ В ПАМЯТИ
 const getStorage = (): StorageLike => {
   if (typeof window === 'undefined') {
     return fallbackStorage
@@ -51,6 +56,7 @@ const getStorage = (): StorageLike => {
   return window.localStorage
 }
 
+// СОЗДАЁТ КОМПАКТНЫЙ РЕЗУЛЬТАТ БЕЗ ТЯЖЁЛЫХ СОБЫТИЙ И СОСТАВОВ
 const compactResult = (
   homeGoals: number,
   awayGoals: number,
@@ -97,6 +103,7 @@ const compactMatch = (match: GameState['matches'][number]): GameState['matches']
 
 // УДАЛЯЕТ ИЗ СОХРАНЕНИЯ ПРОИЗВОДНЫЕ ДАННЫЕ И ДУБЛИ, ВОССТАНАВЛИВАЕМЫЕ ПРИ ЗАГРУЗКЕ
 const createPersistedState = (state: GameState): PersistedGameState => {
+  // СОХРАНЯЕТ ПОЛНУЮ ДЕТАЛИЗАЦИЮ ТОЛЬКО ДЛЯ МАТЧЕЙ ПОЛЬЗОВАТЕЛЯ
   const isUserMatch = (match: GameState['matches'][number]): boolean =>
     match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId
 
@@ -165,10 +172,13 @@ const restorePersistedState = (persisted: PersistedGameState): GameState => {
   return ensureWorldCompetitions({ ...hydrated, worldMatches })
 }
 
+// ПРЕОБРАЗУЕТ НЕИЗВЕСТНУЮ ОШИБКУ СОХРАНЕНИЯ В ПОНЯТНЫЙ ТЕКСТ
 const errorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : 'Не удалось записать сохранение.'
 
+// ИНКАПСУЛИРУЕТ ЗАГРУЗКУ, КОМПАКТНОЕ СОХРАНЕНИЕ И УДАЛЕНИЕ КАРЬЕРЫ
 export const gameSaveRepository = {
+  // ЗАГРУЖАЕТ СОХРАНЕНИЕ, МИГРИРУЕТ СТАРЫЙ ФОРМАТ И ВОССТАНАВЛИВАЕТ МИР
   load(storage: StorageLike = getStorage()): GameState | null {
     const raw = storage.getItem(SAVE_KEY)
     if (!raw) {
@@ -191,6 +201,7 @@ export const gameSaveRepository = {
     }
   },
 
+  // СЖИМАЕТ И АТОМАРНО ЗАПИСЫВАЕТ ТЕКУЩЕЕ СОСТОЯНИЕ
   save(state: GameState, storage: StorageLike = getStorage()): GameSaveResult {
     let serialized = ''
     try {
@@ -206,6 +217,7 @@ export const gameSaveRepository = {
     }
   },
 
+  // УДАЛЯЕТ СОХРАНЁННУЮ КАРЬЕРУ
   clear(storage: StorageLike = getStorage()): void {
     storage.removeItem(SAVE_KEY)
   },

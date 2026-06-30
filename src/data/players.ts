@@ -159,6 +159,7 @@ const squadPositions: PlayerPosition[] = [
   'ST',
 ]
 
+// ВЫБИРАЕТ БАЗОВЫЙ РЕЙТИНГ ЛИНИИ ПО ПОЗИЦИИ ИГРОКА
 const getLineRating = (
   position: PlayerPosition,
   attackRating: number,
@@ -174,6 +175,7 @@ const getLineRating = (
   return attackRating
 }
 
+// ДЕТЕРМИНИРОВАННО ГЕНЕРИРУЕТ СОСТАВ КЛУБА С РЕЙТИНГАМИ И КОНТРАКТАМИ
 export const buildSquad = (
   clubId: string,
   clubIndex: number,

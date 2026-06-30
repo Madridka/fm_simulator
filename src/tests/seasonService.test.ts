@@ -8,6 +8,7 @@ import {
   getUserStarterIds,
   prepareUserMatchDay,
   recoverInjuredPlayersBeforeOrder,
+  settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import { gameConfig } from '@/config/gameConfig'
 import type { MatchResult } from '@/types/football'
@@ -107,5 +108,41 @@ describe('seasonService', () => {
 
     expect(result).toBe(finalSeasonState)
     expect(result.season).toBe(gameConfig.maximumSeasons)
+  })
+
+  it('finishes AI-only matchdays when the user has no matches left', () => {
+    const initial = createInitialGameState('spain', 'barcelona')
+    const stateWithoutUserMatches = {
+      ...initial,
+      matches: initial.matches.map((match) => {
+        const userIsHome = match.homeClubId === initial.selectedClubId
+        const userIsAway = match.awayClubId === initial.selectedClubId
+        if (!userIsHome && !userIsAway) {
+          return match
+        }
+
+        return {
+          ...match,
+          status: 'played' as const,
+          result: {
+            detail: 'fast' as const,
+            homeGoals: userIsHome ? 0 : 1,
+            awayGoals: userIsHome ? 1 : 0,
+            winnerClubId: userIsHome ? match.awayClubId : match.homeClubId,
+            goals: [],
+            stats: {
+              home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+              away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+            },
+            bestPlayerId: '',
+          },
+        }
+      }),
+    }
+
+    const settled = settleAiOnlyDaysUntilNextUserMatch(stateWithoutUserMatches)
+
+    expect(settled.matches.some((match) => match.status === 'scheduled')).toBe(false)
+    expect(settled.cup.championClubId).toBeDefined()
   })
 })

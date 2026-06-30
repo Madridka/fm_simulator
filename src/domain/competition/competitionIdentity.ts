@@ -11,9 +11,11 @@ export interface ChampionshipCompetitionNames {
 
 const russianCompetitionNames = championshipTranslations.russia.competitionNames
 
+// ОПРЕДЕЛЯЕТ УНИКАЛЬНЫЙ ИДЕНТИФИКАТОР ЛИГИ ИЛИ ГРУППЫ КЛУБА
 export const getClubCompetitionId = (club: Pick<Club, 'divisionId' | 'groupId'>): CompetitionId =>
   club.groupId ? `${club.divisionId}:${club.groupId}` : String(club.divisionId)
 
+// ОПРЕДЕЛЯЕТ СОРЕВНОВАНИЕ, К КОТОРОМУ ОТНОСИТСЯ МАТЧ
 export const getMatchCompetitionId = (
   match: Pick<Match, 'competitionId' | 'divisionId' | 'homeClubId'>,
   clubsById?: ReadonlyMap<string, Club>,
@@ -30,6 +32,7 @@ export const getMatchCompetitionId = (
   return String(match.divisionId ?? 1)
 }
 
+// СОБИРАЕТ ЧИТАЕМЫЕ НАЗВАНИЯ ВСЕХ СОРЕВНОВАНИЙ ЧЕМПИОНАТА
 export const getCompetitionNames = (
   championship: ChampionshipCompetitionNames,
 ): Record<string, string> => {
@@ -45,6 +48,7 @@ export const getCompetitionNames = (
   )
 }
 
+// ВОЗВРАЩАЕТ НАЗВАНИЕ ОДНОГО СОРЕВНОВАНИЯ С РЕЗЕРВНЫМ ВАРИАНТОМ
 export const getCompetitionName = (
   championship: ChampionshipCompetitionNames | undefined,
   competitionId: CompetitionId,

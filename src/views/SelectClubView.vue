@@ -32,9 +32,11 @@ interface BoardExpectation {
   tone: string
 }
 
+// ЗАВИСИМОСТИ, НЕОБХОДИМЫЕ ДЛЯ СОЗДАНИЯ И ПЕРЕХОДА В НОВУЮ КАРЬЕРУ
 const gameStore = useGameStore()
 const router = useRouter()
 
+// ТЕКУЩИЙ ВЫБОР ЧЕМПИОНАТА, ДИВИЗИОНА И КЛУБА
 const selectedChampionship = ref<ChampionshipId>('russia')
 const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
