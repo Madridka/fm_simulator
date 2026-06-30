@@ -25,23 +25,57 @@ const competition = computed(() => getCompetitionConfig(props.countryId, props.c
 const zoneFor = (position: number): TableZoneType | undefined =>
   getTableZoneType(position, props.rows.length, competition.value.tableZones)
 
+const zoneBorderClasses: Partial<Record<TableZoneType, string>> = {
+  champion: 'border-l-4 border-l-amber-400',
+  'direct-promotion': 'border-l-4 border-l-emerald-500',
+  'promotion-playoff': 'border-l-4 border-l-sky-500',
+  'relegation-playoff': 'border-l-4 border-l-orange-500',
+  'direct-relegation': 'border-l-4 border-l-rose-500',
+}
+
+const zoneMarkerClasses: Partial<Record<TableZoneType, string>> = {
+  champion: 'bg-amber-400',
+  'direct-promotion': 'bg-emerald-500',
+  'promotion-playoff': 'bg-sky-500',
+  'relegation-playoff': 'bg-orange-500',
+  'direct-relegation': 'bg-rose-500',
+}
+
 const zoneClass = (position: number): string => {
-  const classes: Partial<Record<TableZoneType, string>> = {
-    champion: 'border-l-4 border-l-amber-400',
-    'direct-promotion': 'border-l-4 border-l-emerald-500',
-    'promotion-playoff': 'border-l-4 border-l-sky-500',
-    'relegation-playoff': 'border-l-4 border-l-orange-500',
-    'direct-relegation': 'border-l-4 border-l-rose-500',
-  }
   const zone = zoneFor(position)
-  return zone ? (classes[zone] ?? '') : ''
+  return zone ? (zoneBorderClasses[zone] ?? '') : ''
 }
 
 const zoneLabel = (position: number): string | undefined => {
   const type = zoneFor(position)
-  const zone = type ? competition.value.tableZones.find((candidate) => candidate.type === type) : undefined
+  const zone = type
+    ? competition.value.tableZones.find((candidate) => candidate.type === type)
+    : undefined
   return zone ? t(zone.labelKey) : undefined
 }
+
+const legendItems = computed(() => {
+  const visibleZoneTypes = new Set(
+    props.rows
+      .map((row) => zoneFor(row.position))
+      .filter((type): type is TableZoneType => type !== undefined),
+  )
+  const addedTypes = new Set<TableZoneType>()
+
+  return competition.value.tableZones.flatMap((zone) => {
+    if (!visibleZoneTypes.has(zone.type) || addedTypes.has(zone.type)) {
+      return []
+    }
+    addedTypes.add(zone.type)
+    return [
+      {
+        type: zone.type,
+        label: t(zone.labelKey),
+        markerClass: zoneMarkerClasses[zone.type] ?? 'bg-slate-400',
+      },
+    ]
+  })
+})
 </script>
 
 <template>
@@ -100,5 +134,19 @@ const zoneLabel = (position: number): string | undefined => {
         </tr>
       </tbody>
     </table>
+    <div
+      v-if="legendItems.length"
+      class="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 bg-white/95 px-3 py-3 text-xs text-slate-600 shadow-[0_-8px_20px_rgba(15,23,42,0.04)] backdrop-blur"
+    >
+      <span class="font-semibold text-slate-700">{{ t('leagueTable.legend') }}:</span>
+      <div
+        v-for="item in legendItems"
+        :key="item.type"
+        class="flex items-center gap-2 whitespace-nowrap"
+      >
+        <span class="h-4 w-1 rounded-full" :class="item.markerClass"></span>
+        <span>{{ item.label }}</span>
+      </div>
+    </div>
   </div>
 </template>
