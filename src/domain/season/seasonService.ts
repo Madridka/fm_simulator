@@ -12,6 +12,7 @@ import {
   initializeCompetitionPlayoffs,
 } from '@/domain/competitions/playoffResolver'
 import { simulateFastMatch, simulateMatch } from '@/domain/match/matchSimulator'
+import { normalizeMatchResultDiscipline } from '@/domain/match/disciplineService'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
 import { resolveScheduleConflicts } from '@/domain/schedule/calendarSlotResolver'
 import {
@@ -19,6 +20,10 @@ import {
   getFormationSlots,
   getStarterIds,
 } from '@/domain/season/squadSelectionService'
+import {
+  applySuspensionsAfterMatch,
+  isPlayerUnavailable,
+} from '@/domain/season/playerAvailability'
 import type {
   ChampionshipId,
   Club,
@@ -371,7 +376,13 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
     .map((slot) => lineup.starters[slot.id])
     .filter((playerId): playerId is string => typeof playerId === 'string')
 
-  if (starters.length !== 11) {
+  const playersById = new Map(club.squad.map((player) => [player.id, player]))
+  const hasUnavailableStarter = starters.some((playerId) => {
+    const player = playersById.get(playerId)
+    return !player || isPlayerUnavailable(player)
+  })
+
+  if (starters.length !== 11 || hasUnavailableStarter) {
     const auto = autoSelectLineup(club, lineup.formation, lineup.tacticalStyle)
     return getPlayedLineup(club, auto)
   }
@@ -477,7 +488,10 @@ const applyMatchEffects = (
     return counts
   }, {})
   const bookingCounts: Record<string, number> = {}
-  const recordedYellowCards = result.cards?.filter((card) => card.card === 'yellow') ?? []
+  const recordedYellowCards =
+    result.cards?.filter(
+      (card) => card.card === 'yellow' || card.dismissalReason === 'second-yellow',
+    ) ?? []
 
   if (recordedYellowCards.length) {
     for (const card of recordedYellowCards) {
@@ -573,7 +587,7 @@ const applyMatchEffects = (
 
   return {
     ...state,
-    clubs,
+    clubs: applySuspensionsAfterMatch(clubs, match, result.cards),
     playerStats,
   }
 }
@@ -585,6 +599,11 @@ const completeMatch = (
   result: MatchResult,
   lineups: MatchLineups,
 ): GameState => {
+  const normalizedResult = normalizeMatchResultDiscipline(
+    result,
+    match.homeClubId,
+    match.awayClubId,
+  )
   const updatedMatches = state.matches.map((candidate) => {
     if (candidate.id !== match.id) {
       return candidate
@@ -593,7 +612,7 @@ const completeMatch = (
     return {
       ...candidate,
       status: 'played' as const,
-      result,
+      result: normalizedResult,
       lineups,
     }
   })
@@ -605,7 +624,7 @@ const completeMatch = (
       lastCompletedOrder: Math.max(state.lastCompletedOrder, match.order),
     },
     match,
-    result,
+    normalizedResult,
     lineups,
   )
 }
@@ -702,10 +721,10 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
         allowPenaltyShootout: false,
         seed: hashString(match.id) + hydrated.season * 10_000,
       })
-      worldClubs[championshipId] = applyInjuriesToClubs(
-        worldClubs[championshipId],
-        result.injuries,
-        match.order,
+      worldClubs[championshipId] = applySuspensionsAfterMatch(
+        applyInjuriesToClubs(worldClubs[championshipId], result.injuries, match.order),
+        match,
+        result.cards,
       )
 
       return {
@@ -956,12 +975,21 @@ export const completeUserMatchDay = (
 
 // СОХРАНЯЕТ БЫСТРЫЙ РЕЗУЛЬТАТ БЕЗ СТАТИСТИКИ ИГРОКОВ
 const completeFastMatch = (state: GameState, match: Match, result: MatchResult): GameState => {
+  const normalizedResult = normalizeMatchResultDiscipline(
+    result,
+    match.homeClubId,
+    match.awayClubId,
+  )
   return {
     ...state,
-    clubs: applyInjuriesToClubs(state.clubs, result.injuries, match.order),
+    clubs: applySuspensionsAfterMatch(
+      applyInjuriesToClubs(state.clubs, normalizedResult.injuries, match.order),
+      match,
+      normalizedResult.cards,
+    ),
     matches: state.matches.map((candidate) =>
       candidate.id === match.id
-        ? { ...candidate, status: 'played' as const, result, lineups: undefined }
+        ? { ...candidate, status: 'played' as const, result: normalizedResult, lineups: undefined }
         : candidate,
     ),
     lastCompletedOrder: Math.max(state.lastCompletedOrder, match.order),
@@ -1015,6 +1043,8 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
         form: clamp(player.form + random.int(-6, 8), 1, 100),
         isInjured: false,
         injuryUntilOrder: undefined,
+        suspensionMatchesRemaining: undefined,
+        suspensionReason: undefined,
       }
     }),
   }

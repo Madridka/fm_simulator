@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { createMatchTimeline, simulateMatch } from '@/domain/match/matchSimulator'
+import { normalizeCardEvents } from '@/domain/match/disciplineService'
+import { applySuspensionsAfterMatch } from '@/domain/season/playerAvailability'
 import {
   autoSelectLineup,
   formations,
   getFormationSlots,
   getPositionFit,
+  validateLineup,
 } from '@/domain/season/squadSelectionService'
 import { clubs } from '@/data/clubs'
 import type { Club, ClubLineup, PlayedLineup } from '@/types/football'
@@ -18,6 +21,67 @@ const playedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => ({
 })
 
 describe('matchSimulator', () => {
+  it('turns a second yellow card for the same player into a dismissal', () => {
+    const cards = normalizeCardEvents([
+      { minute: 24, clubId: 'club', playerId: 'player', card: 'yellow' },
+      { minute: 67, clubId: 'club', playerId: 'player', card: 'yellow' },
+    ])
+
+    expect(cards).toEqual([
+      { minute: 24, clubId: 'club', playerId: 'player', card: 'yellow' },
+      {
+        minute: 67,
+        clubId: 'club',
+        playerId: 'player',
+        card: 'red',
+        dismissalReason: 'second-yellow',
+      },
+    ])
+  })
+
+  it('does not select a suspended player for the next match', () => {
+    const source = clubs[0] as Club
+    const lineupWithSuspendedPlayer = autoSelectLineup(source)
+    const suspendedPlayerId = Object.values(lineupWithSuspendedPlayer.starters).find(
+      (playerId): playerId is string => typeof playerId === 'string',
+    )!
+    const club: Club = {
+      ...source,
+      squad: source.squad.map((player) =>
+        player.id === suspendedPlayerId
+          ? { ...player, suspensionMatchesRemaining: 1, suspensionReason: 'red-card' }
+          : { ...player },
+      ),
+    }
+    const automaticLineup = autoSelectLineup(club)
+
+    expect(Object.values(automaticLineup.starters)).not.toContain(suspendedPlayerId)
+    expect(validateLineup(club, lineupWithSuspendedPlayer).valid).toBe(false)
+  })
+
+  it('clears a one-match suspension after the club plays its next fixture', () => {
+    const source = clubs[0] as Club
+    const opponent = clubs[1] as Club
+    const playerId = source.squad[0]!.id
+    const suspendedClub: Club = {
+      ...source,
+      squad: source.squad.map((player) =>
+        player.id === playerId
+          ? { ...player, suspensionMatchesRemaining: 1, suspensionReason: 'red-card' }
+          : { ...player },
+      ),
+    }
+    const updated = applySuspensionsAfterMatch(
+      [suspendedClub, opponent],
+      { homeClubId: suspendedClub.id, awayClubId: opponent.id },
+    )
+
+    expect(
+      updated.find((club) => club.id === suspendedClub.id)?.squad.find((player) => player.id === playerId)
+        ?.suspensionMatchesRemaining,
+    ).toBeUndefined()
+  })
+
   it('fills every formation slot with a player of the exact position when available', () => {
     const club = clubs[0] as Club
 

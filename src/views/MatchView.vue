@@ -8,6 +8,7 @@ import {
   getFormationSlots,
   validateLineup,
 } from '@/domain/season/squadSelectionService'
+import { isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type {
@@ -240,10 +241,22 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
     .forEach((card, index) =>
       markers.push({
         key: `${card.card}-${card.minute ?? 0}-${index}`,
-        label: card.card === 'red' ? '🟥' : '🟨',
-        title: t(card.card === 'red' ? 'match.markers.redCard' : 'match.markers.yellowCard', {
-          minute: card.minute ? t('match.markers.minuteSuffix', { minute: card.minute }) : '',
-        }),
+        label:
+          card.dismissalReason === 'second-yellow'
+            ? '🟨🟥'
+            : card.card === 'red'
+              ? '🟥'
+              : '🟨',
+        title: t(
+          card.dismissalReason === 'second-yellow'
+            ? 'match.markers.secondYellow'
+            : card.card === 'red'
+              ? 'match.markers.redCard'
+              : 'match.markers.yellowCard',
+          {
+            minute: card.minute ? t('match.markers.minuteSuffix', { minute: card.minute }) : '',
+          },
+        ),
         className:
           card.card === 'red' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800',
       }),
@@ -286,7 +299,7 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
 
 // ВОЗВРАЩАЕТ ДОСТУПНЫХ ЗАПАСНЫХ, НЕ ВХОДЯЩИХ В СТАРТОВЫЙ СОСТАВ
 const benchPlayers = (club: Club, starters: readonly string[] = []): Player[] =>
-  club.squad.filter((player) => !starters.includes(player.id) && !player.isInjured)
+  club.squad.filter((player) => !starters.includes(player.id) && !isPlayerUnavailable(player))
 
 // ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
@@ -597,6 +610,7 @@ onBeforeUnmount(clearTimer)
           <span>{{ t('match.legend.goal') }}</span>
           <span>{{ t('match.legend.yellowCard') }}</span>
           <span>{{ t('match.legend.redCard') }}</span>
+          <span>{{ t('match.legend.secondYellow') }}</span>
           <span>{{ t('match.legend.injury') }}</span>
           <span
             ><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b>

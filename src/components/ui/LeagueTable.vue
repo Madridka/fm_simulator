@@ -26,19 +26,19 @@ const zoneFor = (position: number): TableZoneType | undefined =>
   getTableZoneType(position, props.rows.length, competition.value.tableZones)
 
 const zoneBorderClasses: Partial<Record<TableZoneType, string>> = {
-  champion: 'border-l-4 border-l-amber-400',
+  champion: 'border-l-4 border-l-yellow-400',
   'direct-promotion': 'border-l-4 border-l-emerald-500',
   'promotion-playoff': 'border-l-4 border-l-sky-500',
-  'relegation-playoff': 'border-l-4 border-l-orange-500',
-  'direct-relegation': 'border-l-4 border-l-rose-500',
+  'relegation-playoff': 'border-l-4 border-l-violet-500',
+  'direct-relegation': 'border-l-4 border-l-red-600',
 }
 
 const zoneMarkerClasses: Partial<Record<TableZoneType, string>> = {
-  champion: 'bg-amber-400',
+  champion: 'bg-yellow-400',
   'direct-promotion': 'bg-emerald-500',
   'promotion-playoff': 'bg-sky-500',
-  'relegation-playoff': 'bg-orange-500',
-  'direct-relegation': 'bg-rose-500',
+  'relegation-playoff': 'bg-violet-500',
+  'direct-relegation': 'bg-red-600',
 }
 
 const zoneClass = (position: number): string => {

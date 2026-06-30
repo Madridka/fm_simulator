@@ -8,6 +8,7 @@ import type {
   PlayerPosition,
   TacticalStyle,
 } from '@/types/football'
+import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 
 export interface LineupValidationResult {
   valid: boolean
@@ -164,6 +165,10 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   const ids = starterIds(lineup)
   const uniqueIds = new Set(ids)
   const players = getPlayersByIds(club, ids)
+  const selectedPlayers = [
+    ...players,
+    ...getPlayersByIds(club, lineup.substitutes),
+  ]
 
   if (ids.length !== 11) {
     errors.push(t('squad.validation.startersCount'))
@@ -192,8 +197,12 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
     errors.push(t('squad.validation.goalkeeperOutfield'))
   }
 
-  if (players.some((player) => player.isInjured)) {
+  if (selectedPlayers.some((player) => player.isInjured)) {
     errors.push(t('squad.validation.injuredStarter'))
+  }
+
+  if (selectedPlayers.some(isPlayerSuspended)) {
+    errors.push(t('squad.validation.suspendedStarter'))
   }
 
   return {
@@ -222,8 +231,9 @@ const pickBestPlayerForSlot = (
   usedPlayerIds: ReadonlySet<string>,
   slotPosition: PlayerPosition,
 ): Player => {
-  const available = squad.filter((player) => !usedPlayerIds.has(player.id) && !player.isInjured)
-  const unused = squad.filter((player) => !usedPlayerIds.has(player.id))
+  const available = squad.filter(
+    (player) => !usedPlayerIds.has(player.id) && !isPlayerUnavailable(player),
+  )
   // ОСТАВЛЯЕТ КАНДИДАТОВ С НАИЛУЧШИМ ДОСТУПНЫМ СООТВЕТСТВИЕМ ПОЗИЦИИ
   const selectBestPositionPool = (players: readonly Player[]): Player[] => {
     const eligible = players.filter(
@@ -236,8 +246,7 @@ const pickBestPlayerForSlot = (
       (player) => getPositionFit(slotPosition, player.position) === bestFit,
     )
   }
-  const healthyCandidates = selectBestPositionPool(available)
-  const candidates = healthyCandidates.length > 0 ? healthyCandidates : selectBestPositionPool(unused)
+  const candidates = selectBestPositionPool(available)
 
   const sorted = [...candidates].sort((left, right) => {
     const leftScore = left.rating + left.form * 0.08 + left.fitness * 0.05
@@ -268,7 +277,7 @@ export const autoSelectLineup = (
   }
 
   lineup.substitutes = [...club.squad]
-    .filter((player) => !usedPlayerIds.has(player.id) && !player.isInjured)
+    .filter((player) => !usedPlayerIds.has(player.id) && !isPlayerUnavailable(player))
     .sort((left, right) => right.rating - left.rating)
     .slice(0, 7)
     .map((player) => player.id)

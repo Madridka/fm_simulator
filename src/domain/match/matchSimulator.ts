@@ -19,6 +19,8 @@ import type {
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
 import { formatPlayerName } from '@/utils/format'
 import { getPositionFit } from '@/domain/season/squadSelectionService'
+import { isPlayerUnavailable } from '@/domain/season/playerAvailability'
+import { normalizeCardEvents } from '@/domain/match/disciplineService'
 
 export interface MatchSimulationInput {
   matchId: string
@@ -435,15 +437,16 @@ const createCardEvents = (
         clubId,
         playerId: random.pick(team.players).id,
         card: 'red',
+        dismissalReason: 'direct-red',
       })
     }
     return cards
   }
 
-  return [
+  return normalizeCardEvents([
     ...createForTeam(home, homeClubId, homeYellowCards),
     ...createForTeam(away, awayClubId, awayYellowCards),
-  ]
+  ])
 }
 
 // ГЕНЕРИРУЕТ ТРАВМЫ И СРОКИ ВОССТАНОВЛЕНИЯ ДЛЯ ОБЕИХ КОМАНД
@@ -484,7 +487,7 @@ const createSubstitutions = (
 ): SubstitutionEvent[] => {
   const config = matchSimulationConfig.substitutions
   const substitutes = club.squad.filter(
-    (player) => !lineup.starters.includes(player.id) && !player.isInjured,
+    (player) => !lineup.starters.includes(player.id) && !isPlayerUnavailable(player),
   )
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
   const starters = lineup.starters.filter(
@@ -607,9 +610,14 @@ const createCommentary = (
       minute: card.minute ?? 0,
       text:
         card.card === 'red'
-          ? t('match.commentary.redCard', {
-              player: getPlayerName(card.clubId, card.playerId),
-            })
+          ? t(
+              card.dismissalReason === 'second-yellow'
+                ? 'match.commentary.secondYellow'
+                : 'match.commentary.redCard',
+              {
+                player: getPlayerName(card.clubId, card.playerId),
+              },
+            )
           : t('match.commentary.yellowCard', {
               player: getPlayerName(card.clubId, card.playerId),
             }),
@@ -899,7 +907,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
 
   if (random.chance(matchSimulationConfig.injury.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
-    const availablePlayers = club.squad.filter((player) => !player.isInjured)
+    const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
     if (availablePlayers.length) {
       injuries.push({
         clubId: club.id,
@@ -913,8 +921,18 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   }
   if (random.chance(matchSimulationConfig.redCard.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
-    cards.push({ clubId: club.id, playerId: random.pick(club.squad).id, card: 'red' })
+    const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
+    if (availablePlayers.length) {
+      cards.push({
+        clubId: club.id,
+        playerId: random.pick(availablePlayers).id,
+        card: 'red',
+        dismissalReason: 'direct-red',
+      })
+    }
   }
+
+  const normalizedCards = normalizeCardEvents(cards)
 
   return {
     detail: 'fast',
@@ -928,11 +946,27 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
           : undefined,
     goals: [],
     stats: {
-      home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
-      away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+      home: {
+        possession: 50,
+        shots: 0,
+        shotsOnTarget: 0,
+        yellowCards: 0,
+        redCards: normalizedCards.filter(
+          (card) => card.clubId === input.homeClub.id && card.card === 'red',
+        ).length,
+      },
+      away: {
+        possession: 50,
+        shots: 0,
+        shotsOnTarget: 0,
+        yellowCards: 0,
+        redCards: normalizedCards.filter(
+          (card) => card.clubId === input.awayClub.id && card.card === 'red',
+        ).length,
+      },
     },
     bestPlayerId: '',
-    cards: cards.length ? cards : undefined,
+    cards: normalizedCards.length ? normalizedCards : undefined,
     injuries: injuries.length ? injuries : undefined,
   }
 }

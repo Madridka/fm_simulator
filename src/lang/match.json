@@ -39,12 +39,14 @@
     "goal": "⚽ Гол",
     "yellowCard": "🟨 ЖК",
     "redCard": "🟥 КК",
+    "secondYellow": "🟨🟥 Вторая жёлтая",
     "injury": "✚ Травма",
     "substitution": "Замена"
   },
   "markers": {
     "goal": "Гол, {minute}'",
     "redCard": "Красная карточка{minute}",
+    "secondYellow": "Вторая жёлтая карточка и удаление{minute}",
     "yellowCard": "Жёлтая карточка{minute}",
     "injury": "Травма{minute}",
     "substituted": "Заменён, {minute}'",
@@ -63,6 +65,7 @@
     "finished": "Матч завершен.",
     "goal": "Гол! {player}.",
     "redCard": "Красная карточка! {player} удален с поля.",
+    "secondYellow": "Вторая жёлтая карточка! {player} удален с поля.",
     "yellowCard": "Желтая карточка: {player}.",
     "injury": "{player} получил травму и пропустит {matches}.",
     "substitution": "Замена {club}: {playerOut} ↕ {playerIn}",

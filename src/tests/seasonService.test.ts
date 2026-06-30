@@ -128,6 +128,47 @@ describe('seasonService', () => {
     expect(starterFitness).toBeLessThanOrEqual(44)
   })
 
+  it('suspends a player for the next match after a second yellow card', () => {
+    const initial = createInitialGameState('russia', 'zenit')
+    const match = getNextUserMatch(initial)!
+    const prepared = prepareUserMatchDay(initial, match.id)
+    const playerId = getUserStarterIds(prepared)[0]!
+    const userIsHome = match.homeClubId === prepared.selectedClubId
+    const result: MatchResult = {
+      detail: 'full',
+      homeGoals: 0,
+      awayGoals: 0,
+      goals: [],
+      stats: {
+        home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: userIsHome ? 2 : 0 },
+        away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: userIsHome ? 0 : 2 },
+      },
+      bestPlayerId: playerId,
+      cards: [
+        { minute: 20, clubId: prepared.selectedClubId, playerId, card: 'yellow' },
+        { minute: 72, clubId: prepared.selectedClubId, playerId, card: 'yellow' },
+      ],
+    }
+
+    const completed = completePreparedUserMatchDay(prepared, match.id, result)
+    const player = completed.clubs
+      .find((club) => club.id === completed.selectedClubId)
+      ?.squad.find((candidate) => candidate.id === playerId)
+    const storedCards = completed.matches.find((candidate) => candidate.id === match.id)?.result?.cards
+
+    expect(storedCards?.map((card) => card.card)).toEqual(['yellow', 'red'])
+    expect(storedCards?.[1]?.dismissalReason).toBe('second-yellow')
+    expect(
+      userIsHome
+        ? completed.matches.find((candidate) => candidate.id === match.id)?.result?.stats.home
+            .redCards
+        : completed.matches.find((candidate) => candidate.id === match.id)?.result?.stats.away
+            .redCards,
+    ).toBe(1)
+    expect(player?.suspensionMatchesRemaining).toBe(1)
+    expect(player?.suspensionReason).toBe('second-yellow')
+  })
+
   it('does not create a season beyond the configured career limit', () => {
     const state = createInitialGameState('russia', 'zenit')
     const finalSeasonState = {

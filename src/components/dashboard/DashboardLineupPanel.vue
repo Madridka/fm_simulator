@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSquadStore } from '@/stores/squad/squadStore'
+import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import type { Player } from '@/types/football'
 
 interface StarterView {
@@ -95,6 +96,25 @@ const ratingClass = (rating?: number): string => {
   }
   return 'bg-orange-700'
 }
+
+const availabilityLabel = (player?: Player): string => {
+  if (!player) {
+    return ''
+  }
+
+  const labels: string[] = []
+  if (player.isInjured) {
+    labels.push(t('squad.injury'))
+  }
+  if (isPlayerSuspended(player)) {
+    labels.push(
+      player.suspensionReason === 'second-yellow'
+        ? t('squad.secondYellowSuspension')
+        : t('squad.suspension'),
+    )
+  }
+  return labels.join(' · ')
+}
 </script>
 
 <template>
@@ -134,12 +154,27 @@ const ratingClass = (rating?: number): string => {
         v-for="starter in starters"
         :key="starter.key"
         class="absolute left-[var(--mobile-x)] top-[var(--mobile-y)] grid -translate-x-1/2 -translate-y-1/2 justify-items-center gap-0.5 rounded-md border border-white/15 bg-slate-950/80 px-1 py-1.5 text-center text-white shadow-[0_10px_22px_rgba(2,6,23,0.24)] sm:gap-1 sm:rounded-lg sm:px-2 sm:py-1.5"
-        :class="mobileCardClass(starter.mobileLineSize)"
+        :class="[
+          mobileCardClass(starter.mobileLineSize),
+          {
+            'border-rose-400 ring-2 ring-rose-500/60':
+              starter.player && isPlayerUnavailable(starter.player),
+          },
+        ]"
         :style="{
           '--mobile-x': `${starter.mobileX}%`,
           '--mobile-y': `${starter.mobileY}%`,
         }"
       >
+        <span
+          v-if="starter.player && isPlayerUnavailable(starter.player)"
+          class="absolute -right-1.5 -top-2 flex items-center gap-0.5 rounded bg-slate-950/95 px-1 py-0.5 text-[10px] leading-none shadow"
+          :title="availabilityLabel(starter.player)"
+          :aria-label="availabilityLabel(starter.player)"
+        >
+          <span v-if="starter.player.isInjured" aria-hidden="true">✚</span>
+          <span v-if="isPlayerSuspended(starter.player)" aria-hidden="true">🟥</span>
+        </span>
         <span
           class="grid h-6 min-w-6 place-items-center rounded-full border border-white/75 text-[9px] font-black sm:h-7 sm:min-w-7 sm:border-2 sm:text-[0.68rem]"
           :class="ratingClass(starter.player?.rating)"

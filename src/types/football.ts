@@ -18,6 +18,8 @@ export interface Player {
   salary: number
   isInjured: boolean
   injuryUntilOrder?: number
+  suspensionMatchesRemaining?: number
+  suspensionReason?: 'red-card' | 'second-yellow'
 }
 
 export interface Club {
@@ -90,6 +92,7 @@ export interface CardEvent {
   clubId: string
   playerId: string
   card: 'yellow' | 'red'
+  dismissalReason?: 'direct-red' | 'second-yellow'
 }
 
 export interface InjuryEvent {

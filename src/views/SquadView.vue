@@ -6,6 +6,10 @@ import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type { Formation, Player, PlayerPosition, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
+import {
+  isPlayerSuspended,
+  isPlayerUnavailable,
+} from '@/domain/season/playerAvailability'
 
 type DragSource = 'starter' | 'substitute' | 'reserve'
 
@@ -144,6 +148,18 @@ const injuryLabel = (player: Player | undefined): string => {
   return player.injuryUntilOrder
     ? t('squad.injuryReturn', { round: player.injuryUntilOrder })
     : t('squad.injury')
+}
+
+const suspensionLabel = (player: Player | undefined): string => {
+  if (!player || !isPlayerSuspended(player)) return ''
+  return player.suspensionReason === 'second-yellow'
+    ? t('squad.secondYellowSuspension')
+    : t('squad.suspension')
+}
+
+const availabilityLabel = (player: Player | undefined): string => {
+  if (!player) return ''
+  return [injuryLabel(player), suspensionLabel(player)].filter(Boolean).join(' · ')
 }
 
 // ФОРМИРУЕТ ПОДПИСЬ ТЕКУЩЕЙ ФОРМЫ И ГОТОВНОСТИ ИГРОКА
@@ -566,6 +582,8 @@ onBeforeRouteLeave(() => {
               'ring-2 ring-cyan-300':
                 Boolean(slotPlayer(slot.id)) && isTouchSelected(slotPlayer(slot.id)!.id),
               'opacity-45': slotPlayer(slot.id)?.id === draggingPlayerId,
+              'border-rose-400 ring-2 ring-rose-500/50':
+                Boolean(slotPlayer(slot.id)) && isPlayerUnavailable(slotPlayer(slot.id)!),
             }"
             :style="{ left: `${slot.x}%`, top: `${slot.y}%` }"
             :draggable="Boolean(slotPlayer(slot.id))"
@@ -588,6 +606,23 @@ onBeforeRouteLeave(() => {
             @drop.prevent="dropOnSlot($event, slot.id)"
           >
             <template v-if="slotPlayer(slot.id)">
+              <span
+                v-if="isPlayerUnavailable(slotPlayer(slot.id)!)"
+                class="absolute -right-2 -top-2 z-10 flex items-center gap-0.5"
+              >
+                <span
+                  v-if="slotPlayer(slot.id)?.isInjured"
+                  :title="injuryLabel(slotPlayer(slot.id))"
+                  :aria-label="injuryLabel(slotPlayer(slot.id))"
+                  class="inline-grid h-6 w-6 place-items-center rounded-full border-2 border-white bg-orange-500 text-xs font-black text-white shadow-lg"
+                >✚</span>
+                <span
+                  v-if="isPlayerSuspended(slotPlayer(slot.id)!)"
+                  :title="suspensionLabel(slotPlayer(slot.id))"
+                  :aria-label="suspensionLabel(slotPlayer(slot.id))"
+                  class="inline-grid h-6 w-6 place-items-center rounded-full border-2 border-white bg-rose-600 text-[11px] shadow-lg"
+                >🟥</span>
+              </span>
               <span class="flex items-center gap-1.5">
                 <span
                   class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.52rem] font-black leading-none text-white sm:h-[26px] sm:min-w-[26px] sm:text-xs xl:h-[30px] xl:min-w-[30px] xl:text-[0.7rem]"
@@ -609,8 +644,8 @@ onBeforeRouteLeave(() => {
               <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
               >
-                <template v-if="slotPlayer(slot.id)?.isInjured">
-                  {{ injuryLabel(slotPlayer(slot.id)) }}
+                <template v-if="isPlayerUnavailable(slotPlayer(slot.id)!)">
+                  {{ availabilityLabel(slotPlayer(slot.id)) }}
                 </template>
                 <template v-else>
                   {{ conditionLabel(slotPlayer(slot.id)!) }}
@@ -667,9 +702,9 @@ onBeforeRouteLeave(() => {
             type="button"
             data-touch-drop
             :data-substitute-player-id="player.id"
-            class="grid min-w-[92px] grid-rows-[auto_auto_auto_auto] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/80 p-1.5 text-left text-slate-50 hover:border-lime-200"
+            class="relative grid min-w-[92px] grid-rows-[auto_auto_auto_auto] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/80 p-1.5 text-left text-slate-50 hover:border-lime-200"
             :class="{
-              'opacity-50': player.isInjured,
+              'border-rose-400/80 ring-1 ring-rose-500/40': isPlayerUnavailable(player),
               'opacity-45': player.id === draggingPlayerId,
               'ring-2 ring-cyan-300': isTouchSelected(player.id),
             }"
@@ -684,6 +719,21 @@ onBeforeRouteLeave(() => {
             @dragover.stop.prevent
             @drop.stop.prevent="dropOnSubstitutePlayer($event, player)"
           >
+            <span
+              v-if="isPlayerUnavailable(player)"
+              class="absolute -right-1.5 -top-1.5 z-10 flex items-center gap-0.5"
+            >
+              <span
+                v-if="player.isInjured"
+                :title="injuryLabel(player)"
+                class="inline-grid h-5 w-5 place-items-center rounded-full border border-white bg-orange-500 text-[10px] font-black text-white"
+              >✚</span>
+              <span
+                v-if="isPlayerSuspended(player)"
+                :title="suspensionLabel(player)"
+                class="inline-grid h-5 w-5 place-items-center rounded-full border border-white bg-rose-600 text-[9px]"
+              >🟥</span>
+            </span>
             <span class="flex items-center gap-1.5">
               <span
                 class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.62rem] font-black leading-none text-white"
@@ -702,8 +752,8 @@ onBeforeRouteLeave(() => {
             <span
               class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.58rem] font-bold text-slate-200/75"
               >{{
-                player.isInjured
-                  ? injuryLabel(player)
+                isPlayerUnavailable(player)
+                  ? availabilityLabel(player)
                   : conditionLabel(player)
               }}</span
             >
@@ -751,9 +801,9 @@ onBeforeRouteLeave(() => {
               type="button"
               data-touch-drop
               :data-reserve-player-id="player.id"
-              class="grid grid-cols-[26px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[#dbe7de] bg-white px-2 py-1.5 text-left transition hover:-translate-y-px hover:border-emerald-300 hover:bg-[#f7fdf8]"
+              class="relative grid grid-cols-[26px_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[#dbe7de] bg-white px-2 py-1.5 text-left transition hover:-translate-y-px hover:border-emerald-300 hover:bg-[#f7fdf8]"
               :class="{
-                'opacity-50': player.isInjured,
+                'border-rose-300 bg-rose-50': isPlayerUnavailable(player),
                 'opacity-45': player.id === draggingPlayerId,
                 'ring-2 ring-cyan-400': isTouchSelected(player.id),
               }"
@@ -769,6 +819,21 @@ onBeforeRouteLeave(() => {
               @drop.stop.prevent="dropOnReservePlayer($event, player)"
             >
               <span
+                v-if="isPlayerUnavailable(player)"
+                class="absolute right-1 top-1 flex items-center gap-0.5"
+              >
+                <span
+                  v-if="player.isInjured"
+                  :title="injuryLabel(player)"
+                  class="text-sm leading-none text-orange-600"
+                >✚</span>
+                <span
+                  v-if="isPlayerSuspended(player)"
+                  :title="suspensionLabel(player)"
+                  class="text-[10px] leading-none"
+                >🟥</span>
+              </span>
+              <span
                 class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.62rem] font-black leading-none text-white"
                 >{{ positionLabels[player.position] }}</span
               >
@@ -780,8 +845,8 @@ onBeforeRouteLeave(() => {
                 <span
                   class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] text-slate-500"
                   >{{
-                    player.isInjured
-                      ? injuryLabel(player)
+                    isPlayerUnavailable(player)
+                      ? availabilityLabel(player)
                       : conditionWithAgeLabel(player)
                   }}</span
                 >
