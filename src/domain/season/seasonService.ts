@@ -442,7 +442,19 @@ const applyMatchEffects = (
   const clubs = state.clubs.map(cloneClub)
   const playerStats = { ...state.playerStats }
   const random = createSeededRandom(hashString(match.id) + state.season * 1_000)
-  const allStarterIds = [...lineups.home.starters, ...lineups.away.starters]
+  const homePlayedIds = [
+    ...lineups.home.starters,
+    ...(result.substitutions
+      ?.filter((substitution) => substitution.clubId === match.homeClubId)
+      .map((substitution) => substitution.playerInId) ?? []),
+  ]
+  const awayPlayedIds = [
+    ...lineups.away.starters,
+    ...(result.substitutions
+      ?.filter((substitution) => substitution.clubId === match.awayClubId)
+      .map((substitution) => substitution.playerInId) ?? []),
+  ]
+  const allPlayedIds = [...new Set([...homePlayedIds, ...awayPlayedIds])]
   const goalCounts = result.goals.reduce<Record<string, number>>((counts, goal) => {
     counts[goal.playerId] = (counts[goal.playerId] ?? 0) + 1
     return counts
@@ -477,8 +489,8 @@ const applyMatchEffects = (
   const homeWon = result.homeGoals > result.awayGoals || result.winnerClubId === match.homeClubId
   const awayWon = result.awayGoals > result.homeGoals || result.winnerClubId === match.awayClubId
 
-  for (const playerId of allStarterIds) {
-    const isHomePlayer = lineups.home.starters.includes(playerId)
+  for (const playerId of allPlayedIds) {
+    const isHomePlayer = homePlayedIds.includes(playerId)
     const teamWon = isHomePlayer ? homeWon : awayWon
     const teamLost = isHomePlayer
       ? awayWon && result.homeGoals !== result.awayGoals
@@ -522,6 +534,24 @@ const applyMatchEffects = (
     })
 
     updatePlayerStats(playerStats, playerId, goals, yellowCards, matchRating)
+  }
+
+  const playedPlayerIds = new Set(allPlayedIds)
+  const matchClubIds = new Set([match.homeClubId, match.awayClubId])
+
+  for (const club of clubs) {
+    if (!matchClubIds.has(club.id)) {
+      continue
+    }
+
+    club.squad = club.squad.map((player) =>
+      playedPlayerIds.has(player.id)
+        ? player
+        : {
+            ...player,
+            fitness: clamp(player.fitness + random.int(10, 25), 1, 100),
+          },
+    )
   }
 
   return {

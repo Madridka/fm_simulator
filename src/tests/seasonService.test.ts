@@ -95,6 +95,55 @@ describe('seasonService', () => {
     expect(recovered?.injuryUntilOrder).toBeUndefined()
   })
 
+  it('recovers fitness for players who did not play the match', () => {
+    const initial = createInitialGameState('russia', 'zenit')
+    const match = getNextUserMatch(initial)
+    expect(match).toBeDefined()
+
+    const prepared = prepareUserMatchDay(initial, match!.id)
+    const starterIds = new Set(getUserStarterIds(prepared))
+    const userClub = prepared.clubs.find((club) => club.id === prepared.selectedClubId)
+    const reserve = userClub?.squad.find((player) => !starterIds.has(player.id))
+    const starter = userClub?.squad.find((player) => starterIds.has(player.id))
+    expect(reserve).toBeDefined()
+    expect(starter).toBeDefined()
+
+    const stateWithKnownFitness = {
+      ...prepared,
+      clubs: prepared.clubs.map((club) => ({
+        ...club,
+        squad: club.squad.map((player) =>
+          player.id === reserve!.id || player.id === starter!.id
+            ? { ...player, fitness: 50 }
+            : player,
+        ),
+      })),
+    }
+    const result: MatchResult = {
+      detail: 'full',
+      homeGoals: 0,
+      awayGoals: 0,
+      goals: [],
+      stats: {
+        home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+        away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+      },
+      bestPlayerId: starter!.id,
+    }
+
+    const completed = completePreparedUserMatchDay(stateWithKnownFitness, match!.id, result)
+    const completedPlayers = completed.clubs
+      .find((club) => club.id === completed.selectedClubId)!
+      .squad
+    const reserveFitness = completedPlayers.find((player) => player.id === reserve!.id)!.fitness
+    const starterFitness = completedPlayers.find((player) => player.id === starter!.id)!.fitness
+
+    expect(reserveFitness).toBeGreaterThanOrEqual(60)
+    expect(reserveFitness).toBeLessThanOrEqual(75)
+    expect(starterFitness).toBeGreaterThanOrEqual(36)
+    expect(starterFitness).toBeLessThanOrEqual(44)
+  })
+
   it('does not create a season beyond the configured career limit', () => {
     const state = createInitialGameState('russia', 'zenit')
     const finalSeasonState = {

@@ -582,7 +582,7 @@ onBeforeUnmount(clearTimer)
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.lineups') }}
         </h2>
         <!-- ЛЕГЕНДА СОБЫТИЙ, КОТОРЫЕ ПОЯВЛЯЮТСЯ У ИГРОКОВ ПО ХОДУ МАТЧА -->
@@ -721,7 +721,7 @@ onBeforeUnmount(clearTimer)
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.statistics') }}
         </h2>
         <!-- СРАВНЕНИЕ КЛЮЧЕВЫХ МАТЧЕВЫХ ПОКАЗАТЕЛЕЙ ОБЕИХ КОМАНД -->
@@ -798,7 +798,7 @@ onBeforeUnmount(clearTimer)
 
         <!-- ХРОНОЛОГИЯ ГОЛОВ С РАЗДЕЛЕНИЕМ ХОЗЯЕВ И ГОСТЕЙ ПО СТОРОНАМ -->
         <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
-          <h3 class="text-sm font-black uppercase tracking-wide text-slate-700">
+          <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
             {{ t('match.goals') }}
           </h3>
           <div v-if="visibleGoals.length" class="mt-3 xl:mt-2">
@@ -842,7 +842,7 @@ onBeforeUnmount(clearTimer)
       <div
         class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
       >
-        <h2 class="text-lg font-semibold text-slate-950 xl:text-base">
+        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.commentaryTitle') }}
         </h2>
         <!-- ПОМИНУТНЫЙ ПОТОК УЖЕ НАСТУПИВШИХ СОБЫТИЙ МАТЧА -->
