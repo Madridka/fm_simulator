@@ -170,7 +170,7 @@ export const rotherhamProfile: ClubProfile = {
     },
     {
       id: 'ar-jany-martha',
-      firstName: 'Ar'Jany',
+      firstName: "Ar'Jany",
       lastName: 'Martha',
       age: 29,
       position: 'CDM',

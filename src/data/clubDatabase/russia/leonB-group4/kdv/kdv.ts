@@ -20,6 +20,7 @@ export const kdvProfile: ClubProfile = {
     budget: 6_000_000,
     primaryColor: '#c8102e',
     secondaryColor: '#ffffff',
+    logoUrl: 'https://upload.wikimedia.org/wikipedia/ru/f/fb/FC_KDV_Tomsk.png',
   },
   stadium: {
     name: 'Темп',

@@ -185,7 +185,7 @@ export const readingProfile: ClubProfile = {
     {
       id: 'padhraic-o-connor',
       firstName: 'Padhraic',
-      lastName: 'O'Connor',
+      lastName: "O'Connor",
       age: 32,
       position: 'CDM',
       rating: 66,

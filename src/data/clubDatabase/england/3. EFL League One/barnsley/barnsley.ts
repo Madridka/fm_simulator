@@ -199,7 +199,7 @@ export const barnsleyProfile: ClubProfile = {
     {
       id: 'eoghan-o-connell',
       firstName: 'Eoghan',
-      lastName: 'O'Connell',
+      lastName: "O'Connell",
       age: 23,
       position: 'CM',
       rating: 68,
@@ -213,7 +213,7 @@ export const barnsleyProfile: ClubProfile = {
     {
       id: 'corey-o-keeffe',
       firstName: 'Corey',
-      lastName: 'O'Keeffe',
+      lastName: "O'Keeffe",
       age: 26,
       position: 'CM',
       rating: 68,

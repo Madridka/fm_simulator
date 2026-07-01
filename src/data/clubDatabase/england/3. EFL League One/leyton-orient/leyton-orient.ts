@@ -255,7 +255,7 @@ export const leytonOrientProfile: ClubProfile = {
     {
       id: 'oliver-o-neill',
       firstName: 'Oliver',
-      lastName: 'O'Neill',
+      lastName: "O'Neill",
       age: 23,
       position: 'CAM',
       rating: 69,
