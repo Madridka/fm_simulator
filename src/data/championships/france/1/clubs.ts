@@ -1,3 +1,5 @@
+import type { ClubProfile } from '@/data/clubs/types'
+
 import { angersProfile } from '@/data/clubDatabase/france/1. Ligue 1/angers/angers'
 import { auxerreProfile } from '@/data/clubDatabase/france/1. Ligue 1/auxerre/auxerre'
 import { brestProfile } from '@/data/clubDatabase/france/1. Ligue 1/brest/brest'
@@ -16,7 +18,6 @@ import { psgProfile } from '@/data/clubDatabase/france/1. Ligue 1/psg/psg'
 import { rennesProfile } from '@/data/clubDatabase/france/1. Ligue 1/rennes/rennes'
 import { strasbourgProfile } from '@/data/clubDatabase/france/1. Ligue 1/strasbourg/strasbourg'
 import { toulouseProfile } from '@/data/clubDatabase/france/1. Ligue 1/toulouse/toulouse'
-import type { ClubProfile } from '@/data/clubs/types'
 
 export const franceLigue1ClubProfiles: ClubProfile[] = [
   angersProfile,
