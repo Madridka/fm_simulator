@@ -1,6 +1,6 @@
+import { kdvProfile } from '@/data/clubDatabase/russia/leonB-group4/kdv/kdv'
 import { RussianLeagueGroupId, RussianLeagueId } from '@/data/clubs/enums'
 import type { ClubProfile } from '@/data/clubs/types'
-import { kdvProfile } from '@/data/clubDatabase/russia/leonB-group4/kdv'
 
 const leagueId = String(RussianLeagueId['second-league-b'])
 const groupId = String(RussianLeagueGroupId['group-4'])

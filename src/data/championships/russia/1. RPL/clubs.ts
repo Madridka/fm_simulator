@@ -1,6 +1,6 @@
 import type { ClubProfile } from '@/data/clubs/types'
-import { zenitProfile } from '@/data/clubDatabase/russia/rpl/zenit'
 import { RussianLeagueId } from '@/data/clubs/enums'
+import { zenitProfile } from '@/data/clubDatabase/russia/rpl/zenit/zenit'
 
 const leagueId = String(RussianLeagueId.rpl)
 
