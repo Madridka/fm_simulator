@@ -10,7 +10,7 @@ export const formatMoney = (value: number): string => {
 
 // ОБЪЕДИНЯЕТ ИМЯ И ФАМИЛИЮ ИГРОКА ДЛЯ ОТОБРАЖЕНИЯ
 export const formatPlayerName = (firstName: string, lastName: string): string =>
-  `${firstName} ${lastName}`
+  `${firstName} ${lastName}`.trim()
 
 // ПРЕОБРАЗУЕТ ISO-ДАТУ В ПРИВЫЧНЫЙ ФОРМАТ ДД.ММ.ГГГГ
 export const formatDate = (isoDate: string): string => {

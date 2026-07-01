@@ -13,7 +13,7 @@ const isClubProfile = (value: unknown): value is ClubProfile => {
 }
 
 // ЗАГРУЖАЕТ ВСЕ ПРОФИЛИ КЛУБОВ ИЗ ИЕРАРХИИ БАЗЫ ДАННЫХ
-const profileModules = import.meta.glob<ClubProfileModule>(['./**/index.ts', '!./index.ts'], {
+const profileModules = import.meta.glob<ClubProfileModule>(['./**/*.ts', '!./index.ts'], {
   eager: true,
 })
 
