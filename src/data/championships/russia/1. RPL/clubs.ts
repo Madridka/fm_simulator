@@ -1,12 +1,27 @@
 import type { ClubProfile } from '@/data/clubs/types'
 import { RussianLeagueId } from '@/data/clubs/enums'
-import { zenitProfile } from '@/data/clubDatabase/russia/rpl/zenit/zenit'
 
 const leagueId = String(RussianLeagueId.rpl)
 
 // МИР РПЛ
 export const russiaPremierLeagueClubProfiles: ClubProfile[] = [
-  zenitProfile,
+  {
+    config: {
+      id: 'zenit',
+      name: 'Зенит',
+      shortName: 'ЗЕН',
+      city: 'Санкт-Петербург',
+      divisionId: 1,
+      leagueId,
+      rating: 84,
+      attackRating: 86,
+      midfieldRating: 84,
+      defenseRating: 82,
+      budget: 100_000_000,
+      primaryColor: '#00aeef',
+      secondaryColor: '#004c97',
+    },
+  },
   {
     config: {
       id: 'krasnodar',
