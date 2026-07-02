@@ -6,6 +6,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type { CupRound, CupTie, Match } from '@/types/football'
 import { useI18n } from 'vue-i18n'
 import { formatDate } from '@/utils/format'
+import SectionHero from '@/components/ui/SectionHero.vue'
 
 // ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ, КЛУБОВ И КУБКОВОЙ СЕТКИ
 const gameStore = useGameStore()
@@ -197,25 +198,20 @@ const tieStatusLabel = (tie: CupTie): string => {
     class="mx-auto flex h-full max-w-7xl flex-col gap-4 overflow-hidden"
   >
     <!-- ЗАГОЛОВОК И ИНФОРМАЦИЯ О ЧЕМПИОНЕ -->
-    <header class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
-      <div>
-        <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-          {{ t('cup.heading', { name: gameStore.championship?.name ?? '' }) }}
-        </div>
-        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">{{ t('cup.title') }}</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          {{ t('cup.description') }}
-        </p>
-      </div>
-
-      <!-- ЗАГОЛОВОК И НАВИГАЦИЯ ПО РАУНДАМ -->
+    <SectionHero
+      :eyebrow="t('cup.heading', { name: gameStore.championship?.name ?? '' })"
+      :title="t('cup.title')"
+      :subtitle="t('cup.description')"
+    >
+      <template #actions>
       <div
         v-if="championClub"
-        class="rounded-lg bg-emerald-950 px-3 py-2 text-xs font-black text-emerald-50"
+        class="rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-xs font-black text-emerald-50"
       >
         {{ t('cup.champion', { club: championClub.name }) }}
       </div>
-    </header>
+      </template>
+    </SectionHero>
 
     <!-- СЕТКА АКТИВНОГО РАУНДА -->
     <article

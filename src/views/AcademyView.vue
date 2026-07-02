@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAcademyStore } from '@/stores/academy/academyStore'
 import { formatMoney } from '@/utils/format'
-import type { AcademyEvent, PlayerPosition } from '@/types/football'
+import type { PlayerPosition } from '@/types/football'
 
 const academyStore = useAcademyStore()
 const { t } = useI18n()
@@ -15,7 +15,6 @@ const averagePotential = computed(() => {
 })
 
 const positionLabel = (position: PlayerPosition): string => t(`common.positionShort.${position}`)
-const eventLabel = (event: AcademyEvent): string => t(`academy.event.${event.type}`)
 const nationalityLabel = (nationality?: string): string =>
   nationality ? t(`common.nationalities.${nationality}`) : t('common.dash')
 </script>
@@ -76,8 +75,8 @@ const nationalityLabel = (nationality?: string): string =>
         </div>
       </article>
 
-      <div class="grid min-h-0 grid-rows-[minmax(0,1fr)_minmax(0,0.72fr)] gap-5 overflow-hidden">
-        <article class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-white/70 bg-white/90 p-5 shadow-sm">
+      <div class="min-h-0 overflow-hidden">
+        <article class="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-white/70 bg-white/90 p-5 shadow-sm">
           <h2 class="text-lg font-bold text-slate-950">{{ t('academy.firstTeamYouth') }}</h2>
           <div class="mt-3 grid min-h-0 flex-1 content-start gap-2 overflow-auto pr-1">
             <div v-for="player in academyStore.firstTeamPlayers" :key="player.id" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3">
@@ -89,12 +88,6 @@ const nationalityLabel = (nationality?: string): string =>
           </div>
         </article>
 
-        <article class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-white/70 bg-white/90 p-5 shadow-sm">
-          <h2 class="text-lg font-bold text-slate-950">{{ t('academy.history') }}</h2>
-          <div class="mt-3 min-h-0 flex-1 space-y-2 overflow-auto pr-1">
-            <div v-for="event in academyStore.academy.history" :key="event.id" class="border-l-2 border-emerald-400 pl-3 text-sm"><div class="font-bold">{{ event.playerName }}</div><div class="text-xs text-slate-500">{{ eventLabel(event) }} · {{ t('academy.season', { season: event.season }) }}</div></div>
-          </div>
-        </article>
       </div>
     </div>
   </section>

@@ -23,4 +23,5 @@ export const generateLeagueSchedule = (
   clubs: readonly Club[],
   season: number,
   countryId: CountryId = 'russia',
-): Match[] => generateConfiguredLeagueSchedule(clubs, season, countryId)
+  scheduleSeed = 0,
+): Match[] => generateConfiguredLeagueSchedule(clubs, season, countryId, scheduleSeed)

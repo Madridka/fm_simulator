@@ -133,6 +133,15 @@ const recoverStateAfterCompletedOrder = (state: GameState, order: number): GameS
 }
 
 const championshipIds = Object.keys(championships) as ChampionshipId[]
+let careerSeedCounter = 0
+
+// СОЗДАЁТ УНИКАЛЬНЫЙ SEED ДЛЯ КАЖДОЙ НОВОЙ КАРЬЕРЫ, ВКЛЮЧАЯ БЫСТРЫЕ ПЕРЕЗАПУСКИ
+export const createCareerSeed = (): number => {
+  careerSeedCounter = (careerSeedCounter + 1) % 10_000
+  const timePart = Date.now() % 2_147_000_000
+  const randomPart = Math.floor(Math.random() * 1_000_000)
+  return ((timePart + randomPart + careerSeedCounter * 104_729) % 2_147_483_646) + 1
+}
 
 // ГЛУБОКО КЛОНИРУЕТ МАТЧ, РЕЗУЛЬТАТ, СОБЫТИЯ И СОСТАВЫ
 const cloneMatch = (match: Match): Match => ({
@@ -179,8 +188,9 @@ const createLeagueMatches = (
   clubs: readonly Club[],
   season: number,
   championshipId: ChampionshipId,
+  careerSeed: number,
 ): Match[] =>
-  generateLeagueSchedule(clubs, season, championshipId).map((match) =>
+  generateLeagueSchedule(clubs, season, championshipId, careerSeed).map((match) =>
     prefixLeagueMatch(championshipId, match),
   )
 
@@ -199,6 +209,7 @@ const createWorldClubs = (): Record<ChampionshipId, Club[]> => {
 const createWorldMatches = (
   worldClubs: Record<ChampionshipId, Club[]>,
   season: number,
+  careerSeed: number,
 ): Record<ChampionshipId, Match[]> => {
   return championshipIds.reduce<Record<ChampionshipId, Match[]>>(
     (result, championshipId) => {
@@ -206,6 +217,7 @@ const createWorldMatches = (
         worldClubs[championshipId],
         season,
         championshipId,
+        careerSeed,
       )
       return result
     },
@@ -278,15 +290,16 @@ export const createDefaultLineups = (
 export const createInitialGameState = (
   championshipId: ChampionshipId,
   selectedClubId: string,
+  careerSeed: number = createCareerSeed(),
 ): GameState => {
   const worldClubs = createWorldClubs()
   const clubs = worldClubs[championshipId].map(cloneClub)
   if (!clubs.some((club) => club.id === selectedClubId)) {
     throw new Error(`Club ${selectedClubId} does not belong to ${championshipId}`)
   }
-  const worldMatches = createWorldMatches(worldClubs, 1)
+  const worldMatches = createWorldMatches(worldClubs, 1, careerSeed)
   const leagueMatches = worldMatches[championshipId].map(cloneMatch)
-  const cup = initializeCup(clubs, 1, championshipId)
+  const cup = initializeCup(clubs, 1, championshipId, careerSeed)
   const scheduled = resolveScheduleConflicts(
     [...leagueMatches, ...cup.matches],
     1,
@@ -304,6 +317,7 @@ export const createInitialGameState = (
 
   return {
     configVersion: 3,
+    careerSeed,
     championshipId,
     selectedClubId,
     season: 1,
@@ -326,6 +340,7 @@ export const createInitialGameState = (
 
 // ДОПОЛНЯЕТ НЕПОЛНОЕ СОХРАНЕНИЕ ДАННЫМИ МИРОВЫХ ЛИГ
 export const ensureWorldCompetitions = (state: GameState): GameState => {
+  const careerSeed = state.careerSeed ?? hashString(`${state.championshipId}:${state.selectedClubId}`)
   const clubs = normalizeGeneratedAcademyPlayers(
     recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1),
   )
@@ -352,7 +367,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
     {} as Record<ChampionshipId, Club[]>,
   )
 
-  const generatedWorldMatches = createWorldMatches(worldClubs, state.season)
+  const generatedWorldMatches = createWorldMatches(worldClubs, state.season, careerSeed)
   const existingWorldMatches = state.worldMatches ?? {}
   const selectedLeagueMatches = state.matches
     .filter((match) => match.type === 'league')
@@ -376,6 +391,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
   return {
     ...state,
     configVersion: 3,
+    careerSeed,
     clubs,
     academies,
     leagueTables: calculateLeagueTables(clubs, state.matches),
@@ -1127,10 +1143,10 @@ export const finishSeason = (state: GameState): GameState => {
     worldClubs[id] = worldClubs[id].map((club) => overrides[club.id] ? cloneClub(overrides[club.id]!) : club)
   }
   worldClubs[state.championshipId] = progressedClubs.map(cloneClub)
-  const worldMatches = createWorldMatches(worldClubs, nextSeason)
+  const worldMatches = createWorldMatches(worldClubs, nextSeason, state.careerSeed)
   const leagueMatches = worldMatches[state.championshipId].map(cloneMatch)
   const config = getCountryCompetitionConfig(state.championshipId)
-  const cup = initializeCup(progressedClubs, nextSeason, state.championshipId)
+  const cup = initializeCup(progressedClubs, nextSeason, state.championshipId, state.careerSeed)
   const scheduled = resolveScheduleConflicts(
     [...leagueMatches, ...cup.matches],
     nextSeason,
@@ -1148,6 +1164,7 @@ export const finishSeason = (state: GameState): GameState => {
 
   return {
     configVersion: 3,
+    careerSeed: state.careerSeed,
     championshipId: state.championshipId,
     selectedClubId: state.selectedClubId,
     season: nextSeason,

@@ -52,14 +52,6 @@ export interface Club {
 
 export type ReserveTeamMode = 'virtual' | 'competition'
 
-export interface AcademyEvent {
-  id: string
-  season: number
-  type: 'intake' | 'promotion' | 'demotion' | 'release' | 'transfer'
-  playerId: string
-  playerName: string
-}
-
 export interface ReserveTeamState {
   id: string
   parentClubId: string
@@ -80,7 +72,6 @@ export interface AcademyState {
   intakeSize: { min: number; max: number }
   nextIntakeSeason: number
   reserveTeam: ReserveTeamState
-  history: AcademyEvent[]
 }
 
 // ТАКТИЧЕСКИЕ СХЕМЫ, СЛОТЫ И СОСТАВЫ
@@ -251,6 +242,7 @@ export interface CupRound {
 
 export interface CupState {
   season: number
+  seed?: number
   countryId?: ChampionshipId
   cupId?: string
   rounds: CupRound[]
@@ -269,6 +261,7 @@ export interface PlayerStats {
 // КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
 export interface GameState {
   configVersion: number
+  careerSeed: number
   championshipId: ChampionshipId
   selectedClubId: string
   season: number

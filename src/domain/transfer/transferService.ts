@@ -238,13 +238,6 @@ export const sellReservePlayer = (
           ...academy.reserveTeam,
           squad: academy.reserveTeam.squad.filter((candidate) => candidate.id !== playerId),
         },
-    history: [{
-      id: `transfer:${academy.clubId}:${player.id}:${academy.history.length}`,
-      season: academy.nextIntakeSeason - 1,
-      type: 'transfer' as const,
-      playerId: player.id,
-      playerName: `${player.firstName} ${player.lastName}`.trim(),
-    }, ...academy.history].slice(0, 80),
   }
 
   return {

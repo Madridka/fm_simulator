@@ -6,10 +6,8 @@ import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type { Formation, Player, PlayerPosition, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
-import {
-  isPlayerSuspended,
-  isPlayerUnavailable,
-} from '@/domain/season/playerAvailability'
+import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
+import SectionHero from '@/components/ui/SectionHero.vue'
 
 type DragSource = 'starter' | 'substitute' | 'reserve'
 
@@ -481,21 +479,13 @@ onBeforeRouteLeave(() => {
     class="flex flex-col gap-3 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
     <!-- НАСТРОЙКИ ФОРМАЦИИ И ТАКТИКИ -->
-    <div
-      class="shrink-0 rounded-lg border border-white/70 bg-white/90 px-4 py-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)]"
+    <SectionHero
+      :title="t('squad.title')"
+      :subtitle="`${squadStore.club.name} ${t('common.separator')} ${t('common.playersCount', { count: squadStore.club.squad.length })} ${t('common.separator')} ${formatMoney(totalValue)}`"
     >
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h1 class="text-xl font-bold leading-tight text-slate-950">{{ t('squad.title') }}</h1>
-          <p class="mt-0.5 text-xs text-slate-600">
-            {{ squadStore.club.name }} {{ t('common.separator') }}
-            {{ t('common.playersCount', { count: squadStore.club.squad.length }) }}
-            {{ t('common.separator') }} {{ formatMoney(totalValue) }}
-          </p>
-        </div>
-
+      <template #actions>
         <div class="flex flex-wrap items-end gap-2">
-          <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
+          <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
             {{ t('squad.formation') }}
             <select
               class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
@@ -511,7 +501,7 @@ onBeforeRouteLeave(() => {
               </option>
             </select>
           </label>
-          <label class="flex flex-col gap-1 text-xs font-bold text-slate-700">
+          <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
             {{ t('squad.tactic') }}
             <select
               class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
@@ -530,20 +520,11 @@ onBeforeRouteLeave(() => {
             @click="squadStore.resetLineup"
           />
         </div>
-      </div>
-      <p class="mt-3 text-xs font-medium text-slate-500 xl:hidden">
-        {{
-          selectedTouchPayload
-            ? t('squad.touchSelectedHint')
-            : t('squad.touchHint')
-        }}
-      </p>
-    </div>
+      </template>
+    </SectionHero>
 
     <!-- ТАКТИЧЕСКАЯ СХЕМА И СПИСОК КОМАНДЫ -->
-    <div
-      class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]"
-    >
+    <div class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
       <!-- СТАРТОВЫЙ СОСТАВ И ЗАПАСНЫЕ -->
       <div
         class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
@@ -615,13 +596,15 @@ onBeforeRouteLeave(() => {
                   :title="injuryLabel(slotPlayer(slot.id))"
                   :aria-label="injuryLabel(slotPlayer(slot.id))"
                   class="inline-grid h-6 w-6 place-items-center rounded-full border-2 border-white bg-orange-500 text-xs font-black text-white shadow-lg"
-                >✚</span>
+                  >✚</span
+                >
                 <span
                   v-if="isPlayerSuspended(slotPlayer(slot.id)!)"
                   :title="suspensionLabel(slotPlayer(slot.id))"
                   :aria-label="suspensionLabel(slotPlayer(slot.id))"
                   class="inline-grid h-6 w-6 place-items-center rounded-full border-2 border-white bg-rose-600 text-[11px] shadow-lg"
-                >🟥</span>
+                  >🟥</span
+                >
               </span>
               <span class="flex items-center gap-1.5">
                 <span
@@ -651,7 +634,9 @@ onBeforeRouteLeave(() => {
                   {{ conditionLabel(slotPlayer(slot.id)!) }}
                 </template>
               </span>
-              <span class="hidden h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35 sm:block">
+              <span
+                class="hidden h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35 sm:block"
+              >
                 <span
                   class="block h-full rounded-full bg-lime-400"
                   :style="{ width: `${slotPlayer(slot.id)?.fitness ?? 0}%` }"
@@ -727,12 +712,14 @@ onBeforeRouteLeave(() => {
                 v-if="player.isInjured"
                 :title="injuryLabel(player)"
                 class="inline-grid h-5 w-5 place-items-center rounded-full border border-white bg-orange-500 text-[10px] font-black text-white"
-              >✚</span>
+                >✚</span
+              >
               <span
                 v-if="isPlayerSuspended(player)"
                 :title="suspensionLabel(player)"
                 class="inline-grid h-5 w-5 place-items-center rounded-full border border-white bg-rose-600 text-[9px]"
-              >🟥</span>
+                >🟥</span
+              >
             </span>
             <span class="flex items-center gap-1.5">
               <span
@@ -752,9 +739,7 @@ onBeforeRouteLeave(() => {
             <span
               class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.58rem] font-bold text-slate-200/75"
               >{{
-                isPlayerUnavailable(player)
-                  ? availabilityLabel(player)
-                  : conditionLabel(player)
+                isPlayerUnavailable(player) ? availabilityLabel(player) : conditionLabel(player)
               }}</span
             >
             <span class="h-1.5 w-full overflow-hidden rounded-full bg-slate-400/35"
@@ -826,12 +811,14 @@ onBeforeRouteLeave(() => {
                   v-if="player.isInjured"
                   :title="injuryLabel(player)"
                   class="text-sm leading-none text-orange-600"
-                >✚</span>
+                  >✚</span
+                >
                 <span
                   v-if="isPlayerSuspended(player)"
                   :title="suspensionLabel(player)"
                   class="text-[10px] leading-none"
-                >🟥</span>
+                  >🟥</span
+                >
               </span>
               <span
                 class="inline-grid h-[26px] min-w-[26px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.62rem] font-black leading-none text-white"

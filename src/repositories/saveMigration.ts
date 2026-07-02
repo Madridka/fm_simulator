@@ -5,6 +5,7 @@ import { reserveParentByClubId } from '@/data/reserveClubRelations'
 
 interface MigratableSave {
   configVersion?: number
+  careerSeed?: number
   championshipId?: ChampionshipId
   selectedClubId: string
   clubs: Club[]
@@ -12,11 +13,21 @@ interface MigratableSave {
   academies?: Record<string, AcademyState>
 }
 
+const legacyCareerSeed = (source: MigratableSave): number => {
+  const value = `${source.championshipId ?? 'russia'}:${source.selectedClubId}`
+  let hash = 0
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 33 + value.charCodeAt(index)) % 2_147_483_647
+  }
+  return hash || 1
+}
+
 export const migrateSaveToAcademiesV3 = <T extends MigratableSave>(source: T) => {
   const migrated = migrateSaveToCompetitionConfigV2(source)
   return {
     ...migrated,
     configVersion: 3 as const,
+    careerSeed: source.careerSeed ?? legacyCareerSeed(source),
     academies: source.academies ?? {},
   }
 }

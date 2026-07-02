@@ -152,6 +152,7 @@ export const initializeCup = (
   clubs: readonly Club[],
   season: number,
   countryId: CountryId = 'russia',
+  scheduleSeed = 0,
 ): { cup: CupState; matches: Match[] } => {
   const eligibleClubs = clubs.filter((club) => !isReserveClubId(club.id))
   const bracketSize = highestPowerOfTwoAtMost(eligibleClubs.length)
@@ -176,7 +177,7 @@ export const initializeCup = (
     initialRoundId,
     season,
     countryId,
-    shuffle(initialClubIds, season * 101 + 7),
+    shuffle(initialClubIds, scheduleSeed + season * 101 + 7),
     1,
     dates[initialRoundId]!,
   )
@@ -185,7 +186,7 @@ export const initializeCup = (
   )
   rounds[0] = { ...initial.round, byes }
   return {
-    cup: { season, countryId, cupId: cupConfig.id, rounds },
+    cup: { season, seed: scheduleSeed, countryId, cupId: cupConfig.id, rounds },
     matches: initial.matches,
   }
 }
@@ -225,7 +226,10 @@ export const advanceCupIfPossible = (
   const nextRound = rounds[currentRoundIndex + 1]
   if (!nextRound?.scheduledDate) return { cup: { ...cup, rounds }, newMatches: [], completedRoundId: currentRound.id }
   const countryId = cup.countryId ?? 'russia'
-  const participants = shuffle([...winners, ...currentRound.byes], cup.season * 313 + currentRoundIndex * 19)
+  const participants = shuffle(
+    [...winners, ...currentRound.byes],
+    (cup.seed ?? 0) + cup.season * 313 + currentRoundIndex * 19,
+  )
   const created = createRound(nextRound.id, cup.season, countryId, participants, currentRoundIndex + 2, nextRound.scheduledDate)
   rounds[currentRoundIndex + 1] = created.round
   return { cup: { ...cup, rounds }, newMatches: created.matches, completedRoundId: currentRound.id }

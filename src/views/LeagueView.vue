@@ -14,6 +14,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type { Club, LeagueTableRow } from '@/types/football'
 
 import LeagueTable from '@/components/ui/LeagueTable.vue'
+import SectionHero from '@/components/ui/SectionHero.vue'
 
 interface LeagueOption {
   key: string
@@ -142,37 +143,31 @@ const selectedClubId = computed((): string | undefined =>
     class="mx-auto flex h-full max-w-6xl flex-col gap-5 overflow-hidden"
   >
     <!-- ЗАГОЛОВОК И ВЫБОР ЛИГИ -->
-    <header class="flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <div>
-        <div class="text-[10px] font-black uppercase tracking-[0.14em] text-emerald-600">
-          {{ t('league.eyebrow') }}
-        </div>
-        <h1 class="mt-1 text-2xl font-black tracking-tight text-slate-950">
-          {{ t('league.title') }}
-        </h1>
-        <p class="mt-1 text-sm text-slate-600">
-          {{ t('league.description') }}
-        </p>
-      </div>
-
+    <SectionHero
+      :eyebrow="t('league.eyebrow')"
+      :title="t('league.title')"
+      :subtitle="t('league.description')"
+    >
+      <template #actions>
       <label
-        class="min-w-0 rounded-xl border border-slate-200 bg-white p-2 shadow-sm md:min-w-[360px]"
+        class="min-w-0 md:min-w-[360px]"
       >
         <span
-          class="mb-1 block px-1 text-[9px] font-black uppercase tracking-widest text-slate-400"
+          class="mb-1 block px-1 text-[9px] font-black uppercase tracking-widest text-emerald-200/65"
         >
           {{ t('league.selector') }}
         </span>
         <select
           v-model="selectedLeagueKey"
-          class="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-emerald-400 focus:bg-white"
+          class="h-10 w-full rounded-lg border border-white/15 bg-white px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-emerald-400"
         >
           <option v-for="option in leagueOptions" :key="option.key" :value="option.key">
             {{ option.label }}
           </option>
         </select>
       </label>
-    </header>
+      </template>
+    </SectionHero>
 
     <!-- ТАБЛИЦА ВЫБРАННОЙ ЛИГИ -->
     <article

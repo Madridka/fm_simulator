@@ -1,6 +1,9 @@
 {
   "title": "Трансферы",
   "budget": "Бюджет: {budget}",
+  "availableBudget": "Доступный бюджет",
+  "clubPlayers": "Игроков в клубе",
+  "academyPlayers": "Игроков в академии",
   "market": "Рынок игроков",
   "search": "Поиск",
   "searchPlaceholder": "Фамилия",

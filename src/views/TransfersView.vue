@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onBeforeUnmount, Ref, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, Ref, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { careerConfig } from '@/data/gameConfig/career'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
 import type { PlayerPosition } from '@/types/football'
 import { formatMoney } from '@/utils/format'
+import { getReservePlayers } from '@/domain/academy/academyService'
+import SectionHero from '@/components/ui/SectionHero.vue'
 
 // ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ОПЕРАЦИЙ ТРАНСФЕРНОГО РЫНКА
 const gameStore = useGameStore()
@@ -14,6 +16,12 @@ const { t } = useI18n()
 
 const toastMessage: Ref<string> = ref('')
 let toastTimer: number | undefined
+
+const academyPlayersCount = computed(() => {
+  const game = gameStore.game
+  const academy = game?.academies[game.selectedClubId]
+  return game && academy ? getReservePlayers(academy, game.clubs).length : 0
+})
 
 const positions: Array<PlayerPosition | 'all'> = [
   'all',
@@ -67,12 +75,18 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     class="flex flex-col gap-3 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
     <!-- ЗАГОЛОВОК И ТЕКУЩИЙ БЮДЖЕТ -->
-    <div class="flex h-8 shrink-0 items-baseline gap-3">
-      <h1 class="text-xl font-bold text-slate-950">{{ t('transfers.title') }}</h1>
-      <p class="text-xs font-semibold text-slate-500">
-        {{ t('transfers.budget', { budget: formatMoney(gameStore.selectedClub.budget) }) }}
-      </p>
-    </div>
+    <SectionHero :title="t('transfers.title')" :subtitle="gameStore.selectedClub.name">
+      <template #actions>
+        <div v-for="item in [
+          { label: t('transfers.availableBudget'), value: formatMoney(gameStore.selectedClub.budget) },
+          { label: t('transfers.clubPlayers'), value: gameStore.selectedClub.squad.length },
+          { label: t('transfers.academyPlayers'), value: academyPlayersCount },
+        ]" :key="item.label" class="min-w-28 border-l border-white/15 px-3">
+          <div class="text-[9px] font-bold uppercase tracking-wider text-emerald-200/65">{{ item.label }}</div>
+          <div class="mt-1 text-lg font-black leading-none">{{ item.value }}</div>
+        </div>
+      </template>
+    </SectionHero>
 
     <!-- УВЕДОМЛЕНИЕ О РЕЗУЛЬТАТЕ ТРАНСФЕРА -->
     <div

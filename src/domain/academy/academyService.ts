@@ -6,7 +6,6 @@ import {
 } from '@/data/reserveClubRelations'
 import { t } from '@/plugins/i18n/i18n'
 import type {
-  AcademyEvent,
   AcademyState,
   ChampionshipId,
   Club,
@@ -146,15 +145,6 @@ const createIntake = (club: Club, academy: AcademyState, season: number, size?: 
   return Array.from({ length: count }, (_, index) => createYouthPlayer(club, academy, season, index))
 }
 
-const createEvents = (players: readonly Player[], season: number, type: AcademyEvent['type']): AcademyEvent[] =>
-  players.map((player, index) => ({
-    id: `${type}:${season}:${player.id}:${index}`,
-    season,
-    type,
-    playerId: player.id,
-    playerName: playerName(player),
-  }))
-
 const createAcademy = (club: Club, clubs: readonly Club[], season: number, materialize: boolean): AcademyState => {
   const profile = clubProfilesById[club.id]?.development
   const level = profile?.academy?.level ?? defaultAcademyLevel(club)
@@ -180,7 +170,6 @@ const createAcademy = (club: Club, clubs: readonly Club[], season: number, mater
       linkedClubId: linkedClub?.id,
       squad: [],
     },
-    history: [],
   }
 
   if (materialize && !linkedClub) {
@@ -189,7 +178,6 @@ const createAcademy = (club: Club, clubs: readonly Club[], season: number, mater
       age: 16 + (index % 6),
     }))
     academy.reserveTeam.squad = initialSquad
-    academy.history = createEvents(initialSquad, season, 'intake')
   }
 
   return academy
@@ -217,9 +205,10 @@ export const ensureAcademies = (
     Object.entries(defaults).map(([clubId, fallback]) => {
       const existing = source?.[clubId]
       if (!existing) return [clubId, fallback]
+      const { history: _history, ...existingWithoutHistory } = existing as AcademyState & { history?: unknown }
       return [clubId, {
         ...fallback,
-        ...existing,
+        ...existingWithoutHistory,
         intakeSize: { ...fallback.intakeSize, ...existing.intakeSize },
         reserveTeam: {
           ...fallback.reserveTeam,
@@ -228,7 +217,6 @@ export const ensureAcademies = (
             normalizeGeneratedPlayerIdentity(player, clubs.find((club) => club.id === clubId) ?? clubs[0]!),
           ) ?? [],
         },
-        history: existing.history?.map((event) => ({ ...event })) ?? [],
       }]
     }),
   )
@@ -321,7 +309,6 @@ export const progressAcademiesForNewSeason = (
       academy.reserveTeam.squad = [...progressed, ...intake].slice(-reserveMaximumSquadSize)
     }
     academy.nextIntakeSeason = season + 1
-    academy.history = [...createEvents(intake, season, 'intake'), ...academy.history].slice(0, 80)
   }
 
   return { clubs, academies }
@@ -337,19 +324,6 @@ const unchanged = (state: GameState, message: string): AcademyMutationResult => 
   success: false,
   message,
   state,
-})
-
-const addHistory = (
-  academy: AcademyState,
-  player: Player,
-  season: number,
-  type: AcademyEvent['type'],
-): AcademyState => ({
-  ...academy,
-  history: [
-    ...createEvents([player], season, type),
-    ...academy.history,
-  ].slice(0, 80),
 })
 
 export const promoteToFirstTeam = (state: GameState, playerId: string): AcademyMutationResult => {
@@ -371,7 +345,7 @@ export const promoteToFirstTeam = (state: GameState, playerId: string): AcademyM
     }
     return club
   })
-  const nextAcademy = addHistory({
+  const nextAcademy: AcademyState = {
     ...academy,
     reserveTeam: academy.reserveTeam.linkedClubId
       ? academy.reserveTeam
@@ -379,7 +353,7 @@ export const promoteToFirstTeam = (state: GameState, playerId: string): AcademyM
           ...academy.reserveTeam,
           squad: academy.reserveTeam.squad.filter((candidate) => candidate.id !== playerId),
         },
-  }, player, state.season, 'promotion')
+  }
 
   return {
     success: true,
@@ -420,12 +394,12 @@ export const moveToReserveTeam = (state: GameState, playerId: string): AcademyMu
     }
     return club
   })
-  const nextAcademy = addHistory({
+  const nextAcademy: AcademyState = {
     ...academy,
     reserveTeam: academy.reserveTeam.linkedClubId
       ? academy.reserveTeam
       : { ...academy.reserveTeam, squad: [...academy.reserveTeam.squad, { ...player }] },
-  }, player, state.season, 'demotion')
+  }
 
   return {
     success: true,
@@ -445,7 +419,7 @@ export const releaseReservePlayer = (state: GameState, playerId: string): Academ
       ? { ...club, squad: club.squad.filter((candidate) => candidate.id !== playerId) }
       : club,
   )
-  const nextAcademy = addHistory({
+  const nextAcademy: AcademyState = {
     ...academy,
     reserveTeam: academy.reserveTeam.linkedClubId
       ? academy.reserveTeam
@@ -453,7 +427,7 @@ export const releaseReservePlayer = (state: GameState, playerId: string): Academ
           ...academy.reserveTeam,
           squad: academy.reserveTeam.squad.filter((candidate) => candidate.id !== playerId),
         },
-  }, player, state.season, 'release')
+  }
 
   return {
     success: true,

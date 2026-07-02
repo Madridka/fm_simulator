@@ -7,6 +7,7 @@ import {
   spreadRoundAcrossMatchDays,
 } from '@/domain/schedule/calendarSlotResolver'
 import type { Club, Match } from '@/types/football'
+import { createSeededRandom } from '@/utils/random'
 
 export interface LeaguePairing {
   homeClubId: string
@@ -19,6 +20,29 @@ const rotateTeams = (teams: readonly string[]): string[] => {
   const tail = teams.slice(1)
   const last = tail.at(-1)
   return last ? [fixed, last, ...tail.slice(0, -1)] : [fixed]
+}
+
+const hashString = (value: string): number => {
+  let hash = 0
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 33 + value.charCodeAt(index)) % 2_147_483_647
+  }
+  return hash || 1
+}
+
+const shuffle = <T>(items: readonly T[], seed: number): T[] => {
+  const random = createSeededRandom(seed)
+  const result = [...items]
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const swapIndex = random.int(0, index)
+    const current = result[index]
+    const target = result[swapIndex]
+    if (current !== undefined && target !== undefined) {
+      result[index] = target
+      result[swapIndex] = current
+    }
+  }
+  return result
 }
 
 export const generateLeagueRoundPairings = (
@@ -59,6 +83,7 @@ export const generateLeagueSchedule = (
   clubs: readonly Club[],
   season: number,
   countryId: CountryId,
+  scheduleSeed = 0,
 ): Match[] => {
   const country = getCountryCompetitionConfig(countryId)
   const clubsByCompetition = clubs.reduce<Record<string, Club[]>>((result, club) => {
@@ -71,7 +96,10 @@ export const generateLeagueSchedule = (
   for (const competitionId of Object.keys(clubsByCompetition).sort()) {
     const competition = country.competitions[competitionId]
     if (!competition) throw new Error(`No ${countryId} config for competition ${competitionId}`)
-    const participants = (clubsByCompetition[competitionId] ?? []).map((club) => club.id).sort()
+    const participants = shuffle(
+      (clubsByCompetition[competitionId] ?? []).map((club) => club.id).sort(),
+      scheduleSeed + season * 10_007 + hashString(`${countryId}:${competitionId}`),
+    )
     const rounds = generateLeagueRoundPairings(participants, competition.format.rounds)
     const roundDates = assignLeagueRoundDates(rounds.length, season, country.calendar)
 

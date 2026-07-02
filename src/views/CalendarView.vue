@@ -9,6 +9,7 @@ import type { Club, Match } from '@/types/football'
 import { formatDate } from '@/utils/format'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
+import SectionHero from '@/components/ui/SectionHero.vue'
 
 interface CalendarCell {
   key: string
@@ -265,40 +266,33 @@ const homeAwayLabel = (match: Match): string => {
   <!-- СТРАНИЦА КАЛЕНДАРЯ МАТЧЕЙ -->
   <section v-if="gameStore.game" class="flex flex-col gap-5 xl:h-full xl:overflow-hidden">
     <!-- ЗАГОЛОВОК И НАВИГАЦИЯ ПО МЕСЯЦАМ -->
-    <div
-      class="flex shrink-0 flex-col gap-3 border-l-4 border-l-emerald-700 pl-3.5 md:flex-row md:items-end md:justify-between"
-    >
-      <div>
-        <h1 class="text-2xl font-bold text-slate-950">{{ t('calendar.title') }}</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          {{ t('calendar.description') }}
-        </p>
-      </div>
-
+    <SectionHero :title="t('calendar.title')" :subtitle="t('calendar.description')">
+      <template #actions>
       <div class="flex items-center gap-2">
         <button
           type="button"
-          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-black text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          class="grid h-9 w-9 place-items-center rounded-lg border border-white/15 bg-white/10 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
           :disabled="activeMonthIndex === 0"
           @click="moveMonth(-1)"
         >
           <i class="pi pi-angle-left" />
         </button>
         <div
-          class="min-w-40 rounded-lg bg-slate-950 px-4 py-2 text-center text-sm font-black text-white"
+          class="min-w-40 rounded-lg bg-white/10 px-4 py-2 text-center text-sm font-black text-white"
         >
           {{ activeMonth?.title ?? t('calendar.season') }}
         </div>
         <button
           type="button"
-          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-black text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+          class="grid h-9 w-9 place-items-center rounded-lg border border-white/15 bg-white/10 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
           :disabled="activeMonthIndex >= calendarMonths.length - 1"
           @click="moveMonth(1)"
         >
           <i class="pi pi-angle-right" />
         </button>
       </div>
-    </div>
+      </template>
+    </SectionHero>
 
     <!-- КАЛЕНДАРЬ АКТИВНОГО МЕСЯЦА -->
     <div class="xl:min-h-0 xl:flex-1 xl:overflow-hidden">
@@ -306,12 +300,6 @@ const homeAwayLabel = (match: Match): string => {
         v-if="activeMonth"
         class="flex flex-col overflow-hidden rounded-lg border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:h-full xl:min-h-0"
       >
-        <!-- ЗАГОЛОВОК АКТИВНОГО МЕСЯЦА -->
-        <div
-          class="shrink-0 bg-[linear-gradient(135deg,#14532d,#20342e)] px-4 py-3.5 font-extrabold text-slate-50"
-        >
-          {{ activeMonth.title }}
-        </div>
         <!-- МОБИЛЬНЫЙ СПИСОК МАТЧЕЙ -->
         <div v-if="activeMonthMatchCells.length" class="grid gap-2.5 bg-[#f5f8f6] p-3 md:hidden">
           <section
