@@ -77,12 +77,21 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     <!-- ЗАГОЛОВОК И ТЕКУЩИЙ БЮДЖЕТ -->
     <SectionHero :title="t('transfers.title')" :subtitle="gameStore.selectedClub.name">
       <template #actions>
-        <div v-for="item in [
-          { label: t('transfers.availableBudget'), value: formatMoney(gameStore.selectedClub.budget) },
-          { label: t('transfers.clubPlayers'), value: gameStore.selectedClub.squad.length },
-          { label: t('transfers.academyPlayers'), value: academyPlayersCount },
-        ]" :key="item.label" class="min-w-28 border-l border-white/15 px-3">
-          <div class="text-[9px] font-bold uppercase tracking-wider text-emerald-200/65">{{ item.label }}</div>
+        <div
+          v-for="item in [
+            {
+              label: t('transfers.availableBudget'),
+              value: formatMoney(gameStore.selectedClub.budget),
+            },
+            { label: t('transfers.clubPlayers'), value: gameStore.selectedClub.squad.length },
+            { label: t('transfers.academyPlayers'), value: academyPlayersCount },
+          ]"
+          :key="item.label"
+          class="min-w-28 border-l border-white/15 px-3"
+        >
+          <div class="text-[9px] font-bold uppercase tracking-wider text-emerald-200/65">
+            {{ item.label }}
+          </div>
           <div class="mt-1 text-lg font-black leading-none">{{ item.value }}</div>
         </div>
       </template>
@@ -114,22 +123,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
                 class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm"
               />
             </label>
-            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
-              {{ t('transfers.club') }}
-              <select
-                v-model="transferStore.marketClubFilter"
-                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
-              >
-                <option value="all">{{ t('transfers.allClubs') }}</option>
-                <option
-                  v-for="club in transferStore.marketClubOptions"
-                  :key="club.value"
-                  :value="club.value"
-                >
-                  {{ club.label }}
-                </option>
-              </select>
-            </label>
+
             <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.league') }}
               <select
@@ -143,6 +137,22 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
                   :value="league.value"
                 >
                   {{ league.label }}
+                </option>
+              </select>
+            </label>
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
+              {{ t('transfers.club') }}
+              <select
+                v-model="transferStore.marketClubFilter"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
+              >
+                <option value="all">{{ t('transfers.allClubs') }}</option>
+                <option
+                  v-for="club in transferStore.marketClubOptions"
+                  :key="club.value"
+                  :value="club.value"
+                >
+                  {{ club.label }}
                 </option>
               </select>
             </label>

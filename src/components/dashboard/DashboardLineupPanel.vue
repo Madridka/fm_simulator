@@ -20,7 +20,7 @@ interface StarterView {
 const squadStore = useSquadStore()
 const { t } = useI18n()
 
-const mobileLineY = [15, 35, 48, 76, 93]
+const mobileLineY = [15, 32, 50, 70, 92]
 
 // ВОЗВРАЩАЕТ ЛИНИЮ ИГРОКА НА МОБИЛЬНОМ ПОЛЕ
 const getMobileLine = (y: number): number => {
@@ -56,7 +56,7 @@ const starters = computed<StarterView[]>(() => {
     const line = getMobileLine(slot.y)
     const lineSlots = [...(lines.get(line) ?? [])].sort((first, second) => first.x - second.x)
     const lineIndex = lineSlots.findIndex((lineSlot) => lineSlot.id === slot.id)
-    const mobilePadding = lineSlots.length <= 2 ? 35 : lineSlots.length === 3 ? 20 : 10
+    const mobilePadding = lineSlots.length <= 2 ? 35 : lineSlots.length === 3 ? 20 : 15
     const mobileX =
       lineSlots.length === 1
         ? 50

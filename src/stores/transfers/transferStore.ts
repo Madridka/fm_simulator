@@ -50,44 +50,50 @@ export const useTransferStore = defineStore('transfers', () => {
     const game = gameStore.game
     if (!game) return []
 
-    return (Object.entries(game.worldClubs ?? {}) as Array<[ChampionshipId, Club[] | undefined]>)
-      .flatMap(([championshipId, worldClubs]) => {
-        const countryClubs = championshipId === game.championshipId ? game.clubs : (worldClubs ?? [])
-        const championship = getChampionship(championshipId)
-        return countryClubs
-          .filter(
-            (club) =>
-              championshipId !== game.championshipId ||
-              getOrganizationClubId(club.id) !== getOrganizationClubId(game.selectedClubId),
-          )
-          .map((club) => {
-            const competitionId = getClubCompetitionId(club)
-            const leagueName = `${championship.name} · ${getCompetitionName(championship, competitionId)}`
-            return {
-              club,
-              championshipId,
-              competitionId,
-              leagueName,
-              clubKey: `${championshipId}|${club.id}`,
-            }
-          })
-      })
+    return (
+      Object.entries(game.worldClubs ?? {}) as Array<[ChampionshipId, Club[] | undefined]>
+    ).flatMap(([championshipId, worldClubs]) => {
+      const countryClubs = championshipId === game.championshipId ? game.clubs : (worldClubs ?? [])
+      const championship = getChampionship(championshipId)
+      return countryClubs
+        .filter(
+          (club) =>
+            championshipId !== game.championshipId ||
+            getOrganizationClubId(club.id) !== getOrganizationClubId(game.selectedClubId),
+        )
+        .map((club) => {
+          const competitionId = getClubCompetitionId(club)
+          const leagueName = `${championship.name} · ${getCompetitionName(championship, competitionId)}`
+          return {
+            club,
+            championshipId,
+            competitionId,
+            leagueName,
+            clubKey: `${championshipId}|${club.id}`,
+          }
+        })
+    })
   })
 
   const marketLeagueOptions = computed(() =>
-    [...new Map(marketClubSources.value.map((item) => [
-      `${item.championshipId}|${item.competitionId}`,
-      { value: `${item.championshipId}|${item.competitionId}`, label: item.leagueName },
-    ])).values()].sort((left, right) => left.label.localeCompare(right.label)),
+    [
+      ...new Map(
+        marketClubSources.value.map((item) => [
+          `${item.championshipId}|${item.competitionId}`,
+          { value: `${item.championshipId}|${item.competitionId}`, label: item.leagueName },
+        ]),
+      ).values(),
+    ].sort((left, right) => left.label.localeCompare(right.label)),
   )
 
   const marketClubOptions = computed(() =>
     marketClubSources.value
-      .filter((item) =>
-        marketLeagueFilter.value === 'all' ||
-        `${item.championshipId}|${item.competitionId}` === marketLeagueFilter.value,
+      .filter(
+        (item) =>
+          marketLeagueFilter.value === 'all' ||
+          `${item.championshipId}|${item.competitionId}` === marketLeagueFilter.value,
       )
-      .map((item) => ({ value: item.clubKey, label: `${item.club.name} · ${item.leagueName}` }))
+      .map((item) => ({ value: item.clubKey, label: `${item.club.name}` }))
       .sort((left, right) => left.label.localeCompare(right.label)),
   )
 
@@ -104,23 +110,30 @@ export const useTransferStore = defineStore('transfers', () => {
     const players = marketClubSources.value
       .filter(
         (item) =>
-          (!hasLeague || `${item.championshipId}|${item.competitionId}` === marketLeagueFilter.value) &&
+          (!hasLeague ||
+            `${item.championshipId}|${item.competitionId}` === marketLeagueFilter.value) &&
           (!hasClub || item.clubKey === marketClubFilter.value),
       )
-      .flatMap((item) => item.club.squad.map((player): MarketPlayer => ({
-        clubId: item.club.id,
-        clubName: item.club.name,
-        championshipId: item.championshipId,
-        competitionId: item.competitionId,
-        leagueName: item.leagueName,
-        source: 'club',
-        player,
-      })))
-      .filter((item) =>
-        (marketPositionFilter.value === 'all' || item.player.position === marketPositionFilter.value) &&
-        (!query ||
-          item.player.lastName.toLocaleLowerCase().includes(query) ||
-          item.player.firstName.toLocaleLowerCase().includes(query)),
+      .flatMap((item) =>
+        item.club.squad.map(
+          (player): MarketPlayer => ({
+            clubId: item.club.id,
+            clubName: item.club.name,
+            championshipId: item.championshipId,
+            competitionId: item.competitionId,
+            leagueName: item.leagueName,
+            source: 'club',
+            player,
+          }),
+        ),
+      )
+      .filter(
+        (item) =>
+          (marketPositionFilter.value === 'all' ||
+            item.player.position === marketPositionFilter.value) &&
+          (!query ||
+            item.player.lastName.toLocaleLowerCase().includes(query) ||
+            item.player.firstName.toLocaleLowerCase().includes(query)),
       )
 
     return sortPlayers(players, marketSortKey.value).slice(0, 150)
@@ -171,11 +184,7 @@ export const useTransferStore = defineStore('transfers', () => {
     }
     if (marketPlayer && marketPlayer.championshipId !== game.championshipId) {
       const sourceClubs = game.worldClubs?.[marketPlayer.championshipId] ?? []
-      const result = buyPlayer(
-        [...game.clubs, ...sourceClubs],
-        game.selectedClubId,
-        playerId,
-      )
+      const result = buyPlayer([...game.clubs, ...sourceClubs], game.selectedClubId, playerId)
       message.value = result.message
       messageId.value += 1
       if (!result.success) return
