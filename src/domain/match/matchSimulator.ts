@@ -21,6 +21,7 @@ import { formatPlayerName } from '@/utils/format'
 import { getPositionFit } from '@/domain/season/squadSelectionService'
 import { isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import { normalizeCardEvents } from '@/domain/match/disciplineService'
+import { calculateClubRating } from '@/domain/club/teamRating'
 
 export interface MatchSimulationInput {
   matchId: string
@@ -33,10 +34,10 @@ export interface MatchSimulationInput {
   seed?: number
 }
 
-export type FastMatchSimulationInput = Omit<
-  MatchSimulationInput,
-  'homeLineup' | 'awayLineup'
->
+export type FastMatchSimulationInput = Omit<MatchSimulationInput, 'homeLineup' | 'awayLineup'> & {
+  homeLineup?: PlayedLineup
+  awayLineup?: PlayedLineup
+}
 
 export interface MinuteSnapshot {
   minute: number
@@ -156,12 +157,16 @@ const createTeamMetrics = (
   const players = getLineupPlayers(club, lineup)
   const modifiers = tacticalModifiers[lineup.tacticalStyle]
   const homeBonus = isHome && !neutralVenue ? matchEngineConfig.homeAdvantage : 0
+  const lineupFallback = average(
+    players.map(playerEffectiveRating),
+    calculateClubRating(club, lineup),
+  )
   const attack =
-    getLineAverage(players, 'attack', club.attackRating) + modifiers.attack + homeBonus * 0.45
+    getLineAverage(players, 'attack', lineupFallback) + modifiers.attack + homeBonus * 0.45
   const midfield =
-    getLineAverage(players, 'midfield', club.midfieldRating) + modifiers.midfield + homeBonus * 0.25
+    getLineAverage(players, 'midfield', lineupFallback) + modifiers.midfield + homeBonus * 0.25
   const defense =
-    getLineAverage(players, 'defense', club.defenseRating) + modifiers.defense + homeBonus * 0.3
+    getLineAverage(players, 'defense', lineupFallback) + modifiers.defense + homeBonus * 0.3
 
   return {
     attack: clamp(attack, 1, 110),
@@ -231,7 +236,7 @@ const goalScorerWeight = (position: PlayerPosition): number => {
     return 0.9
   }
   if (position === 'GK') {
-    return 0.05
+    return 0.005
   }
   return 0.45
 }
@@ -419,11 +424,7 @@ const createCardEvents = (
   includeMinutes: boolean,
 ): CardEvent[] => {
   // СОЗДАЁТ НАБОР КАРТОЧЕК ДЛЯ ОДНОЙ КОМАНДЫ
-  const createForTeam = (
-    team: TeamMetrics,
-    clubId: string,
-    yellowCards: number,
-  ): CardEvent[] => {
+  const createForTeam = (team: TeamMetrics, clubId: string, yellowCards: number): CardEvent[] => {
     const cards: CardEvent[] = Array.from({ length: yellowCards }, () => ({
       minute: includeMinutes ? random.int(8, 89) : undefined,
       clubId,
@@ -506,9 +507,7 @@ const createSubstitutions = (
       const playerOut = playersById.get(playerId)
       return Boolean(
         playerOut &&
-          substitutes.some(
-            (playerIn) => getPositionFit(playerOut.position, playerIn.position) <= 1,
-          ),
+        substitutes.some((playerIn) => getPositionFit(playerOut.position, playerIn.position) <= 1),
       )
     })
     if (viableStarters.length === 0) {
@@ -533,7 +532,10 @@ const createSubstitutions = (
     const playerIn = random.pick(bestSubstitutes)
 
     starters.splice(starters.indexOf(playerOutId), 1)
-    substitutes.splice(substitutes.findIndex((player) => player.id === playerIn.id), 1)
+    substitutes.splice(
+      substitutes.findIndex((player) => player.id === playerIn.id),
+      1,
+    )
     events.push({
       minute: clamp(
         random.int(config.minMinute, config.maxMinute - config.maxCount + 1) + index,
@@ -856,7 +858,8 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
         shots: homeShots,
         shotsOnTarget: Math.max(homeGoals, Math.round(homeShots * 0.42)),
         yellowCards: homeYellowCards,
-        redCards: cards.filter((card) => card.clubId === input.homeClub.id && card.card === 'red').length,
+        redCards: cards.filter((card) => card.clubId === input.homeClub.id && card.card === 'red')
+          .length,
         xG: Number(homeXG.toFixed(2)),
       },
       away: {
@@ -864,7 +867,8 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
         shots: awayShots,
         shotsOnTarget: Math.max(awayGoals, Math.round(awayShots * 0.42)),
         yellowCards: awayYellowCards,
-        redCards: cards.filter((card) => card.clubId === input.awayClub.id && card.card === 'red').length,
+        redCards: cards.filter((card) => card.clubId === input.awayClub.id && card.card === 'red')
+          .length,
         xG: Number(awayXG.toFixed(2)),
       },
     },
@@ -889,7 +893,9 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   const homeAdvantage = input.neutralVenue
     ? 0
     : matchEngineConfig.homeAdvantage * config.homeAdvantageFactor
-  const ratingDifference = input.homeClub.rating - input.awayClub.rating
+  const ratingDifference =
+    calculateClubRating(input.homeClub, input.homeLineup) -
+    calculateClubRating(input.awayClub, input.awayLineup)
   const homeXG = clamp(
     config.homeBaseXG + ratingDifference * config.ratingFactor + homeAdvantage,
     config.minXG,

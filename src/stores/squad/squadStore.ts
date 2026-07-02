@@ -12,6 +12,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import { t } from '@/plugins/i18n/i18n'
 import type { Club, ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
+import { calculateClubRating } from '@/domain/club/teamRating'
 
 // УПРАВЛЯЕТ СХЕМОЙ, ТАКТИКОЙ И ПЕРЕМЕЩЕНИЕМ ИГРОКОВ МЕЖДУ ГРУППАМИ СОСТАВА
 export const useSquadStore = defineStore('squad', () => {
@@ -27,6 +28,14 @@ export const useSquadStore = defineStore('squad', () => {
       return undefined
     }
     return game.lineups[game.selectedClubId]
+  })
+
+  // ВОЗВРАЩАЕТ АКТУАЛЬНЫЙ РЕЙТИНГ ТЕКУЩЕГО СТАРТОВОГО СОСТАВА
+  const teamRating = computed((): number => {
+    if (!club.value) {
+      return 0
+    }
+    return calculateClubRating(club.value, lineup.value)
   })
 
   // ВОЗВРАЩАЕТ ТАКТИЧЕСКИЕ СЛОТЫ ТЕКУЩЕЙ СХЕМЫ
@@ -242,6 +251,7 @@ export const useSquadStore = defineStore('squad', () => {
   return {
     club,
     lineup,
+    teamRating,
     slots,
     validation,
     formations,

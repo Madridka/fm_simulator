@@ -6,6 +6,7 @@ import { t } from '@/plugins/i18n/i18n'
 import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
 import { isReserveClubId } from '@/data/reserveClubRelations'
 import { createSeededRandom } from '@/utils/random'
+import { calculateClubRating } from '@/domain/club/teamRating'
 
 export const cupRoundIds = [
   'preliminary',
@@ -162,8 +163,11 @@ export const initializeCup = (
   const cupConfig = getCupConfig(countryId)
   const country = getCountryCompetitionConfig(countryId)
   const dates = assignCupRoundDates(activeRoundIds, season, country.calendar, cupConfig)
-  const sortedClubs = [...eligibleClubs].sort((left, right) =>
-    right.divisionId - left.divisionId || left.rating - right.rating || left.id.localeCompare(right.id),
+  const sortedClubs = [...eligibleClubs].sort(
+    (left, right) =>
+      right.divisionId - left.divisionId ||
+      calculateClubRating(left) - calculateClubRating(right) ||
+      left.id.localeCompare(right.id),
   )
   const initialClubIds = hasPreliminary
     ? sortedClubs.slice(0, playInTeamsCount).map((club) => club.id)

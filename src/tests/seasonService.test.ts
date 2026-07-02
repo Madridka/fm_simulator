@@ -10,6 +10,7 @@ import {
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import { careerConfig } from '@/data/gameConfig/career'
+import { getReservePlayers, promoteToFirstTeam } from '@/domain/academy/academyService'
 import type { MatchResult } from '@/types/football'
 
 describe('seasonService', () => {
@@ -25,6 +26,48 @@ describe('seasonService', () => {
     expect(initial.academies[clubId]).toBeDefined()
     expect(initial.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
     expect(initial.matches.length).toBeGreaterThan(0)
+  })
+
+  it('keeps a real reserve club playable and links its real squad to the parent academy', () => {
+    const parentCareer = createInitialGameState('russia', 'zenit')
+    const zenitAcademy = parentCareer.academies.zenit!
+    const zenitReserve = parentCareer.clubs.find((club) => club.id === 'zenit-2')
+
+    expect(zenitAcademy.reserveTeam.mode).toBe('competition')
+    expect(zenitAcademy.reserveTeam.linkedClubId).toBe('zenit-2')
+    expect(getReservePlayers(zenitAcademy, parentCareer.clubs)).toEqual(zenitReserve?.squad)
+
+    const reservePlayer = zenitReserve!.squad[0]!
+    const parentBudget = parentCareer.clubs.find((club) => club.id === 'zenit')!.budget
+    const promotion = promoteToFirstTeam(parentCareer, reservePlayer.id)
+
+    expect(promotion.success).toBe(true)
+    expect(promotion.state.clubs.find((club) => club.id === 'zenit')!.budget).toBe(parentBudget)
+    expect(
+      promotion.state.clubs.find((club) => club.id === 'zenit')!.squad.some(
+        (player) => player.id === reservePlayer.id,
+      ),
+    ).toBe(true)
+    expect(
+      promotion.state.clubs.find((club) => club.id === 'zenit-2')!.squad.some(
+        (player) => player.id === reservePlayer.id,
+      ),
+    ).toBe(false)
+
+    const reserveCareer = createInitialGameState('russia', 'zenit-2')
+
+    expect(reserveCareer.selectedClubId).toBe('zenit-2')
+    expect(reserveCareer.academies['zenit-2']).toBeDefined()
+  })
+
+  it('keeps a generated reserve virtual when no such club exists in the database', () => {
+    const initial = createInitialGameState('russia', 'kdv')
+    const academy = initial.academies.kdv!
+
+    expect(academy.reserveTeam.mode).toBe('virtual')
+    expect(academy.reserveTeam.linkedClubId).toBeUndefined()
+    expect(initial.clubs.some((club) => club.id === academy.reserveTeam.id)).toBe(false)
+    expect(academy.reserveTeam.squad.every((player) => player.id.startsWith('academy:kdv:'))).toBe(true)
   })
 
   it('keeps an injured player out for the configured matchdays and then recovers him', () => {

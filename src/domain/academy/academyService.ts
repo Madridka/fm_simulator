@@ -14,6 +14,7 @@ import type {
   PlayerPosition,
 } from '@/types/football'
 import { clamp, createSeededRandom } from '@/utils/random'
+import { calculateClubRating } from '@/domain/club/teamRating'
 
 const reserveMaximumSquadSize = 28
 const reserveMaximumAge = 23
@@ -102,7 +103,7 @@ const playerName = (player: Player): string =>
   `${player.firstName} ${player.lastName}`.trim()
 
 const defaultAcademyLevel = (club: Club): number =>
-  clamp(Math.round((club.rating - 34) / 3), 1, 20)
+  clamp(Math.round((calculateClubRating(club) - 34) / 3), 1, 20)
 
 const createYouthPlayer = (
   club: Club,
@@ -190,7 +191,7 @@ export const createAcademies = (
 ): Record<string, AcademyState> =>
   Object.fromEntries(
     clubs
-      .filter((club) => !isReserveClubId(club.id))
+      .filter((club) => !isReserveClubId(club.id) || club.id === selectedClubId)
       .map((club) => [club.id, createAcademy(club, clubs, season, club.id === selectedClubId)]),
   )
 

@@ -7,6 +7,7 @@ import ClubBadge from '@/components/ui/ClubBadge.vue'
 
 const props = defineProps<{
   club: Club
+  teamRating: number
   cupProgress: string
   divisionName: string
   leagueRowsCount: number
@@ -95,7 +96,7 @@ const { t } = useI18n()
             {{ t('dashboard.rating') }}
           </div>
           <div class="mt-1 flex items-baseline gap-0.5 truncate text-base font-black sm:gap-1 sm:text-xl">
-            {{ club.rating }}<span class="text-[9px] text-slate-400 sm:text-xs">/ 100</span>
+            {{ teamRating }}<span class="text-[9px] text-slate-400 sm:text-xs">/ 100</span>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
+import { calculateClubRating } from '@/domain/club/teamRating'
 import type { Club, LeagueTableRow } from '@/types/football'
 
 import DashboardHero from '@/components/dashboard/DashboardHero.vue'
@@ -20,6 +21,16 @@ const matchStore = useMatchStore()
 
 // ВОЗВРАЩАЕТ ВЫБРАННЫЙ КЛУБ
 const club = computed((): Club | undefined => gameStore.selectedClub)
+
+// РАССЧИТЫВАЕТ ТЕКУЩИЙ РЕЙТИНГ ПО СОХРАНЁННОМУ СТАРТОВОМУ СОСТАВУ
+const teamRating = computed((): number => {
+  const game = gameStore.game
+  if (!club.value || !game) {
+    return 0
+  }
+
+  return calculateClubRating(club.value, game.lineups[game.selectedClubId])
+})
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ДИВИЗИОНА КЛУБА
 const divisionName = computed((): string =>
@@ -41,6 +52,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
     <!-- СВОДКА ПО ВЫБРАННОМУ КЛУБУ -->
     <DashboardHero
       :club="club"
+      :team-rating="teamRating"
       :cup-progress="competitionStore.cupProgress"
       :division-name="divisionName"
       :league-rows-count="leagueRows.length"

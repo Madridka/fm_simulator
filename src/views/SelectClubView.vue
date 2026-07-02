@@ -13,7 +13,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type { ClubProfile } from '@/data/clubs/types'
 import type { Club } from '@/types/football'
 import { formatMoney } from '@/utils/format'
-import { isReserveClubId, preferredReserveClubByParentId } from '@/data/reserveClubRelations'
+import { preferredReserveClubByParentId } from '@/data/reserveClubRelations'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
@@ -68,10 +68,7 @@ const divisions = computed<DivisionOption[]>(() =>
 
 // ВОЗВРАЩАЕТ КЛУБЫ ВЫБРАННОГО ДИВИЗИОНА
 const divisionClubs = computed<Club[]>(() =>
-  clubs.value.filter(
-    (club) =>
-      getClubCompetitionId(club) === selectedCompetitionId.value && !isReserveClubId(club.id),
-  ),
+  clubs.value.filter((club) => getClubCompetitionId(club) === selectedCompetitionId.value),
 )
 
 // ВОЗВРАЩАЕТ ВЫБРАННЫЙ КЛУБ

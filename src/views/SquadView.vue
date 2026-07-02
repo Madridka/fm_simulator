@@ -485,6 +485,15 @@ onBeforeRouteLeave(() => {
     >
       <template #actions>
         <div class="flex flex-wrap items-end gap-2">
+          <div
+            class="flex h-9 items-center gap-1 self-end rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm font-black text-white"
+          >
+            <span class="text-xs font-bold text-emerald-100/70">
+              {{ t('dashboard.rating') }}
+            </span>
+            <span>{{ squadStore.teamRating }}</span>
+            <span class="text-[10px] text-emerald-100/50">/ 100</span>
+          </div>
           <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
             {{ t('squad.formation') }}
             <select
