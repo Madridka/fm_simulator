@@ -13,6 +13,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type { ClubProfile } from '@/data/clubs/types'
 import type { Club } from '@/types/football'
 import { formatMoney } from '@/utils/format'
+import { isReserveClubId, preferredReserveClubByParentId } from '@/data/reserveClubRelations'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
@@ -67,7 +68,10 @@ const divisions = computed<DivisionOption[]>(() =>
 
 // ВОЗВРАЩАЕТ КЛУБЫ ВЫБРАННОГО ДИВИЗИОНА
 const divisionClubs = computed<Club[]>(() =>
-  clubs.value.filter((club) => getClubCompetitionId(club) === selectedCompetitionId.value),
+  clubs.value.filter(
+    (club) =>
+      getClubCompetitionId(club) === selectedCompetitionId.value && !isReserveClubId(club.id),
+  ),
 )
 
 // ВОЗВРАЩАЕТ ВЫБРАННЫЙ КЛУБ
@@ -116,6 +120,17 @@ const selectedClubIndex = computed(() =>
 const selectedDivisionName = computed(() =>
   getCompetitionName(championship.value, getClubCompetitionId(selectedClub.value)),
 )
+
+const academyLevel = computed(() =>
+  selectedClubProfile.value?.development?.academy?.level ??
+  Math.max(1, Math.min(20, Math.round((selectedClub.value.rating - 34) / 3))),
+)
+
+const reserveTeamName = computed(() => {
+  const profile = selectedClubProfile.value?.development?.reserveTeam
+  const linkedClubId = profile?.linkedClubId ?? preferredReserveClubByParentId[selectedClub.value.id]
+  return profile?.name ?? clubs.value.find((club) => club.id === linkedClubId)?.name ?? `${selectedClub.value.name}-2`
+})
 
 // РАССЧИТЫВАЕТ СТОИМОСТЬ СОСТАВА КЛУБА
 const clubWorth = computed(() =>
@@ -432,7 +447,7 @@ const startGame = (): void => {
           <article
             class="rounded-xl bg-[#191825] p-4 text-white shadow-[0_18px_45px_rgba(10,18,30,0.18)] sm:p-6 lg:rounded-2xl"
           >
-            <div class="grid gap-5 xl:grid-cols-3">
+            <div class="grid gap-5 xl:grid-cols-4">
               <div>
                 <div class="text-sm font-semibold text-slate-300">
                   {{ t('selectClub.founded') }}
@@ -455,6 +470,11 @@ const startGame = (): void => {
                   {{ t('selectClub.division') }}
                 </div>
                 <div class="mt-2 text-base font-black uppercase">{{ selectedDivisionName }}</div>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-slate-300">{{ t('selectClub.academy') }}</div>
+                <div class="mt-2 text-3xl font-black">{{ academyLevel }}<span class="text-base text-slate-500">/20</span></div>
+                <div class="mt-1 text-sm font-semibold text-slate-400">{{ reserveTeamName }}</div>
               </div>
             </div>
 

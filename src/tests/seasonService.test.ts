@@ -21,7 +21,8 @@ describe('seasonService', () => {
 
     expect(initial.championshipId).toBe(championshipId)
     expect(initial.clubs).toHaveLength(clubsCount)
-    expect(initial.configVersion).toBe(2)
+    expect(initial.configVersion).toBe(3)
+    expect(initial.academies[clubId]).toBeDefined()
     expect(initial.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
     expect(initial.matches.length).toBeGreaterThan(0)
   })

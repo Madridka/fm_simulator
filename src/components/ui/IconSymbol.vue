@@ -2,6 +2,7 @@
 type IconName =
   | 'home'
   | 'users'
+  | 'academy'
   | 'swap'
   | 'table'
   | 'calendar'
@@ -22,6 +23,10 @@ defineProps<{
     <template v-else-if="name === 'users'">
       <circle cx="9" cy="8" r="3" />
       <path d="M3 20v-2a5 5 0 0 1 10 0v2M16 4a3 3 0 0 1 0 6M15 14a5 5 0 0 1 6 4v2" />
+    </template>
+    <template v-else-if="name === 'academy'">
+      <path d="M4 20c3-1 5-3 6-6 1-3 1-6 0-10 4 1 7 4 8 8 1 4-1 7-5 8" />
+      <path d="M8 16c2 0 5-2 7-5M12 20v-5" />
     </template>
     <path v-else-if="name === 'swap'" d="M7 7h13m-4-4 4 4-4 4M17 17H4m4 4-4-4 4-4" />
     <template v-else-if="name === 'table'">

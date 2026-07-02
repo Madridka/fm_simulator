@@ -4,6 +4,7 @@ import { assignCupRoundDates } from '@/domain/schedule/cupScheduleGenerator'
 import { getSeasonOrderFromDate } from '@/domain/schedule/calendarSlotResolver'
 import { t } from '@/plugins/i18n/i18n'
 import type { Club, CupRound, CupState, CupTie, Match } from '@/types/football'
+import { isReserveClubId } from '@/data/reserveClubRelations'
 import { createSeededRandom } from '@/utils/random'
 
 export const cupRoundIds = [
@@ -152,14 +153,15 @@ export const initializeCup = (
   season: number,
   countryId: CountryId = 'russia',
 ): { cup: CupState; matches: Match[] } => {
-  const bracketSize = highestPowerOfTwoAtMost(clubs.length)
-  const playInTeamsCount = (clubs.length - bracketSize) * 2
+  const eligibleClubs = clubs.filter((club) => !isReserveClubId(club.id))
+  const bracketSize = highestPowerOfTwoAtMost(eligibleClubs.length)
+  const playInTeamsCount = (eligibleClubs.length - bracketSize) * 2
   const hasPreliminary = playInTeamsCount > 0
   const activeRoundIds = getActiveRoundIds(bracketSize, hasPreliminary)
   const cupConfig = getCupConfig(countryId)
   const country = getCountryCompetitionConfig(countryId)
   const dates = assignCupRoundDates(activeRoundIds, season, country.calendar, cupConfig)
-  const sortedClubs = [...clubs].sort((left, right) =>
+  const sortedClubs = [...eligibleClubs].sort((left, right) =>
     right.divisionId - left.divisionId || left.rating - right.rating || left.id.localeCompare(right.id),
   )
   const initialClubIds = hasPreliminary

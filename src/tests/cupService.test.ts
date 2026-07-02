@@ -19,9 +19,9 @@ describe('cupService', () => {
   it('creates a preliminary round and advances winners to round of 64 with byes', () => {
     const initial = initializeCup(clubs, 1)
 
-    expect(initial.matches).toHaveLength(44)
+    expect(initial.matches).toHaveLength(25)
     expect(initial.cup.rounds[0]?.id).toBe('preliminary')
-    expect(initial.cup.rounds[0]?.byes).toHaveLength(20)
+    expect(initial.cup.rounds[0]?.byes).toHaveLength(39)
 
     const playedMatches = initial.matches.map((match) => ({
       ...match,

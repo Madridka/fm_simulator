@@ -1,7 +1,7 @@
 import type { ChampionshipId, GameState, MatchResult } from '@/types/football'
 import { ensureWorldCompetitions } from '@/domain/season/seasonService'
 import { t } from '@/plugins/i18n/i18n'
-import { migrateSaveToCompetitionConfigV2 } from '@/repositories/saveMigration'
+import { migrateSaveToAcademiesV3 } from '@/repositories/saveMigration'
 
 const SAVE_KEY = 'football-manager-mvp-save'
 
@@ -188,7 +188,7 @@ export const gameSaveRepository = {
 
     try {
       const parsed = JSON.parse(raw) as PersistedGameState & { configVersion?: number }
-      return restorePersistedState(migrateSaveToCompetitionConfigV2(parsed))
+      return restorePersistedState(migrateSaveToAcademiesV3(parsed))
     } catch {
       storage.removeItem(SAVE_KEY)
       return null

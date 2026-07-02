@@ -1,6 +1,7 @@
 import { careerConfig } from '@/data/gameConfig/career'
 import { t } from '@/plugins/i18n/i18n'
-import type { Club, Player } from '@/types/football'
+import type { AcademyState, Club, Player } from '@/types/football'
+import { getOrganizationClubId, isReserveClubId } from '@/data/reserveClubRelations'
 
 export interface TransferResult {
   success: boolean
@@ -50,7 +51,7 @@ export const buyPlayer = (
     return { success: false, message: t('transfers.messages.notFound'), clubs: clubs.map(cloneClub) }
   }
 
-  if (playerOwner.club.id === buyerClubId) {
+  if (getOrganizationClubId(playerOwner.club.id) === getOrganizationClubId(buyerClubId)) {
     return {
       success: false,
       message: t('transfers.messages.alreadyInClub'),
@@ -76,10 +77,13 @@ export const buyPlayer = (
 
   const buyer = cloneClub(buyerSource)
   const seller = cloneClub(playerOwner.club)
+  const sellerBudgetSource =
+    findClub(clubs, getOrganizationClubId(playerOwner.club.id)) ?? playerOwner.club
+  const sellerBudgetClub = cloneClub(sellerBudgetSource)
   const player = { ...playerOwner.player }
 
   buyer.budget -= player.value
-  seller.budget += player.value
+  sellerBudgetClub.budget += player.value
   buyer.squad.push(player)
   seller.squad = seller.squad.filter((candidate) => candidate.id !== player.id)
 
@@ -93,7 +97,12 @@ export const buyPlayer = (
         return buyer
       }
       if (club.id === seller.id) {
-        return seller
+        return seller.id === sellerBudgetClub.id
+          ? { ...seller, budget: sellerBudgetClub.budget }
+          : seller
+      }
+      if (club.id === sellerBudgetClub.id) {
+        return sellerBudgetClub
       }
       return cloneClub(club)
     }),
@@ -123,11 +132,127 @@ const findMarketBuyer = (
   return [...clubs]
     .filter(
       (club) =>
-        club.id !== sellerClubId &&
+        getOrganizationClubId(club.id) !== getOrganizationClubId(sellerClubId) &&
+        !isReserveClubId(club.id) &&
         club.squad.length < careerConfig.maximumSquadSize &&
         club.budget >= price,
     )
     .sort((left, right) => right.budget - left.budget)[0]
+}
+
+export interface ReserveTransferResult extends TransferResult {
+  academy: AcademyState
+}
+
+// ПОКУПАЕТ ИГРОКА ВИРТУАЛЬНОГО ФАРМА И ЗАЧИСЛЯЕТ ДЕНЬГИ ГОЛОВНОМУ КЛУБУ
+export const buyReservePlayer = (
+  clubs: readonly Club[],
+  academy: AcademyState,
+  buyerClubId: string,
+  playerId: string,
+): ReserveTransferResult => {
+  const player = academy.reserveTeam.squad.find((candidate) => candidate.id === playerId)
+  const buyer = findClub(clubs, buyerClubId)
+  const parent = findClub(clubs, academy.clubId)
+  if (!player || !buyer || !parent) {
+    return { success: false, message: t('transfers.messages.notFound'), clubs: clubs.map(cloneClub), academy }
+  }
+  if (getOrganizationClubId(buyer.id) === academy.clubId) {
+    return { success: false, message: t('transfers.messages.alreadyInClub'), clubs: clubs.map(cloneClub), academy }
+  }
+  if (buyer.squad.length >= careerConfig.maximumSquadSize) {
+    return { success: false, message: t('transfers.messages.squadFull'), clubs: clubs.map(cloneClub), academy }
+  }
+  if (buyer.budget < player.value) {
+    return { success: false, message: t('transfers.messages.insufficientBudget'), clubs: clubs.map(cloneClub), academy }
+  }
+
+  const nextClubs = clubs.map((club) => {
+    if (club.id === buyer.id) {
+      return { ...cloneClub(club), budget: club.budget - player.value, squad: [...club.squad, { ...player }] }
+    }
+    if (club.id === parent.id) return { ...cloneClub(club), budget: club.budget + player.value }
+    return cloneClub(club)
+  })
+  return {
+    success: true,
+    message: t('transfers.messages.bought', { player: `${player.firstName} ${player.lastName}` }),
+    clubs: nextClubs,
+    academy: {
+      ...academy,
+      reserveTeam: {
+        ...academy.reserveTeam,
+        squad: academy.reserveTeam.squad.filter((candidate) => candidate.id !== playerId),
+      },
+    },
+  }
+}
+
+// ПРОДАЁТ ИГРОКА ФАРМА ОТ ИМЕНИ ГОЛОВНОГО КЛУБА
+export const sellReservePlayer = (
+  clubs: readonly Club[],
+  academy: AcademyState,
+  playerId: string,
+): ReserveTransferResult => {
+  const linkedClub = academy.reserveTeam.linkedClubId
+    ? findClub(clubs, academy.reserveTeam.linkedClubId)
+    : undefined
+  const reserveSquad = linkedClub?.squad ?? academy.reserveTeam.squad
+  const player = reserveSquad.find((candidate) => candidate.id === playerId)
+  const parent = findClub(clubs, academy.clubId)
+  if (!player || !parent) {
+    return {
+      success: false,
+      message: t('transfers.messages.notFound'),
+      clubs: clubs.map(cloneClub),
+      academy,
+    }
+  }
+
+  const price = Math.round(player.value * careerConfig.transferSaleCoefficient)
+  const buyerSource = findMarketBuyer(clubs, academy.clubId, price)
+  if (!buyerSource) {
+    return {
+      success: false,
+      message: t('transfers.messages.noBuyer'),
+      clubs: clubs.map(cloneClub),
+      academy,
+    }
+  }
+
+  const nextClubs = clubs.map((club) => {
+    if (club.id === parent.id) return { ...cloneClub(club), budget: club.budget + price }
+    if (club.id === buyerSource.id) {
+      return { ...cloneClub(club), budget: club.budget - price, squad: [...club.squad, { ...player }] }
+    }
+    if (club.id === linkedClub?.id) {
+      return { ...cloneClub(club), squad: club.squad.filter((candidate) => candidate.id !== playerId) }
+    }
+    return cloneClub(club)
+  })
+  const nextAcademy = {
+    ...academy,
+    reserveTeam: linkedClub
+      ? academy.reserveTeam
+      : {
+          ...academy.reserveTeam,
+          squad: academy.reserveTeam.squad.filter((candidate) => candidate.id !== playerId),
+        },
+    history: [{
+      id: `transfer:${academy.clubId}:${player.id}:${academy.history.length}`,
+      season: academy.nextIntakeSeason - 1,
+      type: 'transfer' as const,
+      playerId: player.id,
+      playerName: `${player.firstName} ${player.lastName}`.trim(),
+    }, ...academy.history].slice(0, 80),
+  }
+
+  return {
+    success: true,
+    message: t('transfers.messages.sold', { player: `${player.firstName} ${player.lastName}`, price }),
+    clubs: nextClubs,
+    academy: nextAcademy,
+  }
 }
 
 // ПРОВОДИТ ПРОДАЖУ ИГРОКА И ЗАЧИСЛЯЕТ ДОХОД КЛУБУ

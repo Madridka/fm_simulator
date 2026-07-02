@@ -29,6 +29,21 @@ export const kdvProfile: ClubProfile = {
   historicalStats: {
     foundedYear: 2025,
   },
+  development: {
+    academy: {
+      level: 6,
+      recruitment: 7,
+      coaching: 6,
+      facilities: 5,
+      annualBudget: 1_200_000,
+      intakeSize: { min: 5, max: 8 },
+    },
+    reserveTeam: {
+      mode: 'generated',
+      name: 'КДВ-2',
+      shortName: 'КДВ-2',
+    },
+  },
   squad: [
     // Goalkeepers
     {

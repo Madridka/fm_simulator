@@ -9,6 +9,14 @@
   "ratingValue": "Р{rating}",
   "divisionFallback": "Дивизион {division}",
   "competitionFallback": "Соревнование {competition}",
+  "nationalities": {
+    "russia": "Россия",
+    "spain": "Испания",
+    "england": "Англия",
+    "germany": "Германия",
+    "france": "Франция",
+    "italy": "Италия"
+  },
   "positions": {
     "all": "Все позиции",
     "GK": "Вратарь",

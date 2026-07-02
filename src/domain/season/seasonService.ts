@@ -1,4 +1,10 @@
 import { careerConfig } from '@/data/gameConfig/career'
+import {
+  createAcademies,
+  ensureAcademies,
+  normalizeGeneratedAcademyPlayers,
+  progressAcademiesForNewSeason,
+} from '@/domain/academy/academyService'
 import { getCountryCompetitionConfig } from '@/data/gameConfig'
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import { championships, getChampionshipClubs } from '@/data/clubs'
@@ -297,7 +303,7 @@ export const createInitialGameState = (
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
-    configVersion: 2,
+    configVersion: 3,
     championshipId,
     selectedClubId,
     season: 1,
@@ -312,21 +318,35 @@ export const createInitialGameState = (
     scheduleConflictResolutions: scheduled.resolutions,
     lineups: createDefaultLineups(clubs),
     playerStats: createInitialPlayerStats(clubs),
+    academies: createAcademies(clubs, 1, selectedClubId),
+    externalClubOverrides: {},
     lastCompletedOrder: 0,
   }
 }
 
 // ДОПОЛНЯЕТ НЕПОЛНОЕ СОХРАНЕНИЕ ДАННЫМИ МИРОВЫХ ЛИГ
 export const ensureWorldCompetitions = (state: GameState): GameState => {
-  const clubs = recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1)
+  const clubs = normalizeGeneratedAcademyPlayers(
+    recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1),
+  )
+  const academies = ensureAcademies(
+    clubs,
+    state.academies,
+    state.season,
+    state.selectedClubId,
+  )
   const existingWorldClubs = state.worldClubs ?? {}
   const worldClubs = championshipIds.reduce<Record<ChampionshipId, Club[]>>(
     (result, championshipId) => {
       const existingClubs = existingWorldClubs[championshipId]
-      result[championshipId] =
+      const baseClubs =
         championshipId === state.championshipId
           ? clubs.map(cloneClub)
           : (existingClubs?.map(cloneClub) ?? getChampionshipClubs(championshipId).map(cloneClub))
+      const overrides = state.externalClubOverrides?.[championshipId] ?? {}
+      result[championshipId] = baseClubs.map((club) =>
+        overrides[club.id] ? cloneClub(overrides[club.id]!) : club,
+      )
       return result
     },
     {} as Record<ChampionshipId, Club[]>,
@@ -355,7 +375,9 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
 
   return {
     ...state,
+    configVersion: 3,
     clubs,
+    academies,
     leagueTables: calculateLeagueTables(clubs, state.matches),
     worldClubs,
     worldMatches,
@@ -1045,7 +1067,7 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
         suspensionMatchesRemaining: undefined,
         suspensionReason: undefined,
       }
-    }),
+    }).filter((player) => player.age <= 38),
   }
 }
 
@@ -1078,10 +1100,32 @@ export const finishSeason = (state: GameState): GameState => {
     leagueTables: calculateLeagueTables(state.clubs, state.matches),
   })
   const nextSeason = state.season + 1
-  const progressedClubs = rewardedAndMoved.map((club) =>
+  const seasonProgressedClubs = rewardedAndMoved.map((club) =>
     progressPlayersForNewSeason(club, nextSeason),
   )
+  const academyProgress = progressAcademiesForNewSeason(
+    seasonProgressedClubs,
+    state.academies,
+    nextSeason,
+    state.selectedClubId,
+  )
+  const progressedClubs = academyProgress.clubs
+  const externalClubOverrides: NonNullable<GameState['externalClubOverrides']> = {}
+  for (const [championshipId, overrides] of Object.entries(state.externalClubOverrides ?? {})) {
+    if (!overrides) continue
+    externalClubOverrides[championshipId as ChampionshipId] = Object.fromEntries(
+      Object.entries(overrides).map(([clubId, club]) => [
+        clubId,
+        progressPlayersForNewSeason(club, nextSeason),
+      ]),
+    )
+  }
   const worldClubs = createWorldClubs()
+  for (const [championshipId, overrides] of Object.entries(externalClubOverrides)) {
+    if (!overrides) continue
+    const id = championshipId as ChampionshipId
+    worldClubs[id] = worldClubs[id].map((club) => overrides[club.id] ? cloneClub(overrides[club.id]!) : club)
+  }
   worldClubs[state.championshipId] = progressedClubs.map(cloneClub)
   const worldMatches = createWorldMatches(worldClubs, nextSeason)
   const leagueMatches = worldMatches[state.championshipId].map(cloneMatch)
@@ -1103,7 +1147,7 @@ export const finishSeason = (state: GameState): GameState => {
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
   return {
-    configVersion: 2,
+    configVersion: 3,
     championshipId: state.championshipId,
     selectedClubId: state.selectedClubId,
     season: nextSeason,
@@ -1118,6 +1162,8 @@ export const finishSeason = (state: GameState): GameState => {
     worldMatches: syncedWorldMatches,
     worldLeagueTables,
     playerStats: createInitialPlayerStats(progressedClubs),
+    academies: academyProgress.academies,
+    externalClubOverrides,
     lastCompletedOrder: 0,
   }
 }

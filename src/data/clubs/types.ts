@@ -6,7 +6,25 @@ export interface ClubProfile {
   assets?: ClubAssets
   stadium?: ClubStadium
   historicalStats?: ClubHistoricalStats
+  development?: ClubDevelopmentProfile
   squad?: Player[]
+}
+
+export interface ClubDevelopmentProfile {
+  academy?: Partial<{
+    level: number
+    recruitment: number
+    coaching: number
+    facilities: number
+    annualBudget: number
+    intakeSize: { min: number; max: number }
+  }>
+  reserveTeam?: {
+    mode: 'generated' | 'linked'
+    linkedClubId?: string
+    name?: string
+    shortName?: string
+  }
 }
 
 // ОБЯЗАТЕЛЬНАЯ ИГРОВАЯ КОНФИГУРАЦИЯ КЛУБА

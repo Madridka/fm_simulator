@@ -16,6 +16,7 @@ export const useAppStore = defineStore('app', () => {
     { to: '/dashboard', label: t('nav.overview'), icon: 'home' },
     { divider: true },
     { to: '/squad', label: t('nav.squad'), icon: 'users' },
+    { to: '/academy', label: t('nav.academy'), icon: 'academy' },
     { to: '/transfers', label: t('nav.transfers'), icon: 'swap' },
     { divider: true },
     { to: '/calendar', label: t('nav.calendar'), icon: 'calendar' },

@@ -27,6 +27,20 @@ export const zenitProfile: ClubProfile = {
   historicalStats: {
     foundedYear: 1925,
   },
+  development: {
+    academy: {
+      level: 18,
+      recruitment: 18,
+      coaching: 17,
+      facilities: 18,
+      annualBudget: 12_000_000,
+      intakeSize: { min: 8, max: 12 },
+    },
+    reserveTeam: {
+      mode: 'linked',
+      linkedClubId: 'zenit-2',
+    },
+  },
   squad: [
     // Goalkeepers
     {

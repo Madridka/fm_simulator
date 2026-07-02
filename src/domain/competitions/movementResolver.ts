@@ -9,6 +9,7 @@ import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import { selectTableRows } from '@/domain/competitions/selectors'
 import { validateCompetitionParticipants } from '@/domain/competitions/participantValidator'
 import type { Club, LeagueTableRow } from '@/types/football'
+import { reserveParentByClubId } from '@/data/reserveClubRelations'
 
 interface Movement {
   clubId: string
@@ -111,6 +112,48 @@ export const resolveCompetitionMovements = (
 
   const movementByClubId = new Map<string, Movement>()
   for (const movement of movements) movementByClubId.set(movement.clubId, movement)
+
+  const sourceCompetitionByClubId = new Map(
+    clubs.map((club) => [club.id, getClubCompetitionId(club)]),
+  )
+  const projectedCompetition = (clubId: string): string | undefined =>
+    movementByClubId.get(clubId)?.targetCompetitionId ?? sourceCompetitionByClubId.get(clubId)
+
+  // Фарм не может оказаться в одной лиге с основой или выше неё. При конфликте
+  // отменяется парная ротация, поэтому установленное число участников сохраняется.
+  for (const reserve of clubs) {
+    const parentId = reserveParentByClubId[reserve.id]
+    if (!parentId) continue
+    const reserveSource = sourceCompetitionByClubId.get(reserve.id)
+    const reserveTarget = projectedCompetition(reserve.id)
+    const parentTarget = projectedCompetition(parentId)
+    if (!reserveSource || !reserveTarget || !parentTarget) continue
+    const reserveLevel = config.competitions[reserveTarget]?.level
+    const parentLevel = config.competitions[parentTarget]?.level
+    if (!reserveLevel || !parentLevel || reserveLevel > parentLevel) continue
+
+    const reserveMovement = movementByClubId.get(reserve.id)
+    if (reserveMovement && reserveTarget !== reserveSource) {
+      const counterpart = [...movementByClubId.values()].find((movement) =>
+        sourceCompetitionByClubId.get(movement.clubId) === reserveTarget &&
+        movement.targetCompetitionId === reserveSource,
+      )
+      movementByClubId.delete(reserve.id)
+      if (counterpart) movementByClubId.delete(counterpart.clubId)
+      continue
+    }
+
+    const relegatedClub = [...movementByClubId.values()].find((movement) => {
+      const sourceId = sourceCompetitionByClubId.get(movement.clubId)
+      const sourceLevel = sourceId ? config.competitions[sourceId]?.level : undefined
+      const targetLevel = config.competitions[movement.targetCompetitionId]?.level
+      return sourceId === reserveSource && sourceLevel && targetLevel && targetLevel > sourceLevel
+    })
+    if (relegatedClub) {
+      movementByClubId.delete(relegatedClub.clubId)
+      movementByClubId.set(reserve.id, { ...relegatedClub, clubId: reserve.id })
+    }
+  }
 
   const nextClubs = clubs.map((club) => {
     const sourceCompetitionId = getClubCompetitionId(club)

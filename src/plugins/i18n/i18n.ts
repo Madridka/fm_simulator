@@ -13,6 +13,7 @@ import router from '@/lang/router.json'
 import selectClub from '@/lang/selectClub.json'
 import squad from '@/lang/squad.json'
 import transfers from '@/lang/transfers.json'
+import academy from '@/lang/academy.json'
 
 // РЕГИСТРИРУЕТ РУССКИЙ СЛОВАРЬ КАК ОСНОВНОЙ НАБОР ПЕРЕВОДОВ
 const messages = {
@@ -31,6 +32,7 @@ const messages = {
     selectClub,
     squad,
     transfers,
+    academy,
   },
 }
 

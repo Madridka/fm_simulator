@@ -36,7 +36,8 @@ describe('gameSaveRepository', () => {
 
     const loaded = gameSaveRepository.load(storage)
 
-    expect(loaded?.configVersion).toBe(2)
+    expect(loaded?.configVersion).toBe(3)
+    expect(loaded?.academies.zenit).toBeDefined()
     expect(loaded?.season).toBe(initial.season)
     expect(loaded?.selectedClubId).toBe(initial.selectedClubId)
     expect(loaded?.clubs.map((club) => club.id)).toEqual(initial.clubs.map((club) => club.id))
@@ -53,7 +54,7 @@ describe('gameSaveRepository', () => {
     expect(saveResult.saved).toBe(true)
     expect(saveResult.size).toBeLessThan(JSON.stringify(state).length)
     expect(loaded?.championshipId).toBe(state.championshipId)
-    expect(loaded?.configVersion).toBe(2)
+    expect(loaded?.configVersion).toBe(3)
     expect(loaded?.clubs.every((club) => Boolean(club.competitionId))).toBe(true)
     expect(loaded?.selectedClubId).toBe(state.selectedClubId)
     expect(loaded?.clubs).toHaveLength(state.clubs.length)

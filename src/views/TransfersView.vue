@@ -64,16 +64,14 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
   <!-- СТРАНИЦА ТРАНСФЕРОВ -->
   <section
     v-if="gameStore.selectedClub"
-    class="flex flex-col gap-5 xl:h-full xl:min-h-0 xl:overflow-hidden"
+    class="flex flex-col gap-3 xl:h-full xl:min-h-0 xl:overflow-hidden"
   >
     <!-- ЗАГОЛОВОК И ТЕКУЩИЙ БЮДЖЕТ -->
-    <div class="flex shrink-0 flex-col gap-1">
-      <div>
-        <h1 class="text-2xl font-bold text-slate-950">{{ t('transfers.title') }}</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          {{ t('transfers.budget', { budget: formatMoney(gameStore.selectedClub.budget) }) }}
-        </p>
-      </div>
+    <div class="flex h-8 shrink-0 items-baseline gap-3">
+      <h1 class="text-xl font-bold text-slate-950">{{ t('transfers.title') }}</h1>
+      <p class="text-xs font-semibold text-slate-500">
+        {{ t('transfers.budget', { budget: formatMoney(gameStore.selectedClub.budget) }) }}
+      </p>
     </div>
 
     <!-- УВЕДОМЛЕНИЕ О РЕЗУЛЬТАТЕ ТРАНСФЕРА -->
@@ -86,32 +84,70 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     </div>
 
     <!-- ПАНЕЛИ ПОКУПКИ И ПРОДАЖИ ИГРОКОВ -->
-    <div
-      class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.1fr_0.9fr]"
-    >
+    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.1fr_0.9fr]">
       <!-- РЫНОК ИГРОКОВ ДЛЯ ПОКУПКИ -->
       <div
-        class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
+        class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
       >
-        <div class="flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <h2 class="text-lg font-semibold text-slate-950">{{ t('transfers.market') }}</h2>
-          <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:w-auto">
-            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
+        <div class="grid shrink-0 gap-2 2xl:grid-cols-[auto_minmax(0,1fr)] 2xl:items-end">
+          <div class="grid w-full grid-cols-2 gap-2 2xl:grid-cols-[1fr_1.15fr_1.15fr_0.8fr_0.8fr]">
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
+              {{ t('transfers.search') }}
+              <input
+                v-model.trim="transferStore.marketSearchQuery"
+                type="search"
+                :placeholder="t('transfers.searchPlaceholder')"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm"
+              />
+            </label>
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
+              {{ t('transfers.club') }}
+              <select
+                v-model="transferStore.marketClubFilter"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
+              >
+                <option value="all">{{ t('transfers.allClubs') }}</option>
+                <option
+                  v-for="club in transferStore.marketClubOptions"
+                  :key="club.value"
+                  :value="club.value"
+                >
+                  {{ club.label }}
+                </option>
+              </select>
+            </label>
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
+              {{ t('transfers.league') }}
+              <select
+                v-model="transferStore.marketLeagueFilter"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
+              >
+                <option value="all">{{ t('transfers.allLeagues') }}</option>
+                <option
+                  v-for="league in transferStore.marketLeagueOptions"
+                  :key="league.value"
+                  :value="league.value"
+                >
+                  {{ league.label }}
+                </option>
+              </select>
+            </label>
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.position') }}
               <select
                 v-model="transferStore.marketPositionFilter"
-                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
               >
                 <option v-for="position in positions" :key="position" :value="position">
                   {{ positionLabel(position) }}
                 </option>
               </select>
             </label>
-            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.sorting') }}
               <select
                 v-model="transferStore.marketSortKey"
-                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
+                class="h-9 w-full min-w-0 rounded-md border border-slate-300 bg-white px-2 text-sm"
               >
                 <option v-for="sort in sortOptions" :key="sort" :value="sort">
                   {{ sortLabel(sort) }}
@@ -120,18 +156,22 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
             </label>
           </div>
         </div>
-        <div class="mt-4 min-h-0 flex-1 overflow-auto rounded-md border border-slate-200">
+        <div class="mt-3 min-h-0 flex-1 overflow-auto rounded-md border border-slate-200">
           <div
             v-for="item in transferStore.marketPlayers"
-            :key="item.player.id"
-            class="grid gap-3 border-b border-slate-100 p-3 md:grid-cols-[1fr_80px_90px_110px_auto] md:items-center"
+            :key="`${item.championshipId}:${item.player.id}`"
+            class="grid gap-3 border-b border-slate-100 p-3 md:grid-cols-[1fr_80px_90px_110px_170px] md:items-center"
           >
-            <div>
-              <div class="font-semibold text-slate-950">
+            <div class="min-w-0">
+              <div class="truncate font-semibold text-slate-950">
                 {{ item.player.firstName }} {{ item.player.lastName }}
               </div>
-              <div class="text-sm text-slate-500">
-                {{ item.clubName }} · {{ positionLabel(item.player.position) }}
+              <div
+                class="truncate text-sm text-slate-500"
+                :title="`${item.clubName} · ${item.leagueName}`"
+              >
+                {{ item.clubName }} · {{ item.leagueName }} ·
+                {{ positionLabel(item.player.position) }}
               </div>
             </div>
             <div class="text-sm text-slate-700">
@@ -141,42 +181,67 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               {{ t('common.age', { age: item.player.age }) }}
             </div>
             <div class="font-semibold text-slate-950">{{ formatMoney(item.player.value) }}</div>
-            <Button
-              size="small"
-              :label="t('transfers.buy')"
-              :disabled="
-                gameStore.selectedClub.budget < item.player.value ||
-                gameStore.selectedClub.squad.length >= careerConfig.maximumSquadSize
-              "
-              @click="transferStore.buy(item.player.id)"
-            />
+            <div class="grid gap-1">
+              <Button
+                size="small"
+                :label="t('transfers.buyFirst')"
+                :disabled="
+                  gameStore.selectedClub.budget < item.player.value ||
+                  gameStore.selectedClub.squad.length >= careerConfig.maximumSquadSize
+                "
+                @click="transferStore.buy(item.player.id, 'first')"
+              />
+              <Button
+                size="small"
+                severity="secondary"
+                :label="t('transfers.buyReserve')"
+                :disabled="
+                  item.player.age > 23 ||
+                  gameStore.selectedClub.budget < item.player.value ||
+                  gameStore.selectedClub.squad.length >= careerConfig.maximumSquadSize
+                "
+                @click="transferStore.buy(item.player.id, 'reserve')"
+              />
+            </div>
+          </div>
+          <div
+            v-if="!transferStore.marketPlayers.length"
+            class="grid h-full min-h-40 place-items-center px-6 text-center text-sm text-slate-500"
+          >
+            {{
+              !transferStore.marketSearchQuery &&
+              transferStore.marketLeagueFilter === 'all' &&
+              transferStore.marketClubFilter === 'all'
+                ? t('transfers.startSearch')
+                : t('transfers.noResults')
+            }}
           </div>
         </div>
       </div>
 
       <!-- СОСТАВ КЛУБА ДЛЯ ПРОДАЖИ -->
       <div
-        class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
+        class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
       >
-        <div class="flex shrink-0 flex-col gap-3 2xl:flex-row 2xl:items-end 2xl:justify-between">
+        <div class="flex shrink-0 items-end justify-between gap-3">
           <h2 class="text-lg font-semibold text-slate-950">{{ t('transfers.sales') }}</h2>
           <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 2xl:w-auto">
-            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.position') }}
               <select
                 v-model="transferStore.squadPositionFilter"
-                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
+                class="h-9 w-full min-w-[9rem] rounded-md border border-slate-300 bg-white px-2 text-sm"
               >
                 <option v-for="position in positions" :key="position" :value="position">
                   {{ positionLabel(position) }}
                 </option>
               </select>
             </label>
-            <label class="flex min-w-0 flex-col gap-1 text-sm font-medium text-slate-700">
+            <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.sorting') }}
               <select
                 v-model="transferStore.squadSortKey"
-                class="h-10 w-full min-w-[11rem] rounded-md border border-slate-300 bg-white px-3"
+                class="h-9 w-full min-w-[9rem] rounded-md border border-slate-300 bg-white px-2 text-sm"
               >
                 <option v-for="sort in sortOptions" :key="sort" :value="sort">
                   {{ sortLabel(sort) }}
@@ -185,7 +250,7 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
             </label>
           </div>
         </div>
-        <div class="mt-4 min-h-0 flex-1 space-y-2 overflow-auto pr-1">
+        <div class="mt-3 min-h-0 flex-1 space-y-2 overflow-auto pr-1">
           <div
             v-for="player in transferStore.squadPlayers"
             :key="player.id"
@@ -212,7 +277,9 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
             <div class="mt-2 text-sm text-slate-600">
               {{
                 t('transfers.salePrice', {
-                  price: formatMoney(Math.round(player.value * careerConfig.transferSaleCoefficient)),
+                  price: formatMoney(
+                    Math.round(player.value * careerConfig.transferSaleCoefficient),
+                  ),
                 })
               }}
             </div>

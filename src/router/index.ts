@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/SquadView.vue'),
       },
       {
+        path: 'academy',
+        name: 'academy',
+        component: () => import('@/views/AcademyView.vue'),
+      },
+      {
         path: 'competitions',
         redirect: { name: 'league' },
       },

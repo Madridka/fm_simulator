@@ -1,6 +1,7 @@
 import { countryCompetitionConfigs, findCompetitionConfig } from '@/data/gameConfig'
 import { getClubCompetitionId, resolveLegacyCompetitionId } from '@/domain/competition/competitionIdentity'
-import type { ChampionshipId, Club, Match } from '@/types/football'
+import type { AcademyState, ChampionshipId, Club, Match } from '@/types/football'
+import { reserveParentByClubId } from '@/data/reserveClubRelations'
 
 interface MigratableSave {
   configVersion?: number
@@ -8,6 +9,16 @@ interface MigratableSave {
   selectedClubId: string
   clubs: Club[]
   matches: Match[]
+  academies?: Record<string, AcademyState>
+}
+
+export const migrateSaveToAcademiesV3 = <T extends MigratableSave>(source: T) => {
+  const migrated = migrateSaveToCompetitionConfigV2(source)
+  return {
+    ...migrated,
+    configVersion: 3 as const,
+    academies: source.academies ?? {},
+  }
 }
 
 const inferCountryId = (clubs: readonly Club[], selectedClubId: string): ChampionshipId => {
@@ -28,6 +39,8 @@ export const migrateSaveToCompetitionConfigV2 = <T extends MigratableSave>(sourc
   const championshipId = source.championshipId ?? inferCountryId(source.clubs, source.selectedClubId)
   const clubs = source.clubs.map((club) => ({
     ...club,
+    teamType: reserveParentByClubId[club.id] ? 'reserve' as const : 'first' as const,
+    parentClubId: reserveParentByClubId[club.id],
     competitionId:
       (club.competitionId && findCompetitionConfig(club.competitionId)
         ? club.competitionId

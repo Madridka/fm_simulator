@@ -20,7 +20,13 @@ export interface Player {
   injuryUntilOrder?: number
   suspensionMatchesRemaining?: number
   suspensionReason?: 'red-card' | 'second-yellow'
+  academyClubId?: string
+  intakeSeason?: number
+  homegrown?: boolean
+  nationality?: ChampionshipId
 }
+
+export type ClubTeamType = 'first' | 'reserve'
 
 export interface Club {
   id: string
@@ -40,6 +46,41 @@ export interface Club {
   secondaryColor: string
   logoUrl?: string
   squad: Player[]
+  teamType?: ClubTeamType
+  parentClubId?: string
+}
+
+export type ReserveTeamMode = 'virtual' | 'competition'
+
+export interface AcademyEvent {
+  id: string
+  season: number
+  type: 'intake' | 'promotion' | 'demotion' | 'release' | 'transfer'
+  playerId: string
+  playerName: string
+}
+
+export interface ReserveTeamState {
+  id: string
+  parentClubId: string
+  name: string
+  shortName: string
+  mode: ReserveTeamMode
+  linkedClubId?: string
+  squad: Player[]
+}
+
+export interface AcademyState {
+  clubId: string
+  level: number
+  recruitment: number
+  coaching: number
+  facilities: number
+  annualBudget: number
+  intakeSize: { min: number; max: number }
+  nextIntakeSeason: number
+  reserveTeam: ReserveTeamState
+  history: AcademyEvent[]
 }
 
 // ТАКТИЧЕСКИЕ СХЕМЫ, СЛОТЫ И СОСТАВЫ
@@ -237,10 +278,12 @@ export interface GameState {
   worldClubs?: Partial<Record<ChampionshipId, Club[]>>
   worldMatches?: Partial<Record<ChampionshipId, Match[]>>
   worldLeagueTables?: Partial<Record<ChampionshipId, Record<string, LeagueTableRow[]>>>
+  externalClubOverrides?: Partial<Record<ChampionshipId, Record<string, Club>>>
   cup: CupState
   playoffs?: import('@/data/gameConfig/types').PlayoffState[]
   scheduleConflictResolutions?: import('@/data/gameConfig/types').ScheduleConflictResolution[]
   lineups: Record<string, ClubLineup>
   playerStats: Record<string, PlayerStats>
+  academies: Record<string, AcademyState>
   lastCompletedOrder: number
 }

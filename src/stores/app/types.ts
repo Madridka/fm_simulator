@@ -1,5 +1,5 @@
 // МОДЕЛЬ ПУНКТОВ И РАЗДЕЛИТЕЛЕЙ ГЛАВНОЙ НАВИГАЦИИ
-export type AppNavIcon = 'home' | 'users' | 'swap' | 'table' | 'calendar' | 'trophy'
+export type AppNavIcon = 'home' | 'users' | 'academy' | 'swap' | 'table' | 'calendar' | 'trophy'
 
 export interface AppNavRouteItem {
   to: string

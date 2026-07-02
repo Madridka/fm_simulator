@@ -3,6 +3,7 @@ import { clubProfilesById } from '@/data/clubDatabase'
 import type { ClubConfig, ClubProfile } from '@/data/clubs/types'
 import type { Club, Player } from '@/types/football'
 import { resolveLegacyCompetitionId } from '@/domain/competition/competitionIdentity'
+import { reserveParentByClubId } from '@/data/reserveClubRelations'
 
 // ОБЪЕДИНЯЕТ БАЗОВЫЙ ПРОФИЛЬ КЛУБА С РАСШИРЕННЫМИ ДАННЫМИ ИЗ БАЗЫ
 const mergeProfile = (baseProfile: ClubProfile, overrideProfile?: ClubProfile): ClubProfile => ({
@@ -42,6 +43,8 @@ const createClub = (profile: ClubProfile, index: number): Club => {
 
   return {
     ...sourceConfig,
+    teamType: reserveParentByClubId[sourceConfig.id] ? 'reserve' : 'first',
+    parentClubId: reserveParentByClubId[sourceConfig.id],
     competitionId:
       sourceConfig.competitionId ??
       resolveLegacyCompetitionId(sourceConfig.leagueId, sourceConfig.groupId, sourceConfig.divisionId),
