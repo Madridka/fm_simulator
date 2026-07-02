@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { buyPlayer, buyReservePlayer, sellPlayer } from '@/domain/transfer/transferService'
 import { useGameStore } from '@/stores/game/gameStore'
-import type { ChampionshipId, Club, Player, PlayerPosition } from '@/types/football'
+import type { ChampionshipId, Club, GameState, Player, PlayerPosition } from '@/types/football'
 import type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 import { getOrganizationClubId } from '@/data/reserveClubRelations'
 import { moveToReserveTeam } from '@/domain/academy/academyService'
@@ -166,7 +166,7 @@ export const useTransferStore = defineStore('transfers', () => {
       message.value = result.message
       messageId.value += 1
       if (result.success) {
-        let nextState = {
+        let nextState: GameState = {
           ...game,
           clubs: result.clubs,
           academies: { ...game.academies, [result.academy.clubId]: result.academy },
@@ -202,7 +202,7 @@ export const useTransferStore = defineStore('transfers', () => {
         ...game.externalClubOverrides?.[marketPlayer.championshipId],
         ...Object.fromEntries(changedExternalClubs.map((club) => [club.id, club])),
       }
-      let nextState = {
+      let nextState: GameState = {
         ...game,
         clubs,
         worldClubs: {

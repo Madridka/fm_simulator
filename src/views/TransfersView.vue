@@ -6,7 +6,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import { useTransferStore, type TransferSortKey } from '@/stores/transfers/transferStore'
 import type { PlayerPosition } from '@/types/football'
 import { formatMoney } from '@/utils/format'
-import { getReservePlayers } from '@/domain/academy/academyService'
+import { academyLimits, getReservePlayers } from '@/domain/academy/academyService'
 import SectionHero from '@/components/ui/SectionHero.vue'
 
 // ИСТОЧНИКИ ДАННЫХ КАРЬЕРЫ И ОПЕРАЦИЙ ТРАНСФЕРНОГО РЫНКА
@@ -83,8 +83,8 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               label: t('transfers.availableBudget'),
               value: formatMoney(gameStore.selectedClub.budget),
             },
-            { label: t('transfers.clubPlayers'), value: gameStore.selectedClub.squad.length },
-            { label: t('transfers.academyPlayers'), value: academyPlayersCount },
+          { label: t('transfers.clubPlayers'), value: `${gameStore.selectedClub.squad.length}/${careerConfig.maximumSquadSize}` },
+          { label: t('transfers.academyPlayers'), value: `${academyPlayersCount}/${academyLimits.reserveMaximumSquadSize}` },
           ]"
           :key="item.label"
           class="min-w-28 border-l border-white/15 px-3"

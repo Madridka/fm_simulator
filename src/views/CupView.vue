@@ -129,10 +129,6 @@ const roundStatusLabel = (round?: CupRound): string => {
   return round.status === 'completed' ? t('cup.roundCompleted') : t('cup.roundPending')
 }
 
-// ВОЗВРАЩАЕТ КЛАСС ОФОРМЛЕНИЯ СТАТУСА РАУНДА
-const roundStatusClass = (round?: CupRound): string =>
-  round?.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
-
 // ОПРЕДЕЛЯЕТ ПОБЕДИТЕЛЯ ПАРЫ
 const tieWinnerClubId = (tie: CupTie): string | undefined => {
   const matchResult = tie.matchId ? matchById(tie.matchId)?.result : undefined
@@ -204,48 +200,27 @@ const tieStatusLabel = (tie: CupTie): string => {
       :subtitle="t('cup.description')"
     >
       <template #actions>
-      <div
-        v-if="championClub"
-        class="rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-xs font-black text-emerald-50"
-      >
-        {{ t('cup.champion', { club: championClub.name }) }}
-      </div>
-      </template>
-    </SectionHero>
-
-    <!-- СЕТКА АКТИВНОГО РАУНДА -->
-    <article
-      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]"
-    >
-      <!-- СОДЕРЖИМОЕ АКТИВНОГО РАУНДА -->
-      <div
-        class="flex shrink-0 flex-col gap-3 border-b border-slate-100 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between"
-      >
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <h2 class="text-xl font-black text-slate-950">{{ roundLabel(activeRound) }}</h2>
+        <div v-if="championClub" class="hidden rounded-lg border border-white/15 bg-white/10 px-3 py-2 text-xs font-black text-emerald-50 xl:block">
+          {{ t('cup.champion', { club: championClub.name }) }}
+        </div>
+        <div class="border-l border-white/15 px-3">
+          <div class="flex items-center gap-2">
+            <span class="text-base font-black text-white">{{ roundLabel(activeRound) }}</span>
             <span
               v-if="activeRound"
-              class="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wide"
-              :class="roundStatusClass(activeRound)"
+              class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-emerald-100"
             >
               {{ roundStatusLabel(activeRound) }}
             </span>
           </div>
-          <p class="mt-1 text-xs font-semibold text-slate-400">
-            {{
-              t('cup.stageProgress', {
-                current: visibleRounds.length ? activeRoundIndex + 1 : 0,
-                total: visibleRounds.length,
-              })
-            }}
-          </p>
+          <div class="mt-0.5 text-[10px] font-semibold text-emerald-200/65">
+            {{ t('cup.stageProgress', { current: visibleRounds.length ? activeRoundIndex + 1 : 0, total: visibleRounds.length }) }}
+          </div>
         </div>
-
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
           <button
             type="button"
-            class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-lg font-black text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            class="grid h-9 w-9 place-items-center rounded-lg border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
             :disabled="!canMoveBack"
             :aria-label="t('cup.previousRound')"
             @click="moveRound(-1)"
@@ -254,7 +229,7 @@ const tieStatusLabel = (tie: CupTie): string => {
           </button>
           <button
             type="button"
-            class="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-lg font-black text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            class="grid h-9 w-9 place-items-center rounded-lg border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
             :disabled="!canMoveForward"
             :aria-label="t('cup.nextRound')"
             @click="moveRound(1)"
@@ -262,8 +237,13 @@ const tieStatusLabel = (tie: CupTie): string => {
             ›
           </button>
         </div>
-      </div>
+      </template>
+    </SectionHero>
 
+    <!-- СЕТКА АКТИВНОГО РАУНДА -->
+    <article
+      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(20,46,38,0.08)]"
+    >
       <div
         v-if="activeRound"
         class="grid min-h-0 flex-1 gap-4 overflow-hidden bg-slate-50/70 p-4"

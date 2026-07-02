@@ -488,7 +488,7 @@ onBeforeRouteLeave(() => {
           <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
             {{ t('squad.formation') }}
             <select
-              class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
+              class="h-9 rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm text-white outline-none focus:border-emerald-400"
               :value="squadStore.lineup.formation"
               @change="setFormation"
             >
@@ -496,6 +496,7 @@ onBeforeRouteLeave(() => {
                 v-for="formation in squadStore.formations"
                 :key="formation"
                 :value="formation"
+                class="bg-emerald-950 text-white"
               >
                 {{ formation }}
               </option>
@@ -504,11 +505,11 @@ onBeforeRouteLeave(() => {
           <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
             {{ t('squad.tactic') }}
             <select
-              class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm"
+              class="h-9 rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm text-white outline-none focus:border-emerald-400"
               :value="squadStore.lineup.tacticalStyle"
               @change="setTactic"
             >
-              <option v-for="style in squadStore.tacticalStyles" :key="style" :value="style">
+              <option v-for="style in squadStore.tacticalStyles" :key="style" :value="style" class="bg-emerald-950 text-white">
                 {{ tacticLabels[style] }}
               </option>
             </select>
