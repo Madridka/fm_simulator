@@ -1,154 +1,21 @@
-import { RussianLeagueGroupId, RussianLeagueId } from '@/data/clubs/enums'
 import type { ClubProfile } from '@/data/clubs/types'
 
-const leagueId = String(RussianLeagueId['second-league-a'])
-const groupId = String(RussianLeagueGroupId.silver)
+import { avangardKurskProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/avangard-kursk/avangard-kursk'
+import { dinamoVladivostokProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/dinamo-vladivostok/dinamo-vladivostok'
+import { irtyshProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/irtysh/irtysh'
+import { kalugaProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/kaluga/kaluga'
+import { kubanProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/kuban/kuban'
+import { muromProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/murom/murom'
+import { rodina2Profile } from '@/data/clubDatabase/russia/3. Leon A - Silver/rodina-2/rodina-2'
+import { torpedoMiassProfile } from '@/data/clubDatabase/russia/3. Leon A - Silver/torpedo-miass/torpedo-miass'
 
-// LEON Вторая лига А — Серебро
-// Первый этап сезона 2025/26
 export const russiaSecondLeagueASilverClubProfiles: ClubProfile[] = [
-  {
-    config: {
-      id: 'rodina-2',
-      name: 'Родина-2',
-      shortName: 'РД2',
-      city: 'Москва',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 66,
-      attackRating: 68,
-      midfieldRating: 67,
-      defenseRating: 63,
-      budget: 7_000_000,
-      primaryColor: '#1f4aa8',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'kaluga',
-      name: 'Калуга',
-      shortName: 'КАЛ',
-      city: 'Калуга',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 66,
-      attackRating: 65,
-      midfieldRating: 66,
-      defenseRating: 67,
-      budget: 6_000_000,
-      primaryColor: '#0057b8',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'torpedo-miass',
-      name: 'Торпедо Миасс',
-      shortName: 'ТМ',
-      city: 'Миасс',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 65,
-      attackRating: 64,
-      midfieldRating: 65,
-      defenseRating: 67,
-      budget: 5_000_000,
-      primaryColor: '#111111',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'irtysh',
-      name: 'Иртыш',
-      shortName: 'ИРТ',
-      city: 'Омск',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 65,
-      attackRating: 64,
-      midfieldRating: 65,
-      defenseRating: 66,
-      budget: 5_500_000,
-      primaryColor: '#0057b8',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'kuban',
-      name: 'Кубань',
-      shortName: 'КУБ',
-      city: 'Краснодар',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 65,
-      attackRating: 66,
-      midfieldRating: 65,
-      defenseRating: 64,
-      budget: 7_000_000,
-      primaryColor: '#f5d000',
-      secondaryColor: '#00843d',
-    },
-  },
-  {
-    config: {
-      id: 'dinamo-vladivostok',
-      name: 'Динамо-Владивосток',
-      shortName: 'ДВЛ',
-      city: 'Владивосток',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 64,
-      attackRating: 63,
-      midfieldRating: 64,
-      defenseRating: 66,
-      budget: 6_000_000,
-      primaryColor: '#0057b8',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'avangard-kursk',
-      name: 'Авангард',
-      shortName: 'АВА',
-      city: 'Курск',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 63,
-      attackRating: 64,
-      midfieldRating: 63,
-      defenseRating: 62,
-      budget: 4_500_000,
-      primaryColor: '#0057b8',
-      secondaryColor: '#ffffff',
-    },
-  },
-  {
-    config: {
-      id: 'murom',
-      name: 'Муром',
-      shortName: 'МУР',
-      city: 'Муром',
-      divisionId: 3,
-      leagueId,
-      groupId,
-      rating: 62,
-      attackRating: 62,
-      midfieldRating: 63,
-      defenseRating: 62,
-      budget: 4_000_000,
-      primaryColor: '#d71920',
-      secondaryColor: '#111111',
-    },
-  },
+  avangardKurskProfile,
+  dinamoVladivostokProfile,
+  irtyshProfile,
+  kalugaProfile,
+  kubanProfile,
+  muromProfile,
+  rodina2Profile,
+  torpedoMiassProfile,
 ]
