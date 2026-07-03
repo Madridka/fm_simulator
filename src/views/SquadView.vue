@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
+import { useCareerContext } from '@/composables/useCareerContext'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type { Formation, Player, PlayerPosition, PlayerStats, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
@@ -52,6 +53,7 @@ interface PlayerContractRow {
 
 // ХРАНИЛИЩА СОСТАВА И ПОЛЬЗОВАТЕЛЬСКИХ УВЕДОМЛЕНИЙ
 const squadStore = useSquadStore()
+const { isWorldCupMode } = useCareerContext()
 const toastStore = useToastStore()
 const { t } = useI18n()
 // СОСТОЯНИЕ МЫШИ, КАСАНИЯ И ЦЕЛИ ПЕРЕТАСКИВАНИЯ ИГРОКА
@@ -572,6 +574,7 @@ onBeforeRouteLeave(() => {
               @click="activeSection = 'stats'"
             >Статистика</button>
             <button
+              v-if="!isWorldCupMode"
               type="button"
               class="rounded-md px-3"
               :class="activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'"

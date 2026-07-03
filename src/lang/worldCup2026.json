@@ -30,9 +30,15 @@
   },
   "nav": {
     "overview": "Обзор",
-    "groups": "Группы",
-    "fixtures": "Матчи",
-    "bracket": "Сетка"
+    "groups": "Группа",
+    "fixtures": "Расписание",
+    "bracket": "Сетка",
+    "squadRegistration": "Дозаявка"
+  },
+  "squadRegistration": {
+    "title": "Дозаявка",
+    "subtitle": "Дополнительная заявка игроков на турнир",
+    "comingSoon": "Пока в разработке"
   },
   "stages": {
     "group-stage-1": "Групповой этап — тур 1",

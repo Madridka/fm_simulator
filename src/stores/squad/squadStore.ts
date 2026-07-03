@@ -8,30 +8,18 @@ import {
   tacticalStyles,
   validateLineup,
 } from '@/domain/season/squadSelectionService'
-import { useGameStore } from '@/stores/game/gameStore'
+import { useCareerContext } from '@/composables/useCareerContext'
 import { t } from '@/plugins/i18n/i18n'
 import type { Club, ClubLineup, Formation, FormationSlot, PlayerStats, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 import { calculateClubRating } from '@/domain/club/teamRating'
 
-// УПРАВЛЯЕТ СХЕМОЙ, ТАКТИКОЙ И ПЕРЕМЕЩЕНИЕМ ИГРОКОВ МЕЖДУ ГРУППАМИ СОСТАВА
 export const useSquadStore = defineStore('squad', () => {
-  const gameStore = useGameStore()
+  const { selectedClub, lineup, playerStats, selectedTeamId, updateLineup } = useCareerContext()
 
-  // ВОЗВРАЩАЕТ УПРАВЛЯЕМЫЙ КЛУБ
-  const club = computed((): Club | undefined => gameStore.selectedClub)
-  const gameStats = computed<Record<string, PlayerStats>>(() => gameStore.game?.playerStats ?? {})
+  const club = computed((): Club | undefined => selectedClub.value)
+  const gameStats = computed<Record<string, PlayerStats>>(() => playerStats.value)
 
-  // ВОЗВРАЩАЕТ СОХРАНЁННЫЙ СОСТАВ УПРАВЛЯЕМОГО КЛУБА
-  const lineup = computed<ClubLineup | undefined>(() => {
-    const game = gameStore.game
-    if (!game) {
-      return undefined
-    }
-    return game.lineups[game.selectedClubId]
-  })
-
-  // ВОЗВРАЩАЕТ АКТУАЛЬНЫЙ РЕЙТИНГ ТЕКУЩЕГО СТАРТОВОГО СОСТАВА
   const teamRating = computed((): number => {
     if (!club.value) {
       return 0
@@ -39,12 +27,10 @@ export const useSquadStore = defineStore('squad', () => {
     return calculateClubRating(club.value, lineup.value)
   })
 
-  // ВОЗВРАЩАЕТ ТАКТИЧЕСКИЕ СЛОТЫ ТЕКУЩЕЙ СХЕМЫ
   const slots = computed<FormationSlot[]>(() =>
     lineup.value ? getFormationSlots(lineup.value.formation) : [],
   )
 
-  // ПРОВЕРЯЕТ ГОТОВНОСТЬ СОСТАВА К МАТЧУ
   const validation = computed(() => {
     if (!club.value || !lineup.value) {
       return { valid: false, errors: [t('squad.validation.clubNotSelected')] }
@@ -52,16 +38,14 @@ export const useSquadStore = defineStore('squad', () => {
     return validateLineup(club.value, lineup.value)
   })
 
-  // СОХРАНЯЕТ ОБНОВЛЁННЫЙ СОСТАВ В ОСНОВНОМ ХРАНИЛИЩЕ ИГРЫ
   const saveLineup = (nextLineup: ClubLineup): void => {
-    const game = gameStore.game
-    if (!game) {
+    const teamId = selectedTeamId.value
+    if (!teamId) {
       return
     }
-    gameStore.updateLineup(game.selectedClubId, nextLineup)
+    updateLineup(teamId, nextLineup)
   }
 
-  // МЕНЯЕТ СХЕМУ И АВТОМАТИЧЕСКИ ПЕРЕРАСПРЕДЕЛЯЕТ ИГРОКОВ
   const setFormation = (formation: Formation): void => {
     if (!club.value || !lineup.value) {
       return
@@ -69,7 +53,6 @@ export const useSquadStore = defineStore('squad', () => {
     saveLineup(autoSelectLineup(club.value, formation, lineup.value.tacticalStyle))
   }
 
-  // МЕНЯЕТ ТАКТИЧЕСКИЙ СТИЛЬ БЕЗ ПЕРЕСТРОЕНИЯ СОСТАВА
   const setTacticalStyle = (tacticalStyle: TacticalStyle): void => {
     if (!lineup.value) {
       return
@@ -80,7 +63,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // НАЗНАЧАЕТ ИГРОКА В СЛОТ И УДАЛЯЕТ ЕГО ИЗ ПРЕЖНЕГО МЕСТА
   const assignPlayerToSlot = (slotId: string, playerId: string | null): void => {
     if (!lineup.value) {
       return
@@ -101,7 +83,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // ДОБАВЛЯЕТ ИЛИ УДАЛЯЕТ ИГРОКА ИЗ СПИСКА ЗАПАСНЫХ
   const toggleSubstitute = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -125,14 +106,12 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // ВСТАВЛЯЕТ ЗАПАСНОГО В НУЖНУЮ ПОЗИЦИЮ С УЧЁТОМ ЛИМИТА СКАМЕЙКИ
   const insertSubstitute = (substitutes: string[], playerId: string, index?: number): string[] => {
     const result = substitutes.filter((id) => id !== playerId)
     result.splice(index ?? result.length, 0, playerId)
     return result.slice(0, 7)
   }
 
-  // ПЕРЕМЕЩАЕТ ИГРОКА В ОСНОВУ И КОРРЕКТНО ОБРАБАТЫВАЕТ ЗАНЯТЫЙ СЛОТ
   const movePlayerToSlot = (
     slotId: string,
     playerId: string,
@@ -176,7 +155,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // МЕНЯЕТ МЕСТАМИ ИГРОКА СКАМЕЙКИ И РЕЗЕРВИСТА
   const swapSubstituteWithReserve = (substituteId: string, reserveId: string): void => {
     if (!lineup.value) {
       return
@@ -196,7 +174,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // ПЕРЕМЕЩАЕТ ИГРОКА ИЗ ОСНОВЫ ИЛИ РЕЗЕРВА НА СКАМЕЙКУ
   const movePlayerToSubstitutes = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -220,7 +197,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // УБИРАЕТ ИГРОКА ИЗ ОСНОВЫ И СКАМЕЙКИ В РЕЗЕРВ
   const movePlayerToReserve = (playerId: string): void => {
     if (!lineup.value) {
       return
@@ -240,7 +216,6 @@ export const useSquadStore = defineStore('squad', () => {
     })
   }
 
-  // ВОССТАНАВЛИВАЕТ ОПТИМАЛЬНЫЙ АВТОМАТИЧЕСКИЙ СОСТАВ
   const resetLineup = (): void => {
     if (!club.value) {
       return

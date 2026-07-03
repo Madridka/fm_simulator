@@ -32,8 +32,28 @@ const buildPlayedLineup = (club: ReturnType<typeof matchTeamToClub>, lineup: Clu
   }
 }
 
+const hydrateLoadedState = (loaded: WorldCup2026State | null): WorldCup2026State | null => {
+  if (!loaded) {
+    return null
+  }
+
+  const selectedTeam = loaded.teams.find((team) => team.id === loaded.selectedTeamId)
+  if (selectedTeam && !loaded.lineups[loaded.selectedTeamId]) {
+    const club = matchTeamToClub(nationalTeamToMatchTeam(selectedTeam))
+    return {
+      ...loaded,
+      lineups: {
+        ...loaded.lineups,
+        [loaded.selectedTeamId]: autoSelectLineup(club),
+      },
+    }
+  }
+
+  return loaded
+}
+
 export const useWorldCup2026Store = defineStore('worldCup2026', () => {
-  const state = ref<WorldCup2026State | null>(worldCup2026SaveRepository.load())
+  const state = ref<WorldCup2026State | null>(hydrateLoadedState(worldCup2026SaveRepository.load()))
   const activeMatchId = ref<string | null>(null)
   const preparedMatchContext = ref<PreparedMatchContext | null>(null)
 
@@ -63,6 +83,20 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
     if (state.value) {
       worldCup2026SaveRepository.save(state.value)
     }
+  }
+
+  const updateLineup = (teamId: string, lineup: ClubLineup): void => {
+    if (!state.value) {
+      return
+    }
+    state.value = {
+      ...state.value,
+      lineups: {
+        ...state.value.lineups,
+        [teamId]: lineup,
+      },
+    }
+    save()
   }
 
   const startTournament = (teamId: string): void => {
@@ -207,5 +241,6 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
     getTeamFlag,
     getTeamName,
     save,
+    updateLineup,
   }
 })

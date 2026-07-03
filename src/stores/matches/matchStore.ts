@@ -1,19 +1,39 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import { useClubStore } from '@/stores/clubs/clubsStore'
+import { useRouter } from 'vue-router'
+import { useCareerContext } from '@/composables/useCareerContext'
+import { adaptWorldCupMatch } from '@/services/worldCup2026/matchAdapter'
 import { useGameStore } from '@/stores/game/gameStore'
+import { useClubStore } from '@/stores/clubs/clubsStore'
 import type { Club, Match } from '@/types/football'
+import { matchTeamToClub, nationalTeamToMatchTeam } from '@/types/matchTeam'
 
-// ПРЕДОСТАВЛЯЕТ ПРЕДСТАВЛЕНИЯ КАЛЕНДАРЯ И РЕЗУЛЬТАТОВ КЛУБА
 export const useMatchStore = defineStore('matches', () => {
   const gameStore = useGameStore()
   const clubStore = useClubStore()
+  const router = useRouter()
+  const { isWorldCupMode, selectedTeamId, worldCupStore, paths } = useCareerContext()
 
-  // ВОЗВРАЩАЕТ БЛИЖАЙШИЙ МАТЧ ПОЛЬЗОВАТЕЛЯ
-  const nextMatch = computed<Match | undefined>(() => gameStore.nextMatch)
+  const nextMatch = computed<Match | undefined>(() => {
+    if (isWorldCupMode.value) {
+      const match = worldCupStore.nextMatch
+      return match ? adaptWorldCupMatch(match) : undefined
+    }
+    return gameStore.nextMatch
+  })
 
-  // ОТБИРАЕТ ВСЕ МАТЧИ С УЧАСТИЕМ УПРАВЛЯЕМОГО КЛУБА
   const userMatches = computed<Match[]>(() => {
+    if (isWorldCupMode.value) {
+      const state = worldCupStore.state
+      const teamId = selectedTeamId.value
+      if (!state || !teamId) {
+        return []
+      }
+      return state.matches
+        .filter((match) => match.homeTeamId === teamId || match.awayTeamId === teamId)
+        .map(adaptWorldCupMatch)
+    }
+
     const game = gameStore.game
     if (!game) {
       return []
@@ -25,7 +45,6 @@ export const useMatchStore = defineStore('matches', () => {
     )
   })
 
-  // ВОЗВРАЩАЕТ БЛИЖАЙШИЕ БУДУЩИЕ МАТЧИ ДЛЯ ВИДЖЕТОВ
   const upcomingMatches = computed<Match[]>(() =>
     userMatches.value
       .filter((match) => match.status === 'scheduled')
@@ -33,7 +52,6 @@ export const useMatchStore = defineStore('matches', () => {
       .slice(0, 6),
   )
 
-  // ВОЗВРАЩАЕТ ПОСЛЕДНИЕ СЫГРАННЫЕ МАТЧИ ДЛЯ ВИДЖЕТОВ
   const recentResults = computed<Match[]>(() =>
     userMatches.value
       .filter((match) => match.status === 'played')
@@ -41,25 +59,33 @@ export const useMatchStore = defineStore('matches', () => {
       .slice(0, 6),
   )
 
-  // ОПРЕДЕЛЯЕТ СОПЕРНИКА УПРАВЛЯЕМОГО КЛУБА В МАТЧЕ
   const getOpponent = (match: Match): Club | undefined => {
-    const game = gameStore.game
-    if (!game) {
+    const teamId = selectedTeamId.value
+    if (!teamId) {
       return undefined
     }
 
-    const opponentId =
-      match.homeClubId === game.selectedClubId ? match.awayClubId : match.homeClubId
+    if (isWorldCupMode.value) {
+      const opponentId = match.homeClubId === teamId ? match.awayClubId : match.homeClubId
+      const team = worldCupStore.state?.teams.find((candidate) => candidate.id === opponentId)
+      return team ? matchTeamToClub(nationalTeamToMatchTeam(team)) : undefined
+    }
+
+    const opponentId = match.homeClubId === teamId ? match.awayClubId : match.homeClubId
     return clubStore.getClubById(opponentId)
   }
 
-  // ВОЗВРАЩАЕТ СОПЕРНИКА В БЛИЖАЙШЕМ МАТЧЕ
   const nextOpponent = computed<Club | undefined>(() =>
     nextMatch.value ? getOpponent(nextMatch.value) : undefined,
   )
 
-  // ПЕРЕДАЁТ ВЫБРАННЫЙ МАТЧ ОСНОВНОМУ ХРАНИЛИЩУ
   const openMatch = (match: Match): void => {
+    if (isWorldCupMode.value) {
+      if (worldCupStore.prepareUserMatch()) {
+        void router.push({ name: 'world-cup-match' })
+      }
+      return
+    }
     gameStore.openMatch(match.id)
   }
 
@@ -71,5 +97,7 @@ export const useMatchStore = defineStore('matches', () => {
     recentResults,
     getOpponent,
     openMatch,
+    matchPath: computed(() => paths.value.match),
+    calendarPath: computed(() => paths.value.calendar),
   }
 })

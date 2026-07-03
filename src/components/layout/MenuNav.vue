@@ -12,11 +12,14 @@ const props = withDefaults(
     activePath: string
     items: AppNavItem[]
     selectedClub?: Club
+    teamFlag?: string
+    dashboardPath?: string
     settingsOpen: boolean
     mode?: 'sidebar' | 'drawer'
   }>(),
   {
     mode: 'sidebar',
+    dashboardPath: '/dashboard',
   },
 )
 
@@ -53,12 +56,18 @@ const handleNavigate = (): void => {
   >
     <!-- ССЫЛКА НА ГЛАВНУЮ СТРАНИЦУ КЛУБА -->
     <RouterLink
-      to="/dashboard"
+      :to="dashboardPath"
       class="flex h-[86px] items-center gap-3 px-5"
       :class="mode === 'sidebar' ? 'border-b border-white/10' : 'border-b border-slate-100'"
       @click="handleNavigate"
     >
-      <ClubBadge v-if="selectedClub" :club="selectedClub" />
+      <span
+        v-if="teamFlag"
+        class="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-white/15 bg-white/10 text-xl"
+      >
+        {{ teamFlag }}
+      </span>
+      <ClubBadge v-else-if="selectedClub" :club="selectedClub" />
       <div class="min-w-0">
         <div class="truncate text-sm font-black tracking-tight">
           {{ selectedClub?.shortName }}

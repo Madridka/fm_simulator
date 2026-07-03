@@ -7,6 +7,8 @@ import DashboardSchedulePanel from '@/components/dashboard/DashboardSchedulePane
 defineProps<{
   recentResults: Match[]
   upcomingMatches: Match[]
+  calendarPath?: string
+  matchPath?: string
 }>()
 </script>
 
@@ -15,7 +17,14 @@ defineProps<{
   <div
     class="grid h-[720px] min-h-0 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] gap-5 xl:h-auto"
   >
-    <DashboardSchedulePanel :matches="upcomingMatches" />
-    <DashboardResultsPanel :matches="recentResults" />
+    <DashboardSchedulePanel
+      :matches="upcomingMatches"
+      :calendar-path="calendarPath"
+      :match-path="matchPath"
+    />
+    <DashboardResultsPanel
+      :matches="recentResults"
+      :match-path="matchPath"
+    />
   </div>
 </template>

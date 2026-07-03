@@ -2,6 +2,8 @@ import { WORLD_CUP_SAVE_VERSION, worldCup2026Config } from '@/data/wc26/config'
 import { worldCup2026Groups } from '@/data/wc26/groups'
 import { buildAllNationalTeams } from '@/data/wc26/rosters'
 import { createGameSession } from '@/types/gameMode'
+import { autoSelectLineup } from '@/domain/season/squadSelectionService'
+import { matchTeamToClub, nationalTeamToMatchTeam } from '@/types/matchTeam'
 import { WORLD_CUP_GROUP_IDS } from '@/stores/worldCup2026/enums'
 import type { WorldCup2026State, WorldCupGroup, WorldCupStanding } from '@/stores/worldCup2026/types'
 import { buildGroupStageMatches } from '@/services/worldCup2026/generateGroupFixtures'
@@ -52,6 +54,11 @@ export const createInitialWorldCup2026State = (
     worldCup2026Groups.map((group) => [group.id, createEmptyStandings(group.teams)]),
   ) as Record<(typeof worldCup2026Groups)[number]['id'], WorldCupStanding[]>
 
+  const userClub = matchTeamToClub(nationalTeamToMatchTeam(selectedTeam))
+  const lineups = {
+    [selectedTeamId]: autoSelectLineup(userClub),
+  }
+
   return {
     version: WORLD_CUP_SAVE_VERSION,
     session: createGameSession('world-cup-2026'),
@@ -65,7 +72,7 @@ export const createInitialWorldCup2026State = (
     matches,
     standings,
     qualifiedThirdPlacedTeamIds: [],
-    lineups: {},
+    lineups,
     playerStats: {},
     groupStageComplete: false,
     knockoutInitialized: false,

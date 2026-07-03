@@ -39,7 +39,7 @@ const startTournament = (): void => {
     return
   }
   worldCupStore.startTournament(selectedTeamId.value)
-  void router.push({ name: 'world-cup-overview' })
+  void router.push({ name: 'world-cup-dashboard' })
 }
 </script>
 

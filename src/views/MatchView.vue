@@ -569,7 +569,7 @@ const instantResult = (): void => {
 const goBack = async (): Promise<void> => {
   if (isWorldCupMode.value) {
     worldCupStore.clearActiveMatch()
-    await router.push({ name: 'world-cup-overview' })
+    await router.push({ name: 'world-cup-dashboard' })
     return
   }
 
