@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import southAfricaFlag from '@/data/nationalTeams/worldCup2026/flags/south-africa.png'
 
 export const southAfricaProfile: NationalTeamProfile = {
   id: "south-africa",
@@ -6,7 +7,7 @@ export const southAfricaProfile: NationalTeamProfile = {
   shortName: "RSA",
   fifaCode: "RSA",
   groupId: "A",
-  flagCode: "ZA",
+  flag: southAfricaFlag,
   rating: 72,
   attackRating: 71,
   midfieldRating: 72,
@@ -15,11 +16,15 @@ export const southAfricaProfile: NationalTeamProfile = {
   secondaryColor: "#FFB612",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "ronwen-hayden-williams",
-      firstName: "Ronwen Hayden",
-      lastName: "WILLIAMS",
-      nameOnShirt: "WILLIAMS",
+      firstName: "Ронуен",
+      lastName: "Уиллиамс",
+      nameOnShirt: "Уиллиамс",
+      originalFirstName: "Ronwen Hayden",
+      originalLastName: "WILLIAMS",
+      originalNameOnShirt: "WILLIAMS",
+
       dateOfBirth: "21/01/1992",
       age: 34,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "sipho-justin-chaine",
-      firstName: "Sipho Justin",
-      lastName: "CHAINE",
-      nameOnShirt: "CHAINE",
+      firstName: "Сифо",
+      lastName: "Чейне",
+      nameOnShirt: "Чейне",
+      originalFirstName: "Sipho Justin",
+      originalLastName: "CHAINE",
+      originalNameOnShirt: "CHAINE",
+
       dateOfBirth: "14/12/1996",
       age: 29,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "stuart-ricardo-goss",
-      firstName: "Stuart Ricardo",
-      lastName: "GOSS",
-      nameOnShirt: "GOSS",
+      firstName: "Стуарт",
+      lastName: "Госс",
+      nameOnShirt: "Госс",
+      originalFirstName: "Stuart Ricardo",
+      originalLastName: "GOSS",
+      originalNameOnShirt: "GOSS",
+
       dateOfBirth: "02/04/1994",
       age: 32,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const southAfricaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "tholo-thabang-matuludi",
-      firstName: "Tholo Thabang",
-      lastName: "MATULUDI",
-      nameOnShirt: "MATULUDI",
+      firstName: "Толо",
+      lastName: "Матулуди",
+      nameOnShirt: "Матулуди",
+      originalFirstName: "Tholo Thabang",
+      originalLastName: "MATULUDI",
+      originalNameOnShirt: "MATULUDI",
+
       dateOfBirth: "14/01/1999",
       age: 27,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "khulumani-ndamane",
-      firstName: "Khulumani",
-      lastName: "NDAMANE",
-      nameOnShirt: "NDAMANE",
+      firstName: "Кхулумани",
+      lastName: "Ндамане",
+      nameOnShirt: "Ндамане",
+      originalFirstName: "Khulumani",
+      originalLastName: "NDAMANE",
+      originalNameOnShirt: "NDAMANE",
+
       dateOfBirth: "05/02/2004",
       age: 22,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "aubrey-maphosa-modiba",
-      firstName: "Aubrey Maphosa",
-      lastName: "MODIBA",
-      nameOnShirt: "MODIBA",
+      firstName: "Аубреи",
+      lastName: "Модиба",
+      nameOnShirt: "Модиба",
+      originalFirstName: "Aubrey Maphosa",
+      originalLastName: "MODIBA",
+      originalNameOnShirt: "MODIBA",
+
       dateOfBirth: "22/07/1995",
       age: 30,
       shirtNumber: 6,
@@ -143,11 +168,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "mbekezeli-mfanufikile-mbokazi",
-      firstName: "Mbekezeli Mfanufikile",
-      lastName: "MBOKAZI",
-      nameOnShirt: "MBOKAZI",
+      firstName: "Мбекезели",
+      lastName: "Мбокази",
+      nameOnShirt: "Мбокази",
+      originalFirstName: "Mbekezeli Mfanufikile",
+      originalLastName: "MBOKAZI",
+      originalNameOnShirt: "MBOKAZI",
+
       dateOfBirth: "19/09/2005",
       age: 20,
       shirtNumber: 14,
@@ -164,11 +193,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 410_000,
       isInjured: false,
     },
-    {
+        {
       id: "samukele-alucious-kabini",
-      firstName: "Samukele Alucious",
-      lastName: "KABINI",
-      nameOnShirt: "KABINI",
+      firstName: "Самукеле",
+      lastName: "Кабини",
+      nameOnShirt: "Кабини",
+      originalFirstName: "Samukele Alucious",
+      originalLastName: "KABINI",
+      originalNameOnShirt: "KABINI",
+
       dateOfBirth: "15/03/2004",
       age: 22,
       shirtNumber: 18,
@@ -185,11 +218,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "nkosinathi-emmanuel-sibisi",
-      firstName: "Nkosinathi Emmanuel",
-      lastName: "SIBISI",
-      nameOnShirt: "SIBISI",
+      firstName: "Нкосинати",
+      lastName: "Сибиси",
+      nameOnShirt: "Сибиси",
+      originalFirstName: "Nkosinathi Emmanuel",
+      originalLastName: "SIBISI",
+      originalNameOnShirt: "SIBISI",
+
       dateOfBirth: "22/09/1995",
       age: 30,
       shirtNumber: 19,
@@ -206,11 +243,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "khuliso-johnson-mudau",
-      firstName: "Khuliso Johnson",
-      lastName: "MUDAU",
-      nameOnShirt: "MUDAU",
+      firstName: "Кхулисо",
+      lastName: "Мудау",
+      nameOnShirt: "Мудау",
+      originalFirstName: "Khuliso Johnson",
+      originalLastName: "MUDAU",
+      originalNameOnShirt: "MUDAU",
+
       dateOfBirth: "26/04/1995",
       age: 31,
       shirtNumber: 20,
@@ -227,11 +268,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "ime-daniel-okon",
-      firstName: "Ime Daniel",
-      lastName: "OKON",
-      nameOnShirt: "OKON",
+      firstName: "Име",
+      lastName: "Окон",
+      nameOnShirt: "Окон",
+      originalFirstName: "Ime Daniel",
+      originalLastName: "OKON",
+      originalNameOnShirt: "OKON",
+
       dateOfBirth: "20/02/2004",
       age: 22,
       shirtNumber: 21,
@@ -248,11 +293,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "olwethu-mpilwenhle-makhanya",
-      firstName: "Olwethu Mpilwenhle",
-      lastName: "MAKHANYA",
-      nameOnShirt: "MAKHANYA",
+      firstName: "Олуету",
+      lastName: "Макханиа",
+      nameOnShirt: "Макханиа",
+      originalFirstName: "Olwethu Mpilwenhle",
+      originalLastName: "MAKHANYA",
+      originalNameOnShirt: "MAKHANYA",
+
       dateOfBirth: "30/04/2004",
       age: 22,
       shirtNumber: 24,
@@ -269,11 +318,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 255_000,
       isInjured: false,
     },
-    {
+        {
       id: "bradley-paul-cross",
-      firstName: "Bradley Paul",
-      lastName: "CROSS",
-      nameOnShirt: "CROSS",
+      firstName: "Брадлеи",
+      lastName: "Кросс",
+      nameOnShirt: "Кросс",
+      originalFirstName: "Bradley Paul",
+      originalLastName: "CROSS",
+      originalNameOnShirt: "CROSS",
+
       dateOfBirth: "30/01/2001",
       age: 25,
       shirtNumber: 26,
@@ -292,11 +345,15 @@ export const southAfricaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "teboho-mokoena",
-      firstName: "Teboho",
-      lastName: "MOKOENA",
-      nameOnShirt: "MOKOENA",
+      firstName: "Тебохо",
+      lastName: "Мокоена",
+      nameOnShirt: "Мокоена",
+      originalFirstName: "Teboho",
+      originalLastName: "MOKOENA",
+      originalNameOnShirt: "MOKOENA",
+
       dateOfBirth: "24/01/1997",
       age: 29,
       shirtNumber: 4,
@@ -313,11 +370,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "thalente-wandile-mbatha",
-      firstName: "Thalente Wandile",
-      lastName: "MBATHA",
-      nameOnShirt: "MBATHA",
+      firstName: "Таленте",
+      lastName: "Мбата",
+      nameOnShirt: "Мбата",
+      originalFirstName: "Thalente Wandile",
+      originalLastName: "MBATHA",
+      originalNameOnShirt: "MBATHA",
+
       dateOfBirth: "06/03/2000",
       age: 26,
       shirtNumber: 5,
@@ -334,11 +395,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "themba-zwane",
-      firstName: "Themba",
-      lastName: "ZWANE",
-      nameOnShirt: "ZWANE",
+      firstName: "Темба",
+      lastName: "Зуане",
+      nameOnShirt: "Зуане",
+      originalFirstName: "Themba",
+      originalLastName: "ZWANE",
+      originalNameOnShirt: "ZWANE",
+
       dateOfBirth: "03/08/1989",
       age: 36,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "sphephelo-smiso-sithole",
-      firstName: "Sphephelo S'miso",
-      lastName: "SITHOLE",
-      nameOnShirt: "SITHOLE",
+      firstName: "Сфефело",
+      lastName: "Ситоле",
+      nameOnShirt: "Ситоле",
+      originalFirstName: "Sphephelo S'miso",
+      originalLastName: "SITHOLE",
+      originalNameOnShirt: "SITHOLE",
+
       dateOfBirth: "03/03/1999",
       age: 27,
       shirtNumber: 13,
@@ -376,11 +445,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "jayden-oswin-adams",
-      firstName: "Jayden Oswin",
-      lastName: "ADAMS",
-      nameOnShirt: "ADAMS",
+      firstName: "Джейден",
+      lastName: "Адамс",
+      nameOnShirt: "Адамс",
+      originalFirstName: "Jayden Oswin",
+      originalLastName: "ADAMS",
+      originalNameOnShirt: "ADAMS",
+
       dateOfBirth: "05/05/2001",
       age: 25,
       shirtNumber: 23,
@@ -399,11 +472,15 @@ export const southAfricaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "oswin-reagan-appollis",
-      firstName: "Oswin Reagan",
-      lastName: "APPOLLIS",
-      nameOnShirt: "APPOLLIS",
+      firstName: "Осуин",
+      lastName: "Апполлис",
+      nameOnShirt: "Апполлис",
+      originalFirstName: "Oswin Reagan",
+      originalLastName: "APPOLLIS",
+      originalNameOnShirt: "APPOLLIS",
+
       dateOfBirth: "25/08/2001",
       age: 24,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "tshepang-moremi",
-      firstName: "Tshepang",
-      lastName: "MOREMI",
-      nameOnShirt: "MOREMI",
+      firstName: "Тшепанг",
+      lastName: "Мореми",
+      nameOnShirt: "Мореми",
+      originalFirstName: "Tshepang",
+      originalLastName: "MOREMI",
+      originalNameOnShirt: "MOREMI",
+
       dateOfBirth: "02/10/2000",
       age: 25,
       shirtNumber: 8,
@@ -441,11 +522,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "lyle-brent-foster",
-      firstName: "Lyle Brent",
-      lastName: "FOSTER",
-      nameOnShirt: "FOSTER",
+      firstName: "Лиле",
+      lastName: "Фостер",
+      nameOnShirt: "Фостер",
+      originalFirstName: "Lyle Brent",
+      originalLastName: "FOSTER",
+      originalNameOnShirt: "FOSTER",
+
       dateOfBirth: "03/09/2000",
       age: 25,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "relebohile-mofokeng",
-      firstName: "Relebohile",
-      lastName: "MOFOKENG",
-      nameOnShirt: "MOFOKENG",
+      firstName: "Релебохиле",
+      lastName: "Мофокенг",
+      nameOnShirt: "Мофокенг",
+      originalFirstName: "Relebohile",
+      originalLastName: "MOFOKENG",
+      originalNameOnShirt: "MOFOKENG",
+
       dateOfBirth: "23/10/2004",
       age: 21,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 260_000,
       isInjured: false,
     },
-    {
+        {
       id: "thapelo-maseko",
-      firstName: "Thapelo",
-      lastName: "MASEKO",
-      nameOnShirt: "MASEKO",
+      firstName: "Тапело",
+      lastName: "Масеко",
+      nameOnShirt: "Масеко",
+      originalFirstName: "Thapelo",
+      originalLastName: "MASEKO",
+      originalNameOnShirt: "MASEKO",
+
       dateOfBirth: "11/11/2003",
       age: 22,
       shirtNumber: 12,
@@ -504,11 +597,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 225_000,
       isInjured: false,
     },
-    {
+        {
       id: "iqraam-rayners",
-      firstName: "Iqraam",
-      lastName: "RAYNERS",
-      nameOnShirt: "RAYNERS",
+      firstName: "Икраам",
+      lastName: "Рейнерс",
+      nameOnShirt: "Рейнерс",
+      originalFirstName: "Iqraam",
+      originalLastName: "RAYNERS",
+      originalNameOnShirt: "RAYNERS",
+
       dateOfBirth: "19/12/1995",
       age: 30,
       shirtNumber: 15,
@@ -525,11 +622,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "sekotori-evidence-makgopa",
-      firstName: "Sekotori Evidence",
-      lastName: "MAKGOPA",
-      nameOnShirt: "MAKGPA",
+      firstName: "Секотори",
+      lastName: "Макгопа",
+      nameOnShirt: "Макгпа",
+      originalFirstName: "Sekotori Evidence",
+      originalLastName: "MAKGOPA",
+      originalNameOnShirt: "MAKGPA",
+
       dateOfBirth: "05/06/2000",
       age: 26,
       shirtNumber: 17,
@@ -546,11 +647,15 @@ export const southAfricaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "kamogelo-michael-sebelebele",
-      firstName: "Kamogelo Michael",
-      lastName: "SEBELEBELE",
-      nameOnShirt: "SEBELEBELE",
+      firstName: "Камоджело",
+      lastName: "Себелебеле",
+      nameOnShirt: "Себелебеле",
+      originalFirstName: "Kamogelo Michael",
+      originalLastName: "SEBELEBELE",
+      originalNameOnShirt: "SEBELEBELE",
+
       dateOfBirth: "21/07/2002",
       age: 23,
       shirtNumber: 25,

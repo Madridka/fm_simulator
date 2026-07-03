@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import argentinaFlag from '@/data/nationalTeams/worldCup2026/flags/argentina.png'
 
 export const argentinaProfile: NationalTeamProfile = {
   id: "argentina",
@@ -6,7 +7,7 @@ export const argentinaProfile: NationalTeamProfile = {
   shortName: "ARG",
   fifaCode: "ARG",
   groupId: "J",
-  flagCode: "AR",
+  flag: argentinaFlag,
   rating: 91,
   attackRating: 91,
   midfieldRating: 90,
@@ -15,11 +16,15 @@ export const argentinaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "juan-agustin-musso",
-      firstName: "Juan Agustín",
-      lastName: "MUSSO",
-      nameOnShirt: "MUSSO",
+      firstName: "Хуан",
+      lastName: "Муссо",
+      nameOnShirt: "Муссо",
+      originalFirstName: "Juan Agustín",
+      originalLastName: "MUSSO",
+      originalNameOnShirt: "MUSSO",
+
       dateOfBirth: "06/05/1994",
       age: 32,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "geronimo-rulli",
-      firstName: "Geronimo",
-      lastName: "RULLI",
-      nameOnShirt: "RULLI",
+      firstName: "Херонимо",
+      lastName: "Рульи",
+      nameOnShirt: "Рульи",
+      originalFirstName: "Geronimo",
+      originalLastName: "RULLI",
+      originalNameOnShirt: "RULLI",
+
       dateOfBirth: "20/05/1992",
       age: 34,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_145_000,
       isInjured: false,
     },
-    {
+        {
       id: "damian-emiliano-martinez",
-      firstName: "Damián Emiliano",
-      lastName: "MARTÍNEZ",
-      nameOnShirt: "E. MARTINEZ",
+      firstName: "Дамиан",
+      lastName: "Мартинес",
+      nameOnShirt: "Е. Мартинес",
+      originalFirstName: "Damián Emiliano",
+      originalLastName: "MARTÍNEZ",
+      originalNameOnShirt: "E. MARTINEZ",
+
       dateOfBirth: "02/09/1992",
       age: 33,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const argentinaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "marcos-nicolas-senesi-baron",
-      firstName: "Marcos Nicolás",
-      lastName: "SENESI BARON",
-      nameOnShirt: "SENESI",
+      firstName: "Маркос",
+      lastName: "Сенеси Барон",
+      nameOnShirt: "Сенеси",
+      originalFirstName: "Marcos Nicolás",
+      originalLastName: "SENESI BARON",
+      originalNameOnShirt: "SENESI",
+
       dateOfBirth: "10/05/1997",
       age: 29,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-alejandro-tagliafico",
-      firstName: "Nicolás Alejandro",
-      lastName: "TAGLIAFICO",
-      nameOnShirt: "TAGLIAFICO",
+      firstName: "Николас",
+      lastName: "Таглиафико",
+      nameOnShirt: "Таглиафико",
+      originalFirstName: "Nicolás Alejandro",
+      originalLastName: "TAGLIAFICO",
+      originalNameOnShirt: "TAGLIAFICO",
+
       dateOfBirth: "31/08/1992",
       age: 33,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_570_000,
       isInjured: false,
     },
-    {
+        {
       id: "gonzalo-ariel-montiel",
-      firstName: "Gonzalo Ariel",
-      lastName: "MONTIEL",
-      nameOnShirt: "MONTIEL",
+      firstName: "Гонсало",
+      lastName: "Монтиел",
+      nameOnShirt: "Монтиел",
+      originalFirstName: "Gonzalo Ariel",
+      originalLastName: "MONTIEL",
+      originalNameOnShirt: "MONTIEL",
+
       dateOfBirth: "01/01/1997",
       age: 29,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "lisandro-martinez",
-      firstName: "Lisandro",
-      lastName: "MARTÍNEZ",
-      nameOnShirt: "MARTÍNEZ",
+      firstName: "Лисандро",
+      lastName: "Мартинес",
+      nameOnShirt: "Мартинес",
+      originalFirstName: "Lisandro",
+      originalLastName: "MARTÍNEZ",
+      originalNameOnShirt: "MARTÍNEZ",
+
       dateOfBirth: "18/01/1998",
       age: 28,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "cristian-gabriel-romero",
-      firstName: "Cristian Gabriel",
-      lastName: "ROMERO",
-      nameOnShirt: "ROMERO",
+      firstName: "Кристиан",
+      lastName: "Ромеро",
+      nameOnShirt: "Ромеро",
+      originalFirstName: "Cristian Gabriel",
+      originalLastName: "ROMERO",
+      originalNameOnShirt: "ROMERO",
+
       dateOfBirth: "27/04/1998",
       age: 28,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-hernan-gonzalo-otamendi",
-      firstName: "Nicolas Hernan Gonzalo",
-      lastName: "OTAMENDI",
-      nameOnShirt: "OTAMENDI",
+      firstName: "Николас",
+      lastName: "Отаменди",
+      nameOnShirt: "Отаменди",
+      originalFirstName: "Nicolas Hernan Gonzalo",
+      originalLastName: "OTAMENDI",
+      originalNameOnShirt: "OTAMENDI",
+
       dateOfBirth: "12/02/1988",
       age: 38,
       shirtNumber: 19,
@@ -206,11 +243,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_660_000,
       isInjured: false,
     },
-    {
+        {
       id: "facundo-axel-medina",
-      firstName: "Facundo Axel",
-      lastName: "MEDINA",
-      nameOnShirt: "MEDINA",
+      firstName: "Факундо",
+      lastName: "Медина",
+      nameOnShirt: "Медина",
+      originalFirstName: "Facundo Axel",
+      originalLastName: "MEDINA",
+      originalNameOnShirt: "MEDINA",
+
       dateOfBirth: "28/05/1999",
       age: 27,
       shirtNumber: 25,
@@ -227,11 +268,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "nahuel-molina-lucero",
-      firstName: "Nahuel",
-      lastName: "MOLINA LUCERO",
-      nameOnShirt: "MOLINA",
+      firstName: "Науел",
+      lastName: "Молина Лусеро",
+      nameOnShirt: "Молина",
+      originalFirstName: "Nahuel",
+      originalLastName: "MOLINA LUCERO",
+      originalNameOnShirt: "MOLINA",
+
       dateOfBirth: "06/04/1998",
       age: 28,
       shirtNumber: 26,
@@ -250,11 +295,15 @@ export const argentinaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "leandro-daniel-paredes",
-      firstName: "Leandro Daniel",
-      lastName: "PAREDES",
-      nameOnShirt: "PAREDES",
+      firstName: "Леандро",
+      lastName: "Паредес",
+      nameOnShirt: "Паредес",
+      originalFirstName: "Leandro Daniel",
+      originalLastName: "PAREDES",
+      originalNameOnShirt: "PAREDES",
+
       dateOfBirth: "29/06/1994",
       age: 31,
       shirtNumber: 5,
@@ -271,11 +320,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "rodrigo-javier-de-paul",
-      firstName: "Rodrigo Javier",
-      lastName: "DE PAUL",
-      nameOnShirt: "DE PAUL",
+      firstName: "Родриго",
+      lastName: "Де Паул",
+      nameOnShirt: "Де Паул",
+      originalFirstName: "Rodrigo Javier",
+      originalLastName: "DE PAUL",
+      originalNameOnShirt: "DE PAUL",
+
       dateOfBirth: "24/05/1994",
       age: 32,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_760_000,
       isInjured: false,
     },
-    {
+        {
       id: "valentin-barco",
-      firstName: "Valentin",
-      lastName: "BARCO",
-      nameOnShirt: "BARCO",
+      firstName: "Валентин",
+      lastName: "Барко",
+      nameOnShirt: "Барко",
+      originalFirstName: "Valentin",
+      originalLastName: "BARCO",
+      originalNameOnShirt: "BARCO",
+
       dateOfBirth: "23/07/2004",
       age: 21,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_265_000,
       isInjured: false,
     },
-    {
+        {
       id: "giovani-lo-celso",
-      firstName: "Giovani",
-      lastName: "LO CELSO",
-      nameOnShirt: "LO CELSO",
+      firstName: "Хиовани",
+      lastName: "Ло Селсо",
+      nameOnShirt: "Ло Селсо",
+      originalFirstName: "Giovani",
+      originalLastName: "LO CELSO",
+      originalNameOnShirt: "LO CELSO",
+
       dateOfBirth: "09/04/1996",
       age: 30,
       shirtNumber: 11,
@@ -334,11 +395,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "exequiel-alejandro-palacios",
-      firstName: "Exequiel Alejandro",
-      lastName: "PALACIOS",
-      nameOnShirt: "PALACIOS",
+      firstName: "Ексекиел",
+      lastName: "Паласиос",
+      nameOnShirt: "Паласиос",
+      originalFirstName: "Exequiel Alejandro",
+      originalLastName: "PALACIOS",
+      originalNameOnShirt: "PALACIOS",
+
       dateOfBirth: "05/10/1998",
       age: 27,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-ivan-gonzalez",
-      firstName: "Nicolas Ivan",
-      lastName: "GONZALEZ",
-      nameOnShirt: "N. GONZALEZ",
+      firstName: "Николас",
+      lastName: "Гонсалес",
+      nameOnShirt: "Н. Гонсалес",
+      originalFirstName: "Nicolas Ivan",
+      originalLastName: "GONZALEZ",
+      originalNameOnShirt: "N. GONZALEZ",
+
       dateOfBirth: "06/04/1998",
       age: 28,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexis-mac-allister",
-      firstName: "Alexis",
-      lastName: "MAC ALLISTER",
-      nameOnShirt: "MAC ALLISTER",
+      firstName: "Алексис",
+      lastName: "Мак Альистер",
+      nameOnShirt: "Мак Альистер",
+      originalFirstName: "Alexis",
+      originalLastName: "MAC ALLISTER",
+      originalNameOnShirt: "MAC ALLISTER",
+
       dateOfBirth: "24/12/1998",
       age: 27,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "enzo-jeremias-fernandez",
-      firstName: "Enzo Jeremías",
-      lastName: "FERNÁNDEZ",
-      nameOnShirt: "E. FERNANDEZ",
+      firstName: "Энцо",
+      lastName: "Фернандес",
+      nameOnShirt: "Е. Фернандес",
+      originalFirstName: "Enzo Jeremías",
+      originalLastName: "FERNÁNDEZ",
+      originalNameOnShirt: "E. FERNANDEZ",
+
       dateOfBirth: "17/01/2001",
       age: 25,
       shirtNumber: 24,
@@ -420,11 +497,15 @@ export const argentinaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "julian-alvarez",
-      firstName: "Julián",
-      lastName: "ÁLVAREZ",
-      nameOnShirt: "J. ALVAREZ",
+      firstName: "Хулиан",
+      lastName: "Алварес",
+      nameOnShirt: "Дж. Алварес",
+      originalFirstName: "Julián",
+      originalLastName: "ÁLVAREZ",
+      originalNameOnShirt: "J. ALVAREZ",
+
       dateOfBirth: "31/01/2000",
       age: 26,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "lionel-andres-messi",
-      firstName: "Lionel Andrés",
-      lastName: "MESSI",
-      nameOnShirt: "MESSI",
+      firstName: "Лионель",
+      lastName: "Месси",
+      nameOnShirt: "Месси",
+      originalFirstName: "Lionel Andrés",
+      originalLastName: "MESSI",
+      originalNameOnShirt: "MESSI",
+
       dateOfBirth: "24/06/1987",
       age: 38,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_855_000,
       isInjured: false,
     },
-    {
+        {
       id: "thiago-ezequiel-almada",
-      firstName: "Thiago Ezequiel",
-      lastName: "ALMADA",
-      nameOnShirt: "ALMADA",
+      firstName: "Тиаго",
+      lastName: "Алмада",
+      nameOnShirt: "Алмада",
+      originalFirstName: "Thiago Ezequiel",
+      originalLastName: "ALMADA",
+      originalNameOnShirt: "ALMADA",
+
       dateOfBirth: "26/04/2001",
       age: 25,
       shirtNumber: 16,
@@ -483,11 +572,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "giuliano-simeone",
-      firstName: "Giuliano",
-      lastName: "SIMEONE",
-      nameOnShirt: "SIMEONE",
+      firstName: "Хиулиано",
+      lastName: "Симеоне",
+      nameOnShirt: "Симеоне",
+      originalFirstName: "Giuliano",
+      originalLastName: "SIMEONE",
+      originalNameOnShirt: "SIMEONE",
+
       dateOfBirth: "18/12/2002",
       age: 23,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_795_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-paz-martinez",
-      firstName: "Nicolas",
-      lastName: "PAZ MARTÍNEZ",
-      nameOnShirt: "NICO PAZ",
+      firstName: "Николас",
+      lastName: "Пас Мартинес",
+      nameOnShirt: "Нико Пас",
+      originalFirstName: "Nicolas",
+      originalLastName: "PAZ MARTÍNEZ",
+      originalNameOnShirt: "NICO PAZ",
+
       dateOfBirth: "08/09/2004",
       age: 21,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_430_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-manuel-alberto-lopez",
-      firstName: "Jose Manuel Alberto",
-      lastName: "LOPEZ",
-      nameOnShirt: "LOPEZ",
+      firstName: "Хосе",
+      lastName: "Лопес",
+      nameOnShirt: "Лопес",
+      originalFirstName: "Jose Manuel Alberto",
+      originalLastName: "LOPEZ",
+      originalNameOnShirt: "LOPEZ",
+
       dateOfBirth: "06/12/2000",
       age: 25,
       shirtNumber: 21,
@@ -546,11 +647,15 @@ export const argentinaProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "lautaro-javier-martinez",
-      firstName: "Lautaro Javier",
-      lastName: "MARTÍNEZ",
-      nameOnShirt: "L. MARTINEZ",
+      firstName: "Лаутаро",
+      lastName: "Мартинес",
+      nameOnShirt: "Л. Мартинес",
+      originalFirstName: "Lautaro Javier",
+      originalLastName: "MARTÍNEZ",
+      originalNameOnShirt: "L. MARTINEZ",
+
       dateOfBirth: "22/08/1997",
       age: 28,
       shirtNumber: 22,

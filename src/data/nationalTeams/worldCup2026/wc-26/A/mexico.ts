@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import mexicoFlag from '@/data/nationalTeams/worldCup2026/flags/mexico.png'
 
 export const mexicoProfile: NationalTeamProfile = {
   id: "mexico",
@@ -6,7 +7,7 @@ export const mexicoProfile: NationalTeamProfile = {
   shortName: "MEX",
   fifaCode: "MEX",
   groupId: "A",
-  flagCode: "MX",
+  flag: mexicoFlag,
   rating: 78,
   attackRating: 77,
   midfieldRating: 78,
@@ -15,11 +16,15 @@ export const mexicoProfile: NationalTeamProfile = {
   secondaryColor: "#CE1126",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "jose-raul-rangel-aguilar",
-      firstName: "José Raúl",
-      lastName: "RANGEL AGUILAR",
-      nameOnShirt: "R. RANGEL",
+      firstName: "Хосе",
+      lastName: "Ранхел Агилар",
+      nameOnShirt: "Р. Ранхел",
+      originalFirstName: "José Raúl",
+      originalLastName: "RANGEL AGUILAR",
+      originalNameOnShirt: "R. RANGEL",
+
       dateOfBirth: "25/02/2000",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "carlos-acevedo-lopez",
-      firstName: "Carlos",
-      lastName: "ACEVEDO LÓPEZ",
-      nameOnShirt: "C. ACEVEDO",
+      firstName: "Карлос",
+      lastName: "Асеведо Лопес",
+      nameOnShirt: "К. Асеведо",
+      originalFirstName: "Carlos",
+      originalLastName: "ACEVEDO LÓPEZ",
+      originalNameOnShirt: "C. ACEVEDO",
+
       dateOfBirth: "19/04/1996",
       age: 30,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "francisco-guillermo-ochoa-magana",
-      firstName: "Francisco Guillermo",
-      lastName: "OCHOA MAGAÑA",
-      nameOnShirt: "G. OCHOA",
+      firstName: "Гильермо",
+      lastName: "Очоа",
+      nameOnShirt: "Г. Очоа",
+      originalFirstName: "Francisco Guillermo",
+      originalLastName: "OCHOA MAGAÑA",
+      originalNameOnShirt: "G. OCHOA",
+
       dateOfBirth: "13/07/1985",
       age: 40,
       shirtNumber: 13,
@@ -80,11 +93,15 @@ export const mexicoProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "jorge-eduardo-sanchez-ramos",
-      firstName: "Jorge Eduardo",
-      lastName: "SÁNCHEZ RAMOS",
-      nameOnShirt: "J. SÁNCHEZ",
+      firstName: "Хорхе",
+      lastName: "Санчес Рамос",
+      nameOnShirt: "Дж. Санчес",
+      originalFirstName: "Jorge Eduardo",
+      originalLastName: "SÁNCHEZ RAMOS",
+      originalNameOnShirt: "J. SÁNCHEZ",
+
       dateOfBirth: "10/12/1997",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "cesar-jasib-montes-castro",
-      firstName: "César Jasib",
-      lastName: "MONTES CASTRO",
-      nameOnShirt: "C. MONTES",
+      firstName: "Сесар",
+      lastName: "Монтес Кастро",
+      nameOnShirt: "К. Монтес",
+      originalFirstName: "César Jasib",
+      originalLastName: "MONTES CASTRO",
+      originalNameOnShirt: "C. MONTES",
+
       dateOfBirth: "24/02/1997",
       age: 29,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "edson-omar-alvarez-velazquez",
-      firstName: "Edson Omar",
-      lastName: "ÁLVAREZ VELÁZQUEZ",
-      nameOnShirt: "E. ÁLVAREZ",
+      firstName: "Эдсон",
+      lastName: "Альварес",
+      nameOnShirt: "Е. Алварес",
+      originalFirstName: "Edson Omar",
+      originalLastName: "ÁLVAREZ VELÁZQUEZ",
+      originalNameOnShirt: "E. ÁLVAREZ",
+
       dateOfBirth: "24/10/1997",
       age: 28,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "johan-felipe-vasquez-ibarra",
-      firstName: "Johan Felipe",
-      lastName: "VÁSQUEZ IBARRA",
-      nameOnShirt: "J. VÁSQUEZ",
+      firstName: "Хоан",
+      lastName: "Васкес Ибарра",
+      nameOnShirt: "Дж. Васкес",
+      originalFirstName: "Johan Felipe",
+      originalLastName: "VÁSQUEZ IBARRA",
+      originalNameOnShirt: "J. VÁSQUEZ",
+
       dateOfBirth: "22/10/1998",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "israel-reyes-romero",
-      firstName: "Israel",
-      lastName: "REYES ROMERO",
-      nameOnShirt: "I. REYES",
+      firstName: "Исраел",
+      lastName: "Рейес Ромеро",
+      nameOnShirt: "И. Рейес",
+      originalFirstName: "Israel",
+      originalLastName: "REYES ROMERO",
+      originalNameOnShirt: "I. REYES",
+
       dateOfBirth: "23/05/2000",
       age: 26,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "mateo-chavez-garcia",
-      firstName: "Mateo",
-      lastName: "CHÁVEZ GARCÍA",
-      nameOnShirt: "M. CHÁVEZ",
+      firstName: "Матео",
+      lastName: "Чавес Гарсиа",
+      nameOnShirt: "М. Чавес",
+      originalFirstName: "Mateo",
+      originalLastName: "CHÁVEZ GARCÍA",
+      originalNameOnShirt: "M. CHÁVEZ",
+
       dateOfBirth: "12/05/2004",
       age: 22,
       shirtNumber: 20,
@@ -206,11 +243,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "jesus-daniel-gallardo-vasconcelos",
-      firstName: "Jesús Daniel",
-      lastName: "GALLARDO VASCONCELOS",
-      nameOnShirt: "J. GALLARDO",
+      firstName: "Хесус",
+      lastName: "Гальардо Васконселос",
+      nameOnShirt: "Дж. Гальардо",
+      originalFirstName: "Jesús Daniel",
+      originalLastName: "GALLARDO VASCONCELOS",
+      originalNameOnShirt: "J. GALLARDO",
+
       dateOfBirth: "15/08/1994",
       age: 31,
       shirtNumber: 23,
@@ -229,11 +270,15 @@ export const mexicoProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "erik-antonio-lira-mendez",
-      firstName: "Erik Antonio",
-      lastName: "LIRA MÉNDEZ",
-      nameOnShirt: "E. LIRA",
+      firstName: "Ерик",
+      lastName: "Лира Мендес",
+      nameOnShirt: "Е. Лира",
+      originalFirstName: "Erik Antonio",
+      originalLastName: "LIRA MÉNDEZ",
+      originalNameOnShirt: "E. LIRA",
+
       dateOfBirth: "08/05/2000",
       age: 26,
       shirtNumber: 6,
@@ -250,11 +295,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "luis-francisco-romo-barron",
-      firstName: "Luis Francisco",
-      lastName: "ROMO BARRÓN",
-      nameOnShirt: "L. ROMO",
+      firstName: "Луис",
+      lastName: "Ромо Баррон",
+      nameOnShirt: "Л. Ромо",
+      originalFirstName: "Luis Francisco",
+      originalLastName: "ROMO BARRÓN",
+      originalNameOnShirt: "L. ROMO",
+
       dateOfBirth: "05/06/1995",
       age: 31,
       shirtNumber: 7,
@@ -271,11 +320,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "alvaro-fidalgo-fernandez",
-      firstName: "Álvaro",
-      lastName: "FIDALGO FERNÁNDEZ",
-      nameOnShirt: "FIDALGO",
+      firstName: "Алваро",
+      lastName: "Фидалго Фернандес",
+      nameOnShirt: "Фидалго",
+      originalFirstName: "Álvaro",
+      originalLastName: "FIDALGO FERNÁNDEZ",
+      originalNameOnShirt: "FIDALGO",
+
       dateOfBirth: "09/04/1997",
       age: 29,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "orbelin-pineda-alvarado",
-      firstName: "Orbelín",
-      lastName: "PINEDA ALVARADO",
-      nameOnShirt: "ORBELÍN",
+      firstName: "Орбелин",
+      lastName: "Пинеда Алварадо",
+      nameOnShirt: "Орбелин",
+      originalFirstName: "Orbelín",
+      originalLastName: "PINEDA ALVARADO",
+      originalNameOnShirt: "ORBELÍN",
+
       dateOfBirth: "24/03/1996",
       age: 30,
       shirtNumber: 17,
@@ -313,11 +370,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "obed-gomez-vargas",
-      firstName: "Obed Goméz",
-      lastName: "VARGAS",
-      nameOnShirt: "O. VARGAS",
+      firstName: "Обед",
+      lastName: "Варгас",
+      nameOnShirt: "О. Варгас",
+      originalFirstName: "Obed Goméz",
+      originalLastName: "VARGAS",
+      originalNameOnShirt: "O. VARGAS",
+
       dateOfBirth: "05/08/2005",
       age: 20,
       shirtNumber: 18,
@@ -334,11 +395,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 715_000,
       isInjured: false,
     },
-    {
+        {
       id: "gilberto-rafael-mora-zambrano",
-      firstName: "Gilberto Rafael",
-      lastName: "MORA ZAMBRANO",
-      nameOnShirt: "G. MORA",
+      firstName: "Хилберто",
+      lastName: "Мора Самбрано",
+      nameOnShirt: "Г. Мора",
+      originalFirstName: "Gilberto Rafael",
+      originalLastName: "MORA ZAMBRANO",
+      originalNameOnShirt: "G. MORA",
+
       dateOfBirth: "14/10/2008",
       age: 17,
       shirtNumber: 19,
@@ -355,11 +420,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "luis-gerardo-chavez-magallon",
-      firstName: "Luis Gerardo",
-      lastName: "CHÁVEZ MAGALLÓN",
-      nameOnShirt: "L. CHÁVEZ",
+      firstName: "Луис",
+      lastName: "Чавес Магальон",
+      nameOnShirt: "Л. Чавес",
+      originalFirstName: "Luis Gerardo",
+      originalLastName: "CHÁVEZ MAGALLÓN",
+      originalNameOnShirt: "L. CHÁVEZ",
+
       dateOfBirth: "15/01/1996",
       age: 30,
       shirtNumber: 24,
@@ -376,11 +445,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "brian-gutierrez",
-      firstName: "Brian",
-      lastName: "GUTIÉRREZ",
-      nameOnShirt: "B. GUTIÉRREZ",
+      firstName: "Бриан",
+      lastName: "Гутиеррес",
+      nameOnShirt: "Б. Гутиеррес",
+      originalFirstName: "Brian",
+      originalLastName: "GUTIÉRREZ",
+      originalNameOnShirt: "B. GUTIÉRREZ",
+
       dateOfBirth: "17/06/2003",
       age: 22,
       shirtNumber: 26,
@@ -399,11 +472,15 @@ export const mexicoProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "raul-alonso-jimenez-rodriguez",
-      firstName: "Raúl Alonso",
-      lastName: "JIMÉNEZ RODRÍGUEZ",
-      nameOnShirt: "RAÚL",
+      firstName: "Рауль",
+      lastName: "Хименес",
+      nameOnShirt: "Рауль",
+      originalFirstName: "Raúl Alonso",
+      originalLastName: "JIMÉNEZ RODRÍGUEZ",
+      originalNameOnShirt: "RAÚL",
+
       dateOfBirth: "05/05/1991",
       age: 35,
       shirtNumber: 9,
@@ -420,11 +497,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "ernesto-alexis-vega-rojas",
-      firstName: "Ernesto Alexis",
-      lastName: "VEGA ROJAS",
-      nameOnShirt: "A. VEGA",
+      firstName: "Ернесто",
+      lastName: "Вега Рохас",
+      nameOnShirt: "А. Вега",
+      originalFirstName: "Ernesto Alexis",
+      originalLastName: "VEGA ROJAS",
+      originalNameOnShirt: "A. VEGA",
+
       dateOfBirth: "25/11/1997",
       age: 28,
       shirtNumber: 10,
@@ -441,11 +522,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "santiago-tomas-gimenez",
-      firstName: "Santiago Tomás",
-      lastName: "GIMENEZ",
-      nameOnShirt: "S. GIMENEZ",
+      firstName: "Сантиаго",
+      lastName: "Хименес",
+      nameOnShirt: "С. Хименес",
+      originalFirstName: "Santiago Tomás",
+      originalLastName: "GIMENEZ",
+      originalNameOnShirt: "S. GIMENEZ",
+
       dateOfBirth: "18/04/2001",
       age: 25,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "armando-gonzalez-alba",
-      firstName: "Armando",
-      lastName: "GONZÁLEZ ALBA",
-      nameOnShirt: "A. GONZÁLEZ",
+      firstName: "Армандо",
+      lastName: "Гонсалес Алба",
+      nameOnShirt: "А. Гонсалес",
+      originalFirstName: "Armando",
+      originalLastName: "GONZÁLEZ ALBA",
+      originalNameOnShirt: "A. GONZÁLEZ",
+
       dateOfBirth: "20/04/2003",
       age: 23,
       shirtNumber: 14,
@@ -483,11 +572,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "julian-andres-quinones-quinones",
-      firstName: "Julián Andrés",
-      lastName: "QUIÑONES QUIÑONES",
-      nameOnShirt: "J. QUIÑONES",
+      firstName: "Хулиан",
+      lastName: "Кин'Онес Кин'Онес",
+      nameOnShirt: "Дж. Кин'Онес",
+      originalFirstName: "Julián Andrés",
+      originalLastName: "QUIÑONES QUIÑONES",
+      originalNameOnShirt: "J. QUIÑONES",
+
       dateOfBirth: "24/03/1997",
       age: 29,
       shirtNumber: 16,
@@ -504,11 +597,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "cesar-saul-huerta-valera",
-      firstName: "César Saúl",
-      lastName: "HUERTA VALERA",
-      nameOnShirt: "C. HUERTA",
+      firstName: "Сесар",
+      lastName: "Уерта Валера",
+      nameOnShirt: "К. Уерта",
+      originalFirstName: "César Saúl",
+      originalLastName: "HUERTA VALERA",
+      originalNameOnShirt: "C. HUERTA",
+
       dateOfBirth: "03/12/2000",
       age: 25,
       shirtNumber: 21,
@@ -525,11 +622,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "guillermo-martinez-ayala",
-      firstName: "Guillermo",
-      lastName: "MARTÍNEZ AYALA",
-      nameOnShirt: "G. MARTÍNEZ",
+      firstName: "Гильермо",
+      lastName: "Мартинес Айала",
+      nameOnShirt: "Г. Мартинес",
+      originalFirstName: "Guillermo",
+      originalLastName: "MARTÍNEZ AYALA",
+      originalNameOnShirt: "G. MARTÍNEZ",
+
       dateOfBirth: "15/03/1995",
       age: 31,
       shirtNumber: 22,
@@ -546,11 +647,15 @@ export const mexicoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "roberto-carlos-alvarado-hernandez",
-      firstName: "Roberto Carlos",
-      lastName: "ALVARADO HERNÁNDEZ",
-      nameOnShirt: "R. ALVARADO",
+      firstName: "Роберто",
+      lastName: "Алварадо Ернандес",
+      nameOnShirt: "Р. Алварадо",
+      originalFirstName: "Roberto Carlos",
+      originalLastName: "ALVARADO HERNÁNDEZ",
+      originalNameOnShirt: "R. ALVARADO",
+
       dateOfBirth: "07/09/1998",
       age: 27,
       shirtNumber: 25,

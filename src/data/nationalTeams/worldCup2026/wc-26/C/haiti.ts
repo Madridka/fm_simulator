@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import haitiFlag from '@/data/nationalTeams/worldCup2026/flags/haiti.png'
 
 export const haitiProfile: NationalTeamProfile = {
   id: "haiti",
@@ -6,7 +7,7 @@ export const haitiProfile: NationalTeamProfile = {
   shortName: "HAI",
   fifaCode: "HAI",
   groupId: "C",
-  flagCode: "HT",
+  flag: haitiFlag,
   rating: 62,
   attackRating: 61,
   midfieldRating: 62,
@@ -15,11 +16,15 @@ export const haitiProfile: NationalTeamProfile = {
   secondaryColor: "#D21034",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "johny-placide",
-      firstName: "Johny",
-      lastName: "PLACIDE",
-      nameOnShirt: "PLACIDE",
+      firstName: "Жони",
+      lastName: "Пласиде",
+      nameOnShirt: "Пласиде",
+      originalFirstName: "Johny",
+      originalLastName: "PLACIDE",
+      originalNameOnShirt: "PLACIDE",
+
       dateOfBirth: "29/01/1988",
       age: 38,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 100_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexandre-jr-pierre",
-      firstName: "Alexandre Jr",
-      lastName: "PIERRE",
-      nameOnShirt: "A. PIERRE",
+      firstName: "Александре",
+      lastName: "Пиерре",
+      nameOnShirt: "А. Пиерре",
+      originalFirstName: "Alexandre Jr",
+      originalLastName: "PIERRE",
+      originalNameOnShirt: "A. PIERRE",
+
       dateOfBirth: "25/02/2001",
       age: 25,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 70_000,
       isInjured: false,
     },
-    {
+        {
       id: "josue-duverger",
-      firstName: "Josue",
-      lastName: "DUVERGER",
-      nameOnShirt: "DUVERGER",
+      firstName: "Жосуе",
+      lastName: "Дувержер",
+      nameOnShirt: "Дувержер",
+      originalFirstName: "Josue",
+      originalLastName: "DUVERGER",
+      originalNameOnShirt: "DUVERGER",
+
       dateOfBirth: "27/04/2000",
       age: 26,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const haitiProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "carlens-jean-fedlaire-ruby-arcus",
-      firstName: "Carlens Jean Fedlaire Ruby",
-      lastName: "ARCUS",
-      nameOnShirt: "ARCUS",
+      firstName: "Карленс",
+      lastName: "Аркус",
+      nameOnShirt: "Аркус",
+      originalFirstName: "Carlens Jean Fedlaire Ruby",
+      originalLastName: "ARCUS",
+      originalNameOnShirt: "ARCUS",
+
       dateOfBirth: "28/06/1996",
       age: 29,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 180_000,
       isInjured: false,
     },
-    {
+        {
       id: "keeto-thermoncy",
-      firstName: "Keeto",
-      lastName: "THERMONCY",
-      nameOnShirt: "THERMONCY",
+      firstName: "Кеето",
+      lastName: "Термонки",
+      nameOnShirt: "Термонки",
+      originalFirstName: "Keeto",
+      originalLastName: "THERMONCY",
+      originalNameOnShirt: "THERMONCY",
+
       dateOfBirth: "29/03/2006",
       age: 20,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 55_000,
       isInjured: false,
     },
-    {
+        {
       id: "ricardo-ade",
-      firstName: "Ricardo",
-      lastName: "ADE",
-      nameOnShirt: "ADE",
+      firstName: "Рикарду",
+      lastName: "Аде",
+      nameOnShirt: "Аде",
+      originalFirstName: "Ricardo",
+      originalLastName: "ADE",
+      originalNameOnShirt: "ADE",
+
       dateOfBirth: "21/05/1990",
       age: 36,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 120_000,
       isInjured: false,
     },
-    {
+        {
       id: "hannes-piterson-d-delcroix",
-      firstName: "Hannes Piterson D",
-      lastName: "DELCROIX",
-      nameOnShirt: "DELCROIX",
+      firstName: "Аннес",
+      lastName: "Делкруакс",
+      nameOnShirt: "Делкруакс",
+      originalFirstName: "Hannes Piterson D",
+      originalLastName: "DELCROIX",
+      originalNameOnShirt: "DELCROIX",
+
       dateOfBirth: "28/02/1999",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 95_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-yves-roberns-didier-experience",
-      firstName: "Martin Yves Roberns Didier",
-      lastName: "EXPERIENCE",
-      nameOnShirt: "EXPERIENCE",
+      firstName: "Мартин",
+      lastName: "Експериенсе",
+      nameOnShirt: "Експериенсе",
+      originalFirstName: "Martin Yves Roberns Didier",
+      originalLastName: "EXPERIENCE",
+      originalNameOnShirt: "EXPERIENCE",
+
       dateOfBirth: "09/03/1999",
       age: 27,
       shirtNumber: 8,
@@ -185,11 +218,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "markhus-lacroix",
-      firstName: "Markhus",
-      lastName: "LACROIX",
-      nameOnShirt: "LACROIX",
+      firstName: "Маркус",
+      lastName: "Лакруакс",
+      nameOnShirt: "Лакруакс",
+      originalFirstName: "Markhus",
+      originalLastName: "LACROIX",
+      originalNameOnShirt: "LACROIX",
+
       dateOfBirth: "14/10/1993",
       age: 32,
       shirtNumber: 13,
@@ -206,11 +243,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 100_000,
       isInjured: false,
     },
-    {
+        {
       id: "garven-michee-metusala",
-      firstName: "Garven-Michee",
-      lastName: "METUSALA",
-      nameOnShirt: "METUSALA",
+      firstName: "Гарвен-Мишее",
+      lastName: "Метусала",
+      nameOnShirt: "Метусала",
+      originalFirstName: "Garven-Michee",
+      originalLastName: "METUSALA",
+      originalNameOnShirt: "METUSALA",
+
       dateOfBirth: "31/12/1999",
       age: 26,
       shirtNumber: 14,
@@ -227,11 +268,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 110_000,
       isInjured: false,
     },
-    {
+        {
       id: "jean-kevin-duverne",
-      firstName: "Jean-Kévin",
-      lastName: "DUVERNE",
-      nameOnShirt: "DUVERNE",
+      firstName: "Жеан-Кевин",
+      lastName: "Дуверне",
+      nameOnShirt: "Дуверне",
+      originalFirstName: "Jean-Kévin",
+      originalLastName: "DUVERNE",
+      originalNameOnShirt: "DUVERNE",
+
       dateOfBirth: "12/07/1997",
       age: 28,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 130_000,
       isInjured: false,
     },
-    {
+        {
       id: "wilguens-raphael-polynice-paugain",
-      firstName: "Wilguens Raphael Polynice",
-      lastName: "PAUGAIN",
-      nameOnShirt: "PAUGAIN",
+      firstName: "Вилгуенс",
+      lastName: "Пауген",
+      nameOnShirt: "Пауген",
+      originalFirstName: "Wilguens Raphael Polynice",
+      originalLastName: "PAUGAIN",
+      originalNameOnShirt: "PAUGAIN",
+
       dateOfBirth: "24/08/2001",
       age: 24,
       shirtNumber: 24,
@@ -271,11 +320,15 @@ export const haitiProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "carl-fred-sainte",
-      firstName: "Carl Fred",
-      lastName: "SAINTE",
-      nameOnShirt: "SAINTE",
+      firstName: "Карл",
+      lastName: "Сенте",
+      nameOnShirt: "Сенте",
+      originalFirstName: "Carl Fred",
+      originalLastName: "SAINTE",
+      originalNameOnShirt: "SAINTE",
+
       dateOfBirth: "09/08/2002",
       age: 23,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 100_000,
       isInjured: false,
     },
-    {
+        {
       id: "jean-ricner-bellegarde",
-      firstName: "Jean Ricner",
-      lastName: "BELLEGARDE",
-      nameOnShirt: "BELLEGARDE",
+      firstName: "Жеан",
+      lastName: "Беллегарде",
+      nameOnShirt: "Беллегарде",
+      originalFirstName: "Jean Ricner",
+      originalLastName: "BELLEGARDE",
+      originalNameOnShirt: "BELLEGARDE",
+
       dateOfBirth: "27/06/1998",
       age: 27,
       shirtNumber: 10,
@@ -313,11 +370,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 130_000,
       isInjured: false,
     },
-    {
+        {
       id: "danley-jean-jacques",
-      firstName: "Danley",
-      lastName: "JEAN JACQUES",
-      nameOnShirt: "JEAN-JACQUES",
+      firstName: "Данлей",
+      lastName: "Жеан Жаккес",
+      nameOnShirt: "Жеан-Жаккес",
+      originalFirstName: "Danley",
+      originalLastName: "JEAN JACQUES",
+      originalNameOnShirt: "JEAN-JACQUES",
+
       dateOfBirth: "20/05/2000",
       age: 26,
       shirtNumber: 17,
@@ -334,11 +395,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "dominique-celidor-simon",
-      firstName: "Dominique Celidor",
-      lastName: "SIMON",
-      nameOnShirt: "SIMON",
+      firstName: "Доминике",
+      lastName: "Симон",
+      nameOnShirt: "Симон",
+      originalFirstName: "Dominique Celidor",
+      originalLastName: "SIMON",
+      originalNameOnShirt: "SIMON",
+
       dateOfBirth: "29/07/2000",
       age: 25,
       shirtNumber: 25,
@@ -355,11 +420,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 110_000,
       isInjured: false,
     },
-    {
+        {
       id: "olivier-woodensky-pierre",
-      firstName: "Olivier Woodensky",
-      lastName: "PIERRE",
-      nameOnShirt: "W. PIERRE",
+      firstName: "Оливиер",
+      lastName: "Пиерре",
+      nameOnShirt: "В. Пиерре",
+      originalFirstName: "Olivier Woodensky",
+      originalLastName: "PIERRE",
+      originalNameOnShirt: "W. PIERRE",
+
       dateOfBirth: "30/12/2004",
       age: 21,
       shirtNumber: 26,
@@ -378,11 +447,15 @@ export const haitiProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "derrick-burckley-etienne-jr",
-      firstName: "Derrick Burckley",
-      lastName: "ETIENNE JR",
-      nameOnShirt: "ETIENNE JR",
+      firstName: "Деррикк",
+      lastName: "Етиенне Жуниор",
+      nameOnShirt: "Етиенне Жуниор",
+      originalFirstName: "Derrick Burckley",
+      originalLastName: "ETIENNE JR",
+      originalNameOnShirt: "ETIENNE JR",
+
       dateOfBirth: "25/11/1996",
       age: 29,
       shirtNumber: 7,
@@ -399,11 +472,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 95_000,
       isInjured: false,
     },
-    {
+        {
       id: "duckens-nazon",
-      firstName: "Duckens",
-      lastName: "NAZON",
-      nameOnShirt: "NAZON",
+      firstName: "Дуккенс",
+      lastName: "Назон",
+      nameOnShirt: "Назон",
+      originalFirstName: "Duckens",
+      originalLastName: "NAZON",
+      originalNameOnShirt: "NAZON",
+
       dateOfBirth: "07/04/1994",
       age: 32,
       shirtNumber: 9,
@@ -420,11 +497,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 120_000,
       isInjured: false,
     },
-    {
+        {
       id: "don-deedson-louicius",
-      firstName: "Don Deedson",
-      lastName: "LOUICIUS",
-      nameOnShirt: "LOUICIUS",
+      firstName: "Дон",
+      lastName: "Луисиус",
+      nameOnShirt: "Луисиус",
+      originalFirstName: "Don Deedson",
+      originalLastName: "LOUICIUS",
+      originalNameOnShirt: "LOUICIUS",
+
       dateOfBirth: "11/02/2001",
       age: 25,
       shirtNumber: 11,
@@ -441,11 +522,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 95_000,
       isInjured: false,
     },
-    {
+        {
       id: "ruben-fritzner-providence",
-      firstName: "Ruben Fritzner",
-      lastName: "PROVIDENCE",
-      nameOnShirt: "PROVIDENCE",
+      firstName: "Рубен",
+      lastName: "Провиденсе",
+      nameOnShirt: "Провиденсе",
+      originalFirstName: "Ruben Fritzner",
+      originalLastName: "PROVIDENCE",
+      originalNameOnShirt: "PROVIDENCE",
+
       dateOfBirth: "07/07/2001",
       age: 24,
       shirtNumber: 15,
@@ -462,11 +547,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 75_000,
       isInjured: false,
     },
-    {
+        {
       id: "lenny-alvin-pico-joseph",
-      firstName: "Lenny Alvin Pico",
-      lastName: "JOSEPH",
-      nameOnShirt: "JOSEPH",
+      firstName: "Ленни",
+      lastName: "Жосеф",
+      nameOnShirt: "Жосеф",
+      originalFirstName: "Lenny Alvin Pico",
+      originalLastName: "JOSEPH",
+      originalNameOnShirt: "JOSEPH",
+
       dateOfBirth: "12/10/2000",
       age: 25,
       shirtNumber: 16,
@@ -483,11 +572,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 55_000,
       isInjured: false,
     },
-    {
+        {
       id: "wilson-isidor",
-      firstName: "Wilson",
-      lastName: "ISIDOR",
-      nameOnShirt: "ISIDOR",
+      firstName: "Вилсон",
+      lastName: "Исидор",
+      nameOnShirt: "Исидор",
+      originalFirstName: "Wilson",
+      originalLastName: "ISIDOR",
+      originalNameOnShirt: "ISIDOR",
+
       dateOfBirth: "27/08/2000",
       age: 25,
       shirtNumber: 18,
@@ -504,11 +597,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 70_000,
       isInjured: false,
     },
-    {
+        {
       id: "yassin-enzo-fortune",
-      firstName: "Yassin Enzo",
-      lastName: "FORTUNE",
-      nameOnShirt: "FORTUNE",
+      firstName: "Иассин",
+      lastName: "Фортуне",
+      nameOnShirt: "Фортуне",
+      originalFirstName: "Yassin Enzo",
+      originalLastName: "FORTUNE",
+      originalNameOnShirt: "FORTUNE",
+
       dateOfBirth: "30/01/1999",
       age: 27,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 55_000,
       isInjured: false,
     },
-    {
+        {
       id: "frantzdy-pierrot",
-      firstName: "Frantzdy",
-      lastName: "PIERROT",
-      nameOnShirt: "PIERROT",
+      firstName: "Франтзди",
+      lastName: "Пиеррот",
+      nameOnShirt: "Пиеррот",
+      originalFirstName: "Frantzdy",
+      originalLastName: "PIERROT",
+      originalNameOnShirt: "PIERROT",
+
       dateOfBirth: "29/03/1995",
       age: 31,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const haitiProfile: NationalTeamProfile = {
       salary: 110_000,
       isInjured: false,
     },
-    {
+        {
       id: "josue-jeremie-casimir",
-      firstName: "Josue Jeremie",
-      lastName: "CASIMIR",
-      nameOnShirt: "CASIMIR",
+      firstName: "Жосуе",
+      lastName: "Касимир",
+      nameOnShirt: "Касимир",
+      originalFirstName: "Josue Jeremie",
+      originalLastName: "CASIMIR",
+      originalNameOnShirt: "CASIMIR",
+
       dateOfBirth: "24/09/2001",
       age: 24,
       shirtNumber: 21,

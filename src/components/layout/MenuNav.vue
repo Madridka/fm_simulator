@@ -13,6 +13,7 @@ const props = withDefaults(
     items: AppNavItem[]
     selectedClub?: Club
     teamFlag?: string
+    teamFlagUrl?: string
     dashboardPath?: string
     settingsOpen: boolean
     mode?: 'sidebar' | 'drawer'
@@ -61,8 +62,14 @@ const handleNavigate = (): void => {
       :class="mode === 'sidebar' ? 'border-b border-white/10' : 'border-b border-slate-100'"
       @click="handleNavigate"
     >
+      <img
+        v-if="teamFlagUrl"
+        :src="teamFlagUrl"
+        :alt="selectedClub?.name ?? ''"
+        class="h-11 w-11 shrink-0 rounded-md border border-white/15 bg-white/10 object-cover"
+      />
       <span
-        v-if="teamFlag"
+        v-else-if="teamFlag"
         class="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-white/15 bg-white/10 text-xl"
       >
         {{ teamFlag }}

@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { flagEmoji } from '@/data/nationalTeams/worldCup2026/teams'
+import { resolveTeamFlagEmoji } from '@/data/wc26/nationalTeam'
 import { useWorldCup2026Store } from '@/stores/worldCup2026/worldCup2026'
 import WorldCupStandingTable from '@/components/worldCup2026/WorldCupStandingTable.vue'
 import type { WorldCupMatch } from '@/stores/worldCup2026/types'
@@ -96,7 +96,15 @@ const userGroupRows = computed(() => {
         <p class="text-sm font-black uppercase tracking-[0.3em] text-amber-700">
           {{ t('worldCup2026.overview.champion') }}
         </p>
-        <div class="mt-4 text-5xl">{{ flagEmoji(selectedTeam.flagCode) }}</div>
+        <div class="mt-4 text-5xl">
+          <img
+            v-if="selectedTeam.flag"
+            :src="selectedTeam.flag"
+            :alt="selectedTeam.name"
+            class="mx-auto h-16 w-16 rounded object-cover"
+          />
+          <span v-else>{{ resolveTeamFlagEmoji(selectedTeam.flagCode) }}</span>
+        </div>
         <h2 class="mt-3 text-3xl font-black uppercase">{{ selectedTeam.name }}</h2>
         <Button class="mt-6 !font-black" :label="t('worldCup2026.overview.newTournament')" @click="newTournament" />
       </article>
@@ -154,7 +162,7 @@ const userGroupRows = computed(() => {
                 ? 'worldCup2026.overview.nextOpponent'
                 : 'worldCup2026.overview.firstOpponent',
               {
-                team: `${flagEmoji(nextOpponent.flagCode)} ${nextOpponent.name}`,
+                team: `${resolveTeamFlagEmoji(nextOpponent.flagCode)} ${nextOpponent.name}`,
               },
             )
           }}
@@ -190,7 +198,13 @@ const userGroupRows = computed(() => {
           {{ t('worldCup2026.overview.yourTeam') }}
         </h3>
         <div class="mt-3 flex items-center gap-3">
-          <span class="text-4xl">{{ flagEmoji(selectedTeam.flagCode) }}</span>
+          <img
+            v-if="selectedTeam.flag"
+            :src="selectedTeam.flag"
+            :alt="selectedTeam.name"
+            class="h-10 w-10 shrink-0 rounded object-cover"
+          />
+          <span v-else class="text-4xl">{{ resolveTeamFlagEmoji(selectedTeam.flagCode) }}</span>
           <div>
             <div class="text-xl font-black">{{ selectedTeam.name }}</div>
             <div class="text-sm text-emerald-700">{{ selectedTeam.rating }}</div>

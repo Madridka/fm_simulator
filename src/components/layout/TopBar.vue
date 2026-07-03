@@ -12,6 +12,7 @@ const props = defineProps<{
   season?: number
   selectedClub?: Club
   teamFlag?: string
+  teamFlagUrl?: string
   isWorldCupMode?: boolean
   dashboardPath?: string
 }>()
@@ -59,8 +60,14 @@ const matchCompetition = (match: Match): string => {
         </button>
 
         <RouterLink :to="props.dashboardPath ?? '/dashboard'" class="flex min-w-0 items-center gap-3 md:gap-4">
+          <img
+            v-if="props.teamFlagUrl"
+            :src="props.teamFlagUrl"
+            :alt="selectedClub?.name ?? ''"
+            class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white object-cover md:hidden"
+          />
           <span
-            v-if="props.teamFlag"
+            v-else-if="props.teamFlag"
             class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white text-xl md:hidden"
           >
             {{ props.teamFlag }}

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import franceFlag from '@/data/nationalTeams/worldCup2026/flags/france.png'
 
 export const franceProfile: NationalTeamProfile = {
   id: "france",
@@ -6,7 +7,7 @@ export const franceProfile: NationalTeamProfile = {
   shortName: "FRA",
   fifaCode: "FRA",
   groupId: "I",
-  flagCode: "FR",
+  flag: franceFlag,
   rating: 90,
   attackRating: 90,
   midfieldRating: 89,
@@ -15,11 +16,15 @@ export const franceProfile: NationalTeamProfile = {
   secondaryColor: "#ED2939",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "brice-lauriche-samba",
-      firstName: "Brice Lauriche",
-      lastName: "SAMBA",
-      nameOnShirt: "SAMBA",
+      firstName: "Брисе",
+      lastName: "Самба",
+      nameOnShirt: "Самба",
+      originalFirstName: "Brice Lauriche",
+      originalLastName: "SAMBA",
+      originalNameOnShirt: "SAMBA",
+
       dateOfBirth: "25/04/1994",
       age: 32,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "mike-peterson-maignan",
-      firstName: "Mike Peterson",
-      lastName: "MAIGNAN",
-      nameOnShirt: "MAIGNAN",
+      firstName: "Мике",
+      lastName: "Меньан",
+      nameOnShirt: "Меньан",
+      originalFirstName: "Mike Peterson",
+      originalLastName: "MAIGNAN",
+      originalNameOnShirt: "MAIGNAN",
+
       dateOfBirth: "03/07/1995",
       age: 30,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "robin-francois-philippe-risser",
-      firstName: "Robin François Philippe",
-      lastName: "RISSER",
-      nameOnShirt: "RISSER",
+      firstName: "Робин",
+      lastName: "Риссер",
+      nameOnShirt: "Риссер",
+      originalFirstName: "Robin François Philippe",
+      originalLastName: "RISSER",
+      originalNameOnShirt: "RISSER",
+
       dateOfBirth: "02/12/2004",
       age: 21,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const franceProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "malo-arthur-gusto",
-      firstName: "Malo Arthur",
-      lastName: "GUSTO",
-      nameOnShirt: "GUSTO",
+      firstName: "Мало",
+      lastName: "Густо",
+      nameOnShirt: "Густо",
+      originalFirstName: "Malo Arthur",
+      originalLastName: "GUSTO",
+      originalNameOnShirt: "GUSTO",
+
       dateOfBirth: "19/05/2003",
       age: 23,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_700_000,
       isInjured: false,
     },
-    {
+        {
       id: "lucas-digne",
-      firstName: "Lucas",
-      lastName: "DIGNE",
-      nameOnShirt: "DIGNE",
+      firstName: "Лукас",
+      lastName: "Динье",
+      nameOnShirt: "Динье",
+      originalFirstName: "Lucas",
+      originalLastName: "DIGNE",
+      originalNameOnShirt: "DIGNE",
+
       dateOfBirth: "20/07/1993",
       age: 32,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "dayotchanculle-oswald-upamecano",
-      firstName: "Dayotchanculle Oswald",
-      lastName: "UPAMECANO",
-      nameOnShirt: "UPAMECANO",
+      firstName: "Даиотшанкулле",
+      lastName: "Упамекано",
+      nameOnShirt: "Упамекано",
+      originalFirstName: "Dayotchanculle Oswald",
+      originalLastName: "UPAMECANO",
+      originalNameOnShirt: "UPAMECANO",
+
       dateOfBirth: "27/10/1998",
       age: 27,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "jules-olivier-kounde",
-      firstName: "Jules Olivier",
-      lastName: "KOUNDE",
-      nameOnShirt: "KOUNDE",
+      firstName: "Жулес",
+      lastName: "Кунде",
+      nameOnShirt: "Кунде",
+      originalFirstName: "Jules Olivier",
+      originalLastName: "KOUNDE",
+      originalNameOnShirt: "KOUNDE",
+
       dateOfBirth: "12/11/1998",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahima-konate",
-      firstName: "Ibrahima",
-      lastName: "KONATÉ",
-      nameOnShirt: "KONATE",
+      firstName: "Ибраима",
+      lastName: "Конате",
+      nameOnShirt: "Конате",
+      originalFirstName: "Ibrahima",
+      originalLastName: "KONATÉ",
+      originalNameOnShirt: "KONATE",
+
       dateOfBirth: "25/05/1999",
       age: 27,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "william-alain-andre-gabriel-saliba",
-      firstName: "William Alain André Gabriel",
-      lastName: "SALIBA",
-      nameOnShirt: "SALIBA",
+      firstName: "Уильям",
+      lastName: "Салиба",
+      nameOnShirt: "Салиба",
+      originalFirstName: "William Alain André Gabriel",
+      originalLastName: "SALIBA",
+      originalNameOnShirt: "SALIBA",
+
       dateOfBirth: "24/03/2001",
       age: 25,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "theo-bernard-francois-hernandez",
-      firstName: "Théo Bernard François",
-      lastName: "HERNANDEZ",
-      nameOnShirt: "T. HERNANDEZ",
+      firstName: "Тео",
+      lastName: "Ернандез",
+      nameOnShirt: "Т. Ернандез",
+      originalFirstName: "Théo Bernard François",
+      originalLastName: "HERNANDEZ",
+      originalNameOnShirt: "T. HERNANDEZ",
+
       dateOfBirth: "06/10/1997",
       age: 28,
       shirtNumber: 19,
@@ -227,11 +268,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "lucas-francois-bernard-hernandez",
-      firstName: "Lucas Francois Bernard",
-      lastName: "HERNANDEZ",
-      nameOnShirt: "L. HERNANDEZ",
+      firstName: "Лукас",
+      lastName: "Ернандез",
+      nameOnShirt: "Л. Ернандез",
+      originalFirstName: "Lucas Francois Bernard",
+      originalLastName: "HERNANDEZ",
+      originalNameOnShirt: "L. HERNANDEZ",
+
       dateOfBirth: "14/02/1996",
       age: 30,
       shirtNumber: 21,
@@ -248,11 +293,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "maxence-guy-lacroix",
-      firstName: "Maxence Guy",
-      lastName: "LACROIX",
-      nameOnShirt: "LACROIX",
+      firstName: "Максенсе",
+      lastName: "Лакруакс",
+      nameOnShirt: "Лакруакс",
+      originalFirstName: "Maxence Guy",
+      originalLastName: "LACROIX",
+      originalNameOnShirt: "LACROIX",
+
       dateOfBirth: "06/04/2000",
       age: 26,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const franceProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "kouadio-emmanuel-boris-kone",
-      firstName: "Kouadio Emmanuel Boris",
-      lastName: "KONE",
-      nameOnShirt: "KONE",
+      firstName: "Куадио",
+      lastName: "Коне",
+      nameOnShirt: "Коне",
+      originalFirstName: "Kouadio Emmanuel Boris",
+      originalLastName: "KONE",
+      originalNameOnShirt: "KONE",
+
       dateOfBirth: "17/05/2001",
       age: 25,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "aurelien-djani-tchouameni",
-      firstName: "Aurélien Djani",
-      lastName: "TCHOUAMENI",
-      nameOnShirt: "TCHOUAMENI",
+      firstName: "Аурелиен",
+      lastName: "Тшуамени",
+      nameOnShirt: "Тшуамени",
+      originalFirstName: "Aurélien Djani",
+      originalLastName: "TCHOUAMENI",
+      originalNameOnShirt: "TCHOUAMENI",
+
       dateOfBirth: "27/01/2000",
       age: 26,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "ngolo-kante",
-      firstName: "N'golo",
-      lastName: "KANTE",
-      nameOnShirt: "KANTE",
+      firstName: "Н'Голо",
+      lastName: "Канте",
+      nameOnShirt: "Канте",
+      originalFirstName: "N'golo",
+      originalLastName: "KANTE",
+      originalNameOnShirt: "KANTE",
+
       dateOfBirth: "29/03/1991",
       age: 35,
       shirtNumber: 13,
@@ -334,11 +395,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "adrien-thibault-marie-rabiot",
-      firstName: "Adrien Thibault Marie",
-      lastName: "RABIOT",
-      nameOnShirt: "RABIOT",
+      firstName: "Адриен",
+      lastName: "Рабиот",
+      nameOnShirt: "Рабиот",
+      originalFirstName: "Adrien Thibault Marie",
+      originalLastName: "RABIOT",
+      originalNameOnShirt: "RABIOT",
+
       dateOfBirth: "03/04/1995",
       age: 31,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "warren-marie-jean-pierre-zaire-emery",
-      firstName: "Warren Marie Jean-Pierre",
-      lastName: "ZAÏRE-EMERY",
-      nameOnShirt: "ZAIRE-EMERY",
+      firstName: "Варрен",
+      lastName: "Зере-Емери",
+      nameOnShirt: "Зере-Емери",
+      originalFirstName: "Warren Marie Jean-Pierre",
+      originalLastName: "ZAÏRE-EMERY",
+      originalNameOnShirt: "ZAIRE-EMERY",
+
       dateOfBirth: "08/03/2006",
       age: 20,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_515_000,
       isInjured: false,
     },
-    {
+        {
       id: "mathis-rayan-cherki",
-      firstName: "Mathis Rayan",
-      lastName: "CHERKI",
-      nameOnShirt: "CHERKI",
+      firstName: "Матис",
+      lastName: "Шерки",
+      nameOnShirt: "Шерки",
+      originalFirstName: "Mathis Rayan",
+      originalLastName: "CHERKI",
+      originalNameOnShirt: "CHERKI",
+
       dateOfBirth: "17/08/2003",
       age: 22,
       shirtNumber: 24,
@@ -397,11 +470,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_700_000,
       isInjured: false,
     },
-    {
+        {
       id: "maghnes-akliouche",
-      firstName: "Maghnes",
-      lastName: "AKLIOUCHE",
-      nameOnShirt: "AKLIOUCHE",
+      firstName: "Магнес",
+      lastName: "Аклиуше",
+      nameOnShirt: "Аклиуше",
+      originalFirstName: "Maghnes",
+      originalLastName: "AKLIOUCHE",
+      originalNameOnShirt: "AKLIOUCHE",
+
       dateOfBirth: "25/02/2002",
       age: 24,
       shirtNumber: 25,
@@ -420,11 +497,15 @@ export const franceProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "masour-ousmane-dembele",
-      firstName: "Masour Ousmane",
-      lastName: "DEMBELE",
-      nameOnShirt: "DEMBELE",
+      firstName: "Усман",
+      lastName: "Дембеле",
+      nameOnShirt: "Дембеле",
+      originalFirstName: "Masour Ousmane",
+      originalLastName: "DEMBELE",
+      originalNameOnShirt: "DEMBELE",
+
       dateOfBirth: "15/05/1997",
       age: 29,
       shirtNumber: 7,
@@ -441,11 +522,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcus-lilian-thuram-ulien",
-      firstName: "Marcus Lilian",
-      lastName: "THURAM-ULIEN",
-      nameOnShirt: "THURAM",
+      firstName: "Маркус",
+      lastName: "Турам-Улиен",
+      nameOnShirt: "Турам",
+      originalFirstName: "Marcus Lilian",
+      originalLastName: "THURAM-ULIEN",
+      originalNameOnShirt: "THURAM",
+
       dateOfBirth: "06/08/1997",
       age: 28,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "kylian-mbappe-lottin",
-      firstName: "Kylian",
-      lastName: "MBAPPE LOTTIN",
-      nameOnShirt: "MBAPPE",
+      firstName: "Килиан",
+      lastName: "Мбаппе",
+      nameOnShirt: "Мбаппе",
+      originalFirstName: "Kylian",
+      originalLastName: "MBAPPE LOTTIN",
+      originalNameOnShirt: "MBAPPE",
+
       dateOfBirth: "20/12/1998",
       age: 27,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-akpovie-olise",
-      firstName: "Michael Akpovie",
-      lastName: "OLISE",
-      nameOnShirt: "OLISE",
+      firstName: "Майкл",
+      lastName: "Олисе",
+      nameOnShirt: "Олисе",
+      originalFirstName: "Michael Akpovie",
+      originalLastName: "OLISE",
+      originalNameOnShirt: "OLISE",
+
       dateOfBirth: "12/12/2001",
       age: 24,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_795_000,
       isInjured: false,
     },
-    {
+        {
       id: "bradley-jean-manuel-essolisa-a-barcola",
-      firstName: "Bradley Jean-Manuel Essolisa A",
-      lastName: "BARCOLA",
-      nameOnShirt: "BARCOLA",
+      firstName: "Брадлей",
+      lastName: "Баркола",
+      nameOnShirt: "Баркола",
+      originalFirstName: "Bradley Jean-Manuel Essolisa A",
+      originalLastName: "BARCOLA",
+      originalNameOnShirt: "BARCOLA",
+
       dateOfBirth: "02/09/2002",
       age: 23,
       shirtNumber: 12,
@@ -525,11 +622,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_795_000,
       isInjured: false,
     },
-    {
+        {
       id: "desire-nonka-maho-doue",
-      firstName: "Désiré Nonka-Maho",
-      lastName: "DOUE",
-      nameOnShirt: "DOUE",
+      firstName: "Десире",
+      lastName: "Дуе",
+      nameOnShirt: "Дуе",
+      originalFirstName: "Désiré Nonka-Maho",
+      originalLastName: "DOUE",
+      originalNameOnShirt: "DOUE",
+
       dateOfBirth: "03/06/2005",
       age: 21,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const franceProfile: NationalTeamProfile = {
       salary: 1_430_000,
       isInjured: false,
     },
-    {
+        {
       id: "jean-philippe-mateta",
-      firstName: "Jean-Philippe",
-      lastName: "MATETA",
-      nameOnShirt: "MATETA",
+      firstName: "Жеан-Филиппе",
+      lastName: "Матета",
+      nameOnShirt: "Матета",
+      originalFirstName: "Jean-Philippe",
+      originalLastName: "MATETA",
+      originalNameOnShirt: "MATETA",
+
       dateOfBirth: "28/06/1997",
       age: 28,
       shirtNumber: 22,

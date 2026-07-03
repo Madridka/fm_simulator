@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import englandFlag from '@/data/nationalTeams/worldCup2026/flags/england.png'
 
 export const englandProfile: NationalTeamProfile = {
   id: "england",
@@ -6,7 +7,7 @@ export const englandProfile: NationalTeamProfile = {
   shortName: "ENG",
   fifaCode: "ENG",
   groupId: "L",
-  flagCode: "GB",
+  flag: englandFlag,
   rating: 88,
   attackRating: 88,
   midfieldRating: 87,
@@ -15,11 +16,15 @@ export const englandProfile: NationalTeamProfile = {
   secondaryColor: "#CE1124",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "jordan-lee-pickford",
-      firstName: "Jordan Lee",
-      lastName: "PICKFORD",
-      nameOnShirt: "PICKFORD",
+      firstName: "Джордан",
+      lastName: "Пикфорд",
+      nameOnShirt: "Пикфорд",
+      originalFirstName: "Jordan Lee",
+      originalLastName: "PICKFORD",
+      originalNameOnShirt: "PICKFORD",
+
       dateOfBirth: "07/03/1994",
       age: 32,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "dean-bradley-henderson",
-      firstName: "Dean Bradley",
-      lastName: "HENDERSON",
-      nameOnShirt: "D. HENDERSON",
+      firstName: "Дин",
+      lastName: "Хендерсон",
+      nameOnShirt: "Д. Хендерсон",
+      originalFirstName: "Dean Bradley",
+      originalLastName: "HENDERSON",
+      originalNameOnShirt: "D. HENDERSON",
+
       dateOfBirth: "12/03/1997",
       age: 29,
       shirtNumber: 13,
@@ -57,11 +66,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "james-harrington-trafford",
-      firstName: "James Harrington",
-      lastName: "TRAFFORD",
-      nameOnShirt: "TRAFFORD",
+      firstName: "Хамес",
+      lastName: "Траффорд",
+      nameOnShirt: "Траффорд",
+      originalFirstName: "James Harrington",
+      originalLastName: "TRAFFORD",
+      originalNameOnShirt: "TRAFFORD",
+
       dateOfBirth: "10/10/2002",
       age: 23,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const englandProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "ezri-ngoyo-konsa",
-      firstName: "Ezri Ngoyo",
-      lastName: "KONSA",
-      nameOnShirt: "KONSA",
+      firstName: "Езри",
+      lastName: "Конса",
+      nameOnShirt: "Конса",
+      originalFirstName: "Ezri Ngoyo",
+      originalLastName: "KONSA",
+      originalNameOnShirt: "KONSA",
+
       dateOfBirth: "23/10/1997",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "nico-oreilly",
-      firstName: "Nico",
-      lastName: "O'REILLY",
-      nameOnShirt: "O'REILLY",
+      firstName: "Нико",
+      lastName: "О'Реилли",
+      nameOnShirt: "О'Реилли",
+      originalFirstName: "Nico",
+      originalLastName: "O'REILLY",
+      originalNameOnShirt: "O'REILLY",
+
       dateOfBirth: "21/03/2005",
       age: 21,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_265_000,
       isInjured: false,
     },
-    {
+        {
       id: "john-stones",
-      firstName: "John",
-      lastName: "STONES",
-      nameOnShirt: "STONES",
+      firstName: "Джон",
+      lastName: "Стонес",
+      nameOnShirt: "Стонес",
+      originalFirstName: "John",
+      originalLastName: "STONES",
+      originalNameOnShirt: "STONES",
+
       dateOfBirth: "28/05/1994",
       age: 32,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_660_000,
       isInjured: false,
     },
-    {
+        {
       id: "addji-keaninkin-marc-isreal-guehi",
-      firstName: "Addji Keaninkin Marc-Isreal",
-      lastName: "GUEHI",
-      nameOnShirt: "GUÉHI",
+      firstName: "Аддджи",
+      lastName: "Гуехи",
+      nameOnShirt: "Гуехи",
+      originalFirstName: "Addji Keaninkin Marc-Isreal",
+      originalLastName: "GUEHI",
+      originalNameOnShirt: "GUÉHI",
+
       dateOfBirth: "13/07/2000",
       age: 25,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "trevoh-tom-chalobah",
-      firstName: "Trevoh Tom",
-      lastName: "CHALOBAH",
-      nameOnShirt: "CHALOBAH",
+      firstName: "Тревох",
+      lastName: "Чалобах",
+      nameOnShirt: "Чалобах",
+      originalFirstName: "Trevoh Tom",
+      originalLastName: "CHALOBAH",
+      originalNameOnShirt: "CHALOBAH",
+
       dateOfBirth: "05/07/1999",
       age: 26,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "daniel-johnson-burn",
-      firstName: "Daniel Johnson",
-      lastName: "BURN",
-      nameOnShirt: "BURN",
+      firstName: "Даниэл",
+      lastName: "Бурн",
+      nameOnShirt: "Бурн",
+      originalFirstName: "Daniel Johnson",
+      originalLastName: "BURN",
+      originalNameOnShirt: "BURN",
+
       dateOfBirth: "09/05/1992",
       age: 34,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_145_000,
       isInjured: false,
     },
-    {
+        {
       id: "reece-lewis-james",
-      firstName: "Reece Lewis",
-      lastName: "JAMES",
-      nameOnShirt: "JAMES",
+      firstName: "Рисе",
+      lastName: "Хамес",
+      nameOnShirt: "Хамес",
+      originalFirstName: "Reece Lewis",
+      originalLastName: "JAMES",
+      originalNameOnShirt: "JAMES",
+
       dateOfBirth: "08/12/1999",
       age: 26,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "diop-tehuti-djed-hotep-spence",
-      firstName: "Diop Tehuti Djed-Hotep",
-      lastName: "SPENCE",
-      nameOnShirt: "SPENCE",
+      firstName: "Диоп",
+      lastName: "Спенсе",
+      nameOnShirt: "Спенсе",
+      originalFirstName: "Diop Tehuti Djed-Hotep",
+      originalLastName: "SPENCE",
+      originalNameOnShirt: "SPENCE",
+
       dateOfBirth: "09/08/2000",
       age: 25,
       shirtNumber: 25,
@@ -248,11 +293,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "jarell-amorin-quansah",
-      firstName: "Jarell Amorin",
-      lastName: "QUANSAH",
-      nameOnShirt: "QUANSAH",
+      firstName: "Джарелл",
+      lastName: "Квансах",
+      nameOnShirt: "Квансах",
+      originalFirstName: "Jarell Amorin",
+      originalLastName: "QUANSAH",
+      originalNameOnShirt: "QUANSAH",
+
       dateOfBirth: "29/01/2003",
       age: 23,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const englandProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "declan-rice",
-      firstName: "Declan",
-      lastName: "RICE",
-      nameOnShirt: "RICE",
+      firstName: "Деклан",
+      lastName: "Райс",
+      nameOnShirt: "Рисе",
+      originalFirstName: "Declan",
+      originalLastName: "RICE",
+      originalNameOnShirt: "RICE",
+
       dateOfBirth: "14/01/1999",
       age: 27,
       shirtNumber: 4,
@@ -292,11 +345,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "elliot-junior-anderson",
-      firstName: "Elliot Junior",
-      lastName: "ANDERSON",
-      nameOnShirt: "ANDERSON",
+      firstName: "Еллиот",
+      lastName: "Андерсон",
+      nameOnShirt: "Андерсон",
+      originalFirstName: "Elliot Junior",
+      originalLastName: "ANDERSON",
+      originalNameOnShirt: "ANDERSON",
+
       dateOfBirth: "06/11/2002",
       age: 23,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "jude-victor-william-bellingham",
-      firstName: "Jude Victor William",
-      lastName: "BELLINGHAM",
-      nameOnShirt: "BELLINGHAM",
+      firstName: "Джуд",
+      lastName: "Беллингем",
+      nameOnShirt: "Беллингхам",
+      originalFirstName: "Jude Victor William",
+      originalLastName: "BELLINGHAM",
+      originalNameOnShirt: "BELLINGHAM",
+
       dateOfBirth: "29/06/2003",
       age: 22,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_605_000,
       isInjured: false,
     },
-    {
+        {
       id: "jordan-brian-henderson",
-      firstName: "Jordan Brian",
-      lastName: "HENDERSON",
-      nameOnShirt: "HENDERSON",
+      firstName: "Джордан",
+      lastName: "Хендерсон",
+      nameOnShirt: "Хендерсон",
+      originalFirstName: "Jordan Brian",
+      originalLastName: "HENDERSON",
+      originalNameOnShirt: "HENDERSON",
+
       dateOfBirth: "17/06/1990",
       age: 35,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "kobbie-boateng-mainoo",
-      firstName: "Kobbie Boateng",
-      lastName: "MAINOO",
-      nameOnShirt: "MAINOO",
+      firstName: "Коббие",
+      lastName: "Мейну",
+      nameOnShirt: "Мейну",
+      originalFirstName: "Kobbie Boateng",
+      originalLastName: "MAINOO",
+      originalNameOnShirt: "MAINOO",
+
       dateOfBirth: "19/04/2005",
       age: 21,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_190_000,
       isInjured: false,
     },
-    {
+        {
       id: "morgan-elliot-rogers",
-      firstName: "Morgan Elliot",
-      lastName: "ROGERS",
-      nameOnShirt: "ROGERS",
+      firstName: "Морган",
+      lastName: "Роджерс",
+      nameOnShirt: "Роджерс",
+      originalFirstName: "Morgan Elliot",
+      originalLastName: "ROGERS",
+      originalNameOnShirt: "ROGERS",
+
       dateOfBirth: "26/07/2002",
       age: 23,
       shirtNumber: 17,
@@ -397,11 +470,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_420_000,
       isInjured: false,
     },
-    {
+        {
       id: "eberechi-oluchi-eze",
-      firstName: "Eberechi Oluchi",
-      lastName: "EZE",
-      nameOnShirt: "EZE",
+      firstName: "Еберечи",
+      lastName: "Езе",
+      nameOnShirt: "Езе",
+      originalFirstName: "Eberechi Oluchi",
+      originalLastName: "EZE",
+      originalNameOnShirt: "EZE",
+
       dateOfBirth: "29/06/1998",
       age: 27,
       shirtNumber: 21,
@@ -420,11 +497,15 @@ export const englandProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "bukayo-ayoyinka-saka",
-      firstName: "Bukayo Ayoyinka",
-      lastName: "SAKA",
-      nameOnShirt: "SAKA",
+      firstName: "Букейо",
+      lastName: "Сака",
+      nameOnShirt: "Сака",
+      originalFirstName: "Bukayo Ayoyinka",
+      originalLastName: "SAKA",
+      originalNameOnShirt: "SAKA",
+
       dateOfBirth: "05/09/2001",
       age: 24,
       shirtNumber: 7,
@@ -441,11 +522,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_605_000,
       isInjured: false,
     },
-    {
+        {
       id: "harry-edward-kane",
-      firstName: "Harry Edward",
-      lastName: "KANE",
-      nameOnShirt: "KANE",
+      firstName: "Гарри",
+      lastName: "Кейн",
+      nameOnShirt: "Кане",
+      originalFirstName: "Harry Edward",
+      originalLastName: "KANE",
+      originalNameOnShirt: "KANE",
+
       dateOfBirth: "28/07/1993",
       age: 32,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_760_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcus-rashford",
-      firstName: "Marcus",
-      lastName: "RASHFORD",
-      nameOnShirt: "RASHFORD",
+      firstName: "Маркус",
+      lastName: "Рашфорд",
+      nameOnShirt: "Рашфорд",
+      originalFirstName: "Marcus",
+      originalLastName: "RASHFORD",
+      originalNameOnShirt: "RASHFORD",
+
       dateOfBirth: "31/10/1997",
       age: 28,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "anthony-michael-gordon",
-      firstName: "Anthony Michael",
-      lastName: "GORDON",
-      nameOnShirt: "GORDON",
+      firstName: "Антони",
+      lastName: "Гордон",
+      nameOnShirt: "Гордон",
+      originalFirstName: "Anthony Michael",
+      originalLastName: "GORDON",
+      originalNameOnShirt: "GORDON",
+
       dateOfBirth: "24/02/2001",
       age: 25,
       shirtNumber: 18,
@@ -504,11 +597,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "oliver-george-arthur-watkins",
-      firstName: "Oliver George Arthur",
-      lastName: "WATKINS",
-      nameOnShirt: "WATKINS",
+      firstName: "Оливер",
+      lastName: "Уаткинс",
+      nameOnShirt: "Уаткинс",
+      originalFirstName: "Oliver George Arthur",
+      originalLastName: "WATKINS",
+      originalNameOnShirt: "WATKINS",
+
       dateOfBirth: "30/12/1995",
       age: 30,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "chukwunonso-azuka-tristan-madueke",
-      firstName: "Chukwunonso Azuka Tristan",
-      lastName: "MADUEKE",
-      nameOnShirt: "MADUEKE",
+      firstName: "Чукуунонсо",
+      lastName: "Мадуеке",
+      nameOnShirt: "Мадуеке",
+      originalFirstName: "Chukwunonso Azuka Tristan",
+      originalLastName: "MADUEKE",
+      originalNameOnShirt: "MADUEKE",
+
       dateOfBirth: "10/03/2002",
       age: 24,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const englandProfile: NationalTeamProfile = {
       salary: 1_605_000,
       isInjured: false,
     },
-    {
+        {
       id: "ivan-benjamin-elijah-toney",
-      firstName: "Ivan Benjamin Elijah",
-      lastName: "TONEY",
-      nameOnShirt: "TONEY",
+      firstName: "Иван",
+      lastName: "Тонеи",
+      nameOnShirt: "Тонеи",
+      originalFirstName: "Ivan Benjamin Elijah",
+      originalLastName: "TONEY",
+      originalNameOnShirt: "TONEY",
+
       dateOfBirth: "16/03/1996",
       age: 30,
       shirtNumber: 22,

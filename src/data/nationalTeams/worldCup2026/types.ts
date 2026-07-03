@@ -1,1 +1,5 @@
-export type { NationalTeamProfile } from '@/data/wc26/types'
+export type {
+  NationalTeamPlayer,
+  NationalTeamPlayerPosition,
+  NationalTeamProfile,
+} from '@/data/wc26/types'

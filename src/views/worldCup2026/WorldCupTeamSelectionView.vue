@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { worldCup2026Groups } from '@/data/wc26/groups'
 import { worldCup2026ProfilesById } from '@/data/wc26/teams/index'
-import { flagEmoji } from '@/data/wc26/nationalTeam'
+import { resolveTeamFlagEmoji } from '@/data/wc26/nationalTeam'
 import { useWorldCup2026Store } from '@/stores/worldCup2026/worldCup2026'
 
 const router = useRouter()
@@ -84,7 +84,13 @@ const startTournament = (): void => {
               "
               @click="selectTeam(team.id)"
             >
-              <span class="text-2xl">{{ flagEmoji(team.flagCode) }}</span>
+              <img
+                v-if="team.flag"
+                :src="team.flag"
+                :alt="team.name"
+                class="h-8 w-8 shrink-0 rounded object-cover"
+              />
+              <span v-else class="text-2xl">{{ resolveTeamFlagEmoji(team.flagCode) }}</span>
               <div>
                 <div class="text-sm font-bold text-slate-100">{{ team.name }}</div>
                 <div class="text-xs text-slate-400">{{ team.rating }}</div>
@@ -101,7 +107,13 @@ const startTournament = (): void => {
     >
       <div class="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <span class="text-3xl">{{ flagEmoji(selectedProfile.flagCode) }}</span>
+          <img
+            v-if="selectedProfile.flag"
+            :src="selectedProfile.flag"
+            :alt="selectedProfile.name"
+            class="h-10 w-10 shrink-0 rounded object-cover"
+          />
+          <span v-else class="text-3xl">{{ resolveTeamFlagEmoji(selectedProfile.flagCode) }}</span>
           <div>
             <div class="text-lg font-black text-white">{{ selectedProfile.name }}</div>
             <div class="text-sm text-amber-200">

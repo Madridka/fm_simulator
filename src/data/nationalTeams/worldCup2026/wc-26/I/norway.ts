@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import norwayFlag from '@/data/nationalTeams/worldCup2026/flags/norway.png'
 
 export const norwayProfile: NationalTeamProfile = {
   id: "norway",
@@ -6,7 +7,7 @@ export const norwayProfile: NationalTeamProfile = {
   shortName: "NOR",
   fifaCode: "NOR",
   groupId: "I",
-  flagCode: "NO",
+  flag: norwayFlag,
   rating: 79,
   attackRating: 80,
   midfieldRating: 78,
@@ -15,11 +16,15 @@ export const norwayProfile: NationalTeamProfile = {
   secondaryColor: "#00205B",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "orjan-haskjold-nyland",
-      firstName: "Ørjan Haskjold",
-      lastName: "NYLAND",
-      nameOnShirt: "NYLAND",
+      firstName: "Иорйан",
+      lastName: "Нюланд",
+      nameOnShirt: "Нюланд",
+      originalFirstName: "Ørjan Haskjold",
+      originalLastName: "NYLAND",
+      originalNameOnShirt: "NYLAND",
+
       dateOfBirth: "10/09/1990",
       age: 35,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "sander-tangvik",
-      firstName: "Sander",
-      lastName: "TANGVIK",
-      nameOnShirt: "TANGVIK",
+      firstName: "Сандер",
+      lastName: "Тангвик",
+      nameOnShirt: "Тангвик",
+      originalFirstName: "Sander",
+      originalLastName: "TANGVIK",
+      originalNameOnShirt: "TANGVIK",
+
       dateOfBirth: "29/11/2002",
       age: 23,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "egil-selvik",
-      firstName: "Egil",
-      lastName: "SELVIK",
-      nameOnShirt: "SELVIK",
+      firstName: "Егил",
+      lastName: "Селвик",
+      nameOnShirt: "Селвик",
+      originalFirstName: "Egil",
+      originalLastName: "SELVIK",
+      originalNameOnShirt: "SELVIK",
+
       dateOfBirth: "30/07/1997",
       age: 28,
       shirtNumber: 13,
@@ -80,11 +93,15 @@ export const norwayProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "kristoffer-vassbakk-kopp-ajer",
-      firstName: "Kristoffer Vassbakk Köpp",
-      lastName: "AJER",
-      nameOnShirt: "VASSBAKK AJER",
+      firstName: "Кристоффер",
+      lastName: "Айер",
+      nameOnShirt: "Вассбакк Айер",
+      originalFirstName: "Kristoffer Vassbakk Köpp",
+      originalLastName: "AJER",
+      originalNameOnShirt: "VASSBAKK AJER",
+
       dateOfBirth: "17/04/1998",
       age: 28,
       shirtNumber: 3,
@@ -101,11 +118,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "leo-skiri-ostigard",
-      firstName: "Leo Skiri",
-      lastName: "ØSTIGÅRD",
-      nameOnShirt: "ØSTIGÅRD",
+      firstName: "Лео",
+      lastName: "Иостигорд",
+      nameOnShirt: "Иостигорд",
+      originalFirstName: "Leo Skiri",
+      originalLastName: "ØSTIGÅRD",
+      originalNameOnShirt: "ØSTIGÅRD",
+
       dateOfBirth: "28/11/1999",
       age: 26,
       shirtNumber: 4,
@@ -122,11 +143,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "david-moller-wolfe",
-      firstName: "David Møller",
-      lastName: "WOLFE",
-      nameOnShirt: "MØLLER WOLFE",
+      firstName: "Давид",
+      lastName: "Волфе",
+      nameOnShirt: "Миоллер Волфе",
+      originalFirstName: "David Møller",
+      originalLastName: "WOLFE",
+      originalNameOnShirt: "MØLLER WOLFE",
+
       dateOfBirth: "23/04/2002",
       age: 24,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "fredrik-andre-bjorkan",
-      firstName: "Fredrik André",
-      lastName: "BJØRKAN",
-      nameOnShirt: "BJØRKAN",
+      firstName: "Фредрик",
+      lastName: "Бйиоркан",
+      nameOnShirt: "Бйиоркан",
+      originalFirstName: "Fredrik André",
+      originalLastName: "BJØRKAN",
+      originalNameOnShirt: "BJØRKAN",
+
       dateOfBirth: "21/08/1998",
       age: 27,
       shirtNumber: 15,
@@ -164,11 +193,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcus-holmgren-pedersen",
-      firstName: "Marcus Holmgren",
-      lastName: "PEDERSEN",
-      nameOnShirt: "HOLMGREN",
+      firstName: "Маркус",
+      lastName: "Педерсен",
+      nameOnShirt: "Холмгрен",
+      originalFirstName: "Marcus Holmgren",
+      originalLastName: "PEDERSEN",
+      originalNameOnShirt: "HOLMGREN",
+
       dateOfBirth: "16/07/2000",
       age: 25,
       shirtNumber: 16,
@@ -185,11 +218,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "torbjorn-lysaker-heggem",
-      firstName: "Torbjørn Lysaker",
-      lastName: "HEGGEM",
-      nameOnShirt: "HEGGEM",
+      firstName: "Торбйиорн",
+      lastName: "Хеггем",
+      nameOnShirt: "Хеггем",
+      originalFirstName: "Torbjørn Lysaker",
+      originalLastName: "HEGGEM",
+      originalNameOnShirt: "HEGGEM",
+
       dateOfBirth: "12/01/1999",
       age: 27,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "sondre-klingen-langas",
-      firstName: "Sondre Klingen",
-      lastName: "LANGÅS",
-      nameOnShirt: "LANGÅS",
+      firstName: "Сондре",
+      lastName: "Лангос",
+      nameOnShirt: "Лангос",
+      originalFirstName: "Sondre Klingen",
+      originalLastName: "LANGÅS",
+      originalNameOnShirt: "LANGÅS",
+
       dateOfBirth: "02/02/2001",
       age: 25,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "henrik-saelebakke-falchener",
-      firstName: "Henrik Sælebakke",
-      lastName: "FALCHENER",
-      nameOnShirt: "FALCHENER",
+      firstName: "Хенрик",
+      lastName: "Фалшенер",
+      nameOnShirt: "Фалшенер",
+      originalFirstName: "Henrik Sælebakke",
+      originalLastName: "FALCHENER",
+      originalNameOnShirt: "FALCHENER",
+
       dateOfBirth: "08/05/2003",
       age: 23,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const norwayProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "morten-thorsby",
-      firstName: "Morten",
-      lastName: "THORSBY",
-      nameOnShirt: "THORSBY",
+      firstName: "Мортен",
+      lastName: "Тхорсбю",
+      nameOnShirt: "Тхорсбю",
+      originalFirstName: "Morten",
+      originalLastName: "THORSBY",
+      originalNameOnShirt: "THORSBY",
+
       dateOfBirth: "05/05/1996",
       age: 30,
       shirtNumber: 2,
@@ -271,11 +320,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "patrick-berg",
-      firstName: "Patrick",
-      lastName: "BERG",
-      nameOnShirt: "BERG",
+      firstName: "Патрикк",
+      lastName: "Берг",
+      nameOnShirt: "Берг",
+      originalFirstName: "Patrick",
+      originalLastName: "BERG",
+      originalNameOnShirt: "BERG",
+
       dateOfBirth: "24/11/1997",
       age: 28,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "sander-gard-bolin-berge",
-      firstName: "Sander Gard Bolin",
-      lastName: "BERGE",
-      nameOnShirt: "BERGE",
+      firstName: "Сандер",
+      lastName: "Берге",
+      nameOnShirt: "Берге",
+      originalFirstName: "Sander Gard Bolin",
+      originalLastName: "BERGE",
+      originalNameOnShirt: "BERGE",
+
       dateOfBirth: "14/02/1998",
       age: 28,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-odegaard",
-      firstName: "Martín",
-      lastName: "ØDEGAARD",
-      nameOnShirt: "ØDEGAARD",
+      firstName: "Мартин",
+      lastName: "Иодегаард",
+      nameOnShirt: "Иодегаард",
+      originalFirstName: "Martín",
+      originalLastName: "ØDEGAARD",
+      originalNameOnShirt: "ØDEGAARD",
+
       dateOfBirth: "17/12/1998",
       age: 27,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "fredrik-aursnes",
-      firstName: "Fredrik",
-      lastName: "AURSNES",
-      nameOnShirt: "AURSNES",
+      firstName: "Фредрик",
+      lastName: "Аурснес",
+      nameOnShirt: "Аурснес",
+      originalFirstName: "Fredrik",
+      originalLastName: "AURSNES",
+      originalNameOnShirt: "AURSNES",
+
       dateOfBirth: "10/12/1995",
       age: 30,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "kristian-thorstvedt",
-      firstName: "Kristian",
-      lastName: "THORSTVEDT",
-      nameOnShirt: "THORSTVEDT",
+      firstName: "Кристиан",
+      lastName: "Тхорстведт",
+      nameOnShirt: "Тхорстведт",
+      originalFirstName: "Kristian",
+      originalLastName: "THORSTVEDT",
+      originalNameOnShirt: "THORSTVEDT",
+
       dateOfBirth: "13/03/1999",
       age: 27,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "thelonious-gerard-aasgaard",
-      firstName: "Thelonious Gerard",
-      lastName: "AASGAARD",
-      nameOnShirt: "AASGAARD",
+      firstName: "Тхелониоус",
+      lastName: "Аасгаард",
+      nameOnShirt: "Аасгаард",
+      originalFirstName: "Thelonious Gerard",
+      originalLastName: "AASGAARD",
+      originalNameOnShirt: "AASGAARD",
+
       dateOfBirth: "02/05/2002",
       age: 24,
       shirtNumber: 19,
@@ -397,11 +470,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "andreas-raedergard-schjelderup",
-      firstName: "Andreas Rædergård",
-      lastName: "SCHJELDERUP",
-      nameOnShirt: "SCHJELDERUP",
+      firstName: "Андреас",
+      lastName: "Сшйелдеруп",
+      nameOnShirt: "Сшйелдеруп",
+      originalFirstName: "Andreas Rædergård",
+      originalLastName: "SCHJELDERUP",
+      originalNameOnShirt: "SCHJELDERUP",
+
       dateOfBirth: "01/06/2004",
       age: 22,
       shirtNumber: 21,
@@ -418,11 +495,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "oscar-bobb",
-      firstName: "Oscar",
-      lastName: "BOBB",
-      nameOnShirt: "BOBB",
+      firstName: "Оскар",
+      lastName: "Бобб",
+      nameOnShirt: "Бобб",
+      originalFirstName: "Oscar",
+      originalLastName: "BOBB",
+      originalNameOnShirt: "BOBB",
+
       dateOfBirth: "12/07/2003",
       age: 22,
       shirtNumber: 22,
@@ -439,11 +520,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "jens-petter-hauge",
-      firstName: "Jens Petter",
-      lastName: "HAUGE",
-      nameOnShirt: "HAUGE",
+      firstName: "Йенс",
+      lastName: "Хауге",
+      nameOnShirt: "Хауге",
+      originalFirstName: "Jens Petter",
+      originalLastName: "HAUGE",
+      originalNameOnShirt: "HAUGE",
+
       dateOfBirth: "12/10/1999",
       age: 26,
       shirtNumber: 23,
@@ -462,11 +547,15 @@ export const norwayProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "alexander-sorloth",
-      firstName: "Alexander",
-      lastName: "SØRLOTH",
-      nameOnShirt: "SØRLOTH",
+      firstName: "Александер",
+      lastName: "Сиорлотх",
+      nameOnShirt: "Сиорлотх",
+      originalFirstName: "Alexander",
+      originalLastName: "SØRLOTH",
+      originalNameOnShirt: "SØRLOTH",
+
       dateOfBirth: "05/12/1995",
       age: 30,
       shirtNumber: 7,
@@ -483,11 +572,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "erling-braut-haaland",
-      firstName: "Erling Braut",
-      lastName: "HAALAND",
-      nameOnShirt: "BRAUT HAALAND",
+      firstName: "Эрлинг",
+      lastName: "Холанн",
+      nameOnShirt: "Браут Хааланд",
+      originalFirstName: "Erling Braut",
+      originalLastName: "HAALAND",
+      originalNameOnShirt: "BRAUT HAALAND",
+
       dateOfBirth: "21/07/2000",
       age: 25,
       shirtNumber: 9,
@@ -504,11 +597,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "jorgen-strand-larsen",
-      firstName: "Jørgen Strand",
-      lastName: "LARSEN",
-      nameOnShirt: "STRAND LARSEN",
+      firstName: "Йиорген",
+      lastName: "Ларсен",
+      nameOnShirt: "Странд Ларсен",
+      originalFirstName: "Jørgen Strand",
+      originalLastName: "LARSEN",
+      originalNameOnShirt: "STRAND LARSEN",
+
       dateOfBirth: "06/02/2000",
       age: 26,
       shirtNumber: 11,
@@ -525,11 +622,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "antonio-eromonsele-nordby-nusa",
-      firstName: "Antonio Eromonsele Nordby",
-      lastName: "NUSA",
-      nameOnShirt: "NUSA",
+      firstName: "Антонио",
+      lastName: "Нуса",
+      nameOnShirt: "Нуса",
+      originalFirstName: "Antonio Eromonsele Nordby",
+      originalLastName: "NUSA",
+      originalNameOnShirt: "NUSA",
+
       dateOfBirth: "17/04/2005",
       age: 21,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const norwayProfile: NationalTeamProfile = {
       salary: 775_000,
       isInjured: false,
     },
-    {
+        {
       id: "julian-ryerson",
-      firstName: "Julian",
-      lastName: "RYERSON",
-      nameOnShirt: "RYERSON",
+      firstName: "Хулиан",
+      lastName: "Рюерсон",
+      nameOnShirt: "Рюерсон",
+      originalFirstName: "Julian",
+      originalLastName: "RYERSON",
+      originalNameOnShirt: "RYERSON",
+
       dateOfBirth: "17/11/1997",
       age: 28,
       shirtNumber: 26,

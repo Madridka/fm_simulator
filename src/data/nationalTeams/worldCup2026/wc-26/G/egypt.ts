@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import egyptFlag from '@/data/nationalTeams/worldCup2026/flags/egypt.png'
 
 export const egyptProfile: NationalTeamProfile = {
   id: "egypt",
@@ -6,7 +7,7 @@ export const egyptProfile: NationalTeamProfile = {
   shortName: "EGY",
   fifaCode: "EGY",
   groupId: "G",
-  flagCode: "EG",
+  flag: egyptFlag,
   rating: 77,
   attackRating: 77,
   midfieldRating: 76,
@@ -15,11 +16,15 @@ export const egyptProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "mohamed-elsayed-mohamed-elshenawy-gomaa",
-      firstName: "Mohamed Elsayed Mohamed",
-      lastName: "ELSHENAWY GOMAA",
-      nameOnShirt: "M. ELSHENAWY",
+      firstName: "Мохамед",
+      lastName: "Елшенавй Гома",
+      nameOnShirt: "М. Елшенавй",
+      originalFirstName: "Mohamed Elsayed Mohamed",
+      originalLastName: "ELSHENAWY GOMAA",
+      originalNameOnShirt: "M. ELSHENAWY",
+
       dateOfBirth: "18/12/1988",
       age: 37,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "mahdy-mohamed-soliman-ibrahim",
-      firstName: "Mahdy Mohamed Soliman",
-      lastName: "IBRAHIM",
-      nameOnShirt: "M. SOLIMAN",
+      firstName: "Махдй",
+      lastName: "Ибрахим",
+      nameOnShirt: "М. Солиман",
+      originalFirstName: "Mahdy Mohamed Soliman",
+      originalLastName: "IBRAHIM",
+      originalNameOnShirt: "M. SOLIMAN",
+
       dateOfBirth: "08/06/1987",
       age: 39,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "mostafa-ahmed-abdelaziz-mohame-shoubir",
-      firstName: "Mostafa Ahmed Abdelaziz Mohame",
-      lastName: "SHOUBIR",
-      nameOnShirt: "SHOUBIR",
+      firstName: "Мостафа",
+      lastName: "Шубир",
+      nameOnShirt: "Шубир",
+      originalFirstName: "Mostafa Ahmed Abdelaziz Mohame",
+      originalLastName: "SHOUBIR",
+      originalNameOnShirt: "SHOUBIR",
+
       dateOfBirth: "15/05/2000",
       age: 26,
       shirtNumber: 23,
@@ -78,11 +91,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-alaaeldin-soliman-m-ahmed",
-      firstName: "Mohamed Alaaeldin Soliman M",
-      lastName: "AHMED",
-      nameOnShirt: "M. ALAA",
+      firstName: "Мохамед",
+      lastName: "Ахмед",
+      nameOnShirt: "М. аль-А",
+      originalFirstName: "Mohamed Alaaeldin Soliman M",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "M. ALAA",
+
       dateOfBirth: "01/01/1999",
       age: 27,
       shirtNumber: 26,
@@ -101,11 +118,15 @@ export const egyptProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "yasser-ahmed-ibrahim-elhanafy",
-      firstName: "Yasser Ahmed Ibrahim",
-      lastName: "ELHANAFY",
-      nameOnShirt: "YASSER",
+      firstName: "Йассер",
+      lastName: "Елханафй",
+      nameOnShirt: "Йассер",
+      originalFirstName: "Yasser Ahmed Ibrahim",
+      originalLastName: "ELHANAFY",
+      originalNameOnShirt: "YASSER",
+
       dateOfBirth: "10/02/1993",
       age: 33,
       shirtNumber: 2,
@@ -122,11 +143,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-hany-gamal-eldemerdash",
-      firstName: "Mohamed Hany Gamal",
-      lastName: "ELDEMERDASH",
-      nameOnShirt: "M. HANY",
+      firstName: "Мохамед",
+      lastName: "Елдемердаш",
+      nameOnShirt: "М. Ханй",
+      originalFirstName: "Mohamed Hany Gamal",
+      originalLastName: "ELDEMERDASH",
+      originalNameOnShirt: "M. HANY",
+
       dateOfBirth: "02/02/1996",
       age: 30,
       shirtNumber: 3,
@@ -143,11 +168,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "hossam-abdelmegeed-abdelsalam-abdelmegeed",
-      firstName: "Hossam Abdelmegeed Abdelsalam",
-      lastName: "ABDELMEGEED",
-      nameOnShirt: "HOSSAM",
+      firstName: "Хоссам",
+      lastName: "Абделмегид",
+      nameOnShirt: "Хоссам",
+      originalFirstName: "Hossam Abdelmegeed Abdelsalam",
+      originalLastName: "ABDELMEGEED",
+      originalNameOnShirt: "HOSSAM",
+
       dateOfBirth: "30/04/2001",
       age: 25,
       shirtNumber: 4,
@@ -164,11 +193,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "ramy-hisham-abdelaziz-moustafa-rabia",
-      firstName: "Ramy Hisham Abdelaziz Moustafa",
-      lastName: "RABIA",
-      nameOnShirt: "R. RABIA",
+      firstName: "Рамй",
+      lastName: "Рабиа",
+      nameOnShirt: "Р. Рабиа",
+      originalFirstName: "Ramy Hisham Abdelaziz Moustafa",
+      originalLastName: "RABIA",
+      originalNameOnShirt: "R. RABIA",
+
       dateOfBirth: "20/05/1993",
       age: 33,
       shirtNumber: 5,
@@ -185,11 +218,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-abdelmoneim-elsayed-m-ahmed",
-      firstName: "Mohamed Abdelmoneim Elsayed M",
-      lastName: "AHMED",
-      nameOnShirt: "M. ABDELMONIEM",
+      firstName: "Мохамед",
+      lastName: "Ахмед",
+      nameOnShirt: "М. Абделмонием",
+      originalFirstName: "Mohamed Abdelmoneim Elsayed M",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "M. ABDELMONIEM",
+
       dateOfBirth: "01/02/1999",
       age: 27,
       shirtNumber: 6,
@@ -206,11 +243,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-mohamed-aboelfetouh-mohamed",
-      firstName: "Ahmed Mohamed Aboelfetouh",
-      lastName: "MOHAMED",
-      nameOnShirt: "A. FATOUH",
+      firstName: "Ахмед",
+      lastName: "Мохамед",
+      nameOnShirt: "А. Фатух",
+      originalFirstName: "Ahmed Mohamed Aboelfetouh",
+      originalLastName: "MOHAMED",
+      originalNameOnShirt: "A. FATOUH",
+
       dateOfBirth: "22/03/1998",
       age: 28,
       shirtNumber: 13,
@@ -227,11 +268,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "karim-hafez-ramadan-seifeldin",
-      firstName: "Karim Hafez Ramadan",
-      lastName: "SEIFELDIN",
-      nameOnShirt: "K. HAFEZ",
+      firstName: "Карим",
+      lastName: "Сеифелдин",
+      nameOnShirt: "К. Хафез",
+      originalFirstName: "Karim Hafez Ramadan",
+      originalLastName: "SEIFELDIN",
+      originalNameOnShirt: "K. HAFEZ",
+
       dateOfBirth: "12/03/1996",
       age: 30,
       shirtNumber: 15,
@@ -248,11 +293,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "tarek-alaa-abdelghaffar-abdel-elgebaly",
-      firstName: "Tarek Alaa Abdelghaffar Abdel",
-      lastName: "ELGEBALY",
-      nameOnShirt: "T. ALAA",
+      firstName: "Тарек",
+      lastName: "Елгебалй",
+      nameOnShirt: "Т. аль-А",
+      originalFirstName: "Tarek Alaa Abdelghaffar Abdel",
+      originalLastName: "ELGEBALY",
+      originalNameOnShirt: "T. ALAA",
+
       dateOfBirth: "05/01/2002",
       age: 24,
       shirtNumber: 24,
@@ -271,11 +320,15 @@ export const egyptProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "emam-ashour-metwaly-abdelghany",
-      firstName: "Emam Ashour Metwaly",
-      lastName: "ABDELGHANY",
-      nameOnShirt: "E. ASHOUR",
+      firstName: "Емам",
+      lastName: "Абделганй",
+      nameOnShirt: "Е. Ашур",
+      originalFirstName: "Emam Ashour Metwaly",
+      originalLastName: "ABDELGHANY",
+      originalNameOnShirt: "E. ASHOUR",
+
       dateOfBirth: "20/02/1998",
       age: 28,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "mostafa-mohamed-zaky-abdelraouf",
-      firstName: "Mostafa Mohamed Zaky",
-      lastName: "ABDELRAOUF",
-      nameOnShirt: "ZICO",
+      firstName: "Мостафа",
+      lastName: "Абделрауф",
+      nameOnShirt: "Зико",
+      originalFirstName: "Mostafa Mohamed Zaky",
+      originalLastName: "ABDELRAOUF",
+      originalNameOnShirt: "ZICO",
+
       dateOfBirth: "27/04/1997",
       age: 29,
       shirtNumber: 11,
@@ -313,11 +370,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "hamdy-fathy-abdelhalim-abdelfattah",
-      firstName: "Hamdy Fathy Abdelhalim",
-      lastName: "ABDELFATTAH",
-      nameOnShirt: "H. FATHY",
+      firstName: "Хамдй",
+      lastName: "Абделфаттах",
+      nameOnShirt: "Х. Фасй",
+      originalFirstName: "Hamdy Fathy Abdelhalim",
+      originalLastName: "ABDELFATTAH",
+      originalNameOnShirt: "H. FATHY",
+
       dateOfBirth: "29/09/1994",
       age: 31,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohanad-mostafa-ahmed-a-lashin",
-      firstName: "Mohanad Mostafa Ahmed A",
-      lastName: "LASHIN",
-      nameOnShirt: "M. LASHIN",
+      firstName: "Моханад",
+      lastName: "Лашин",
+      nameOnShirt: "М. Лашин",
+      originalFirstName: "Mohanad Mostafa Ahmed A",
+      originalLastName: "LASHIN",
+      originalNameOnShirt: "M. LASHIN",
+
       dateOfBirth: "29/05/1996",
       age: 30,
       shirtNumber: 17,
@@ -355,11 +420,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "nabil-emad-aly-elmahdy-aly",
-      firstName: "Nabil Emad Aly Elmahdy",
-      lastName: "ALY",
-      nameOnShirt: "DONGA",
+      firstName: "Набил",
+      lastName: "Алй",
+      nameOnShirt: "Донга",
+      originalFirstName: "Nabil Emad Aly Elmahdy",
+      originalLastName: "ALY",
+      originalNameOnShirt: "DONGA",
+
       dateOfBirth: "06/04/1996",
       age: 30,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "marawan-attia-fahim-ghallab",
-      firstName: "Marawan Attia Fahim",
-      lastName: "GHALLAB",
-      nameOnShirt: "M. ATTIA",
+      firstName: "Мараван",
+      lastName: "Галлаб",
+      nameOnShirt: "М. Аттиа",
+      originalFirstName: "Marawan Attia Fahim",
+      originalLastName: "GHALLAB",
+      originalNameOnShirt: "M. ATTIA",
+
       dateOfBirth: "01/08/1998",
       age: 27,
       shirtNumber: 19,
@@ -397,11 +470,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "mahmoud-saber-abdelmohsen-h-abdelmohsen",
-      firstName: "Mahmoud Saber Abdelmohsen H",
-      lastName: "ABDELMOHSEN",
-      nameOnShirt: "M. SABER",
+      firstName: "Махмуд",
+      lastName: "Абделмохсен",
+      nameOnShirt: "М. Сабер",
+      originalFirstName: "Mahmoud Saber Abdelmohsen H",
+      originalLastName: "ABDELMOHSEN",
+      originalNameOnShirt: "M. SABER",
+
       dateOfBirth: "30/07/2001",
       age: 24,
       shirtNumber: 21,
@@ -420,11 +497,15 @@ export const egyptProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "mahmoud-ahmed-ibrahim-hassan",
-      firstName: "Mahmoud Ahmed Ibrahim",
-      lastName: "HASSAN",
-      nameOnShirt: "M. TREZEGUET",
+      firstName: "Махмуд",
+      lastName: "Хассан",
+      nameOnShirt: "М. Трезегует",
+      originalFirstName: "Mahmoud Ahmed Ibrahim",
+      originalLastName: "HASSAN",
+      originalNameOnShirt: "M. TREZEGUET",
+
       dateOfBirth: "01/10/1994",
       age: 31,
       shirtNumber: 7,
@@ -441,11 +522,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "hamza-mohamed-abdelkarim-e-selim",
-      firstName: "Hamza Mohamed Abdelkarim E",
-      lastName: "SELIM",
-      nameOnShirt: "ABDELKARIM",
+      firstName: "Хамза",
+      lastName: "Селим",
+      nameOnShirt: "Абделкарим",
+      originalFirstName: "Hamza Mohamed Abdelkarim E",
+      originalLastName: "SELIM",
+      originalNameOnShirt: "ABDELKARIM",
+
       dateOfBirth: "01/01/2008",
       age: 18,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-salah-hamed-mahrous-ghaly",
-      firstName: "Mohamed Salah Hamed Mahrous",
-      lastName: "GHALY",
-      nameOnShirt: "M. SALAH",
+      firstName: "Мохамед",
+      lastName: "Салах",
+      nameOnShirt: "М. Салах",
+      originalFirstName: "Mohamed Salah Hamed Mahrous",
+      originalLastName: "GHALY",
+      originalNameOnShirt: "M. SALAH",
+
       dateOfBirth: "15/06/1992",
       age: 33,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "haissem-yousry-fouad-a-hassan",
-      firstName: "Haissem Yousry Fouad A",
-      lastName: "HASSAN",
-      nameOnShirt: "H. HASSAN",
+      firstName: "Хайссем",
+      lastName: "Хассан",
+      nameOnShirt: "Х. Хассан",
+      originalFirstName: "Haissem Yousry Fouad A",
+      originalLastName: "HASSAN",
+      originalNameOnShirt: "H. HASSAN",
+
       dateOfBirth: "08/02/2002",
       age: 24,
       shirtNumber: 12,
@@ -504,11 +597,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-adel-aly-mohamed-hassan",
-      firstName: "Ibrahim Adel Aly Mohamed",
-      lastName: "HASSAN",
-      nameOnShirt: "I. ADEL",
+      firstName: "Ибрахим",
+      lastName: "Хассан",
+      nameOnShirt: "И. Адел",
+      originalFirstName: "Ibrahim Adel Aly Mohamed",
+      originalLastName: "HASSAN",
+      originalNameOnShirt: "I. ADEL",
+
       dateOfBirth: "23/04/2001",
       age: 25,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "omar-khaled-mohamed-abdelsalam-marmoush",
-      firstName: "Omar Khaled Mohamed Abdelsalam",
-      lastName: "MARMOUSH",
-      nameOnShirt: "MARMOUSH",
+      firstName: "Омар",
+      lastName: "Мармуш",
+      nameOnShirt: "Мармуш",
+      originalFirstName: "Omar Khaled Mohamed Abdelsalam",
+      originalLastName: "MARMOUSH",
+      originalNameOnShirt: "MARMOUSH",
+
       dateOfBirth: "07/02/1999",
       age: 27,
       shirtNumber: 22,
@@ -546,11 +647,15 @@ export const egyptProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-mostafa-mohamed-sayed",
-      firstName: "Ahmed Mostafa Mohamed",
-      lastName: "SAYED",
-      nameOnShirt: "ZIZO",
+      firstName: "Ахмед",
+      lastName: "Сайед",
+      nameOnShirt: "Зизо",
+      originalFirstName: "Ahmed Mostafa Mohamed",
+      originalLastName: "SAYED",
+      originalNameOnShirt: "ZIZO",
+
       dateOfBirth: "10/01/1996",
       age: 30,
       shirtNumber: 25,

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import croatiaFlag from '@/data/nationalTeams/worldCup2026/flags/croatia.png'
 
 export const croatiaProfile: NationalTeamProfile = {
   id: "croatia",
@@ -6,7 +7,7 @@ export const croatiaProfile: NationalTeamProfile = {
   shortName: "CRO",
   fifaCode: "CRO",
   groupId: "L",
-  flagCode: "HR",
+  flag: croatiaFlag,
   rating: 84,
   attackRating: 83,
   midfieldRating: 85,
@@ -15,11 +16,15 @@ export const croatiaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "dominik-livakovic",
-      firstName: "Dominik",
-      lastName: "LIVAKOVIĆ",
-      nameOnShirt: "LIVAKOVIĆ",
+      firstName: "Доминик",
+      lastName: "Ливакович",
+      nameOnShirt: "Ливакович",
+      originalFirstName: "Dominik",
+      originalLastName: "LIVAKOVIĆ",
+      originalNameOnShirt: "LIVAKOVIĆ",
+
       dateOfBirth: "09/01/1995",
       age: 31,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "ivor-pandur",
-      firstName: "Ivor",
-      lastName: "PANDUR",
-      nameOnShirt: "PANDUR",
+      firstName: "Ивор",
+      lastName: "Пандур",
+      nameOnShirt: "Пандур",
+      originalFirstName: "Ivor",
+      originalLastName: "PANDUR",
+      originalNameOnShirt: "PANDUR",
+
       dateOfBirth: "25/03/2000",
       age: 26,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "dominik-kotarski",
-      firstName: "Dominik",
-      lastName: "KOTARSKI",
-      nameOnShirt: "KOTARSKI",
+      firstName: "Доминик",
+      lastName: "Котарски",
+      nameOnShirt: "Котарски",
+      originalFirstName: "Dominik",
+      originalLastName: "KOTARSKI",
+      originalNameOnShirt: "KOTARSKI",
+
       dateOfBirth: "10/02/2000",
       age: 26,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const croatiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "josip-stanisic",
-      firstName: "Josip",
-      lastName: "STANIŠIĆ",
-      nameOnShirt: "STANIŠIĆ",
+      firstName: "Йосип",
+      lastName: "Станишич",
+      nameOnShirt: "Станишич",
+      originalFirstName: "Josip",
+      originalLastName: "STANIŠIĆ",
+      originalNameOnShirt: "STANIŠIĆ",
+
       dateOfBirth: "02/04/2000",
       age: 26,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "marin-pongracic",
-      firstName: "Marin",
-      lastName: "PONGRAČIĆ",
-      nameOnShirt: "PONGRAČIĆ",
+      firstName: "Марин",
+      lastName: "Понграчич",
+      nameOnShirt: "Понграчич",
+      originalFirstName: "Marin",
+      originalLastName: "PONGRAČIĆ",
+      originalNameOnShirt: "PONGRAČIĆ",
+
       dateOfBirth: "11/09/1997",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "josko-gvardiol",
-      firstName: "Joško",
-      lastName: "GVARDIOL",
-      nameOnShirt: "GVARDIOL",
+      firstName: "Йошко",
+      lastName: "Гвардиол",
+      nameOnShirt: "Гвардиол",
+      originalFirstName: "Joško",
+      originalLastName: "GVARDIOL",
+      originalNameOnShirt: "GVARDIOL",
+
       dateOfBirth: "23/01/2002",
       age: 24,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_420_000,
       isInjured: false,
     },
-    {
+        {
       id: "duje-caleta-car",
-      firstName: "Duje",
-      lastName: "ĆALETA-CAR",
-      nameOnShirt: "ĆALETA-CAR",
+      firstName: "Дуйе",
+      lastName: "Чалета-Цар",
+      nameOnShirt: "Чалета-Цар",
+      originalFirstName: "Duje",
+      originalLastName: "ĆALETA-CAR",
+      originalNameOnShirt: "ĆALETA-CAR",
+
       dateOfBirth: "17/09/1996",
       age: 29,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "josip-sutalo",
-      firstName: "Josip",
-      lastName: "ŠUTALO",
-      nameOnShirt: "ŠUTALO",
+      firstName: "Йосип",
+      lastName: "Шутало",
+      nameOnShirt: "Шутало",
+      originalFirstName: "Josip",
+      originalLastName: "ŠUTALO",
+      originalNameOnShirt: "ŠUTALO",
+
       dateOfBirth: "28/02/2000",
       age: 26,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "kristijan-jakic",
-      firstName: "Kristijan",
-      lastName: "JAKIĆ",
-      nameOnShirt: "JAKIĆ",
+      firstName: "Кристийан",
+      lastName: "Йакич",
+      nameOnShirt: "Йакич",
+      originalFirstName: "Kristijan",
+      originalLastName: "JAKIĆ",
+      originalNameOnShirt: "JAKIĆ",
+
       dateOfBirth: "14/05/1997",
       age: 29,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "luka-vuskovic",
-      firstName: "Luka",
-      lastName: "VUŠKOVIĆ",
-      nameOnShirt: "VUŠKOVIĆ",
+      firstName: "Лука",
+      lastName: "Вушкович",
+      nameOnShirt: "Вушкович",
+      originalFirstName: "Luka",
+      originalLastName: "VUŠKOVIĆ",
+      originalNameOnShirt: "VUŠKOVIĆ",
+
       dateOfBirth: "24/02/2007",
       age: 19,
       shirtNumber: 22,
@@ -227,11 +268,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 840_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-erlic",
-      firstName: "Martin",
-      lastName: "ERLIĆ",
-      nameOnShirt: "ERLIĆ",
+      firstName: "Мартин",
+      lastName: "Ерлич",
+      nameOnShirt: "Ерлич",
+      originalFirstName: "Martin",
+      originalLastName: "ERLIĆ",
+      originalNameOnShirt: "ERLIĆ",
+
       dateOfBirth: "24/01/1998",
       age: 28,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const croatiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "nikola-moro",
-      firstName: "Nikola",
-      lastName: "MORO",
-      nameOnShirt: "MORO",
+      firstName: "Никола",
+      lastName: "Моро",
+      nameOnShirt: "Моро",
+      originalFirstName: "Nikola",
+      originalLastName: "MORO",
+      originalNameOnShirt: "MORO",
+
       dateOfBirth: "12/03/1998",
       age: 28,
       shirtNumber: 7,
@@ -271,11 +320,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "mateo-kovacic",
-      firstName: "Mateo",
-      lastName: "KOVAČIĆ",
-      nameOnShirt: "KOVAČIĆ",
+      firstName: "Матео",
+      lastName: "Ковачич",
+      nameOnShirt: "Ковачич",
+      originalFirstName: "Mateo",
+      originalLastName: "KOVAČIĆ",
+      originalNameOnShirt: "KOVAČIĆ",
+
       dateOfBirth: "06/05/1994",
       age: 32,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "luka-modric",
-      firstName: "Luka",
-      lastName: "MODRIĆ",
-      nameOnShirt: "MODRIĆ",
+      firstName: "Лука",
+      lastName: "Модрич",
+      nameOnShirt: "Модрич",
+      originalFirstName: "Luka",
+      originalLastName: "MODRIĆ",
+      originalNameOnShirt: "MODRIĆ",
+
       dateOfBirth: "09/09/1985",
       age: 40,
       shirtNumber: 10,
@@ -313,11 +370,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "nikola-vlasic",
-      firstName: "Nikola",
-      lastName: "VLAŠIĆ",
-      nameOnShirt: "VLAŠIĆ",
+      firstName: "Никола",
+      lastName: "Влашич",
+      nameOnShirt: "Влашич",
+      originalFirstName: "Nikola",
+      originalLastName: "VLAŠIĆ",
+      originalNameOnShirt: "VLAŠIĆ",
+
       dateOfBirth: "04/10/1997",
       age: 28,
       shirtNumber: 13,
@@ -334,11 +395,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "mario-pasalic",
-      firstName: "Mario",
-      lastName: "PAŠALIĆ",
-      nameOnShirt: "PAŠALIĆ",
+      firstName: "Марио",
+      lastName: "Пашалич",
+      nameOnShirt: "Пашалич",
+      originalFirstName: "Mario",
+      originalLastName: "PAŠALIĆ",
+      originalNameOnShirt: "PAŠALIĆ",
+
       dateOfBirth: "09/02/1995",
       age: 31,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-baturina",
-      firstName: "Martin",
-      lastName: "BATURINA",
-      nameOnShirt: "BATURINA",
+      firstName: "Мартин",
+      lastName: "Батурина",
+      nameOnShirt: "Батурина",
+      originalFirstName: "Martin",
+      originalLastName: "BATURINA",
+      originalNameOnShirt: "BATURINA",
+
       dateOfBirth: "16/02/2003",
       age: 23,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_090_000,
       isInjured: false,
     },
-    {
+        {
       id: "petar-sucic",
-      firstName: "Petar",
-      lastName: "SUČIĆ",
-      nameOnShirt: "P. SUČIĆ",
+      firstName: "Петар",
+      lastName: "Сучич",
+      nameOnShirt: "П. Сучич",
+      originalFirstName: "Petar",
+      originalLastName: "SUČIĆ",
+      originalNameOnShirt: "P. SUČIĆ",
+
       dateOfBirth: "25/10/2003",
       age: 22,
       shirtNumber: 17,
@@ -397,11 +470,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "toni-fruk",
-      firstName: "Toni",
-      lastName: "FRUK",
-      nameOnShirt: "FRUK",
+      firstName: "Тони",
+      lastName: "Фрук",
+      nameOnShirt: "Фрук",
+      originalFirstName: "Toni",
+      originalLastName: "FRUK",
+      originalNameOnShirt: "FRUK",
+
       dateOfBirth: "09/03/2001",
       age: 25,
       shirtNumber: 19,
@@ -418,11 +495,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "luka-sucic",
-      firstName: "Luka",
-      lastName: "SUČIĆ",
-      nameOnShirt: "SUČIĆ",
+      firstName: "Лука",
+      lastName: "Сучич",
+      nameOnShirt: "Сучич",
+      originalFirstName: "Luka",
+      originalLastName: "SUČIĆ",
+      originalNameOnShirt: "SUČIĆ",
+
       dateOfBirth: "08/09/2002",
       age: 23,
       shirtNumber: 21,
@@ -441,11 +522,15 @@ export const croatiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "andrej-kramaric",
-      firstName: "Andrej",
-      lastName: "KRAMARIĆ",
-      nameOnShirt: "KRAMARIĆ",
+      firstName: "Андрей",
+      lastName: "Крамарич",
+      nameOnShirt: "Крамарич",
+      originalFirstName: "Andrej",
+      originalLastName: "KRAMARIĆ",
+      originalNameOnShirt: "KRAMARIĆ",
+
       dateOfBirth: "19/06/1991",
       age: 34,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_145_000,
       isInjured: false,
     },
-    {
+        {
       id: "ante-budimir",
-      firstName: "Ante",
-      lastName: "BUDIMIR",
-      nameOnShirt: "BUDIMIR",
+      firstName: "Анте",
+      lastName: "Будимир",
+      nameOnShirt: "Будимир",
+      originalFirstName: "Ante",
+      originalLastName: "BUDIMIR",
+      originalNameOnShirt: "BUDIMIR",
+
       dateOfBirth: "22/07/1991",
       age: 34,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "ivan-perisic",
-      firstName: "Ivan",
-      lastName: "PERIŠIĆ",
-      nameOnShirt: "PERIŠIĆ",
+      firstName: "Иван",
+      lastName: "Перишич",
+      nameOnShirt: "Перишич",
+      originalFirstName: "Ivan",
+      originalLastName: "PERIŠIĆ",
+      originalNameOnShirt: "PERIŠIĆ",
+
       dateOfBirth: "02/02/1989",
       age: 37,
       shirtNumber: 14,
@@ -504,11 +597,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_225_000,
       isInjured: false,
     },
-    {
+        {
       id: "igor-matanovic",
-      firstName: "Igor",
-      lastName: "MATANOVIĆ",
-      nameOnShirt: "MATANOVIĆ",
+      firstName: "Игор",
+      lastName: "Матанович",
+      nameOnShirt: "Матанович",
+      originalFirstName: "Igor",
+      originalLastName: "MATANOVIĆ",
+      originalNameOnShirt: "MATANOVIĆ",
+
       dateOfBirth: "31/03/2003",
       age: 23,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_090_000,
       isInjured: false,
     },
-    {
+        {
       id: "marco-pasalic",
-      firstName: "Marco",
-      lastName: "PAŠALIĆ",
-      nameOnShirt: "M. PAŠALIĆ",
+      firstName: "Марко",
+      lastName: "Пашалич",
+      nameOnShirt: "М. Пашалич",
+      originalFirstName: "Marco",
+      originalLastName: "PAŠALIĆ",
+      originalNameOnShirt: "M. PAŠALIĆ",
+
       dateOfBirth: "14/09/2000",
       age: 25,
       shirtNumber: 24,
@@ -546,11 +647,15 @@ export const croatiaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "petar-musa",
-      firstName: "Petar",
-      lastName: "MUSA",
-      nameOnShirt: "MUSA",
+      firstName: "Петар",
+      lastName: "Муса",
+      nameOnShirt: "Муса",
+      originalFirstName: "Petar",
+      originalLastName: "MUSA",
+      originalNameOnShirt: "MUSA",
+
       dateOfBirth: "04/03/1998",
       age: 28,
       shirtNumber: 26,

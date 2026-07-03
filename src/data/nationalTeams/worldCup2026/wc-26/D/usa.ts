@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import usaFlag from '@/data/nationalTeams/worldCup2026/flags/usa.png'
 
 export const usaProfile: NationalTeamProfile = {
   id: "usa",
@@ -6,7 +7,7 @@ export const usaProfile: NationalTeamProfile = {
   shortName: "USA",
   fifaCode: "USA",
   groupId: "D",
-  flagCode: "US",
+  flag: usaFlag,
   rating: 81,
   attackRating: 80,
   midfieldRating: 81,
@@ -15,11 +16,15 @@ export const usaProfile: NationalTeamProfile = {
   secondaryColor: "#B22234",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "matthew-charles-turner",
-      firstName: "Matthew Charles",
-      lastName: "TURNER",
-      nameOnShirt: "TURNER",
+      firstName: "Маттеу",
+      lastName: "Турнер",
+      nameOnShirt: "Турнер",
+      originalFirstName: "Matthew Charles",
+      originalLastName: "TURNER",
+      originalNameOnShirt: "TURNER",
+
       dateOfBirth: "24/06/1994",
       age: 31,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "matthew-andrew-geary-freese",
-      firstName: "Matthew Andrew Geary",
-      lastName: "FREESE",
-      nameOnShirt: "FREESE",
+      firstName: "Маттеу",
+      lastName: "Фрисе",
+      nameOnShirt: "Фрисе",
+      originalFirstName: "Matthew Andrew Geary",
+      originalLastName: "FREESE",
+      originalNameOnShirt: "FREESE",
+
       dateOfBirth: "02/09/1998",
       age: 27,
       shirtNumber: 24,
@@ -57,11 +66,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "christopher-keith-brady",
-      firstName: "Christopher Keith",
-      lastName: "BRADY",
-      nameOnShirt: "BRADY",
+      firstName: "Кристофер",
+      lastName: "Бради",
+      nameOnShirt: "Бради",
+      originalFirstName: "Christopher Keith",
+      originalLastName: "BRADY",
+      originalNameOnShirt: "BRADY",
+
       dateOfBirth: "03/03/2004",
       age: 22,
       shirtNumber: 25,
@@ -80,11 +93,15 @@ export const usaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "sergino-gianni-dest",
-      firstName: "Sergiño Gianni",
-      lastName: "DEST",
-      nameOnShirt: "DEST",
+      firstName: "Серджино",
+      lastName: "Дест",
+      nameOnShirt: "Дест",
+      originalFirstName: "Sergiño Gianni",
+      originalLastName: "DEST",
+      originalNameOnShirt: "DEST",
+
       dateOfBirth: "03/11/2000",
       age: 25,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "christopher-jeffrey-richards",
-      firstName: "Christopher Jeffrey",
-      lastName: "RICHARDS",
-      nameOnShirt: "RICHARDS",
+      firstName: "Кристофер",
+      lastName: "Ричардс",
+      nameOnShirt: "Ричардс",
+      originalFirstName: "Christopher Jeffrey",
+      originalLastName: "RICHARDS",
+      originalNameOnShirt: "RICHARDS",
+
       dateOfBirth: "28/03/2000",
       age: 26,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "antonee-robinson",
-      firstName: "Antonee",
-      lastName: "ROBINSON",
-      nameOnShirt: "A. ROBINSON",
+      firstName: "Антони",
+      lastName: "Робинсон",
+      nameOnShirt: "А. Робинсон",
+      originalFirstName: "Antonee",
+      originalLastName: "ROBINSON",
+      originalNameOnShirt: "A. ROBINSON",
+
       dateOfBirth: "08/08/1997",
       age: 28,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "auston-levi-jesaiah-trusty",
-      firstName: "Auston Levi-Jesaiah",
-      lastName: "TRUSTY",
-      nameOnShirt: "TRUSTY",
+      firstName: "Аустон",
+      lastName: "Трусти",
+      nameOnShirt: "Трусти",
+      originalFirstName: "Auston Levi-Jesaiah",
+      originalLastName: "TRUSTY",
+      originalNameOnShirt: "TRUSTY",
+
       dateOfBirth: "12/08/1998",
       age: 27,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "miles-gordon-robinson",
-      firstName: "Miles Gordon",
-      lastName: "ROBINSON",
-      nameOnShirt: "M. ROBINSON",
+      firstName: "Милес",
+      lastName: "Робинсон",
+      nameOnShirt: "М. Робинсон",
+      originalFirstName: "Miles Gordon",
+      originalLastName: "ROBINSON",
+      originalNameOnShirt: "M. ROBINSON",
+
       dateOfBirth: "14/03/1997",
       age: 29,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "timothy-michael-ream",
-      firstName: "Timothy Michael",
-      lastName: "REAM",
-      nameOnShirt: "REAM",
+      firstName: "Тимоти",
+      lastName: "Рим",
+      nameOnShirt: "Рим",
+      originalFirstName: "Timothy Michael",
+      originalLastName: "REAM",
+      originalNameOnShirt: "REAM",
+
       dateOfBirth: "05/10/1987",
       age: 38,
       shirtNumber: 13,
@@ -206,11 +243,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexander-michael-freeman",
-      firstName: "Alexander Michael",
-      lastName: "FREEMAN",
-      nameOnShirt: "FREEMAN",
+      firstName: "Александер",
+      lastName: "Фриман",
+      nameOnShirt: "Фриман",
+      originalFirstName: "Alexander Michael",
+      originalLastName: "FREEMAN",
+      originalNameOnShirt: "FREEMAN",
+
       dateOfBirth: "09/08/2004",
       age: 21,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 905_000,
       isInjured: false,
     },
-    {
+        {
       id: "maximilian-michael-arfsten",
-      firstName: "Maximilian Michael",
-      lastName: "ARFSTEN",
-      nameOnShirt: "ARFSTEN",
+      firstName: "Максимилиан",
+      lastName: "Арфстен",
+      nameOnShirt: "Арфстен",
+      originalFirstName: "Maximilian Michael",
+      originalLastName: "ARFSTEN",
+      originalNameOnShirt: "ARFSTEN",
+
       dateOfBirth: "19/04/2001",
       age: 25,
       shirtNumber: 18,
@@ -248,11 +293,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "mark-alexander-mckenzie",
-      firstName: "Mark Alexander",
-      lastName: "MCKENZIE",
-      nameOnShirt: "MCKENZIE",
+      firstName: "Марк",
+      lastName: "Мкензие",
+      nameOnShirt: "Мкензие",
+      originalFirstName: "Mark Alexander",
+      originalLastName: "MCKENZIE",
+      originalNameOnShirt: "MCKENZIE",
+
       dateOfBirth: "25/02/1999",
       age: 27,
       shirtNumber: 22,
@@ -269,11 +318,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "joseph-michael-scally",
-      firstName: "Joseph Michael",
-      lastName: "SCALLY",
-      nameOnShirt: "SCALLY",
+      firstName: "Джосеф",
+      lastName: "Скалли",
+      nameOnShirt: "Скалли",
+      originalFirstName: "Joseph Michael",
+      originalLastName: "SCALLY",
+      originalNameOnShirt: "SCALLY",
+
       dateOfBirth: "31/12/2002",
       age: 23,
       shirtNumber: 23,
@@ -292,11 +345,15 @@ export const usaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "tyler-shaan-adams",
-      firstName: "Tyler Shaan",
-      lastName: "ADAMS",
-      nameOnShirt: "ADAMS",
+      firstName: "Тайлер",
+      lastName: "Адамс",
+      nameOnShirt: "Адамс",
+      originalFirstName: "Tyler Shaan",
+      originalLastName: "ADAMS",
+      originalNameOnShirt: "ADAMS",
+
       dateOfBirth: "14/02/1999",
       age: 27,
       shirtNumber: 4,
@@ -313,11 +370,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "giovanni-alejandro-reyna",
-      firstName: "Giovanni Alejandro",
-      lastName: "REYNA",
-      nameOnShirt: "REYNA",
+      firstName: "Джованни",
+      lastName: "Реина",
+      nameOnShirt: "Реина",
+      originalFirstName: "Giovanni Alejandro",
+      originalLastName: "REYNA",
+      originalNameOnShirt: "REYNA",
+
       dateOfBirth: "13/11/2002",
       age: 23,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "weston-james-earl-mc-kennie",
-      firstName: "Weston James Earl",
-      lastName: "MC KENNIE",
-      nameOnShirt: "MCKENNIE",
+      firstName: "Уестон",
+      lastName: "Мк Кенние",
+      nameOnShirt: "Мкенние",
+      originalFirstName: "Weston James Earl",
+      originalLastName: "MC KENNIE",
+      originalNameOnShirt: "MCKENNIE",
+
       dateOfBirth: "28/08/1998",
       age: 27,
       shirtNumber: 8,
@@ -355,11 +420,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "sebastian-matthew-berhalter",
-      firstName: "Sebastian Matthew",
-      lastName: "BERHALTER",
-      nameOnShirt: "BERHALTER",
+      firstName: "Себастиан",
+      lastName: "Берхалтер",
+      nameOnShirt: "Берхалтер",
+      originalFirstName: "Sebastian Matthew",
+      originalLastName: "BERHALTER",
+      originalNameOnShirt: "BERHALTER",
+
       dateOfBirth: "10/05/2001",
       age: 25,
       shirtNumber: 14,
@@ -376,11 +445,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "cristian-roldan",
-      firstName: "Cristian",
-      lastName: "ROLDAN",
-      nameOnShirt: "ROLDAN",
+      firstName: "Кристиан",
+      lastName: "Ролдан",
+      nameOnShirt: "Ролдан",
+      originalFirstName: "Cristian",
+      originalLastName: "ROLDAN",
+      originalNameOnShirt: "ROLDAN",
+
       dateOfBirth: "03/06/1995",
       age: 31,
       shirtNumber: 15,
@@ -397,11 +470,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "malik-leon-tillman",
-      firstName: "Malik Leon",
-      lastName: "TILLMAN",
-      nameOnShirt: "TILLMAN",
+      firstName: "Малик",
+      lastName: "Тиллман",
+      nameOnShirt: "Тиллман",
+      originalFirstName: "Malik Leon",
+      originalLastName: "TILLMAN",
+      originalNameOnShirt: "TILLMAN",
+
       dateOfBirth: "28/05/2002",
       age: 24,
       shirtNumber: 17,
@@ -420,11 +497,15 @@ export const usaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "ricardo-daniel-pepi",
-      firstName: "Ricardo Daniel",
-      lastName: "PEPI",
-      nameOnShirt: "PEPI",
+      firstName: "Рикарду",
+      lastName: "Пепи",
+      nameOnShirt: "Пепи",
+      originalFirstName: "Ricardo Daniel",
+      originalLastName: "PEPI",
+      originalNameOnShirt: "PEPI",
+
       dateOfBirth: "09/01/2003",
       age: 23,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "christian-mate-pulisic",
-      firstName: "Christian Mate",
-      lastName: "PULISIC",
-      nameOnShirt: "PULISIC",
+      firstName: "Кристиан",
+      lastName: "Пулишич",
+      nameOnShirt: "Пулисик",
+      originalFirstName: "Christian Mate",
+      originalLastName: "PULISIC",
+      originalNameOnShirt: "PULISIC",
+
       dateOfBirth: "18/09/1998",
       age: 27,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "brenden-russell-aaronson",
-      firstName: "Brenden Russell",
-      lastName: "AARONSON",
-      nameOnShirt: "AARONSON",
+      firstName: "Бренден",
+      lastName: "Ааронсон",
+      nameOnShirt: "Ааронсон",
+      originalFirstName: "Brenden Russell",
+      originalLastName: "AARONSON",
+      originalNameOnShirt: "AARONSON",
+
       dateOfBirth: "22/10/2000",
       age: 25,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "haji-amir-wright",
-      firstName: "Haji Amir",
-      lastName: "WRIGHT",
-      nameOnShirt: "WRIGHT",
+      firstName: "Хаджи",
+      lastName: "Райт",
+      nameOnShirt: "Райт",
+      originalFirstName: "Haji Amir",
+      originalLastName: "WRIGHT",
+      originalNameOnShirt: "WRIGHT",
+
       dateOfBirth: "27/03/1998",
       age: 28,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "folarin-jolaoluwa-balogun",
-      firstName: "Folarin Jolaoluwa",
-      lastName: "BALOGUN",
-      nameOnShirt: "BALOGUN",
+      firstName: "Фоларин",
+      lastName: "Балогун",
+      nameOnShirt: "Балогун",
+      originalFirstName: "Folarin Jolaoluwa",
+      originalLastName: "BALOGUN",
+      originalNameOnShirt: "BALOGUN",
+
       dateOfBirth: "03/07/2001",
       age: 24,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "timothy-tarpeh-weah",
-      firstName: "Timothy Tarpeh",
-      lastName: "WEAH",
-      nameOnShirt: "WEAH",
+      firstName: "Тимоти",
+      lastName: "Уих",
+      nameOnShirt: "Уих",
+      originalFirstName: "Timothy Tarpeh",
+      originalLastName: "WEAH",
+      originalNameOnShirt: "WEAH",
+
       dateOfBirth: "22/02/2000",
       age: 26,
       shirtNumber: 21,
@@ -546,11 +647,15 @@ export const usaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "alejandro-zendejas-saavedra",
-      firstName: "Alejandro",
-      lastName: "ZENDEJAS SAAVEDRA",
-      nameOnShirt: "ZENDEJAS",
+      firstName: "Аледжандро",
+      lastName: "Зендеджас Сааведра",
+      nameOnShirt: "Зендеджас",
+      originalFirstName: "Alejandro",
+      originalLastName: "ZENDEJAS SAAVEDRA",
+      originalNameOnShirt: "ZENDEJAS",
+
       dateOfBirth: "07/02/1998",
       age: 28,
       shirtNumber: 26,

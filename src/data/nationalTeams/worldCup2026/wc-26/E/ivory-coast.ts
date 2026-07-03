@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import ivoryCoastFlag from '@/data/nationalTeams/worldCup2026/flags/ivory-coast.png'
 
 export const ivoryCoastProfile: NationalTeamProfile = {
   id: "ivory-coast",
@@ -6,7 +7,7 @@ export const ivoryCoastProfile: NationalTeamProfile = {
   shortName: "CIV",
   fifaCode: "CIV",
   groupId: "E",
-  flagCode: "CI",
+  flag: ivoryCoastFlag,
   rating: 79,
   attackRating: 80,
   midfieldRating: 78,
@@ -15,11 +16,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
   secondaryColor: "#009E60",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "yahia-fofana",
-      firstName: "Yahia",
-      lastName: "FOFANA",
-      nameOnShirt: "Y. FOFANA",
+      firstName: "Иаиа",
+      lastName: "Фофана",
+      nameOnShirt: "Й. Фофана",
+      originalFirstName: "Yahia",
+      originalLastName: "FOFANA",
+      originalNameOnShirt: "Y. FOFANA",
+
       dateOfBirth: "21/08/2000",
       age: 25,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-kone",
-      firstName: "Mohamed",
-      lastName: "KONE",
-      nameOnShirt: "KONE",
+      firstName: "Мохамед",
+      lastName: "Коне",
+      nameOnShirt: "Коне",
+      originalFirstName: "Mohamed",
+      originalLastName: "KONE",
+      originalNameOnShirt: "KONE",
+
       dateOfBirth: "07/03/2002",
       age: 24,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "alban-marc-lafont",
-      firstName: "Alban-Marc",
-      lastName: "LAFONT",
-      nameOnShirt: "LAFONT",
+      firstName: "Албан-Марк",
+      lastName: "Лафонт",
+      nameOnShirt: "Лафонт",
+      originalFirstName: "Alban-Marc",
+      originalLastName: "LAFONT",
+      originalNameOnShirt: "LAFONT",
+
       dateOfBirth: "23/01/1999",
       age: 27,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "ousmane-diomande",
-      firstName: "Ousmane",
-      lastName: "DIOMANDE",
-      nameOnShirt: "O. DIOMANDE",
+      firstName: "Усман",
+      lastName: "Диоманде",
+      nameOnShirt: "О. Диоманде",
+      originalFirstName: "Ousmane",
+      originalLastName: "DIOMANDE",
+      originalNameOnShirt: "O. DIOMANDE",
+
       dateOfBirth: "04/12/2003",
       age: 22,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "nclomande-ghislain-konan",
-      firstName: "N'clomande Ghislain",
-      lastName: "KONAN",
-      nameOnShirt: "G. KONAN",
+      firstName: "Н'Кломанде",
+      lastName: "Конан",
+      nameOnShirt: "Г. Конан",
+      originalFirstName: "N'clomande Ghislain",
+      originalLastName: "KONAN",
+      originalNameOnShirt: "G. KONAN",
+
       dateOfBirth: "27/12/1995",
       age: 30,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "wilfried-stephane-singo",
-      firstName: "Wilfried Stephane",
-      lastName: "SINGO",
-      nameOnShirt: "SINGO",
+      firstName: "Вилфриед",
+      lastName: "Синго",
+      nameOnShirt: "Синго",
+      originalFirstName: "Wilfried Stephane",
+      originalLastName: "SINGO",
+      originalNameOnShirt: "SINGO",
+
       dateOfBirth: "25/12/2000",
       age: 25,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "kouakou-odilon-dorgeless-kossounou",
-      firstName: "Kouakou Odilon Dorgeless",
-      lastName: "KOSSOUNOU",
-      nameOnShirt: "KOSSOUNOU",
+      firstName: "Куаку",
+      lastName: "Коссуну",
+      nameOnShirt: "Коссуну",
+      originalFirstName: "Kouakou Odilon Dorgeless",
+      originalLastName: "KOSSOUNOU",
+      originalNameOnShirt: "KOSSOUNOU",
+
       dateOfBirth: "04/01/2001",
       age: 25,
       shirtNumber: 7,
@@ -164,11 +193,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "christopher-tea-domoraud-operi",
-      firstName: "Christopher Tea Domoraud",
-      lastName: "OPERI",
-      nameOnShirt: "OPERI",
+      firstName: "Кристофер",
+      lastName: "Опери",
+      nameOnShirt: "Опери",
+      originalFirstName: "Christopher Tea Domoraud",
+      originalLastName: "OPERI",
+      originalNameOnShirt: "OPERI",
+
       dateOfBirth: "29/04/1997",
       age: 29,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "guela-maho-lewis-doue",
-      firstName: "Guela Maho-Lewis",
-      lastName: "DOUE",
-      nameOnShirt: "G. DOUE",
+      firstName: "Гуела",
+      lastName: "Дуе",
+      nameOnShirt: "Г. Дуе",
+      originalFirstName: "Guela Maho-Lewis",
+      originalLastName: "DOUE",
+      originalNameOnShirt: "G. DOUE",
+
       dateOfBirth: "17/10/2002",
       age: 23,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "badobre-emmanuel-elysee-djedje-agbadou",
-      firstName: "Badobre Emmanuel Elysee Djedje",
-      lastName: "AGBADOU",
-      nameOnShirt: "AGBADOU",
+      firstName: "Бадобре",
+      lastName: "Агбаду",
+      nameOnShirt: "Агбаду",
+      originalFirstName: "Badobre Emmanuel Elysee Djedje",
+      originalLastName: "AGBADOU",
+      originalNameOnShirt: "AGBADOU",
+
       dateOfBirth: "17/06/1997",
       age: 28,
       shirtNumber: 20,
@@ -227,11 +268,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "obite-evan-ndicka",
-      firstName: "Obite Evan",
-      lastName: "NDICKA",
-      nameOnShirt: "NDICKA",
+      firstName: "Обите",
+      lastName: "Ндикка",
+      nameOnShirt: "Ндикка",
+      originalFirstName: "Obite Evan",
+      originalLastName: "NDICKA",
+      originalNameOnShirt: "NDICKA",
+
       dateOfBirth: "20/08/1999",
       age: 26,
       shirtNumber: 21,
@@ -250,11 +295,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "jean-michael-seri",
-      firstName: "Jean Michael",
-      lastName: "SERI",
-      nameOnShirt: "SERI",
+      firstName: "Жеан",
+      lastName: "Сери",
+      nameOnShirt: "Сери",
+      originalFirstName: "Jean Michael",
+      originalLastName: "SERI",
+      originalNameOnShirt: "SERI",
+
       dateOfBirth: "19/07/1991",
       age: 34,
       shirtNumber: 4,
@@ -271,11 +320,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "seko-mohamed-fofana",
-      firstName: "Seko Mohamed",
-      lastName: "FOFANA",
-      nameOnShirt: "FOFANA",
+      firstName: "Секо",
+      lastName: "Фофана",
+      nameOnShirt: "Фофана",
+      originalFirstName: "Seko Mohamed",
+      originalLastName: "FOFANA",
+      originalNameOnShirt: "FOFANA",
+
       dateOfBirth: "07/05/1995",
       age: 31,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "franck-yannick-kessie",
-      firstName: "Franck Yannick",
-      lastName: "KESSIE",
-      nameOnShirt: "KESSIE",
+      firstName: "Франк",
+      lastName: "Кессье",
+      nameOnShirt: "Кессие",
+      originalFirstName: "Franck Yannick",
+      originalLastName: "KESSIE",
+      originalNameOnShirt: "KESSIE",
+
       dateOfBirth: "19/12/1996",
       age: 29,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-sangare",
-      firstName: "Ibrahim",
-      lastName: "SANGARE",
-      nameOnShirt: "SANGARE",
+      firstName: "Ибраим",
+      lastName: "Сангаре",
+      nameOnShirt: "Сангаре",
+      originalFirstName: "Ibrahim",
+      originalLastName: "SANGARE",
+      originalNameOnShirt: "SANGARE",
+
       dateOfBirth: "02/12/1997",
       age: 28,
       shirtNumber: 18,
@@ -334,11 +395,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "parfait-guiagon",
-      firstName: "Parfait",
-      lastName: "GUIAGON",
-      nameOnShirt: "GUIAGON",
+      firstName: "Парфет",
+      lastName: "Гуиагон",
+      nameOnShirt: "Гуиагон",
+      originalFirstName: "Parfait",
+      originalLastName: "GUIAGON",
+      originalNameOnShirt: "GUIAGON",
+
       dateOfBirth: "22/02/2001",
       age: 25,
       shirtNumber: 25,
@@ -355,11 +420,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "christ-ravynel-inao-oulai",
-      firstName: "Christ Ravynel Inao",
-      lastName: "OULAI",
-      nameOnShirt: "INAO",
+      firstName: "Шрист",
+      lastName: "Уле",
+      nameOnShirt: "Инао",
+      originalFirstName: "Christ Ravynel Inao",
+      originalLastName: "OULAI",
+      originalNameOnShirt: "INAO",
+
       dateOfBirth: "06/04/2006",
       age: 20,
       shirtNumber: 26,
@@ -378,11 +447,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "ange-yoan-laurent-bonny",
-      firstName: "Ange-Yoan Laurent",
-      lastName: "BONNY",
-      nameOnShirt: "BONNY",
+      firstName: "Анже-Иоан",
+      lastName: "Бонни",
+      nameOnShirt: "Бонни",
+      originalFirstName: "Ange-Yoan Laurent",
+      originalLastName: "BONNY",
+      originalNameOnShirt: "BONNY",
+
       dateOfBirth: "25/10/2003",
       age: 22,
       shirtNumber: 9,
@@ -399,11 +472,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "simon-adingra",
-      firstName: "Simon",
-      lastName: "ADINGRA",
-      nameOnShirt: "ADINGRA",
+      firstName: "Симон",
+      lastName: "Адингра",
+      nameOnShirt: "Адингра",
+      originalFirstName: "Simon",
+      originalLastName: "ADINGRA",
+      originalNameOnShirt: "ADINGRA",
+
       dateOfBirth: "01/01/2002",
       age: 24,
       shirtNumber: 10,
@@ -420,11 +497,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "yan-diomande",
-      firstName: "Yan",
-      lastName: "DIOMANDE",
-      nameOnShirt: "YAN DIOMANDE",
+      firstName: "Иан",
+      lastName: "Диоманде",
+      nameOnShirt: "Иан Диоманде",
+      originalFirstName: "Yan",
+      originalLastName: "DIOMANDE",
+      originalNameOnShirt: "YAN DIOMANDE",
+
       dateOfBirth: "14/11/2006",
       age: 19,
       shirtNumber: 11,
@@ -441,11 +522,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 715_000,
       isInjured: false,
     },
-    {
+        {
       id: "sepe-elye-delmas-wahi",
-      firstName: "Sepe Elye Delmas",
-      lastName: "WAHI",
-      nameOnShirt: "WAHI",
+      firstName: "Сепе",
+      lastName: "Ваи",
+      nameOnShirt: "Ваи",
+      originalFirstName: "Sepe Elye Delmas",
+      originalLastName: "WAHI",
+      originalNameOnShirt: "WAHI",
+
       dateOfBirth: "02/01/2003",
       age: 23,
       shirtNumber: 12,
@@ -462,11 +547,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "oumar-diakite",
-      firstName: "Oumar",
-      lastName: "DIAKITE",
-      nameOnShirt: "DIAKITE",
+      firstName: "Умар",
+      lastName: "Диаките",
+      nameOnShirt: "Диаките",
+      originalFirstName: "Oumar",
+      originalLastName: "DIAKITE",
+      originalNameOnShirt: "DIAKITE",
+
       dateOfBirth: "20/12/2003",
       age: 22,
       shirtNumber: 14,
@@ -483,11 +572,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "amad-diallo",
-      firstName: "Amad",
-      lastName: "DIALLO",
-      nameOnShirt: "AMAD",
+      firstName: "Амад",
+      lastName: "Диалло",
+      nameOnShirt: "Амад",
+      originalFirstName: "Amad",
+      originalLastName: "DIALLO",
+      originalNameOnShirt: "AMAD",
+
       dateOfBirth: "11/07/2002",
       age: 23,
       shirtNumber: 15,
@@ -504,11 +597,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-pepe",
-      firstName: "Nicolas",
-      lastName: "PEPE",
-      nameOnShirt: "PEPE",
+      firstName: "Николас",
+      lastName: "Пепе",
+      nameOnShirt: "Пепе",
+      originalFirstName: "Nicolas",
+      originalLastName: "PEPE",
+      originalNameOnShirt: "PEPE",
+
       dateOfBirth: "29/05/1995",
       age: 31,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "evann-ludovic-vidjannagni-guessand",
-      firstName: "Evann Ludovic Vidjannagni",
-      lastName: "GUESSAND",
-      nameOnShirt: "GUESSAND",
+      firstName: "Еванн",
+      lastName: "Гуессанд",
+      nameOnShirt: "Гуессанд",
+      originalFirstName: "Evann Ludovic Vidjannagni",
+      originalLastName: "GUESSAND",
+      originalNameOnShirt: "GUESSAND",
+
       dateOfBirth: "01/07/2001",
       age: 24,
       shirtNumber: 22,
@@ -546,11 +647,15 @@ export const ivoryCoastProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "bazoumana-toure",
-      firstName: "Bazoumana",
-      lastName: "TOURE",
-      nameOnShirt: "TOURE",
+      firstName: "Базумана",
+      lastName: "Туре",
+      nameOnShirt: "Туре",
+      originalFirstName: "Bazoumana",
+      originalLastName: "TOURE",
+      originalNameOnShirt: "TOURE",
+
       dateOfBirth: "02/03/2006",
       age: 20,
       shirtNumber: 24,

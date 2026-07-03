@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import germanyFlag from '@/data/nationalTeams/worldCup2026/flags/germany.png'
 
 export const germanyProfile: NationalTeamProfile = {
   id: "germany",
@@ -6,7 +7,7 @@ export const germanyProfile: NationalTeamProfile = {
   shortName: "GER",
   fifaCode: "GER",
   groupId: "E",
-  flagCode: "DE",
+  flag: germanyFlag,
   rating: 86,
   attackRating: 85,
   midfieldRating: 86,
@@ -15,11 +16,15 @@ export const germanyProfile: NationalTeamProfile = {
   secondaryColor: "#DD0000",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "manuel-peter-neuer",
-      firstName: "Manuel Peter",
-      lastName: "NEUER",
-      nameOnShirt: "NEUER",
+      firstName: "Мануэль",
+      lastName: "Нойер",
+      nameOnShirt: "Нойер",
+      originalFirstName: "Manuel Peter",
+      originalLastName: "NEUER",
+      originalNameOnShirt: "NEUER",
+
       dateOfBirth: "27/03/1986",
       age: 40,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "oliver-baumann",
-      firstName: "Oliver",
-      lastName: "BAUMANN",
-      nameOnShirt: "BAUMANN",
+      firstName: "Олифер",
+      lastName: "Бауманн",
+      nameOnShirt: "Бауманн",
+      originalFirstName: "Oliver",
+      originalLastName: "BAUMANN",
+      originalNameOnShirt: "BAUMANN",
+
       dateOfBirth: "02/06/1990",
       age: 36,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexander-nubel",
-      firstName: "Alexander",
-      lastName: "NÜBEL",
-      nameOnShirt: "NÜBEL",
+      firstName: "Александер",
+      lastName: "Ниубел",
+      nameOnShirt: "Ниубел",
+      originalFirstName: "Alexander",
+      originalLastName: "NÜBEL",
+      originalNameOnShirt: "NÜBEL",
+
       dateOfBirth: "30/09/1996",
       age: 29,
       shirtNumber: 21,
@@ -80,11 +93,15 @@ export const germanyProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "antonio-rudiger",
-      firstName: "Antonio",
-      lastName: "RÜDIGER",
-      nameOnShirt: "RÜDIGER",
+      firstName: "Антонио",
+      lastName: "Рюдигер",
+      nameOnShirt: "Риудигер",
+      originalFirstName: "Antonio",
+      originalLastName: "RÜDIGER",
+      originalNameOnShirt: "RÜDIGER",
+
       dateOfBirth: "03/03/1993",
       age: 33,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_570_000,
       isInjured: false,
     },
-    {
+        {
       id: "waldemar-anton",
-      firstName: "Waldemar",
-      lastName: "ANTON",
-      nameOnShirt: "ANTON",
+      firstName: "Валдемар",
+      lastName: "Антон",
+      nameOnShirt: "Антон",
+      originalFirstName: "Waldemar",
+      originalLastName: "ANTON",
+      originalNameOnShirt: "ANTON",
+
       dateOfBirth: "20/07/1996",
       age: 29,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "jonathan-glao-tah",
-      firstName: "Jonathan Glao",
-      lastName: "TAH",
-      nameOnShirt: "TAH",
+      firstName: "Йонатхан",
+      lastName: "Тах",
+      nameOnShirt: "Тах",
+      originalFirstName: "Jonathan Glao",
+      originalLastName: "TAH",
+      originalNameOnShirt: "TAH",
+
       dateOfBirth: "11/02/1996",
       age: 30,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "joshua-walter-kimmich",
-      firstName: "Joshua Walter",
-      lastName: "KIMMICH",
-      nameOnShirt: "KIMMICH",
+      firstName: "Йозуа",
+      lastName: "Киммих",
+      nameOnShirt: "Киммих",
+      originalFirstName: "Joshua Walter",
+      originalLastName: "KIMMICH",
+      originalNameOnShirt: "KIMMICH",
+
       dateOfBirth: "08/02/1995",
       age: 31,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "nico-cedric-schlotterbeck",
-      firstName: "Nico Cédric",
-      lastName: "SCHLOTTERBECK",
-      nameOnShirt: "SCHLOTTERBECK",
+      firstName: "Нико",
+      lastName: "Шлоттербек",
+      nameOnShirt: "Шлоттербек",
+      originalFirstName: "Nico Cédric",
+      originalLastName: "SCHLOTTERBECK",
+      originalNameOnShirt: "SCHLOTTERBECK",
+
       dateOfBirth: "01/12/1999",
       age: 26,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathaniel-christopher-brown",
-      firstName: "Nathaniel Christopher",
-      lastName: "BROWN",
-      nameOnShirt: "BROWN",
+      firstName: "Натханил",
+      lastName: "Бровн",
+      nameOnShirt: "Бровн",
+      originalFirstName: "Nathaniel Christopher",
+      originalLastName: "BROWN",
+      originalNameOnShirt: "BROWN",
+
       dateOfBirth: "16/06/2003",
       age: 22,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_170_000,
       isInjured: false,
     },
-    {
+        {
       id: "david-raum",
-      firstName: "David",
-      lastName: "RAUM",
-      nameOnShirt: "RAUM",
+      firstName: "Давид",
+      lastName: "Раум",
+      nameOnShirt: "Раум",
+      originalFirstName: "David",
+      originalLastName: "RAUM",
+      originalNameOnShirt: "RAUM",
+
       dateOfBirth: "22/04/1998",
       age: 28,
       shirtNumber: 22,
@@ -227,11 +268,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "malick-thiaw",
-      firstName: "Malick",
-      lastName: "THIAW",
-      nameOnShirt: "THIAW",
+      firstName: "Малик",
+      lastName: "Тхиав",
+      nameOnShirt: "Тхиав",
+      originalFirstName: "Malick",
+      originalLastName: "THIAW",
+      originalNameOnShirt: "THIAW",
+
       dateOfBirth: "08/08/2001",
       age: 24,
       shirtNumber: 24,
@@ -250,11 +295,15 @@ export const germanyProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "aleksandar-pavlovic",
-      firstName: "Aleksandar",
-      lastName: "PAVLOVIĆ",
-      nameOnShirt: "PAVLOVIĆ",
+      firstName: "Александар",
+      lastName: "Пафлофик",
+      nameOnShirt: "Пафлофик",
+      originalFirstName: "Aleksandar",
+      originalLastName: "PAVLOVIĆ",
+      originalNameOnShirt: "PAVLOVIĆ",
+
       dateOfBirth: "03/05/2004",
       age: 22,
       shirtNumber: 5,
@@ -271,11 +320,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "leon-christoph-goretzka",
-      firstName: "Leon Christoph",
-      lastName: "GORETZKA",
-      nameOnShirt: "GORETZKA",
+      firstName: "Леон",
+      lastName: "Горетцка",
+      nameOnShirt: "Горетцка",
+      originalFirstName: "Leon Christoph",
+      originalLastName: "GORETZKA",
+      originalNameOnShirt: "GORETZKA",
+
       dateOfBirth: "06/02/1995",
       age: 31,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "jamie-jaleel-jeremy-leweling",
-      firstName: "Jamie Jaleel Jeremy",
-      lastName: "LEWELING",
-      nameOnShirt: "LEWELING",
+      firstName: "Йами",
+      lastName: "Левелинг",
+      nameOnShirt: "Левелинг",
+      originalFirstName: "Jamie Jaleel Jeremy",
+      originalLastName: "LEWELING",
+      originalNameOnShirt: "LEWELING",
+
       dateOfBirth: "26/02/2001",
       age: 25,
       shirtNumber: 9,
@@ -313,11 +370,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "jamal-musiala",
-      firstName: "Jamal",
-      lastName: "MUSIALA",
-      nameOnShirt: "MUSIALA",
+      firstName: "Джамал",
+      lastName: "Мусиала",
+      nameOnShirt: "Мусиала",
+      originalFirstName: "Jamal",
+      originalLastName: "MUSIALA",
+      originalNameOnShirt: "MUSIALA",
+
       dateOfBirth: "26/02/2003",
       age: 23,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_510_000,
       isInjured: false,
     },
-    {
+        {
       id: "pascal-alexander-gro",
-      firstName: "Pascal Alexander",
-      lastName: "GROß",
-      nameOnShirt: "GROß",
+      firstName: "Паскал",
+      lastName: "Грос",
+      nameOnShirt: "Грос",
+      originalFirstName: "Pascal Alexander",
+      originalLastName: "GROß",
+      originalNameOnShirt: "GROß",
+
       dateOfBirth: "15/06/1991",
       age: 34,
       shirtNumber: 13,
@@ -355,11 +420,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "angelo-nicolas-stiller",
-      firstName: "Angelo Nicolas",
-      lastName: "STILLER",
-      nameOnShirt: "STILLER",
+      firstName: "Ангело",
+      lastName: "Стиллер",
+      nameOnShirt: "Стиллер",
+      originalFirstName: "Angelo Nicolas",
+      originalLastName: "STILLER",
+      originalNameOnShirt: "STILLER",
+
       dateOfBirth: "04/04/2001",
       age: 25,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "florian-richard-wirtz",
-      firstName: "Florian Richard",
-      lastName: "WIRTZ",
-      nameOnShirt: "WIRTZ",
+      firstName: "Флориан",
+      lastName: "Вирц",
+      nameOnShirt: "Виртц",
+      originalFirstName: "Florian Richard",
+      originalLastName: "WIRTZ",
+      originalNameOnShirt: "WIRTZ",
+
       dateOfBirth: "03/05/2003",
       age: 23,
       shirtNumber: 17,
@@ -397,11 +470,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_605_000,
       isInjured: false,
     },
-    {
+        {
       id: "leroy-aziz-sane",
-      firstName: "Leroy Aziz",
-      lastName: "SANÉ",
-      nameOnShirt: "SANÉ",
+      firstName: "Лерои",
+      lastName: "Сане",
+      nameOnShirt: "Сане",
+      originalFirstName: "Leroy Aziz",
+      originalLastName: "SANÉ",
+      originalNameOnShirt: "SANÉ",
+
       dateOfBirth: "11/01/1996",
       age: 30,
       shirtNumber: 19,
@@ -418,11 +495,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "nadiem-amiri",
-      firstName: "Nadiem",
-      lastName: "AMIRI",
-      nameOnShirt: "AMIRI",
+      firstName: "Надим",
+      lastName: "Амири",
+      nameOnShirt: "Амири",
+      originalFirstName: "Nadiem",
+      originalLastName: "AMIRI",
+      originalNameOnShirt: "AMIRI",
+
       dateOfBirth: "27/10/1996",
       age: 29,
       shirtNumber: 20,
@@ -439,11 +520,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "felix-kalu-nmecha",
-      firstName: "Felix Kalu",
-      lastName: "NMECHA",
-      nameOnShirt: "NMECHA",
+      firstName: "Феликс",
+      lastName: "Нмеха",
+      nameOnShirt: "Нмеха",
+      originalFirstName: "Felix Kalu",
+      originalLastName: "NMECHA",
+      originalNameOnShirt: "NMECHA",
+
       dateOfBirth: "10/10/2000",
       age: 25,
       shirtNumber: 23,
@@ -460,11 +545,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "forzan-assan-ouedraogo",
-      firstName: "Forzan Assan",
-      lastName: "OUÉDRAOGO",
-      nameOnShirt: "OUÉDRAOGO",
+      firstName: "Форцан",
+      lastName: "Оюдраого",
+      nameOnShirt: "Оюдраого",
+      originalFirstName: "Forzan Assan",
+      originalLastName: "OUÉDRAOGO",
+      originalNameOnShirt: "OUÉDRAOGO",
+
       dateOfBirth: "09/05/2006",
       age: 20,
       shirtNumber: 25,
@@ -483,11 +572,15 @@ export const germanyProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "kai-lukas-havertz",
-      firstName: "Kai Lukas",
-      lastName: "HAVERTZ",
-      nameOnShirt: "HAVERTZ",
+      firstName: "Кай",
+      lastName: "Хаверц",
+      nameOnShirt: "Хафертц",
+      originalFirstName: "Kai Lukas",
+      originalLastName: "HAVERTZ",
+      originalNameOnShirt: "HAVERTZ",
+
       dateOfBirth: "11/06/1999",
       age: 27,
       shirtNumber: 7,
@@ -504,11 +597,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "nick-woltemade",
-      firstName: "Nick",
-      lastName: "WOLTEMADE",
-      nameOnShirt: "WOLTEMADE",
+      firstName: "Ник",
+      lastName: "Волтемаде",
+      nameOnShirt: "Волтемаде",
+      originalFirstName: "Nick",
+      originalLastName: "WOLTEMADE",
+      originalNameOnShirt: "WOLTEMADE",
+
       dateOfBirth: "14/02/2002",
       age: 24,
       shirtNumber: 11,
@@ -525,11 +622,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "maximilian-beier",
-      firstName: "Maximilian",
-      lastName: "BEIER",
-      nameOnShirt: "BEIER",
+      firstName: "Максимилиан",
+      lastName: "Байер",
+      nameOnShirt: "Байер",
+      originalFirstName: "Maximilian",
+      originalLastName: "BEIER",
+      originalNameOnShirt: "BEIER",
+
       dateOfBirth: "17/10/2002",
       age: 23,
       shirtNumber: 14,
@@ -546,11 +647,15 @@ export const germanyProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "deniz-undav",
-      firstName: "Deniz",
-      lastName: "UNDAV",
-      nameOnShirt: "UNDAV",
+      firstName: "Дениц",
+      lastName: "Ундаф",
+      nameOnShirt: "Ундаф",
+      originalFirstName: "Deniz",
+      originalLastName: "UNDAV",
+      originalNameOnShirt: "UNDAV",
+
       dateOfBirth: "19/07/1996",
       age: 29,
       shirtNumber: 26,

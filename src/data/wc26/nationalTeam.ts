@@ -15,3 +15,6 @@ export const flagEmoji = (code: string): string => {
     ...[...normalized].map((char) => 0x1f1e6 + char.charCodeAt(0) - 65),
   )
 }
+
+export const resolveTeamFlagEmoji = (flagCode?: string): string =>
+  flagCode ? flagEmoji(flagCode) : '⚽'

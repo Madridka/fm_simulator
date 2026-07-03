@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import japanFlag from '@/data/nationalTeams/worldCup2026/flags/japan.png'
 
 export const japanProfile: NationalTeamProfile = {
   id: "japan",
@@ -6,7 +7,7 @@ export const japanProfile: NationalTeamProfile = {
   shortName: "JPN",
   fifaCode: "JPN",
   groupId: "F",
-  flagCode: "JP",
+  flag: japanFlag,
   rating: 81,
   attackRating: 80,
   midfieldRating: 82,
@@ -15,11 +16,15 @@ export const japanProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "zion-suzuki",
-      firstName: "Zion",
-      lastName: "SUZUKI",
-      nameOnShirt: "SUZUKI",
+      firstName: "Дзайон",
+      lastName: "Сузуки",
+      nameOnShirt: "Сузуки",
+      originalFirstName: "Zion",
+      originalLastName: "SUZUKI",
+      originalNameOnShirt: "SUZUKI",
+
       dateOfBirth: "21/08/2002",
       age: 23,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "keisuke-osako",
-      firstName: "Keisuke",
-      lastName: "OSAKO",
-      nameOnShirt: "OSAKO",
+      firstName: "Кэйсукэ",
+      lastName: "Осако",
+      nameOnShirt: "Осако",
+      originalFirstName: "Keisuke",
+      originalLastName: "OSAKO",
+      originalNameOnShirt: "OSAKO",
+
       dateOfBirth: "28/07/1999",
       age: 26,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "tomoki-hayakawa",
-      firstName: "Tomoki",
-      lastName: "HAYAKAWA",
-      nameOnShirt: "HAYAKAWA",
+      firstName: "Томоки",
+      lastName: "Хаякава",
+      nameOnShirt: "Хаякава",
+      originalFirstName: "Tomoki",
+      originalLastName: "HAYAKAWA",
+      originalNameOnShirt: "HAYAKAWA",
+
       dateOfBirth: "03/03/1999",
       age: 27,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const japanProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "yukinari-sugawara",
-      firstName: "Yukinari",
-      lastName: "SUGAWARA",
-      nameOnShirt: "SUGAWARA",
+      firstName: "Юкинари",
+      lastName: "Сугавара",
+      nameOnShirt: "Сугавара",
+      originalFirstName: "Yukinari",
+      originalLastName: "SUGAWARA",
+      originalNameOnShirt: "SUGAWARA",
+
       dateOfBirth: "28/06/2000",
       age: 25,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "shogo-taniguchi",
-      firstName: "Shogo",
-      lastName: "TANIGUCHI",
-      nameOnShirt: "TANIGUCHI",
+      firstName: "Сёго",
+      lastName: "Танигути",
+      nameOnShirt: "Танигути",
+      originalFirstName: "Shogo",
+      originalLastName: "TANIGUCHI",
+      originalNameOnShirt: "TANIGUCHI",
+
       dateOfBirth: "15/07/1991",
       age: 34,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "kou-itakura",
-      firstName: "Kou",
-      lastName: "ITAKURA",
-      nameOnShirt: "ITAKURA",
+      firstName: "Ко",
+      lastName: "Итакура",
+      nameOnShirt: "Итакура",
+      originalFirstName: "Kou",
+      originalLastName: "ITAKURA",
+      originalNameOnShirt: "ITAKURA",
+
       dateOfBirth: "27/01/1997",
       age: 29,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "yuto-nagatomo",
-      firstName: "Yuto",
-      lastName: "NAGATOMO",
-      nameOnShirt: "NAGATOMO",
+      firstName: "Юто",
+      lastName: "Нагатомо",
+      nameOnShirt: "Нагатомо",
+      originalFirstName: "Yuto",
+      originalLastName: "NAGATOMO",
+      originalNameOnShirt: "NAGATOMO",
+
       dateOfBirth: "12/09/1986",
       age: 39,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "tsuyoshi-watanabe",
-      firstName: "Tsuyoshi",
-      lastName: "WATANABE",
-      nameOnShirt: "WATANABE",
+      firstName: "Цуёси",
+      lastName: "Ватанабе",
+      nameOnShirt: "Ватанабе",
+      originalFirstName: "Tsuyoshi",
+      originalLastName: "WATANABE",
+      originalNameOnShirt: "WATANABE",
+
       dateOfBirth: "05/02/1997",
       age: 29,
       shirtNumber: 16,
@@ -185,11 +218,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayumu-seko",
-      firstName: "Ayumu",
-      lastName: "SEKO",
-      nameOnShirt: "SEKO",
+      firstName: "Аюму",
+      lastName: "Секо",
+      nameOnShirt: "Секо",
+      originalFirstName: "Ayumu",
+      originalLastName: "SEKO",
+      originalNameOnShirt: "SEKO",
+
       dateOfBirth: "07/06/2000",
       age: 26,
       shirtNumber: 20,
@@ -206,11 +243,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "hiroki-ito",
-      firstName: "Hiroki",
-      lastName: "ITO",
-      nameOnShirt: "H. ITO",
+      firstName: "Хироки",
+      lastName: "Ито",
+      nameOnShirt: "Х. Ито",
+      originalFirstName: "Hiroki",
+      originalLastName: "ITO",
+      originalNameOnShirt: "H. ITO",
+
       dateOfBirth: "12/05/1999",
       age: 27,
       shirtNumber: 21,
@@ -227,11 +268,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "takehiro-tomiyasu",
-      firstName: "Takehiro",
-      lastName: "TOMIYASU",
-      nameOnShirt: "TOMIYASU",
+      firstName: "Такехиро",
+      lastName: "Томиясу",
+      nameOnShirt: "Томиясу",
+      originalFirstName: "Takehiro",
+      originalLastName: "TOMIYASU",
+      originalNameOnShirt: "TOMIYASU",
+
       dateOfBirth: "05/11/1998",
       age: 27,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "junnosuke-suzuki",
-      firstName: "Junnosuke",
-      lastName: "SUZUKI",
-      nameOnShirt: "J. SUZUKI",
+      firstName: "Дзюнносуке",
+      lastName: "Сузуки",
+      nameOnShirt: "Дж. Сузуки",
+      originalFirstName: "Junnosuke",
+      originalLastName: "SUZUKI",
+      originalNameOnShirt: "J. SUZUKI",
+
       dateOfBirth: "12/07/2003",
       age: 22,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const japanProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "ao-tanaka",
-      firstName: "Ao",
-      lastName: "TANAKA",
-      nameOnShirt: "TANAKA",
+      firstName: "Ао",
+      lastName: "Танака",
+      nameOnShirt: "Танака",
+      originalFirstName: "Ao",
+      originalLastName: "TANAKA",
+      originalNameOnShirt: "TANAKA",
+
       dateOfBirth: "10/09/1998",
       age: 27,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "takefusa-kubo",
-      firstName: "Takefusa",
-      lastName: "KUBO",
-      nameOnShirt: "KUBO",
+      firstName: "Такэфуса",
+      lastName: "Кубо",
+      nameOnShirt: "Кубо",
+      originalFirstName: "Takefusa",
+      originalLastName: "KUBO",
+      originalNameOnShirt: "KUBO",
+
       dateOfBirth: "04/06/2001",
       age: 25,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "ritsu-doan",
-      firstName: "Ritsu",
-      lastName: "DOAN",
-      nameOnShirt: "DOAN",
+      firstName: "Рицу",
+      lastName: "Доан",
+      nameOnShirt: "Доан",
+      originalFirstName: "Ritsu",
+      originalLastName: "DOAN",
+      originalNameOnShirt: "DOAN",
+
       dateOfBirth: "16/06/1998",
       age: 27,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "daizen-maeda",
-      firstName: "Daizen",
-      lastName: "MAEDA",
-      nameOnShirt: "DAIZEN",
+      firstName: "Даизен",
+      lastName: "Маеда",
+      nameOnShirt: "Даизен",
+      originalFirstName: "Daizen",
+      originalLastName: "MAEDA",
+      originalNameOnShirt: "DAIZEN",
+
       dateOfBirth: "20/10/1997",
       age: 28,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "keito-nakamura",
-      firstName: "Keito",
-      lastName: "NAKAMURA",
-      nameOnShirt: "NAKAMURA",
+      firstName: "Кэйто",
+      lastName: "Накамура",
+      nameOnShirt: "Накамура",
+      originalFirstName: "Keito",
+      originalLastName: "NAKAMURA",
+      originalNameOnShirt: "NAKAMURA",
+
       dateOfBirth: "28/07/2000",
       age: 25,
       shirtNumber: 13,
@@ -376,11 +445,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "junya-ito",
-      firstName: "Junya",
-      lastName: "ITO",
-      nameOnShirt: "ITO",
+      firstName: "Дзюня",
+      lastName: "Ито",
+      nameOnShirt: "Ито",
+      originalFirstName: "Junya",
+      originalLastName: "ITO",
+      originalNameOnShirt: "ITO",
+
       dateOfBirth: "09/03/1993",
       age: 33,
       shirtNumber: 14,
@@ -397,11 +470,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "daichi-kamada",
-      firstName: "Daichi",
-      lastName: "KAMADA",
-      nameOnShirt: "KAMADA",
+      firstName: "Даити",
+      lastName: "Камада",
+      nameOnShirt: "Камада",
+      originalFirstName: "Daichi",
+      originalLastName: "KAMADA",
+      originalNameOnShirt: "KAMADA",
+
       dateOfBirth: "05/08/1996",
       age: 29,
       shirtNumber: 15,
@@ -418,11 +495,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "yuito-suzuki",
-      firstName: "Yuito",
-      lastName: "SUZUKI",
-      nameOnShirt: "Y. SUZUKI",
+      firstName: "Юито",
+      lastName: "Сузуки",
+      nameOnShirt: "Й. Сузуки",
+      originalFirstName: "Yuito",
+      originalLastName: "SUZUKI",
+      originalNameOnShirt: "Y. SUZUKI",
+
       dateOfBirth: "25/10/2001",
       age: 24,
       shirtNumber: 17,
@@ -439,11 +520,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "kaishu-sano",
-      firstName: "Kaishu",
-      lastName: "SANO",
-      nameOnShirt: "SANO",
+      firstName: "Каисю",
+      lastName: "Сано",
+      nameOnShirt: "Сано",
+      originalFirstName: "Kaishu",
+      originalLastName: "SANO",
+      originalNameOnShirt: "SANO",
+
       dateOfBirth: "30/12/2000",
       age: 25,
       shirtNumber: 24,
@@ -462,11 +547,15 @@ export const japanProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "shuto-machino",
-      firstName: "Shuto",
-      lastName: "MACHINO",
-      nameOnShirt: "MACHINO",
+      firstName: "Сюто",
+      lastName: "Матино",
+      nameOnShirt: "Матино",
+      originalFirstName: "Shuto",
+      originalLastName: "MACHINO",
+      originalNameOnShirt: "MACHINO",
+
       dateOfBirth: "30/09/1999",
       age: 26,
       shirtNumber: 6,
@@ -483,11 +572,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "keisuke-goto",
-      firstName: "Keisuke",
-      lastName: "GOTO",
-      nameOnShirt: "GOTO",
+      firstName: "Кэйсукэ",
+      lastName: "Гото",
+      nameOnShirt: "Гото",
+      originalFirstName: "Keisuke",
+      originalLastName: "GOTO",
+      originalNameOnShirt: "GOTO",
+
       dateOfBirth: "03/06/2005",
       age: 21,
       shirtNumber: 9,
@@ -504,11 +597,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 715_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayase-ueda",
-      firstName: "Ayase",
-      lastName: "UEDA",
-      nameOnShirt: "AYASE",
+      firstName: "Аясе",
+      lastName: "Уеда",
+      nameOnShirt: "Аясе",
+      originalFirstName: "Ayase",
+      originalLastName: "UEDA",
+      originalNameOnShirt: "AYASE",
+
       dateOfBirth: "28/08/1998",
       age: 27,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "koki-ogawa",
-      firstName: "Koki",
-      lastName: "OGAWA",
-      nameOnShirt: "OGAWA",
+      firstName: "Коки",
+      lastName: "Огава",
+      nameOnShirt: "Огава",
+      originalFirstName: "Koki",
+      originalLastName: "OGAWA",
+      originalNameOnShirt: "OGAWA",
+
       dateOfBirth: "08/08/1997",
       age: 28,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const japanProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "kento-shiogai",
-      firstName: "Kento",
-      lastName: "SHIOGAI",
-      nameOnShirt: "SHIOGAI",
+      firstName: "Кенто",
+      lastName: "Сиогаи",
+      nameOnShirt: "Сиогаи",
+      originalFirstName: "Kento",
+      originalLastName: "SHIOGAI",
+      originalNameOnShirt: "SHIOGAI",
+
       dateOfBirth: "26/03/2005",
       age: 21,
       shirtNumber: 26,

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import ghanaFlag from '@/data/nationalTeams/worldCup2026/flags/ghana.png'
 
 export const ghanaProfile: NationalTeamProfile = {
   id: "ghana",
@@ -6,7 +7,7 @@ export const ghanaProfile: NationalTeamProfile = {
   shortName: "GHA",
   fifaCode: "GHA",
   groupId: "L",
-  flagCode: "GH",
+  flag: ghanaFlag,
   rating: 75,
   attackRating: 75,
   midfieldRating: 74,
@@ -15,11 +16,15 @@ export const ghanaProfile: NationalTeamProfile = {
   secondaryColor: "#FCD116",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "lawrence-ati-zigi",
-      firstName: "Lawrence Ati",
-      lastName: "ZIGI",
-      nameOnShirt: "ZIGI",
+      firstName: "Ларенсе",
+      lastName: "Зиджи",
+      nameOnShirt: "Зиджи",
+      originalFirstName: "Lawrence Ati",
+      originalLastName: "ZIGI",
+      originalNameOnShirt: "ZIGI",
+
       dateOfBirth: "29/11/1996",
       age: 29,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "joseph-tetteh-anang",
-      firstName: "Joseph Tetteh",
-      lastName: "ANANG",
-      nameOnShirt: "ANANG",
+      firstName: "Джосеф",
+      lastName: "Ананг",
+      nameOnShirt: "Ананг",
+      originalFirstName: "Joseph Tetteh",
+      originalLastName: "ANANG",
+      originalNameOnShirt: "ANANG",
+
       dateOfBirth: "08/06/2000",
       age: 26,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "benjamin-asare",
-      firstName: "Benjamin",
-      lastName: "ASARE",
-      nameOnShirt: "B. ASARE",
+      firstName: "Бенжамен",
+      lastName: "Асаре",
+      nameOnShirt: "Б. Асаре",
+      originalFirstName: "Benjamin",
+      originalLastName: "ASARE",
+      originalNameOnShirt: "B. ASARE",
+
       dateOfBirth: "13/07/1992",
       age: 33,
       shirtNumber: 16,
@@ -80,11 +93,15 @@ export const ghanaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "alidu-seidu",
-      firstName: "Alidu",
-      lastName: "SEIDU",
-      nameOnShirt: "ALIDU SEIDU",
+      firstName: "Алиду",
+      lastName: "Сеиду",
+      nameOnShirt: "Алиду Сеиду",
+      originalFirstName: "Alidu",
+      originalLastName: "SEIDU",
+      originalNameOnShirt: "ALIDU SEIDU",
+
       dateOfBirth: "04/06/2000",
       age: 26,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "jonas-adjei-adjetey",
-      firstName: "Jonas Adjei",
-      lastName: "ADJETEY",
-      nameOnShirt: "ADJETEY",
+      firstName: "Джонас",
+      lastName: "Адджетеи",
+      nameOnShirt: "Адджетеи",
+      originalFirstName: "Jonas Adjei",
+      originalLastName: "ADJETEY",
+      originalNameOnShirt: "ADJETEY",
+
       dateOfBirth: "13/12/2003",
       age: 22,
       shirtNumber: 4,
@@ -122,11 +143,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdul-mumin-suleman",
-      firstName: "Abdul Mumin",
-      lastName: "SULEMAN",
-      nameOnShirt: "A. MUMIN",
+      firstName: "Абдул",
+      lastName: "Сулеман",
+      nameOnShirt: "А. Мумин",
+      originalFirstName: "Abdul Mumin",
+      originalLastName: "SULEMAN",
+      originalNameOnShirt: "A. MUMIN",
+
       dateOfBirth: "06/06/1998",
       age: 28,
       shirtNumber: 6,
@@ -143,11 +168,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "gideon-mensah",
-      firstName: "Gideon",
-      lastName: "MENSAH",
-      nameOnShirt: "MENSAH",
+      firstName: "Джидеон",
+      lastName: "Менсах",
+      nameOnShirt: "Менсах",
+      originalFirstName: "Gideon",
+      originalLastName: "MENSAH",
+      originalNameOnShirt: "MENSAH",
+
       dateOfBirth: "18/07/1998",
       age: 27,
       shirtNumber: 14,
@@ -164,11 +193,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdul-rahman-baba",
-      firstName: "Abdul Rahman",
-      lastName: "BABA",
-      nameOnShirt: "BABA",
+      firstName: "Абдул",
+      lastName: "Баба",
+      nameOnShirt: "Баба",
+      originalFirstName: "Abdul Rahman",
+      originalLastName: "BABA",
+      originalNameOnShirt: "BABA",
+
       dateOfBirth: "02/07/1994",
       age: 31,
       shirtNumber: 17,
@@ -185,11 +218,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "jerome-opoku",
-      firstName: "Jerome",
-      lastName: "OPOKU",
-      nameOnShirt: "OPOKU",
+      firstName: "Джероме",
+      lastName: "Опоку",
+      nameOnShirt: "Опоку",
+      originalFirstName: "Jerome",
+      originalLastName: "OPOKU",
+      originalNameOnShirt: "OPOKU",
+
       dateOfBirth: "14/10/1998",
       age: 27,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "kojo-peprah-oppong",
-      firstName: "Kojo Peprah",
-      lastName: "OPPONG",
-      nameOnShirt: "OPPONG",
+      firstName: "Коджо",
+      lastName: "Оппонг",
+      nameOnShirt: "Оппонг",
+      originalFirstName: "Kojo Peprah",
+      originalLastName: "OPPONG",
+      originalNameOnShirt: "OPPONG",
+
       dateOfBirth: "04/06/2004",
       age: 22,
       shirtNumber: 21,
@@ -227,11 +268,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "derrick-luckassen",
-      firstName: "Derrick",
-      lastName: "LUCKASSEN",
-      nameOnShirt: "LUCKASSEN",
+      firstName: "Деррик",
+      lastName: "Лукассен",
+      nameOnShirt: "Лукассен",
+      originalFirstName: "Derrick",
+      originalLastName: "LUCKASSEN",
+      originalNameOnShirt: "LUCKASSEN",
+
       dateOfBirth: "03/07/1995",
       age: 30,
       shirtNumber: 23,
@@ -248,11 +293,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "marvin-elom-senaya",
-      firstName: "Marvin Elom",
-      lastName: "SENAYA",
-      nameOnShirt: "SENEYA",
+      firstName: "Марвин",
+      lastName: "Сенейа",
+      nameOnShirt: "Сенеиа",
+      originalFirstName: "Marvin Elom",
+      originalLastName: "SENAYA",
+      originalNameOnShirt: "SENEYA",
+
       dateOfBirth: "28/01/2001",
       age: 25,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const ghanaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "caleb-marfo-yirenkyi",
-      firstName: "Caleb Marfo",
-      lastName: "YIRENKYI",
-      nameOnShirt: "YIRENKYI",
+      firstName: "Калеб",
+      lastName: "Ииренкии",
+      nameOnShirt: "Ииренкии",
+      originalFirstName: "Caleb Marfo",
+      originalLastName: "YIRENKYI",
+      originalNameOnShirt: "YIRENKYI",
+
       dateOfBirth: "15/01/2006",
       age: 20,
       shirtNumber: 3,
@@ -292,11 +345,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 410_000,
       isInjured: false,
     },
-    {
+        {
       id: "thomas-teye-partey",
-      firstName: "Thomas Teye",
-      lastName: "PARTEY",
-      nameOnShirt: "PARTEY",
+      firstName: "Томас",
+      lastName: "Партеи",
+      nameOnShirt: "Партеи",
+      originalFirstName: "Thomas Teye",
+      originalLastName: "PARTEY",
+      originalNameOnShirt: "PARTEY",
+
       dateOfBirth: "13/06/1993",
       age: 32,
       shirtNumber: 5,
@@ -313,11 +370,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "kwasi-sibo",
-      firstName: "Kwasi",
-      lastName: "SIBO",
-      nameOnShirt: "SIBO",
+      firstName: "Куаси",
+      lastName: "Сибо",
+      nameOnShirt: "Сибо",
+      originalFirstName: "Kwasi",
+      originalLastName: "SIBO",
+      originalNameOnShirt: "SIBO",
+
       dateOfBirth: "24/06/1998",
       age: 27,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "antoine-serlom-semenyo",
-      firstName: "Antoine Serlom",
-      lastName: "SEMENYO",
-      nameOnShirt: "SEMENYO",
+      firstName: "Антуан",
+      lastName: "Семенио",
+      nameOnShirt: "Семенио",
+      originalFirstName: "Antoine Serlom",
+      originalLastName: "SEMENYO",
+      originalNameOnShirt: "SEMENYO",
+
       dateOfBirth: "07/01/2000",
       age: 26,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "elisha-owusu",
-      firstName: "Elisha",
-      lastName: "OWUSU",
-      nameOnShirt: "OWUSU",
+      firstName: "Елиша",
+      lastName: "Оуусу",
+      nameOnShirt: "Оуусу",
+      originalFirstName: "Elisha",
+      originalLastName: "OWUSU",
+      originalNameOnShirt: "OWUSU",
+
       dateOfBirth: "07/11/1997",
       age: 28,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "augustine-boakye",
-      firstName: "Augustine",
-      lastName: "BOAKYE",
-      nameOnShirt: "BOAKYE",
+      firstName: "Аугустине",
+      lastName: "Боакие",
+      nameOnShirt: "Боакие",
+      originalFirstName: "Augustine",
+      originalLastName: "BOAKYE",
+      originalNameOnShirt: "BOAKYE",
+
       dateOfBirth: "03/11/2000",
       age: 25,
       shirtNumber: 20,
@@ -399,11 +472,15 @@ export const ghanaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "abdul-fatawu-issahaku",
-      firstName: "Abdul Fatawu",
-      lastName: "ISSAHAKU",
-      nameOnShirt: "A. FATAWU",
+      firstName: "Абдул",
+      lastName: "Иссахаку",
+      nameOnShirt: "А. Фатауу",
+      originalFirstName: "Abdul Fatawu",
+      originalLastName: "ISSAHAKU",
+      originalNameOnShirt: "A. FATAWU",
+
       dateOfBirth: "08/03/2004",
       age: 22,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "jordan-pierre-ayew",
-      firstName: "Jordan Pierre",
-      lastName: "AYEW",
-      nameOnShirt: "J. AYEW",
+      firstName: "Джордан",
+      lastName: "Ейеу",
+      nameOnShirt: "Дж. Ейеу",
+      originalFirstName: "Jordan Pierre",
+      originalLastName: "AYEW",
+      originalNameOnShirt: "J. AYEW",
+
       dateOfBirth: "11/09/1991",
       age: 34,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "solomon-brandon-michael-clarke-thomas-asante",
-      firstName: "Solomon Brandon Michael Clarke",
-      lastName: "THOMAS-ASANTE",
-      nameOnShirt: "ASANTE",
+      firstName: "Соломон",
+      lastName: "Томас-Асанте",
+      nameOnShirt: "Асанте",
+      originalFirstName: "Solomon Brandon Michael Clarke",
+      originalLastName: "THOMAS-ASANTE",
+      originalNameOnShirt: "ASANTE",
+
       dateOfBirth: "29/12/1998",
       age: 27,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "christopher-bonsu-baah",
-      firstName: "Christopher Bonsu",
-      lastName: "BAAH",
-      nameOnShirt: "BONSU BAAH",
+      firstName: "Кристофер",
+      lastName: "Баах",
+      nameOnShirt: "Бонсу Баах",
+      originalFirstName: "Christopher Bonsu",
+      originalLastName: "BAAH",
+      originalNameOnShirt: "BONSU BAAH",
+
       dateOfBirth: "14/12/2004",
       age: 21,
       shirtNumber: 13,
@@ -483,11 +572,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "inaki-williams-arthuer",
-      firstName: "Inaki",
-      lastName: "WILLIAMS ARTHUER",
-      nameOnShirt: "WILLIAMS",
+      firstName: "Инаки",
+      lastName: "Уиллиамс Артуер",
+      nameOnShirt: "Уиллиамс",
+      originalFirstName: "Inaki",
+      originalLastName: "WILLIAMS ARTHUER",
+      originalNameOnShirt: "WILLIAMS",
+
       dateOfBirth: "15/06/1994",
       age: 31,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "kamal-deen-sulemana",
-      firstName: "Kamal Deen",
-      lastName: "SULEMANA",
-      nameOnShirt: "KAMALDEEN",
+      firstName: "Камал",
+      lastName: "Сулемана",
+      nameOnShirt: "Камалдин",
+      originalFirstName: "Kamal Deen",
+      originalLastName: "SULEMANA",
+      originalNameOnShirt: "KAMALDEEN",
+
       dateOfBirth: "15/02/2002",
       age: 24,
       shirtNumber: 22,
@@ -525,11 +622,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "ernest-nuamah-appiah",
-      firstName: "Ernest Nuamah",
-      lastName: "APPIAH",
-      nameOnShirt: "NUAMAH",
+      firstName: "Ернест",
+      lastName: "Аппиах",
+      nameOnShirt: "Нуамах",
+      originalFirstName: "Ernest Nuamah",
+      originalLastName: "APPIAH",
+      originalNameOnShirt: "NUAMAH",
+
       dateOfBirth: "01/11/2003",
       age: 22,
       shirtNumber: 24,
@@ -546,11 +647,15 @@ export const ghanaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "prince-kwabena-adu",
-      firstName: "Prince Kwabena",
-      lastName: "ADU",
-      nameOnShirt: "PRINCE",
+      firstName: "Принсе",
+      lastName: "Аду",
+      nameOnShirt: "Принсе",
+      originalFirstName: "Prince Kwabena",
+      originalLastName: "ADU",
+      originalNameOnShirt: "PRINCE",
+
       dateOfBirth: "23/09/2003",
       age: 22,
       shirtNumber: 25,

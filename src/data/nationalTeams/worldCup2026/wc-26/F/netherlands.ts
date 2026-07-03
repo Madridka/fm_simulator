@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import netherlandsFlag from '@/data/nationalTeams/worldCup2026/flags/netherlands.png'
 
 export const netherlandsProfile: NationalTeamProfile = {
   id: "netherlands",
@@ -6,7 +7,7 @@ export const netherlandsProfile: NationalTeamProfile = {
   shortName: "NED",
   fifaCode: "NED",
   groupId: "F",
-  flagCode: "NL",
+  flag: netherlandsFlag,
   rating: 85,
   attackRating: 86,
   midfieldRating: 84,
@@ -15,11 +16,15 @@ export const netherlandsProfile: NationalTeamProfile = {
   secondaryColor: "#21468B",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "bart-verbruggen",
-      firstName: "Bart",
-      lastName: "VERBRUGGEN",
-      nameOnShirt: "VERBRUGGEN",
+      firstName: "Барт",
+      lastName: "Вербруххен",
+      nameOnShirt: "Вербруххен",
+      originalFirstName: "Bart",
+      originalLastName: "VERBRUGGEN",
+      originalNameOnShirt: "VERBRUGGEN",
+
       dateOfBirth: "18/08/2002",
       age: 23,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_015_000,
       isInjured: false,
     },
-    {
+        {
       id: "robin-gerardus-petrus-roefs",
-      firstName: "Robin Gerardus Petrus",
-      lastName: "ROEFS",
-      nameOnShirt: "ROEFS",
+      firstName: "Робин",
+      lastName: "Руфс",
+      nameOnShirt: "Руфс",
+      originalFirstName: "Robin Gerardus Petrus",
+      originalLastName: "ROEFS",
+      originalNameOnShirt: "ROEFS",
+
       dateOfBirth: "17/01/2003",
       age: 23,
       shirtNumber: 13,
@@ -57,11 +66,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "mark-maria-hubertus-flekken",
-      firstName: "Mark Maria Hubertus",
-      lastName: "FLEKKEN",
-      nameOnShirt: "FLEKKEN",
+      firstName: "Марк",
+      lastName: "Флеккен",
+      nameOnShirt: "Флеккен",
+      originalFirstName: "Mark Maria Hubertus",
+      originalLastName: "FLEKKEN",
+      originalNameOnShirt: "FLEKKEN",
+
       dateOfBirth: "13/06/1993",
       age: 32,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const netherlandsProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "lutsharel-emiliano-geertruida",
-      firstName: "Lutsharel Emiliano",
-      lastName: "GEERTRUIDA",
-      nameOnShirt: "GEERTRUIDA",
+      firstName: "Лутсхарел",
+      lastName: "Хертрёйда",
+      nameOnShirt: "Хертрёйда",
+      originalFirstName: "Lutsharel Emiliano",
+      originalLastName: "GEERTRUIDA",
+      originalNameOnShirt: "GEERTRUIDA",
+
       dateOfBirth: "18/07/2000",
       age: 25,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "virgil-van-dijk",
-      firstName: "Virgil",
-      lastName: "VAN DIJK",
-      nameOnShirt: "VIRGIL",
+      firstName: "Вирджил",
+      lastName: "ван Дейк",
+      nameOnShirt: "Вирджил",
+      originalFirstName: "Virgil",
+      originalLastName: "VAN DIJK",
+      originalNameOnShirt: "VIRGIL",
+
       dateOfBirth: "08/07/1991",
       age: 34,
       shirtNumber: 4,
@@ -122,11 +143,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathan-benjamin-ake",
-      firstName: "Nathan Benjamin",
-      lastName: "AKE",
-      nameOnShirt: "AKÉ",
+      firstName: "Натхан",
+      lastName: "Аке",
+      nameOnShirt: "Аке",
+      originalFirstName: "Nathan Benjamin",
+      originalLastName: "AKE",
+      originalNameOnShirt: "AKÉ",
+
       dateOfBirth: "18/02/1995",
       age: 31,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "jan-paul-van-hecke",
-      firstName: "Jan-Paul",
-      lastName: "VAN HECKE",
-      nameOnShirt: "VAN HECKE",
+      firstName: "Ян-Паул",
+      lastName: "Ван Хекке",
+      nameOnShirt: "Ван Хекке",
+      originalFirstName: "Jan-Paul",
+      originalLastName: "VAN HECKE",
+      originalNameOnShirt: "VAN HECKE",
+
       dateOfBirth: "08/06/2000",
       age: 26,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "mats-henrik-berne-wieffer",
-      firstName: "Mats Henrik Berne",
-      lastName: "WIEFFER",
-      nameOnShirt: "WIEFFER",
+      firstName: "Матс",
+      lastName: "Виеффер",
+      nameOnShirt: "Виеффер",
+      originalFirstName: "Mats Henrik Berne",
+      originalLastName: "WIEFFER",
+      originalNameOnShirt: "WIEFFER",
+
       dateOfBirth: "16/11/1999",
       age: 26,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "micky-van-de-ven",
-      firstName: "Micky",
-      lastName: "VAN DE VEN",
-      nameOnShirt: "VAN DE VEN",
+      firstName: "Микки",
+      lastName: "Ван де Вен",
+      nameOnShirt: "Ван де Вен",
+      originalFirstName: "Micky",
+      originalLastName: "VAN DE VEN",
+      originalNameOnShirt: "VAN DE VEN",
+
       dateOfBirth: "19/04/2001",
       age: 25,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "denzel-justus-morris-dumfries",
-      firstName: "Denzel Justus Morris",
-      lastName: "DUMFRIES",
-      nameOnShirt: "DUMFRIES",
+      firstName: "Дензел",
+      lastName: "Думфриес",
+      nameOnShirt: "Думфриес",
+      originalFirstName: "Denzel Justus Morris",
+      originalLastName: "DUMFRIES",
+      originalNameOnShirt: "DUMFRIES",
+
       dateOfBirth: "18/04/1996",
       age: 30,
       shirtNumber: 22,
@@ -227,11 +268,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "jorrel-evan-hato",
-      firstName: "Jorrel Evan",
-      lastName: "HATO",
-      nameOnShirt: "HATO",
+      firstName: "Йоррел",
+      lastName: "Хато",
+      nameOnShirt: "Хато",
+      originalFirstName: "Jorrel Evan",
+      originalLastName: "HATO",
+      originalNameOnShirt: "HATO",
+
       dateOfBirth: "07/03/2006",
       age: 20,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const netherlandsProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "marten-elco-de-roon",
-      firstName: "Marten Elco",
-      lastName: "DE ROON",
-      nameOnShirt: "DE ROON",
+      firstName: "Мартен",
+      lastName: "Де Рон",
+      nameOnShirt: "Де Рон",
+      originalFirstName: "Marten Elco",
+      originalLastName: "DE ROON",
+      originalNameOnShirt: "DE ROON",
+
       dateOfBirth: "29/03/1991",
       age: 35,
       shirtNumber: 3,
@@ -271,11 +320,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "justin-dean-kluivert",
-      firstName: "Justin Dean",
-      lastName: "KLUIVERT",
-      nameOnShirt: "KLUIVERT",
+      firstName: "Йустин",
+      lastName: "Клёйверт",
+      nameOnShirt: "Клёйверт",
+      originalFirstName: "Justin Dean",
+      originalLastName: "KLUIVERT",
+      originalNameOnShirt: "KLUIVERT",
+
       dateOfBirth: "05/05/1999",
       age: 27,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "ryan-jiro-gravenberch",
-      firstName: "Ryan Jiro",
-      lastName: "GRAVENBERCH",
-      nameOnShirt: "GRAVENBERCH",
+      firstName: "Риан",
+      lastName: "Хравенберх",
+      nameOnShirt: "Хравенберх",
+      originalFirstName: "Ryan Jiro",
+      originalLastName: "GRAVENBERCH",
+      originalNameOnShirt: "GRAVENBERCH",
+
       dateOfBirth: "16/05/2002",
       age: 24,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "tijjani-martinus-jan-reijnders",
-      firstName: "Tijjani Martinus Jan",
-      lastName: "REIJNDERS",
-      nameOnShirt: "REIJNDERS",
+      firstName: "Теййани",
+      lastName: "Реейндерс",
+      nameOnShirt: "Реейндерс",
+      originalFirstName: "Tijjani Martinus Jan",
+      originalLastName: "REIJNDERS",
+      originalNameOnShirt: "REIJNDERS",
+
       dateOfBirth: "29/07/1998",
       age: 27,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "guus-berend-til",
-      firstName: "Guus Berend",
-      lastName: "TIL",
-      nameOnShirt: "TIL",
+      firstName: "Хуус",
+      lastName: "Тил",
+      nameOnShirt: "Тил",
+      originalFirstName: "Guus Berend",
+      originalLastName: "TIL",
+      originalNameOnShirt: "TIL",
+
       dateOfBirth: "22/12/1997",
       age: 28,
       shirtNumber: 16,
@@ -355,11 +420,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "teun-koopmeiners",
-      firstName: "Teun",
-      lastName: "KOOPMEINERS",
-      nameOnShirt: "KOOPMEINERS",
+      firstName: "Тён",
+      lastName: "Копмеинерс",
+      nameOnShirt: "Копмеинерс",
+      originalFirstName: "Teun",
+      originalLastName: "KOOPMEINERS",
+      originalNameOnShirt: "KOOPMEINERS",
+
       dateOfBirth: "28/02/1998",
       age: 28,
       shirtNumber: 20,
@@ -376,11 +445,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "frenkie-de-jong",
-      firstName: "Frenkie",
-      lastName: "DE JONG",
-      nameOnShirt: "F. DE JONG",
+      firstName: "Френкие",
+      lastName: "Де Йонх",
+      nameOnShirt: "Ф. де Йонх",
+      originalFirstName: "Frenkie",
+      originalLastName: "DE JONG",
+      originalNameOnShirt: "F. DE JONG",
+
       dateOfBirth: "12/05/1997",
       age: 29,
       shirtNumber: 21,
@@ -397,11 +470,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "quinten-ryan-crispito-timber",
-      firstName: "Quinten Ryan Crispito",
-      lastName: "TIMBER",
-      nameOnShirt: "Q. TIMBER",
+      firstName: "Кёйнтен",
+      lastName: "Тимбер",
+      nameOnShirt: "К. Тимбер",
+      originalFirstName: "Quinten Ryan Crispito",
+      originalLastName: "TIMBER",
+      originalNameOnShirt: "Q. TIMBER",
+
       dateOfBirth: "17/06/2001",
       age: 24,
       shirtNumber: 26,
@@ -420,11 +497,15 @@ export const netherlandsProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "wout-francois-maria-weghorst",
-      firstName: "Wout François Maria",
-      lastName: "WEGHORST",
-      nameOnShirt: "WEGHORST",
+      firstName: "Воут",
+      lastName: "Веххорст",
+      nameOnShirt: "Веххорст",
+      originalFirstName: "Wout François Maria",
+      originalLastName: "WEGHORST",
+      originalNameOnShirt: "WEGHORST",
+
       dateOfBirth: "07/08/1992",
       age: 33,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "memphis-depay",
-      firstName: "Memphis",
-      lastName: "DEPAY",
-      nameOnShirt: "MEMPHIS",
+      firstName: "Мемфис",
+      lastName: "Депай",
+      nameOnShirt: "Мемфис",
+      originalFirstName: "Memphis",
+      originalLastName: "DEPAY",
+      originalNameOnShirt: "MEMPHIS",
+
       dateOfBirth: "13/02/1994",
       age: 32,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "cody-mathes-gakpo",
-      firstName: "Cody Mathès",
-      lastName: "GAKPO",
-      nameOnShirt: "GAKPO",
+      firstName: "Коди",
+      lastName: "Хакпо",
+      nameOnShirt: "Хакпо",
+      originalFirstName: "Cody Mathès",
+      originalLastName: "GAKPO",
+      originalNameOnShirt: "GAKPO",
+
       dateOfBirth: "07/05/1999",
       age: 27,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "noa-noell-lang",
-      firstName: "Noa Noëll",
-      lastName: "LANG",
-      nameOnShirt: "LANG",
+      firstName: "Ноа",
+      lastName: "Ланх",
+      nameOnShirt: "Ланх",
+      originalFirstName: "Noa Noëll",
+      originalLastName: "LANG",
+      originalNameOnShirt: "LANG",
+
       dateOfBirth: "17/06/1999",
       age: 26,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "donyell-malen",
-      firstName: "Donyell",
-      lastName: "MALEN",
-      nameOnShirt: "MALEN",
+      firstName: "Дониелл",
+      lastName: "Мален",
+      nameOnShirt: "Мален",
+      originalFirstName: "Donyell",
+      originalLastName: "MALEN",
+      originalNameOnShirt: "MALEN",
+
       dateOfBirth: "19/01/1999",
       age: 27,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "brian-ebenezer-adjei-brobbey",
-      firstName: "Brian Ebenezer Adjei",
-      lastName: "BROBBEY",
-      nameOnShirt: "BROBBEY",
+      firstName: "Бриан",
+      lastName: "Броббеи",
+      nameOnShirt: "Броббеи",
+      originalFirstName: "Brian Ebenezer Adjei",
+      originalLastName: "BROBBEY",
+      originalNameOnShirt: "BROBBEY",
+
       dateOfBirth: "01/02/2002",
       age: 24,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const netherlandsProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "crysencio-jilbert-sylverio-cir-summerville",
-      firstName: "Crysencio Jilbert Sylverio Cir",
-      lastName: "SUMMERVILLE",
-      nameOnShirt: "SUMMERVILLE",
+      firstName: "Крисенкио",
+      lastName: "Суммервилле",
+      nameOnShirt: "Суммервилле",
+      originalFirstName: "Crysencio Jilbert Sylverio Cir",
+      originalLastName: "SUMMERVILLE",
+      originalNameOnShirt: "SUMMERVILLE",
+
       dateOfBirth: "30/10/2001",
       age: 24,
       shirtNumber: 24,

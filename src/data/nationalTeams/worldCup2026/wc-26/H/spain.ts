@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import spainFlag from '@/data/nationalTeams/worldCup2026/flags/spain.png'
 
 export const spainProfile: NationalTeamProfile = {
   id: "spain",
@@ -6,7 +7,7 @@ export const spainProfile: NationalTeamProfile = {
   shortName: "ESP",
   fifaCode: "ESP",
   groupId: "H",
-  flagCode: "ES",
+  flag: spainFlag,
   rating: 89,
   attackRating: 88,
   midfieldRating: 90,
@@ -15,11 +16,15 @@ export const spainProfile: NationalTeamProfile = {
   secondaryColor: "#F1BF00",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "david-raya-martin",
-      firstName: "David",
-      lastName: "RAYA MARTÍN",
-      nameOnShirt: "RAYA",
+      firstName: "Давид",
+      lastName: "Райа Мартин",
+      nameOnShirt: "Райа",
+      originalFirstName: "David",
+      originalLastName: "RAYA MARTÍN",
+      originalNameOnShirt: "RAYA",
+
       dateOfBirth: "15/09/1995",
       age: 30,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "joan-garcia-pons",
-      firstName: "Joan",
-      lastName: "GARCIA PONS",
-      nameOnShirt: "JOAN GARCIA",
+      firstName: "Хоан",
+      lastName: "Гарсиа Понс",
+      nameOnShirt: "Хоан Гарсиа",
+      originalFirstName: "Joan",
+      originalLastName: "GARCIA PONS",
+      originalNameOnShirt: "JOAN GARCIA",
+
       dateOfBirth: "04/05/2001",
       age: 25,
       shirtNumber: 13,
@@ -57,11 +66,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "unai-simon-mendibil",
-      firstName: "Unai",
-      lastName: "SIMÓN MENDIBIL",
-      nameOnShirt: "UNAI SIMÓN",
+      firstName: "Унаи",
+      lastName: "Симон Мендибил",
+      nameOnShirt: "Унаи Симон",
+      originalFirstName: "Unai",
+      originalLastName: "SIMÓN MENDIBIL",
+      originalNameOnShirt: "UNAI SIMÓN",
+
       dateOfBirth: "11/06/1997",
       age: 29,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const spainProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "marc-pubill-pages",
-      firstName: "Marc",
-      lastName: "PUBILL PAGES",
-      nameOnShirt: "MARC PUBILL",
+      firstName: "Марк",
+      lastName: "Пубиль Пахес",
+      nameOnShirt: "Марк Пубиль",
+      originalFirstName: "Marc",
+      originalLastName: "PUBILL PAGES",
+      originalNameOnShirt: "MARC PUBILL",
+
       dateOfBirth: "20/06/2003",
       age: 22,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "alejandro-grimaldo-garcia",
-      firstName: "Alejandro",
-      lastName: "GRIMALDO GARCÍA",
-      nameOnShirt: "GRIMALDO",
+      firstName: "Алехандро",
+      lastName: "Грималдо Гарсиа",
+      nameOnShirt: "Грималдо",
+      originalFirstName: "Alejandro",
+      originalLastName: "GRIMALDO GARCÍA",
+      originalNameOnShirt: "GRIMALDO",
+
       dateOfBirth: "20/09/1995",
       age: 30,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "eric-garcia-martret",
-      firstName: "Eric",
-      lastName: "GARCÍA MARTRET",
-      nameOnShirt: "ERIC",
+      firstName: "Ерик",
+      lastName: "Гарсиа Мартрет",
+      nameOnShirt: "Ерик",
+      originalFirstName: "Eric",
+      originalLastName: "GARCÍA MARTRET",
+      originalNameOnShirt: "ERIC",
+
       dateOfBirth: "09/01/2001",
       age: 25,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcos-llorente-moreno",
-      firstName: "Marcos",
-      lastName: "LLORENTE MORENO",
-      nameOnShirt: "M. LLORENTE",
+      firstName: "Маркос",
+      lastName: "Льоренте Морено",
+      nameOnShirt: "М. Льоренте",
+      originalFirstName: "Marcos",
+      originalLastName: "LLORENTE MORENO",
+      originalNameOnShirt: "M. LLORENTE",
+
       dateOfBirth: "30/01/1995",
       age: 31,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "pedro-antonio-porro-sauceda",
-      firstName: "Pedro Antonio",
-      lastName: "PORRO SAUCEDA",
-      nameOnShirt: "PEDRO PORRO",
+      firstName: "Педру",
+      lastName: "Порро Сауседа",
+      nameOnShirt: "Педру Порро",
+      originalFirstName: "Pedro Antonio",
+      originalLastName: "PORRO SAUCEDA",
+      originalNameOnShirt: "PEDRO PORRO",
+
       dateOfBirth: "13/09/1999",
       age: 26,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "aymeric-laporte-fevre",
-      firstName: "Aymeric",
-      lastName: "LAPORTE FEVRE",
-      nameOnShirt: "LAPORTE",
+      firstName: "Аймерик",
+      lastName: "Лапорте Февре",
+      nameOnShirt: "Лапорте",
+      originalFirstName: "Aymeric",
+      originalLastName: "LAPORTE FEVRE",
+      originalNameOnShirt: "LAPORTE",
+
       dateOfBirth: "27/05/1994",
       age: 32,
       shirtNumber: 14,
@@ -206,11 +243,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "pau-cubarsi-i-paredes",
-      firstName: "Pau",
-      lastName: "CUBARSI I PAREDES",
-      nameOnShirt: "CUBARSÍ",
+      firstName: "Пау",
+      lastName: "Кубарси И Паредес",
+      nameOnShirt: "Кубарси",
+      originalFirstName: "Pau",
+      originalLastName: "CUBARSI I PAREDES",
+      originalNameOnShirt: "CUBARSÍ",
+
       dateOfBirth: "22/01/2007",
       age: 19,
       shirtNumber: 22,
@@ -227,11 +268,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_345_000,
       isInjured: false,
     },
-    {
+        {
       id: "marc-cucurella-saseta",
-      firstName: "Marc",
-      lastName: "CUCURELLA SASETA",
-      nameOnShirt: "CUCURELLA",
+      firstName: "Марк",
+      lastName: "Кукурельа Сасета",
+      nameOnShirt: "Кукурельа",
+      originalFirstName: "Marc",
+      originalLastName: "CUCURELLA SASETA",
+      originalNameOnShirt: "CUCURELLA",
+
       dateOfBirth: "22/07/1998",
       age: 27,
       shirtNumber: 24,
@@ -250,11 +295,15 @@ export const spainProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "mikel-merino-zazon",
-      firstName: "Mikel",
-      lastName: "MERINO ZAZÓN",
-      nameOnShirt: "MERINO",
+      firstName: "Микел",
+      lastName: "Мерино Сасон",
+      nameOnShirt: "Мерино",
+      originalFirstName: "Mikel",
+      originalLastName: "MERINO ZAZÓN",
+      originalNameOnShirt: "MERINO",
+
       dateOfBirth: "22/06/1996",
       age: 29,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "fabian-ruiz-pena",
-      firstName: "Fabian",
-      lastName: "RUIZ PEÑA",
-      nameOnShirt: "FABIÁN",
+      firstName: "Фабиан",
+      lastName: "Руис Пен'А",
+      nameOnShirt: "Фабиан",
+      originalFirstName: "Fabian",
+      originalLastName: "RUIZ PEÑA",
+      originalNameOnShirt: "FABIÁN",
+
       dateOfBirth: "03/04/1996",
       age: 30,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "pablo-paez-gavira",
-      firstName: "Pablo",
-      lastName: "PAEZ GAVIRA",
-      nameOnShirt: "GAVI",
+      firstName: "Пабло",
+      lastName: "Паес Гавира",
+      nameOnShirt: "Гави",
+      originalFirstName: "Pablo",
+      originalLastName: "PAEZ GAVIRA",
+      originalNameOnShirt: "GAVI",
+
       dateOfBirth: "05/08/2004",
       age: 21,
       shirtNumber: 9,
@@ -313,11 +370,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_515_000,
       isInjured: false,
     },
-    {
+        {
       id: "alejandro-baena-rodriguez",
-      firstName: "Alejandro",
-      lastName: "BAENA RODRÍGUEZ",
-      nameOnShirt: "ALEX B.",
+      firstName: "Алехандро",
+      lastName: "Баена Родригес",
+      nameOnShirt: "Алекс Б.",
+      originalFirstName: "Alejandro",
+      originalLastName: "BAENA RODRÍGUEZ",
+      originalNameOnShirt: "ALEX B.",
+
       dateOfBirth: "20/07/2001",
       age: 24,
       shirtNumber: 15,
@@ -334,11 +395,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_605_000,
       isInjured: false,
     },
-    {
+        {
       id: "rodrigo-hernandez-cascante",
-      firstName: "Rodrigo",
-      lastName: "HERNÁNDEZ CASCANTE",
-      nameOnShirt: "RODRIGO",
+      firstName: "Родри",
+      lastName: "",
+      nameOnShirt: "Родриго",
+      originalFirstName: "Rodrigo",
+      originalLastName: "HERNÁNDEZ CASCANTE",
+      originalNameOnShirt: "RODRIGO",
+
       dateOfBirth: "22/06/1996",
       age: 29,
       shirtNumber: 16,
@@ -355,11 +420,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-zubimendi-ibanez",
-      firstName: "Martin",
-      lastName: "ZUBIMENDI IBAÑEZ",
-      nameOnShirt: "ZUBIMENDI",
+      firstName: "Мартин",
+      lastName: "Субименди Ибан'Ес",
+      nameOnShirt: "Субименди",
+      originalFirstName: "Martin",
+      originalLastName: "ZUBIMENDI IBAÑEZ",
+      originalNameOnShirt: "ZUBIMENDI",
+
       dateOfBirth: "02/02/1999",
       age: 27,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "pedro-gonzalez-lopez",
-      firstName: "Pedro",
-      lastName: "GONZÁLEZ LÓPEZ",
-      nameOnShirt: "PEDRI",
+      firstName: "Педру",
+      lastName: "Гонсалес Лопес",
+      nameOnShirt: "Педри",
+      originalFirstName: "Pedro",
+      originalLastName: "GONZÁLEZ LÓPEZ",
+      originalNameOnShirt: "PEDRI",
+
       dateOfBirth: "25/11/2002",
       age: 23,
       shirtNumber: 20,
@@ -399,11 +472,15 @@ export const spainProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "ferran-torres-garcia",
-      firstName: "Ferran",
-      lastName: "TORRES GARCÍA",
-      nameOnShirt: "FERRAN",
+      firstName: "Ферран",
+      lastName: "Торрес Гарсиа",
+      nameOnShirt: "Ферран",
+      originalFirstName: "Ferran",
+      originalLastName: "TORRES GARCÍA",
+      originalNameOnShirt: "FERRAN",
+
       dateOfBirth: "29/02/2000",
       age: 26,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "daniel-olmo-carvajal",
-      firstName: "Daniel",
-      lastName: "OLMO CARVAJAL",
-      nameOnShirt: "OLMO",
+      firstName: "Даниэл",
+      lastName: "Олмо Карвахал",
+      nameOnShirt: "Олмо",
+      originalFirstName: "Daniel",
+      originalLastName: "OLMO CARVAJAL",
+      originalNameOnShirt: "OLMO",
+
       dateOfBirth: "07/05/1998",
       age: 28,
       shirtNumber: 10,
@@ -441,11 +522,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "yeremy-jesus-pino-santos",
-      firstName: "Yeremy Jesús",
-      lastName: "PINO SANTOS",
-      nameOnShirt: "YEREMY",
+      firstName: "Йеремй",
+      lastName: "Пино Сантос",
+      nameOnShirt: "Йеремй",
+      originalFirstName: "Yeremy Jesús",
+      originalLastName: "PINO SANTOS",
+      originalNameOnShirt: "YEREMY",
+
       dateOfBirth: "20/10/2002",
       age: 23,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicholas-williams-arthuer",
-      firstName: "Nicholas",
-      lastName: "WILLIAMS ARTHUER",
-      nameOnShirt: "WILLIAMS JR.",
+      firstName: "Ничолас",
+      lastName: "Вильиамс Артуер",
+      nameOnShirt: "Вильиамс Жуниор.",
+      originalFirstName: "Nicholas",
+      originalLastName: "WILLIAMS ARTHUER",
+      originalNameOnShirt: "WILLIAMS JR.",
+
       dateOfBirth: "12/07/2002",
       age: 23,
       shirtNumber: 17,
@@ -483,11 +572,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_420_000,
       isInjured: false,
     },
-    {
+        {
       id: "lamine-yamal-nasraoui-ebana",
-      firstName: "Lamine Yamal",
-      lastName: "NASRAOUI EBANA",
-      nameOnShirt: "LAMINE YAMAL",
+      firstName: "Ламин",
+      lastName: "Ямаль",
+      nameOnShirt: "Ламин Йамал",
+      originalFirstName: "Lamine Yamal",
+      originalLastName: "NASRAOUI EBANA",
+      originalNameOnShirt: "LAMINE YAMAL",
+
       dateOfBirth: "13/07/2007",
       age: 18,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_430_000,
       isInjured: false,
     },
-    {
+        {
       id: "mikel-oyarzabal-ugarte",
-      firstName: "Mikel",
-      lastName: "OYARZABAL UGARTE",
-      nameOnShirt: "OYARZABAL",
+      firstName: "Микел",
+      lastName: "Ойарсабал Угарте",
+      nameOnShirt: "Ойарсабал",
+      originalFirstName: "Mikel",
+      originalLastName: "OYARZABAL UGARTE",
+      originalNameOnShirt: "OYARZABAL",
+
       dateOfBirth: "21/04/1997",
       age: 29,
       shirtNumber: 21,
@@ -525,11 +622,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "victor-munoz-villanueva",
-      firstName: "Victor",
-      lastName: "MUÑOZ VILLANUEVA",
-      nameOnShirt: "VICTOR M.V.",
+      firstName: "Виктор",
+      lastName: "Мун'Ос Вильануева",
+      nameOnShirt: "Виктор М.В.",
+      originalFirstName: "Victor",
+      originalLastName: "MUÑOZ VILLANUEVA",
+      originalNameOnShirt: "VICTOR M.V.",
+
       dateOfBirth: "13/07/2003",
       age: 22,
       shirtNumber: 25,
@@ -546,11 +647,15 @@ export const spainProfile: NationalTeamProfile = {
       salary: 1_170_000,
       isInjured: false,
     },
-    {
+        {
       id: "borja-iglesias-quintas",
-      firstName: "Borja",
-      lastName: "IGLESIAS QUINTÁS",
-      nameOnShirt: "B. IGLESIAS",
+      firstName: "Борха",
+      lastName: "Иглесиас Кинтас",
+      nameOnShirt: "Б. Иглесиас",
+      originalFirstName: "Borja",
+      originalLastName: "IGLESIAS QUINTÁS",
+      originalNameOnShirt: "B. IGLESIAS",
+
       dateOfBirth: "17/01/1993",
       age: 33,
       shirtNumber: 26,

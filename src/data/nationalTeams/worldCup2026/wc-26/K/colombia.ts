@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import colombiaFlag from '@/data/nationalTeams/worldCup2026/flags/colombia.png'
 
 export const colombiaProfile: NationalTeamProfile = {
   id: "colombia",
@@ -6,7 +7,7 @@ export const colombiaProfile: NationalTeamProfile = {
   shortName: "COL",
   fifaCode: "COL",
   groupId: "K",
-  flagCode: "CO",
+  flag: colombiaFlag,
   rating: 82,
   attackRating: 82,
   midfieldRating: 81,
@@ -15,11 +16,15 @@ export const colombiaProfile: NationalTeamProfile = {
   secondaryColor: "#003893",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "david-ospina-ramirez",
-      firstName: "David",
-      lastName: "OSPINA RAMIREZ",
-      nameOnShirt: "OSPINA",
+      firstName: "Давид",
+      lastName: "Оспина Рамирес",
+      nameOnShirt: "Оспина",
+      originalFirstName: "David",
+      originalLastName: "OSPINA RAMIREZ",
+      originalNameOnShirt: "OSPINA",
+
       dateOfBirth: "31/08/1988",
       age: 37,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "camilo-andres-vargas-gil",
-      firstName: "Camilo Andres",
-      lastName: "VARGAS GIL",
-      nameOnShirt: "C. VARGAS",
+      firstName: "Камило",
+      lastName: "Варгас Хил",
+      nameOnShirt: "К. Варгас",
+      originalFirstName: "Camilo Andres",
+      originalLastName: "VARGAS GIL",
+      originalNameOnShirt: "C. VARGAS",
+
       dateOfBirth: "09/03/1989",
       age: 37,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "alvaro-david-montero-perales",
-      firstName: "Álvaro David",
-      lastName: "MONTERO PERALES",
-      nameOnShirt: "MONTERO",
+      firstName: "Алваро",
+      lastName: "Монтеро Пералес",
+      nameOnShirt: "Монтеро",
+      originalFirstName: "Álvaro David",
+      originalLastName: "MONTERO PERALES",
+      originalNameOnShirt: "MONTERO",
+
       dateOfBirth: "29/03/1995",
       age: 31,
       shirtNumber: 24,
@@ -80,11 +93,15 @@ export const colombiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "daniel-munoz-mejia",
-      firstName: "Daniel",
-      lastName: "MUÑOZ MEJIA",
-      nameOnShirt: "D. MUÑOZ",
+      firstName: "Даниэл",
+      lastName: "Мун'Ос Мехиа",
+      nameOnShirt: "Д. Мун'Ос",
+      originalFirstName: "Daniel",
+      originalLastName: "MUÑOZ MEJIA",
+      originalNameOnShirt: "D. MUÑOZ",
+
       dateOfBirth: "26/05/1996",
       age: 30,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "jhon-janer-lucumi-bonilla",
-      firstName: "Jhon Janer",
-      lastName: "LUCUMI BONILLA",
-      nameOnShirt: "J. LUCUMI",
+      firstName: "Хон",
+      lastName: "Лукуми Бонильа",
+      nameOnShirt: "Дж. Лукуми",
+      originalFirstName: "Jhon Janer",
+      originalLastName: "LUCUMI BONILLA",
+      originalNameOnShirt: "J. LUCUMI",
+
       dateOfBirth: "26/06/1998",
       age: 27,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "santiago-arias-naranjo",
-      firstName: "Santiago",
-      lastName: "ARIAS NARANJO",
-      nameOnShirt: "ARIAS",
+      firstName: "Сантиаго",
+      lastName: "Ариас Наранхо",
+      nameOnShirt: "Ариас",
+      originalFirstName: "Santiago",
+      originalLastName: "ARIAS NARANJO",
+      originalNameOnShirt: "ARIAS",
+
       dateOfBirth: "13/01/1992",
       age: 34,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "yerry-fernando-mina-gonzalez",
-      firstName: "Yerry Fernando",
-      lastName: "MINA GONZALEZ",
-      nameOnShirt: "Y. MINA",
+      firstName: "Йеррй",
+      lastName: "Мина Гонсалес",
+      nameOnShirt: "Й. Мина",
+      originalFirstName: "Yerry Fernando",
+      originalLastName: "MINA GONZALEZ",
+      originalNameOnShirt: "Y. MINA",
+
       dateOfBirth: "23/09/1994",
       age: 31,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "gustavo-adolfo-puerta-molano",
-      firstName: "Gustavo Adolfo",
-      lastName: "PUERTA MOLANO",
-      nameOnShirt: "PUERTA",
+      firstName: "Густаво",
+      lastName: "Пуерта Молано",
+      nameOnShirt: "Пуерта",
+      originalFirstName: "Gustavo Adolfo",
+      originalLastName: "PUERTA MOLANO",
+      originalNameOnShirt: "PUERTA",
+
       dateOfBirth: "23/07/2003",
       age: 22,
       shirtNumber: 14,
@@ -185,11 +218,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "johan-andres-mojica-palacio",
-      firstName: "Johan Andrés",
-      lastName: "MOJICA PALACIO",
-      nameOnShirt: "J. MOJICA",
+      firstName: "Хоан",
+      lastName: "Мохика Паласио",
+      nameOnShirt: "Дж. Мохика",
+      originalFirstName: "Johan Andrés",
+      originalLastName: "MOJICA PALACIO",
+      originalNameOnShirt: "J. MOJICA",
+
       dateOfBirth: "21/08/1992",
       age: 33,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "willer-emilio-ditta-perez",
-      firstName: "Willer Emilio",
-      lastName: "DITTA PEREZ",
-      nameOnShirt: "W. DITTA",
+      firstName: "Вильер",
+      lastName: "Дитта Перес",
+      nameOnShirt: "В. Дитта",
+      originalFirstName: "Willer Emilio",
+      originalLastName: "DITTA PEREZ",
+      originalNameOnShirt: "W. DITTA",
+
       dateOfBirth: "23/01/1998",
       age: 28,
       shirtNumber: 18,
@@ -227,11 +268,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "deiver-machado-mena",
-      firstName: "Deiver",
-      lastName: "MACHADO MENA",
-      nameOnShirt: "MACHADO",
+      firstName: "Деивер",
+      lastName: "Мачадо Мена",
+      nameOnShirt: "Мачадо",
+      originalFirstName: "Deiver",
+      originalLastName: "MACHADO MENA",
+      originalNameOnShirt: "MACHADO",
+
       dateOfBirth: "02/09/1993",
       age: 32,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "davinson-sanchez-mina",
-      firstName: "Davinson",
-      lastName: "SÁNCHEZ MINA",
-      nameOnShirt: "SANCHEZ",
+      firstName: "Давинсон",
+      lastName: "Санчес Мина",
+      nameOnShirt: "Санчес",
+      originalFirstName: "Davinson",
+      originalLastName: "SÁNCHEZ MINA",
+      originalNameOnShirt: "SANCHEZ",
+
       dateOfBirth: "12/06/1996",
       age: 29,
       shirtNumber: 23,
@@ -271,11 +320,15 @@ export const colombiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "kevin-duvan-castano-gil",
-      firstName: "Kevin Duvan",
-      lastName: "CASTAÑO GIL",
-      nameOnShirt: "K. CASTAÑO",
+      firstName: "Кевин",
+      lastName: "Кастан'О Хил",
+      nameOnShirt: "К. Кастан'О",
+      originalFirstName: "Kevin Duvan",
+      originalLastName: "CASTAÑO GIL",
+      originalNameOnShirt: "K. CASTAÑO",
+
       dateOfBirth: "29/09/2000",
       age: 25,
       shirtNumber: 5,
@@ -292,11 +345,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "richard-rios-montoya",
-      firstName: "Richard",
-      lastName: "RÍOS MONTOYA",
-      nameOnShirt: "RICHARD RIOS",
+      firstName: "Ричард",
+      lastName: "Риос Монтойа",
+      nameOnShirt: "Ричард Риос",
+      originalFirstName: "Richard",
+      originalLastName: "RÍOS MONTOYA",
+      originalNameOnShirt: "RICHARD RIOS",
+
       dateOfBirth: "02/06/2000",
       age: 26,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "jorge-andres-carrascal-guardo",
-      firstName: "Jorge Andres",
-      lastName: "CARRASCAL GUARDO",
-      nameOnShirt: "CARRASCAL",
+      firstName: "Хорхе",
+      lastName: "Карраскал Гуардо",
+      nameOnShirt: "Карраскал",
+      originalFirstName: "Jorge Andres",
+      originalLastName: "CARRASCAL GUARDO",
+      originalNameOnShirt: "CARRASCAL",
+
       dateOfBirth: "25/05/1998",
       age: 28,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "james-david-rodriguez-rubio",
-      firstName: "James David",
-      lastName: "RODRÍGUEZ RUBIO",
-      nameOnShirt: "JAMES",
+      firstName: "Хамес",
+      lastName: "Родригес",
+      nameOnShirt: "Хамес",
+      originalFirstName: "James David",
+      originalLastName: "RODRÍGUEZ RUBIO",
+      originalNameOnShirt: "JAMES",
+
       dateOfBirth: "12/07/1991",
       age: 34,
       shirtNumber: 10,
@@ -355,11 +420,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "jhon-adolfo-arias-andrade",
-      firstName: "Jhon Adolfo",
-      lastName: "ARIAS ANDRADE",
-      nameOnShirt: "J. ARIAS",
+      firstName: "Хон",
+      lastName: "Ариас Андраде",
+      nameOnShirt: "Дж. Ариас",
+      originalFirstName: "Jhon Adolfo",
+      originalLastName: "ARIAS ANDRADE",
+      originalNameOnShirt: "J. ARIAS",
+
       dateOfBirth: "21/09/1997",
       age: 28,
       shirtNumber: 11,
@@ -376,11 +445,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "juan-camilo-portilla-orozco",
-      firstName: "Juan Camilo",
-      lastName: "PORTILLA OROZCO",
-      nameOnShirt: "PORTILLA",
+      firstName: "Хуан",
+      lastName: "Портильа Ороско",
+      nameOnShirt: "Портильа",
+      originalFirstName: "Juan Camilo",
+      originalLastName: "PORTILLA OROZCO",
+      originalNameOnShirt: "PORTILLA",
+
       dateOfBirth: "12/09/1998",
       age: 27,
       shirtNumber: 15,
@@ -397,11 +470,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "jefferson-andres-lerma-solis",
-      firstName: "Jefferson Andrés",
-      lastName: "LERMA SOLIS",
-      nameOnShirt: "J. LERMA",
+      firstName: "Хефферсон",
+      lastName: "Лерма Солис",
+      nameOnShirt: "Дж. Лерма",
+      originalFirstName: "Jefferson Andrés",
+      originalLastName: "LERMA SOLIS",
+      originalNameOnShirt: "J. LERMA",
+
       dateOfBirth: "25/10/1994",
       age: 31,
       shirtNumber: 16,
@@ -418,11 +495,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "juan-fernando-quintero-paniagua",
-      firstName: "Juan Fernando",
-      lastName: "QUINTERO PANIAGUA",
-      nameOnShirt: "QUINTERO",
+      firstName: "Хуан",
+      lastName: "Кинтеро Паниагуа",
+      nameOnShirt: "Кинтеро",
+      originalFirstName: "Juan Fernando",
+      originalLastName: "QUINTERO PANIAGUA",
+      originalNameOnShirt: "QUINTERO",
+
       dateOfBirth: "18/01/1993",
       age: 33,
       shirtNumber: 20,
@@ -441,11 +522,15 @@ export const colombiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "luis-fernando-diaz-marulanda",
-      firstName: "Luis Fernando",
-      lastName: "DÍAZ MARULANDA",
-      nameOnShirt: "LUIS DIAZ",
+      firstName: "Луис",
+      lastName: "Диас",
+      nameOnShirt: "Луис Диас",
+      originalFirstName: "Luis Fernando",
+      originalLastName: "DÍAZ MARULANDA",
+      originalNameOnShirt: "LUIS DIAZ",
+
       dateOfBirth: "13/01/1997",
       age: 29,
       shirtNumber: 7,
@@ -462,11 +547,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "jhon-andres-cordoba-copete",
-      firstName: "Jhon Andrés",
-      lastName: "CÓRDOBA COPETE",
-      nameOnShirt: "CORDOBA",
+      firstName: "Хон",
+      lastName: "Кордоба Копете",
+      nameOnShirt: "Кордоба",
+      originalFirstName: "Jhon Andrés",
+      originalLastName: "CÓRDOBA COPETE",
+      originalNameOnShirt: "CORDOBA",
+
       dateOfBirth: "11/05/1993",
       age: 33,
       shirtNumber: 9,
@@ -483,11 +572,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "juan-camilo-hernandez-suarez",
-      firstName: "Juan Camilo",
-      lastName: "HERNANDEZ SUAREZ",
-      nameOnShirt: "C. HERNANDEZ",
+      firstName: "Хуан",
+      lastName: "Ернандес Суарес",
+      nameOnShirt: "К. Ернандес",
+      originalFirstName: "Juan Camilo",
+      originalLastName: "HERNANDEZ SUAREZ",
+      originalNameOnShirt: "C. HERNANDEZ",
+
       dateOfBirth: "20/04/1999",
       age: 27,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "jaminton-leandro-campaz",
-      firstName: "Jaminton Leandro",
-      lastName: "CAMPAZ",
-      nameOnShirt: "CAMPAZ",
+      firstName: "Хаминтон",
+      lastName: "Кампас",
+      nameOnShirt: "Кампас",
+      originalFirstName: "Jaminton Leandro",
+      originalLastName: "CAMPAZ",
+      originalNameOnShirt: "CAMPAZ",
+
       dateOfBirth: "24/05/2000",
       age: 26,
       shirtNumber: 21,
@@ -525,11 +622,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "luis-javier-suarez-charris",
-      firstName: "Luis Javier",
-      lastName: "SUÁREZ CHARRIS",
-      nameOnShirt: "SUAREZ",
+      firstName: "Луис",
+      lastName: "Суарес Чаррис",
+      nameOnShirt: "Суарес",
+      originalFirstName: "Luis Javier",
+      originalLastName: "SUÁREZ CHARRIS",
+      originalNameOnShirt: "SUAREZ",
+
       dateOfBirth: "02/12/1997",
       age: 28,
       shirtNumber: 25,
@@ -546,11 +647,15 @@ export const colombiaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "carlos-andres-gomez-hinestroza",
-      firstName: "Carlos Andrés",
-      lastName: "GÓMEZ HINESTROZA",
-      nameOnShirt: "A. GOMEZ",
+      firstName: "Карлос",
+      lastName: "Гомес Инестроса",
+      nameOnShirt: "А. Гомес",
+      originalFirstName: "Carlos Andrés",
+      originalLastName: "GÓMEZ HINESTROZA",
+      originalNameOnShirt: "A. GOMEZ",
+
       dateOfBirth: "12/09/2002",
       age: 23,
       shirtNumber: 26,

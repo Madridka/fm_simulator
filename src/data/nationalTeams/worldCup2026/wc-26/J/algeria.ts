@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import algeriaFlag from '@/data/nationalTeams/worldCup2026/flags/algeria.png'
 
 export const algeriaProfile: NationalTeamProfile = {
   id: "algeria",
@@ -6,7 +7,7 @@ export const algeriaProfile: NationalTeamProfile = {
   shortName: "ALG",
   fifaCode: "ALG",
   groupId: "J",
-  flagCode: "DZ",
+  flag: algeriaFlag,
   rating: 76,
   attackRating: 76,
   midfieldRating: 75,
@@ -15,11 +16,15 @@ export const algeriaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "melvin-feycal-mastil",
-      firstName: "Melvin Feycal",
-      lastName: "MASTIL",
-      nameOnShirt: "MASTIL",
+      firstName: "Мелвин",
+      lastName: "Мастил",
+      nameOnShirt: "Мастил",
+      originalFirstName: "Melvin Feycal",
+      originalLastName: "MASTIL",
+      originalNameOnShirt: "MASTIL",
+
       dateOfBirth: "19/02/2000",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "oussama-benbot",
-      firstName: "Oussama",
-      lastName: "BENBOT",
-      nameOnShirt: "BENBOT",
+      firstName: "Уссама",
+      lastName: "Бенбот",
+      nameOnShirt: "Бенбот",
+      originalFirstName: "Oussama",
+      originalLastName: "BENBOT",
+      originalNameOnShirt: "BENBOT",
+
       dateOfBirth: "11/10/1994",
       age: 31,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "luca-zinedine-zidane",
-      firstName: "Luca Zinedine",
-      lastName: "ZIDANE",
-      nameOnShirt: "ZIDANE",
+      firstName: "Лука",
+      lastName: "Зидане",
+      nameOnShirt: "Зидане",
+      originalFirstName: "Luca Zinedine",
+      originalLastName: "ZIDANE",
+      originalNameOnShirt: "ZIDANE",
+
       dateOfBirth: "13/05/1998",
       age: 28,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const algeriaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "aissa-mandi",
-      firstName: "Aissa",
-      lastName: "MANDI",
-      nameOnShirt: "MANDI",
+      firstName: "Айсса",
+      lastName: "Манди",
+      nameOnShirt: "Манди",
+      originalFirstName: "Aissa",
+      originalLastName: "MANDI",
+      originalNameOnShirt: "MANDI",
+
       dateOfBirth: "22/10/1991",
       age: 34,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "achref-abada",
-      firstName: "Achref",
-      lastName: "ABADA",
-      nameOnShirt: "ABADA",
+      firstName: "Ачреф",
+      lastName: "Абада",
+      nameOnShirt: "Абада",
+      originalFirstName: "Achref",
+      originalLastName: "ABADA",
+      originalNameOnShirt: "ABADA",
+
       dateOfBirth: "15/06/1999",
       age: 26,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-amine-tougai",
-      firstName: "Mohamed Amine",
-      lastName: "TOUGAI",
-      nameOnShirt: "TOUGAI",
+      firstName: "Мохамед",
+      lastName: "Тугай",
+      nameOnShirt: "Тугай",
+      originalFirstName: "Mohamed Amine",
+      originalLastName: "TOUGAI",
+      originalNameOnShirt: "TOUGAI",
+
       dateOfBirth: "22/01/2000",
       age: 26,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "zineddine-belaid",
-      firstName: "Zineddine",
-      lastName: "BELAÏD",
-      nameOnShirt: "BELAID",
+      firstName: "Зинеддине",
+      lastName: "Белайд",
+      nameOnShirt: "Белайд",
+      originalFirstName: "Zineddine",
+      originalLastName: "BELAÏD",
+      originalNameOnShirt: "BELAID",
+
       dateOfBirth: "20/03/1999",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "jaouen-djimmy-hadjam",
-      firstName: "Jaouen Djimmy",
-      lastName: "HADJAM",
-      nameOnShirt: "HADJAM",
+      firstName: "Джауен",
+      lastName: "Хаджам",
+      nameOnShirt: "Хаджам",
+      originalFirstName: "Jaouen Djimmy",
+      originalLastName: "HADJAM",
+      originalNameOnShirt: "HADJAM",
+
       dateOfBirth: "26/03/2003",
       age: 23,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "rayan-ait-nouri",
-      firstName: "Rayan",
-      lastName: "AÏT-NOURI",
-      nameOnShirt: "AIT NOURI",
+      firstName: "Райан",
+      lastName: "Айт-Нури",
+      nameOnShirt: "Айт Нури",
+      originalFirstName: "Rayan",
+      originalLastName: "AÏT-NOURI",
+      originalNameOnShirt: "AIT NOURI",
+
       dateOfBirth: "06/06/2001",
       age: 25,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "rak-belghali",
-      firstName: "Rak",
-      lastName: "BELGHALI",
-      nameOnShirt: "BELGHALI",
+      firstName: "Рак",
+      lastName: "Белгали",
+      nameOnShirt: "Белгали",
+      originalFirstName: "Rak",
+      originalLastName: "BELGHALI",
+      originalNameOnShirt: "BELGHALI",
+
       dateOfBirth: "07/06/2002",
       age: 24,
       shirtNumber: 17,
@@ -227,11 +268,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "amir-selmane-rami-bensebaini",
-      firstName: "Amir Selmane Rami",
-      lastName: "BENSEBAINI",
-      nameOnShirt: "BENSEBAINI",
+      firstName: "Амир",
+      lastName: "Бенсебайни",
+      nameOnShirt: "Бенсебайни",
+      originalFirstName: "Amir Selmane Rami",
+      originalLastName: "BENSEBAINI",
+      originalNameOnShirt: "BENSEBAINI",
+
       dateOfBirth: "16/04/1995",
       age: 31,
       shirtNumber: 21,
@@ -248,11 +293,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "samir-sophian-chergui",
-      firstName: "Samir Sophian",
-      lastName: "CHERGUI",
-      nameOnShirt: "CHERGUI",
+      firstName: "Самир",
+      lastName: "Чергуи",
+      nameOnShirt: "Чергуи",
+      originalFirstName: "Samir Sophian",
+      originalLastName: "CHERGUI",
+      originalNameOnShirt: "CHERGUI",
+
       dateOfBirth: "06/02/1999",
       age: 27,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const algeriaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "ramiz-larbi-zerrouki",
-      firstName: "Ramiz Larbi",
-      lastName: "ZERROUKI",
-      nameOnShirt: "ZERROUKI",
+      firstName: "Рамиз",
+      lastName: "Зерруки",
+      nameOnShirt: "Зерруки",
+      originalFirstName: "Ramiz Larbi",
+      originalLastName: "ZERROUKI",
+      originalNameOnShirt: "ZERROUKI",
+
       dateOfBirth: "26/05/1998",
       age: 28,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "houssem-eddine-chaabane-aouar",
-      firstName: "Houssem-Eddine Chaabane",
-      lastName: "AOUAR",
-      nameOnShirt: "AOUAR",
+      firstName: "Хуссем-Еддине",
+      lastName: "Ауар",
+      nameOnShirt: "Ауар",
+      originalFirstName: "Houssem-Eddine Chaabane",
+      originalLastName: "AOUAR",
+      originalNameOnShirt: "AOUAR",
+
       dateOfBirth: "30/06/1998",
       age: 27,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "fares-chaibi",
-      firstName: "Fares",
-      lastName: "CHAIBI",
-      nameOnShirt: "CHAIBI",
+      firstName: "Фарес",
+      lastName: "Чайби",
+      nameOnShirt: "Чайби",
+      originalFirstName: "Fares",
+      originalLastName: "CHAIBI",
+      originalNameOnShirt: "CHAIBI",
+
       dateOfBirth: "28/11/2002",
       age: 23,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "hicham-boudaoui",
-      firstName: "Hicham",
-      lastName: "BOUDAOUI",
-      nameOnShirt: "BOUDAOUI",
+      firstName: "Хичам",
+      lastName: "Будауи",
+      nameOnShirt: "Будауи",
+      originalFirstName: "Hicham",
+      originalLastName: "BOUDAOUI",
+      originalNameOnShirt: "BOUDAOUI",
+
       dateOfBirth: "23/09/1999",
       age: 26,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "nabil-bentaleb",
-      firstName: "Nabil",
-      lastName: "BENTALEB",
-      nameOnShirt: "BENTALEB",
+      firstName: "Набил",
+      lastName: "Бенталеб",
+      nameOnShirt: "Бенталеб",
+      originalFirstName: "Nabil",
+      originalLastName: "BENTALEB",
+      originalNameOnShirt: "BENTALEB",
+
       dateOfBirth: "24/11/1994",
       age: 31,
       shirtNumber: 19,
@@ -376,11 +445,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-maza",
-      firstName: "Ibrahim",
-      lastName: "MAZA",
-      nameOnShirt: "MAZA",
+      firstName: "Ибрахим",
+      lastName: "Маза",
+      nameOnShirt: "Маза",
+      originalFirstName: "Ibrahim",
+      originalLastName: "MAZA",
+      originalNameOnShirt: "MAZA",
+
       dateOfBirth: "24/11/2005",
       age: 20,
       shirtNumber: 22,
@@ -397,11 +470,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 660_000,
       isInjured: false,
     },
-    {
+        {
       id: "yassine-m-e-g-titraoui",
-      firstName: "Yassine M E G",
-      lastName: "TITRAOUI",
-      nameOnShirt: "TITRAOUI",
+      firstName: "Яссин",
+      lastName: "Титрауи",
+      nameOnShirt: "Титрауи",
+      originalFirstName: "Yassine M E G",
+      originalLastName: "TITRAOUI",
+      originalNameOnShirt: "TITRAOUI",
+
       dateOfBirth: "26/07/2003",
       age: 22,
       shirtNumber: 24,
@@ -420,11 +497,15 @@ export const algeriaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "riyad-karim-mahrez",
-      firstName: "Riyad Karim",
-      lastName: "MAHREZ",
-      nameOnShirt: "MAHREZ",
+      firstName: "Рияд",
+      lastName: "Марез",
+      nameOnShirt: "Махрез",
+      originalFirstName: "Riyad Karim",
+      originalLastName: "MAHREZ",
+      originalNameOnShirt: "MAHREZ",
+
       dateOfBirth: "21/02/1991",
       age: 35,
       shirtNumber: 7,
@@ -441,11 +522,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "amine-ferid-ghouiri",
-      firstName: "Amine Ferid",
-      lastName: "GHOUIRI",
-      nameOnShirt: "GOUIRI",
+      firstName: "Амине",
+      lastName: "Гуири",
+      nameOnShirt: "Гуири",
+      originalFirstName: "Amine Ferid",
+      originalLastName: "GHOUIRI",
+      originalNameOnShirt: "GOUIRI",
+
       dateOfBirth: "16/02/2000",
       age: 26,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "anis-hadj-moussa",
-      firstName: "Anis",
-      lastName: "HADJ MOUSSA",
-      nameOnShirt: "HADJ MOUSSA",
+      firstName: "Анис",
+      lastName: "Хадж Мусса",
+      nameOnShirt: "Хадж Мусса",
+      originalFirstName: "Anis",
+      originalLastName: "HADJ MOUSSA",
+      originalNameOnShirt: "HADJ MOUSSA",
+
       dateOfBirth: "11/02/2002",
       age: 24,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-nadhir-benbouali",
-      firstName: "Ahmed Nadhir",
-      lastName: "BENBOUALI",
-      nameOnShirt: "BENBOUALI",
+      firstName: "Ахмед",
+      lastName: "Бенбуали",
+      nameOnShirt: "Бенбуали",
+      originalFirstName: "Ahmed Nadhir",
+      originalLastName: "BENBOUALI",
+      originalNameOnShirt: "BENBOUALI",
+
       dateOfBirth: "17/04/2000",
       age: 26,
       shirtNumber: 12,
@@ -504,11 +597,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammed-elamine-amoura",
-      firstName: "Mohammed Elamine",
-      lastName: "AMOURA",
-      nameOnShirt: "AMOURA",
+      firstName: "Мохаммед",
+      lastName: "Амура",
+      nameOnShirt: "Амура",
+      originalFirstName: "Mohammed Elamine",
+      originalLastName: "AMOURA",
+      originalNameOnShirt: "AMOURA",
+
       dateOfBirth: "09/05/2000",
       age: 26,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "adil-boulbina",
-      firstName: "Adil",
-      lastName: "BOULBINA",
-      nameOnShirt: "BOULBINA",
+      firstName: "Адил",
+      lastName: "Булбина",
+      nameOnShirt: "Булбина",
+      originalFirstName: "Adil",
+      originalLastName: "BOULBINA",
+      originalNameOnShirt: "BOULBINA",
+
       dateOfBirth: "02/05/2003",
       age: 23,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const algeriaProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "fares-ghedjemis",
-      firstName: "Fares",
-      lastName: "GHEDJEMIS",
-      nameOnShirt: "GHEDJEMIS",
+      firstName: "Фарес",
+      lastName: "Геджемис",
+      nameOnShirt: "Геджемис",
+      originalFirstName: "Fares",
+      originalLastName: "GHEDJEMIS",
+      originalNameOnShirt: "GHEDJEMIS",
+
       dateOfBirth: "06/09/2002",
       age: 23,
       shirtNumber: 25,

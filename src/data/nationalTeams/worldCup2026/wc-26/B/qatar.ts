@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import qatarFlag from '@/data/nationalTeams/worldCup2026/flags/qatar.png'
 
 export const qatarProfile: NationalTeamProfile = {
   id: "qatar",
@@ -6,7 +7,7 @@ export const qatarProfile: NationalTeamProfile = {
   shortName: "QAT",
   fifaCode: "QAT",
   groupId: "B",
-  flagCode: "QA",
+  flag: qatarFlag,
   rating: 71,
   attackRating: 70,
   midfieldRating: 71,
@@ -15,11 +16,15 @@ export const qatarProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "mahmoud-ibrahim-m-abunada",
-      firstName: "Mahmoud Ibrahim M",
-      lastName: "ABUNADA",
-      nameOnShirt: "ABUNADA",
+      firstName: "Махмуд",
+      lastName: "Абунада",
+      nameOnShirt: "Абунада",
+      originalFirstName: "Mahmoud Ibrahim M",
+      originalLastName: "ABUNADA",
+      originalNameOnShirt: "ABUNADA",
+
       dateOfBirth: "05/02/2000",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "salah-zakaria-m-m-hassan",
-      firstName: "Salah Zakaria M M",
-      lastName: "HASSAN",
-      nameOnShirt: "SALAH",
+      firstName: "Салах",
+      lastName: "Хассан",
+      nameOnShirt: "Салах",
+      originalFirstName: "Salah Zakaria M M",
+      originalLastName: "HASSAN",
+      originalNameOnShirt: "SALAH",
+
       dateOfBirth: "24/04/1999",
       age: 27,
       shirtNumber: 21,
@@ -57,11 +66,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "meshaal-aissa-m-barsham",
-      firstName: "Meshaal Aissa M",
-      lastName: "BARSHAM",
-      nameOnShirt: "BARSHAM",
+      firstName: "Мешал",
+      lastName: "Баршам",
+      nameOnShirt: "Баршам",
+      originalFirstName: "Meshaal Aissa M",
+      originalLastName: "BARSHAM",
+      originalNameOnShirt: "BARSHAM",
+
       dateOfBirth: "14/02/1998",
       age: 28,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const qatarProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "pedro-miguel-d-d-correia",
-      firstName: "Pedro Miguel D D",
-      lastName: "CORREIA",
-      nameOnShirt: "PEDRO",
+      firstName: "Педру",
+      lastName: "Корреиа",
+      nameOnShirt: "Педру",
+      originalFirstName: "Pedro Miguel D D",
+      originalLastName: "CORREIA",
+      originalNameOnShirt: "PEDRO",
+
       dateOfBirth: "06/08/1990",
       age: 35,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "lucas-michel-mendes",
-      firstName: "Lucas Michel",
-      lastName: "MENDES",
-      nameOnShirt: "L.MENDES",
+      firstName: "Лукас",
+      lastName: "Мендес",
+      nameOnShirt: "Л.Мендес",
+      originalFirstName: "Lucas Michel",
+      originalLastName: "MENDES",
+      originalNameOnShirt: "L.MENDES",
+
       dateOfBirth: "03/07/1990",
       age: 35,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "gueye-seydinaissalaye",
-      firstName: "Gueye",
-      lastName: "SEYDINAISSALAYE",
-      nameOnShirt: "GUEYE",
+      firstName: "Гуейе",
+      lastName: "Сейдинайссалайе",
+      nameOnShirt: "Гуейе",
+      originalFirstName: "Gueye",
+      originalLastName: "SEYDINAISSALAYE",
+      originalNameOnShirt: "GUEYE",
+
       dateOfBirth: "22/12/1997",
       age: 28,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "jassem-gaber-e-abdulsallam",
-      firstName: "Jassem Gaber E",
-      lastName: "ABDULSALLAM",
-      nameOnShirt: "JASSEM",
+      firstName: "Джассем",
+      lastName: "Абдулсаллам",
+      nameOnShirt: "Джассем",
+      originalFirstName: "Jassem Gaber E",
+      originalLastName: "ABDULSALLAM",
+      originalNameOnShirt: "JASSEM",
+
       dateOfBirth: "20/02/2002",
       age: 24,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayoub-mohamed-aloui",
-      firstName: "Ayoub Mohamed",
-      lastName: "ALOUI",
-      nameOnShirt: "AYOUB",
+      firstName: "Айуб",
+      lastName: "Аль-Уи",
+      nameOnShirt: "Айуб",
+      originalFirstName: "Ayoub Mohamed",
+      originalLastName: "ALOUI",
+      originalNameOnShirt: "AYOUB",
+
       dateOfBirth: "11/03/2005",
       age: 21,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 230_000,
       isInjured: false,
     },
-    {
+        {
       id: "homam-elamin-m-ahmed",
-      firstName: "Homam Elamin M",
-      lastName: "AHMED",
-      nameOnShirt: "HOMAM",
+      firstName: "Хомам",
+      lastName: "Ахмед",
+      nameOnShirt: "Хомам",
+      originalFirstName: "Homam Elamin M",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "HOMAM",
+
       dateOfBirth: "25/08/1999",
       age: 26,
       shirtNumber: 14,
@@ -206,11 +243,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "boualem-khoukhi",
-      firstName: "Boualem",
-      lastName: "KHOUKHI",
-      nameOnShirt: "KHOUKHI",
+      firstName: "Буалем",
+      lastName: "Хухи",
+      nameOnShirt: "Хухи",
+      originalFirstName: "Boualem",
+      originalLastName: "KHOUKHI",
+      originalNameOnShirt: "KHOUKHI",
+
       dateOfBirth: "09/07/1990",
       age: 35,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "sultan-hussain-m-h-al-brake",
-      firstName: "Sultan Hussain M H",
-      lastName: "AL-BRAKE",
-      nameOnShirt: "SULTAN",
+      firstName: "Султан",
+      lastName: "Ал-Браке",
+      nameOnShirt: "Султан",
+      originalFirstName: "Sultan Hussain M H",
+      originalLastName: "AL-BRAKE",
+      originalNameOnShirt: "SULTAN",
+
       dateOfBirth: "07/04/1996",
       age: 30,
       shirtNumber: 18,
@@ -248,11 +293,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "alhashmi-alhussein-a-mohialdin",
-      firstName: "Alhashmi Alhussein A",
-      lastName: "MOHIALDIN",
-      nameOnShirt: "ALHASHMI",
+      firstName: "Аль-Хашми",
+      lastName: "Мохиалдин",
+      nameOnShirt: "Аль-Хашми",
+      originalFirstName: "Alhashmi Alhussein A",
+      originalLastName: "MOHIALDIN",
+      originalNameOnShirt: "ALHASHMI",
+
       dateOfBirth: "15/08/2003",
       age: 22,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const qatarProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "abdelaziz-hatim-a-mohamed",
-      firstName: "Abdelaziz Hatim A",
-      lastName: "MOHAMED",
-      nameOnShirt: "A. AZIZ",
+      firstName: "Абдельазиз",
+      lastName: "Мохамед",
+      nameOnShirt: "А. Азиз",
+      originalFirstName: "Abdelaziz Hatim A",
+      originalLastName: "MOHAMED",
+      originalNameOnShirt: "A. AZIZ",
+
       dateOfBirth: "01/01/1990",
       age: 36,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "karim-boudiaf",
-      firstName: "Karim",
-      lastName: "BOUDIAF",
-      nameOnShirt: "KARIM",
+      firstName: "Карим",
+      lastName: "Будиаф",
+      nameOnShirt: "Карим",
+      originalFirstName: "Karim",
+      originalLastName: "BOUDIAF",
+      originalNameOnShirt: "KARIM",
+
       dateOfBirth: "16/09/1990",
       age: 35,
       shirtNumber: 12,
@@ -313,11 +370,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-mohamed-h-k-alganehi",
-      firstName: "Ahmed Mohamed H K",
-      lastName: "ALGANEHI",
-      nameOnShirt: "A. ALGANEHI",
+      firstName: "Ахмед",
+      lastName: "Аль-Ганехи",
+      nameOnShirt: "А. аль-Ганехи",
+      originalFirstName: "Ahmed Mohamed H K",
+      originalLastName: "ALGANEHI",
+      originalNameOnShirt: "A. ALGANEHI",
+
       dateOfBirth: "22/09/2000",
       age: 25,
       shirtNumber: 17,
@@ -334,11 +395,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-fathy-m-abdoulla",
-      firstName: "Ahmed Fathy M",
-      lastName: "ABDOULLA",
-      nameOnShirt: "A. FATHY",
+      firstName: "Ахмед",
+      lastName: "Абдулла",
+      nameOnShirt: "А. Фасй",
+      originalFirstName: "Ahmed Fathy M",
+      originalLastName: "ABDOULLA",
+      originalNameOnShirt: "A. FATHY",
+
       dateOfBirth: "25/01/1993",
       age: 33,
       shirtNumber: 20,
@@ -355,11 +420,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "assim-omer-a-madibo",
-      firstName: "Assim Omer A",
-      lastName: "MADIBO",
-      nameOnShirt: "MADIBO",
+      firstName: "Ассим",
+      lastName: "Мадибо",
+      nameOnShirt: "Мадибо",
+      originalFirstName: "Assim Omer A",
+      originalLastName: "MADIBO",
+      originalNameOnShirt: "MADIBO",
+
       dateOfBirth: "22/10/1996",
       age: 29,
       shirtNumber: 23,
@@ -378,11 +447,15 @@ export const qatarProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "ahmed-alaaeldin-b-m-abdelmotaal",
-      firstName: "Ahmed Alaaeldin B M",
-      lastName: "ABDELMOTAAL",
-      nameOnShirt: "ALAAELDIN",
+      firstName: "Ахмед",
+      lastName: "Абделмотал",
+      nameOnShirt: "Аль-Аелдин",
+      originalFirstName: "Ahmed Alaaeldin B M",
+      originalLastName: "ABDELMOTAAL",
+      originalNameOnShirt: "ALAAELDIN",
+
       dateOfBirth: "31/01/1993",
       age: 33,
       shirtNumber: 7,
@@ -399,11 +472,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "edmilson-junior-p-dasilva",
-      firstName: "Edmilson Junior P",
-      lastName: "DASILVA",
-      nameOnShirt: "EDMILSON JR.",
+      firstName: "Едмилсон",
+      lastName: "Дасилва",
+      nameOnShirt: "Едмилсон Жуниор.",
+      originalFirstName: "Edmilson Junior P",
+      originalLastName: "DASILVA",
+      originalNameOnShirt: "EDMILSON JR.",
+
       dateOfBirth: "19/08/1994",
       age: 31,
       shirtNumber: 8,
@@ -420,11 +497,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammed-muntari",
-      firstName: "Mohammed",
-      lastName: "MUNTARI",
-      nameOnShirt: "MUNTARI",
+      firstName: "Мохаммед",
+      lastName: "Мунтари",
+      nameOnShirt: "Мунтари",
+      originalFirstName: "Mohammed",
+      originalLastName: "MUNTARI",
+      originalNameOnShirt: "MUNTARI",
+
       dateOfBirth: "20/12/1993",
       age: 32,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "hasan-khalid-h-alhaydos",
-      firstName: "Hasan Khalid H",
-      lastName: "ALHAYDOS",
-      nameOnShirt: "ALHAYDOS",
+      firstName: "Хасан",
+      lastName: "Аль-Хайдос",
+      nameOnShirt: "Аль-Хайдос",
+      originalFirstName: "Hasan Khalid H",
+      originalLastName: "ALHAYDOS",
+      originalNameOnShirt: "ALHAYDOS",
+
       dateOfBirth: "11/12/1990",
       age: 35,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "akram-hassan-a-y-afif",
-      firstName: "Akram Hassan A Y",
-      lastName: "AFIF",
-      nameOnShirt: "AFIF",
+      firstName: "Акрам",
+      lastName: "Афиф",
+      nameOnShirt: "Афиф",
+      originalFirstName: "Akram Hassan A Y",
+      originalLastName: "AFIF",
+      originalNameOnShirt: "AFIF",
+
       dateOfBirth: "18/11/1996",
       age: 29,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "yusuf-abdurisag-yusuf",
-      firstName: "Yusuf Abdurisag",
-      lastName: "YUSUF",
-      nameOnShirt: "YUSUF",
+      firstName: "Йусуф",
+      lastName: "Йусуф",
+      nameOnShirt: "Йусуф",
+      originalFirstName: "Yusuf Abdurisag",
+      originalLastName: "YUSUF",
+      originalNameOnShirt: "YUSUF",
+
       dateOfBirth: "06/08/1999",
       age: 26,
       shirtNumber: 15,
@@ -504,11 +597,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "almoez-ali-zainelabdeen-m-abdulla",
-      firstName: "Almoez Ali Zainelabdeen M",
-      lastName: "ABDULLA",
-      nameOnShirt: "ALMOEZ",
+      firstName: "Аль-Моез",
+      lastName: "Абдулла",
+      nameOnShirt: "Аль-Моез",
+      originalFirstName: "Almoez Ali Zainelabdeen M",
+      originalLastName: "ABDULLA",
+      originalNameOnShirt: "ALMOEZ",
+
       dateOfBirth: "19/08/1996",
       age: 29,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "tahsin-mohammad-jamshid",
-      firstName: "Tahsin Mohammad",
-      lastName: "JAMSHID",
-      nameOnShirt: "TAHSIN",
+      firstName: "Тахсин",
+      lastName: "Джамшид",
+      nameOnShirt: "Тахсин",
+      originalFirstName: "Tahsin Mohammad",
+      originalLastName: "JAMSHID",
+      originalNameOnShirt: "TAHSIN",
+
       dateOfBirth: "16/06/2006",
       age: 19,
       shirtNumber: 24,
@@ -546,11 +647,15 @@ export const qatarProfile: NationalTeamProfile = {
       salary: 150_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-naceur-manai",
-      firstName: "Mohamed Naceur",
-      lastName: "MANAI",
-      nameOnShirt: "MANAI",
+      firstName: "Мохамед",
+      lastName: "Манай",
+      nameOnShirt: "Манай",
+      originalFirstName: "Mohamed Naceur",
+      originalLastName: "MANAI",
+      originalNameOnShirt: "MANAI",
+
       dateOfBirth: "25/10/2002",
       age: 23,
       shirtNumber: 26,

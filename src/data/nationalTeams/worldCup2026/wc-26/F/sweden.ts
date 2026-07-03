@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import swedenFlag from '@/data/nationalTeams/worldCup2026/flags/sweden.png'
 
 export const swedenProfile: NationalTeamProfile = {
   id: "sweden",
@@ -6,7 +7,7 @@ export const swedenProfile: NationalTeamProfile = {
   shortName: "SWE",
   fifaCode: "SWE",
   groupId: "F",
-  flagCode: "SE",
+  flag: swedenFlag,
   rating: 77,
   attackRating: 76,
   midfieldRating: 77,
@@ -15,11 +16,15 @@ export const swedenProfile: NationalTeamProfile = {
   secondaryColor: "#FECC00",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "jacob-mikael-widell-zetterstrom",
-      firstName: "Jacob Mikael",
-      lastName: "WIDELL ZETTERSTRÖM",
-      nameOnShirt: "ZETTERSTRÖM",
+      firstName: "Йакоб",
+      lastName: "Виделл Зеттерстриом",
+      nameOnShirt: "Зеттерстриом",
+      originalFirstName: "Jacob Mikael",
+      originalLastName: "WIDELL ZETTERSTRÖM",
+      originalNameOnShirt: "ZETTERSTRÖM",
+
       dateOfBirth: "11/07/1998",
       age: 27,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "tobias-viktor-johansson",
-      firstName: "Tobias Viktor",
-      lastName: "JOHANSSON",
-      nameOnShirt: "V. JOHANSSON",
+      firstName: "Тобиас",
+      lastName: "Йоханссон",
+      nameOnShirt: "В. Йоханссон",
+      originalFirstName: "Tobias Viktor",
+      originalLastName: "JOHANSSON",
+      originalNameOnShirt: "V. JOHANSSON",
+
       dateOfBirth: "14/09/1998",
       age: 27,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "bo-kristoffer-nordfeldt",
-      firstName: "Bo Kristoffer",
-      lastName: "NORDFELDT",
-      nameOnShirt: "NORDFELDT",
+      firstName: "Бо",
+      lastName: "Нордфелдт",
+      nameOnShirt: "Нордфелдт",
+      originalFirstName: "Bo Kristoffer",
+      originalLastName: "NORDFELDT",
+      originalNameOnShirt: "NORDFELDT",
+
       dateOfBirth: "23/06/1989",
       age: 36,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const swedenProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "gustaf-johan-lagerbielke",
-      firstName: "Gustaf Johan",
-      lastName: "LAGERBIELKE",
-      nameOnShirt: "LAGERBIELKE",
+      firstName: "Густаф",
+      lastName: "Лагербиелке",
+      nameOnShirt: "Лагербиелке",
+      originalFirstName: "Gustaf Johan",
+      originalLastName: "LAGERBIELKE",
+      originalNameOnShirt: "LAGERBIELKE",
+
       dateOfBirth: "10/04/2000",
       age: 26,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "victor-jorgen-nilsson-lindelof",
-      firstName: "Victor Jörgen",
-      lastName: "NILSSON LINDELÖF",
-      nameOnShirt: "LINDELÖF",
+      firstName: "Виктор",
+      lastName: "Нилссон Линделиоф",
+      nameOnShirt: "Линделиоф",
+      originalFirstName: "Victor Jörgen",
+      originalLastName: "NILSSON LINDELÖF",
+      originalNameOnShirt: "LINDELÖF",
+
       dateOfBirth: "17/07/1994",
       age: 31,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "isak-malcolm-kwaku-hien",
-      firstName: "Isak Malcolm Kwaku",
-      lastName: "HIEN",
-      nameOnShirt: "HIEN",
+      firstName: "Исак",
+      lastName: "Хиен",
+      nameOnShirt: "Хиен",
+      originalFirstName: "Isak Malcolm Kwaku",
+      originalLastName: "HIEN",
+      originalNameOnShirt: "HIEN",
+
       dateOfBirth: "13/01/1999",
       age: 27,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "gabriel-johan-gudmundsson",
-      firstName: "Gabriel Johan",
-      lastName: "GUDMUNDSSON",
-      nameOnShirt: "GUDMUNDSSON",
+      firstName: "Габриэл",
+      lastName: "Гудмундссон",
+      nameOnShirt: "Гудмундссон",
+      originalFirstName: "Gabriel Johan",
+      originalLastName: "GUDMUNDSSON",
+      originalNameOnShirt: "GUDMUNDSSON",
+
       dateOfBirth: "29/04/1999",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "herman-nils-johansson",
-      firstName: "Herman Nils",
-      lastName: "JOHANSSON",
-      nameOnShirt: "H. JOHANSSON",
+      firstName: "Херман",
+      lastName: "Йоханссон",
+      nameOnShirt: "Х. Йоханссон",
+      originalFirstName: "Herman Nils",
+      originalLastName: "JOHANSSON",
+      originalNameOnShirt: "H. JOHANSSON",
+
       dateOfBirth: "16/10/1997",
       age: 28,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "daniel-jonathan-svensson",
-      firstName: "Daniel Jonathan",
-      lastName: "SVENSSON",
-      nameOnShirt: "SVENSSON",
+      firstName: "Даниэл",
+      lastName: "Свенссон",
+      nameOnShirt: "Свенссон",
+      originalFirstName: "Daniel Jonathan",
+      originalLastName: "SVENSSON",
+      originalNameOnShirt: "SVENSSON",
+
       dateOfBirth: "12/02/2002",
       age: 24,
       shirtNumber: 8,
@@ -206,11 +243,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "hjalmar-ekdal",
-      firstName: "Hjalmar",
-      lastName: "EKDAL",
-      nameOnShirt: "EKDAL",
+      firstName: "Хйалмар",
+      lastName: "Екдал",
+      nameOnShirt: "Екдал",
+      originalFirstName: "Hjalmar",
+      originalLastName: "EKDAL",
+      originalNameOnShirt: "EKDAL",
+
       dateOfBirth: "21/10/1998",
       age: 27,
       shirtNumber: 14,
@@ -227,11 +268,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "carl-anders-theodor-starfelt",
-      firstName: "Carl Anders Theodor",
-      lastName: "STARFELT",
-      nameOnShirt: "STARFELT",
+      firstName: "Карл",
+      lastName: "Старфелт",
+      nameOnShirt: "Старфелт",
+      originalFirstName: "Carl Anders Theodor",
+      originalLastName: "STARFELT",
+      originalNameOnShirt: "STARFELT",
+
       dateOfBirth: "01/06/1995",
       age: 31,
       shirtNumber: 15,
@@ -248,11 +293,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "eric-anders-smith",
-      firstName: "Eric Anders",
-      lastName: "SMITH",
-      nameOnShirt: "SMITH",
+      firstName: "Ерик",
+      lastName: "Смитх",
+      nameOnShirt: "Смитх",
+      originalFirstName: "Eric Anders",
+      originalLastName: "SMITH",
+      originalNameOnShirt: "SMITH",
+
       dateOfBirth: "08/01/1997",
       age: 29,
       shirtNumber: 20,
@@ -269,11 +318,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexander-olof-bernhardsson",
-      firstName: "Alexander Olof",
-      lastName: "BERNHARDSSON",
-      nameOnShirt: "BERNHARDSSON",
+      firstName: "Александер",
+      lastName: "Бернхардссон",
+      nameOnShirt: "Бернхардссон",
+      originalFirstName: "Alexander Olof",
+      originalLastName: "BERNHARDSSON",
+      originalNameOnShirt: "BERNHARDSSON",
+
       dateOfBirth: "08/09/1998",
       age: 27,
       shirtNumber: 21,
@@ -290,11 +343,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "elliot-karl-stroud",
-      firstName: "Elliot Karl",
-      lastName: "STROUD",
-      nameOnShirt: "STROUD",
+      firstName: "Еллиот",
+      lastName: "Строуд",
+      nameOnShirt: "Строуд",
+      originalFirstName: "Elliot Karl",
+      originalLastName: "STROUD",
+      originalNameOnShirt: "STROUD",
+
       dateOfBirth: "22/06/2002",
       age: 23,
       shirtNumber: 24,
@@ -313,11 +370,15 @@ export const swedenProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "lucas-erik-holger-bergvall",
-      firstName: "Lucas Erik Holger",
-      lastName: "BERGVALL",
-      nameOnShirt: "BERGVALL",
+      firstName: "Лукас",
+      lastName: "Бергвалл",
+      nameOnShirt: "Бергвалл",
+      originalFirstName: "Lucas Erik Holger",
+      originalLastName: "BERGVALL",
+      originalNameOnShirt: "BERGVALL",
+
       dateOfBirth: "02/02/2006",
       age: 20,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 605_000,
       isInjured: false,
     },
-    {
+        {
       id: "erik-benjamin-nygren",
-      firstName: "Erik Benjamin",
-      lastName: "NYGREN",
-      nameOnShirt: "NYGREN",
+      firstName: "Ерик",
+      lastName: "Нюгрен",
+      nameOnShirt: "Нюгрен",
+      originalFirstName: "Erik Benjamin",
+      originalLastName: "NYGREN",
+      originalNameOnShirt: "NYGREN",
+
       dateOfBirth: "08/07/2001",
       age: 24,
       shirtNumber: 10,
@@ -355,11 +420,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "ken-sema",
-      firstName: "Ken",
-      lastName: "SEMA",
-      nameOnShirt: "SEMA",
+      firstName: "Кен",
+      lastName: "Сема",
+      nameOnShirt: "Сема",
+      originalFirstName: "Ken",
+      originalLastName: "SEMA",
+      originalNameOnShirt: "SEMA",
+
       dateOfBirth: "30/09/1993",
       age: 32,
       shirtNumber: 13,
@@ -376,11 +445,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "jesper-kewe-karlstrom",
-      firstName: "Jesper Kewe",
-      lastName: "KARLSTRÖM",
-      nameOnShirt: "KARLSTRÖM",
+      firstName: "Йеспер",
+      lastName: "Карлстриом",
+      nameOnShirt: "Карлстриом",
+      originalFirstName: "Jesper Kewe",
+      originalLastName: "KARLSTRÖM",
+      originalNameOnShirt: "KARLSTRÖM",
+
       dateOfBirth: "21/06/1995",
       age: 30,
       shirtNumber: 16,
@@ -397,11 +470,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "yasin-ayari",
-      firstName: "Yasin",
-      lastName: "AYARI",
-      nameOnShirt: "AYARI",
+      firstName: "Юасин",
+      lastName: "Аюари",
+      nameOnShirt: "Аюари",
+      originalFirstName: "Yasin",
+      originalLastName: "AYARI",
+      originalNameOnShirt: "AYARI",
+
       dateOfBirth: "06/10/2003",
       age: 22,
       shirtNumber: 18,
@@ -418,11 +495,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "mattias-olof-svanberg",
-      firstName: "Mattias Olof",
-      lastName: "SVANBERG",
-      nameOnShirt: "SVANBERG",
+      firstName: "Маттиас",
+      lastName: "Сванберг",
+      nameOnShirt: "Сванберг",
+      originalFirstName: "Mattias Olof",
+      originalLastName: "SVANBERG",
+      originalNameOnShirt: "SVANBERG",
+
       dateOfBirth: "05/01/1999",
       age: 27,
       shirtNumber: 19,
@@ -439,11 +520,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "besfort-zeneli",
-      firstName: "Besfort",
-      lastName: "ZENELI",
-      nameOnShirt: "ZENELI",
+      firstName: "Бесфорт",
+      lastName: "Зенели",
+      nameOnShirt: "Зенели",
+      originalFirstName: "Besfort",
+      originalLastName: "ZENELI",
+      originalNameOnShirt: "ZENELI",
+
       dateOfBirth: "21/11/2002",
       age: 23,
       shirtNumber: 22,
@@ -462,11 +547,15 @@ export const swedenProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "alexander-isak",
-      firstName: "Alexander",
-      lastName: "ISAK",
-      nameOnShirt: "ISAK",
+      firstName: "Александер",
+      lastName: "Исак",
+      nameOnShirt: "Исак",
+      originalFirstName: "Alexander",
+      originalLastName: "ISAK",
+      originalNameOnShirt: "ISAK",
+
       dateOfBirth: "21/09/1999",
       age: 26,
       shirtNumber: 9,
@@ -483,11 +572,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "anthony-david-junior-elanga",
-      firstName: "Anthony David Junior",
-      lastName: "ELANGA",
-      nameOnShirt: "ELANGA",
+      firstName: "Антхоню",
+      lastName: "Еланга",
+      nameOnShirt: "Еланга",
+      originalFirstName: "Anthony David Junior",
+      originalLastName: "ELANGA",
+      originalNameOnShirt: "ELANGA",
+
       dateOfBirth: "27/04/2002",
       age: 24,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "viktor-einar-gyokeres",
-      firstName: "Viktor Einar",
-      lastName: "GYÖKERES",
-      nameOnShirt: "GYÖKERES",
+      firstName: "Виктор",
+      lastName: "Гюиокерес",
+      nameOnShirt: "Гюиокерес",
+      originalFirstName: "Viktor Einar",
+      originalLastName: "GYÖKERES",
+      originalNameOnShirt: "GYÖKERES",
+
       dateOfBirth: "04/06/1998",
       age: 28,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "hakan-gustaf-nilsson",
-      firstName: "Håkan Gustaf",
-      lastName: "NILSSON",
-      nameOnShirt: "NILSSON",
+      firstName: "Хакан",
+      lastName: "Нилссон",
+      nameOnShirt: "Нилссон",
+      originalFirstName: "Håkan Gustaf",
+      originalLastName: "NILSSON",
+      originalNameOnShirt: "NILSSON",
+
       dateOfBirth: "23/05/1997",
       age: 29,
       shirtNumber: 25,
@@ -546,11 +647,15 @@ export const swedenProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "taha-abdi-ali",
-      firstName: "Taha Abdi",
-      lastName: "ALI",
-      nameOnShirt: "ALI",
+      firstName: "Таха",
+      lastName: "Али",
+      nameOnShirt: "Али",
+      originalFirstName: "Taha Abdi",
+      originalLastName: "ALI",
+      originalNameOnShirt: "ALI",
+
       dateOfBirth: "01/07/1998",
       age: 27,
       shirtNumber: 26,

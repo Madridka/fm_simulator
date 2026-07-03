@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import uruguayFlag from '@/data/nationalTeams/worldCup2026/flags/uruguay.png'
 
 export const uruguayProfile: NationalTeamProfile = {
   id: "uruguay",
@@ -6,7 +7,7 @@ export const uruguayProfile: NationalTeamProfile = {
   shortName: "URU",
   fifaCode: "URU",
   groupId: "H",
-  flagCode: "UY",
+  flag: uruguayFlag,
   rating: 83,
   attackRating: 82,
   midfieldRating: 83,
@@ -15,11 +16,15 @@ export const uruguayProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "sergio-ramon-rochet-alvarez",
-      firstName: "Sergio Ramón",
-      lastName: "ROCHET ALVAREZ",
-      nameOnShirt: "S. ROCHET",
+      firstName: "Серхио",
+      lastName: "Рочет Алварес",
+      nameOnShirt: "С. Рочет",
+      originalFirstName: "Sergio Ramón",
+      originalLastName: "ROCHET ALVAREZ",
+      originalNameOnShirt: "S. ROCHET",
+
       dateOfBirth: "23/03/1993",
       age: 33,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_225_000,
       isInjured: false,
     },
-    {
+        {
       id: "santiago-andres-mele-castanero",
-      firstName: "Santiago Andres",
-      lastName: "MELE CASTAÑERO",
-      nameOnShirt: "S. MELE",
+      firstName: "Сантиаго",
+      lastName: "Меле Кастан'Еро",
+      nameOnShirt: "С. Меле",
+      originalFirstName: "Santiago Andres",
+      originalLastName: "MELE CASTAÑERO",
+      originalNameOnShirt: "S. MELE",
+
       dateOfBirth: "06/09/1997",
       age: 28,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "nestor-fernando-muslera-micol",
-      firstName: "Nestor Fernando",
-      lastName: "MUSLERA MICOL",
-      nameOnShirt: "F. MUSLERA",
+      firstName: "Нестор",
+      lastName: "Муслера Микол",
+      nameOnShirt: "Ф. Муслера",
+      originalFirstName: "Nestor Fernando",
+      originalLastName: "MUSLERA MICOL",
+      originalNameOnShirt: "F. MUSLERA",
+
       dateOfBirth: "16/06/1986",
       age: 39,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const uruguayProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "jose-maria-gimenez-de-vargas",
-      firstName: "José María",
-      lastName: "GIMÉNEZ DE VARGAS",
-      nameOnShirt: "J.M. GIMÉNEZ",
+      firstName: "Хосе",
+      lastName: "Хименес де Варгас",
+      nameOnShirt: "Дж.М. Хименес",
+      originalFirstName: "José María",
+      originalLastName: "GIMÉNEZ DE VARGAS",
+      originalNameOnShirt: "J.M. GIMÉNEZ",
+
       dateOfBirth: "20/01/1995",
       age: 31,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "sebastian-enzo-caceres-ramos",
-      firstName: "Sebastián Enzo",
-      lastName: "CÁCERES RAMOS",
-      nameOnShirt: "S. CACERES",
+      firstName: "Себастиан",
+      lastName: "Касерес Рамос",
+      nameOnShirt: "С. Касерес",
+      originalFirstName: "Sebastián Enzo",
+      originalLastName: "CÁCERES RAMOS",
+      originalNameOnShirt: "S. CACERES",
+
       dateOfBirth: "18/08/1999",
       age: 26,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "ronald-federico-araujo-da-silva",
-      firstName: "Ronald Federico",
-      lastName: "ARAÚJO DA SILVA",
-      nameOnShirt: "R. ARAUJO",
+      firstName: "Роналд",
+      lastName: "Араухо да Силва",
+      nameOnShirt: "Р. Араухо",
+      originalFirstName: "Ronald Federico",
+      originalLastName: "ARAÚJO DA SILVA",
+      originalNameOnShirt: "R. ARAUJO",
+
       dateOfBirth: "07/03/1999",
       age: 27,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "guillermo-varela-olivera",
-      firstName: "Guillermo",
-      lastName: "VARELA OLIVERA",
-      nameOnShirt: "G. VARELA",
+      firstName: "Гильермо",
+      lastName: "Варела Оливера",
+      nameOnShirt: "Г. Варела",
+      originalFirstName: "Guillermo",
+      originalLastName: "VARELA OLIVERA",
+      originalNameOnShirt: "G. VARELA",
+
       dateOfBirth: "24/03/1993",
       age: 33,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "mathias-olivera-miramontes",
-      firstName: "Mathías",
-      lastName: "OLIVERA MIRAMONTES",
-      nameOnShirt: "M. OLIVERA",
+      firstName: "Матиас",
+      lastName: "Оливера Мирамонтес",
+      nameOnShirt: "М. Оливера",
+      originalFirstName: "Mathías",
+      originalLastName: "OLIVERA MIRAMONTES",
+      originalNameOnShirt: "M. OLIVERA",
+
       dateOfBirth: "31/10/1997",
       age: 28,
       shirtNumber: 16,
@@ -185,11 +218,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "matias-nicolas-vina-susperreguy",
-      firstName: "Matías Nicolas",
-      lastName: "VIÑA SUSPERREGUY",
-      nameOnShirt: "M. VIÑA",
+      firstName: "Матиас",
+      lastName: "Вин'А Сусперрегуй",
+      nameOnShirt: "М. Вин'А",
+      originalFirstName: "Matías Nicolas",
+      originalLastName: "VIÑA SUSPERREGUY",
+      originalNameOnShirt: "M. VIÑA",
+
       dateOfBirth: "09/11/1997",
       age: 28,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "santiago-ignacio-bueno-sciutto",
-      firstName: "Santiago Ignacio",
-      lastName: "BUENO SCIUTTO",
-      nameOnShirt: "S. BUENO",
+      firstName: "Сантиаго",
+      lastName: "Буено Ссиутто",
+      nameOnShirt: "С. Буено",
+      originalFirstName: "Santiago Ignacio",
+      originalLastName: "BUENO SCIUTTO",
+      originalNameOnShirt: "S. BUENO",
+
       dateOfBirth: "09/11/1998",
       age: 27,
       shirtNumber: 24,
@@ -229,11 +270,15 @@ export const uruguayProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "manuel-ugarte-ribeiro",
-      firstName: "Manuel",
-      lastName: "UGARTE RIBEIRO",
-      nameOnShirt: "M. UGARTE",
+      firstName: "Мануэль",
+      lastName: "Угарте Рибеиро",
+      nameOnShirt: "М. Угарте",
+      originalFirstName: "Manuel",
+      originalLastName: "UGARTE RIBEIRO",
+      originalNameOnShirt: "M. UGARTE",
+
       dateOfBirth: "11/04/2001",
       age: 25,
       shirtNumber: 5,
@@ -250,11 +295,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "rodrigo-bentancur-colman",
-      firstName: "Rodrigo",
-      lastName: "BENTANCUR COLMÁN",
-      nameOnShirt: "R. BENTANCUR",
+      firstName: "Родриго",
+      lastName: "Бентанкур Колман",
+      nameOnShirt: "Р. Бентанкур",
+      originalFirstName: "Rodrigo",
+      originalLastName: "BENTANCUR COLMÁN",
+      originalNameOnShirt: "R. BENTANCUR",
+
       dateOfBirth: "25/06/1997",
       age: 28,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "diego-nicolas-de-la-cruz-arcosa",
-      firstName: "Diego Nicolás",
-      lastName: "DE LA CRUZ ARCOSA",
-      nameOnShirt: "N. DE LA CRUZ",
+      firstName: "Диего",
+      lastName: "Де Ла Крус Аркоса",
+      nameOnShirt: "Н. де Ла Крус",
+      originalFirstName: "Diego Nicolás",
+      originalLastName: "DE LA CRUZ ARCOSA",
+      originalNameOnShirt: "N. DE LA CRUZ",
+
       dateOfBirth: "01/06/1997",
       age: 29,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "federico-santiago-valverde-dipetta",
-      firstName: "Federico Santiago",
-      lastName: "VALVERDE DIPETTA",
-      nameOnShirt: "F. VALVERDE",
+      firstName: "Федерико",
+      lastName: "Вальверде",
+      nameOnShirt: "Ф. Валверде",
+      originalFirstName: "Federico Santiago",
+      originalLastName: "VALVERDE DIPETTA",
+      originalNameOnShirt: "F. VALVERDE",
+
       dateOfBirth: "22/07/1998",
       age: 27,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "giorgian-daniel-de-arrascaeta-benedetti",
-      firstName: "Giorgian Daniel",
-      lastName: "DE ARRASCAETA BENEDETTI",
-      nameOnShirt: "G. DE ARRASCAETA",
+      firstName: "Хиорхиан",
+      lastName: "Де Арраскаета Бенедетти",
+      nameOnShirt: "Г. де Арраскаета",
+      originalFirstName: "Giorgian Daniel",
+      originalLastName: "DE ARRASCAETA BENEDETTI",
+      originalNameOnShirt: "G. DE ARRASCAETA",
+
       dateOfBirth: "01/06/1994",
       age: 32,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "agustin-canobbio",
-      firstName: "Agustin",
-      lastName: "CANOBBIO",
-      nameOnShirt: "A. CANOBBIO",
+      firstName: "Агустин",
+      lastName: "Каноббио",
+      nameOnShirt: "А. Каноббио",
+      originalFirstName: "Agustin",
+      originalLastName: "CANOBBIO",
+      originalNameOnShirt: "A. CANOBBIO",
+
       dateOfBirth: "01/10/1998",
       age: 27,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "emiliano-martinez-toranza",
-      firstName: "Emiliano",
-      lastName: "MARTÍNEZ TORANZA",
-      nameOnShirt: "E. MARTINEZ",
+      firstName: "Эмилиано",
+      lastName: "Мартинес Торанса",
+      nameOnShirt: "Е. Мартинес",
+      originalFirstName: "Emiliano",
+      originalLastName: "MARTÍNEZ TORANZA",
+      originalNameOnShirt: "E. MARTINEZ",
+
       dateOfBirth: "17/08/1999",
       age: 26,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "maximiliano-javier-araujo-vilches",
-      firstName: "Maximiliano Javier",
-      lastName: "ARAÚJO VILCHES",
-      nameOnShirt: "M. ARAUJO",
+      firstName: "Максимилиано",
+      lastName: "Араухо Вилчес",
+      nameOnShirt: "М. Араухо",
+      originalFirstName: "Maximiliano Javier",
+      originalLastName: "ARAÚJO VILCHES",
+      originalNameOnShirt: "M. ARAUJO",
+
       dateOfBirth: "15/02/2000",
       age: 26,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "joaquin-piquerez-moreira",
-      firstName: "Joaquin",
-      lastName: "PIQUEREZ MOREIRA",
-      nameOnShirt: "J. PIQUEREZ",
+      firstName: "Хоакин",
+      lastName: "Пикерес Мореира",
+      nameOnShirt: "Дж. Пикерес",
+      originalFirstName: "Joaquin",
+      originalLastName: "PIQUEREZ MOREIRA",
+      originalNameOnShirt: "J. PIQUEREZ",
+
       dateOfBirth: "24/08/1998",
       age: 27,
       shirtNumber: 22,
@@ -418,11 +495,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "juan-manuel-sanabria-magole",
-      firstName: "Juan Manuel",
-      lastName: "SANABRIA MAGOLÉ",
-      nameOnShirt: "J.M. SANABRIA",
+      firstName: "Хуан",
+      lastName: "Санабриа Маголе",
+      nameOnShirt: "Дж.М. Санабриа",
+      originalFirstName: "Juan Manuel",
+      originalLastName: "SANABRIA MAGOLÉ",
+      originalNameOnShirt: "J.M. SANABRIA",
+
       dateOfBirth: "29/03/2000",
       age: 26,
       shirtNumber: 25,
@@ -439,11 +520,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "radrigo-zalazar-martinez",
-      firstName: "Radrigo",
-      lastName: "ZALAZAR MARTINEZ",
-      nameOnShirt: "R. ZALAZAR",
+      firstName: "Радриго",
+      lastName: "Саласар Мартинес",
+      nameOnShirt: "Р. Саласар",
+      originalFirstName: "Radrigo",
+      originalLastName: "ZALAZAR MARTINEZ",
+      originalNameOnShirt: "R. ZALAZAR",
+
       dateOfBirth: "12/08/1999",
       age: 26,
       shirtNumber: 26,
@@ -462,11 +547,15 @@ export const uruguayProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "darwin-gabriel-nunez-ribeiro",
-      firstName: "Darwin Gabriel",
-      lastName: "NUÑEZ RIBEIRO",
-      nameOnShirt: "D. NUÑEZ",
+      firstName: "Дарвин",
+      lastName: "Нуньес",
+      nameOnShirt: "Д. Нун'Ес",
+      originalFirstName: "Darwin Gabriel",
+      originalLastName: "NUÑEZ RIBEIRO",
+      originalNameOnShirt: "D. NUÑEZ",
+
       dateOfBirth: "24/06/1999",
       age: 26,
       shirtNumber: 9,
@@ -483,11 +572,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "facundo-pellistri-rebollo",
-      firstName: "Facundo",
-      lastName: "PELLISTRI REBOLLO",
-      nameOnShirt: "F. PELLISTRI",
+      firstName: "Факундо",
+      lastName: "Пельистри Ребольо",
+      nameOnShirt: "Ф. Пельистри",
+      originalFirstName: "Facundo",
+      originalLastName: "PELLISTRI REBOLLO",
+      originalNameOnShirt: "F. PELLISTRI",
+
       dateOfBirth: "20/12/2001",
       age: 24,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_015_000,
       isInjured: false,
     },
-    {
+        {
       id: "paul-brian-rodriguez-bravo",
-      firstName: "Paul Brian",
-      lastName: "RODRÍGUEZ BRAVO",
-      nameOnShirt: "B. RODRIGUEZ",
+      firstName: "Паул",
+      lastName: "Родригес Браво",
+      nameOnShirt: "Б. Родригес",
+      originalFirstName: "Paul Brian",
+      originalLastName: "RODRÍGUEZ BRAVO",
+      originalNameOnShirt: "B. RODRIGUEZ",
+
       dateOfBirth: "20/05/2000",
       age: 26,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "rodrigo-sebastian-aguirre-soto",
-      firstName: "Rodrigo Sebastian",
-      lastName: "AGUIRRE SOTO",
-      nameOnShirt: "R. AGUIRRE",
+      firstName: "Родриго",
+      lastName: "Агирре Сото",
+      nameOnShirt: "Р. Агирре",
+      originalFirstName: "Rodrigo Sebastian",
+      originalLastName: "AGUIRRE SOTO",
+      originalNameOnShirt: "R. AGUIRRE",
+
       dateOfBirth: "01/10/1994",
       age: 31,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const uruguayProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "federico-sebastian-vinas-barboza",
-      firstName: "Federico Sebastian",
-      lastName: "VIÑAS BARBOZA",
-      nameOnShirt: "F. VIÑAS",
+      firstName: "Федерико",
+      lastName: "Вин'Ас Барбоса",
+      nameOnShirt: "Ф. Вин'Ас",
+      originalFirstName: "Federico Sebastian",
+      originalLastName: "VIÑAS BARBOZA",
+      originalNameOnShirt: "F. VIÑAS",
+
       dateOfBirth: "30/06/1998",
       age: 27,
       shirtNumber: 21,

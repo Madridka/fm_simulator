@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSquadStore } from '@/stores/squad/squadStore'
+import { formatPlayerName } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import type { Player } from '@/types/football'
 
@@ -188,9 +189,13 @@ const availabilityLabel = (player?: Player): string => {
           {{ starter.player?.rating ?? '?' }}
         </span>
         <span
-          class="max-w-full truncate text-[8px] font-black uppercase leading-none sm:text-[0.68rem] sm:leading-normal"
+          class="max-w-full truncate text-[8px] font-black leading-none sm:text-[0.68rem] sm:leading-normal"
         >
-          {{ starter.player?.lastName ?? starter.label }}
+          {{
+            starter.player
+              ? formatPlayerName(starter.player.firstName, starter.player.lastName)
+              : starter.label
+          }}
         </span>
       </div>
     </div>

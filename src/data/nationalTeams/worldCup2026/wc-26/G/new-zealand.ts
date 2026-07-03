@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import newZealandFlag from '@/data/nationalTeams/worldCup2026/flags/new-zealand.png'
 
 export const newZealandProfile: NationalTeamProfile = {
   id: "new-zealand",
@@ -6,7 +7,7 @@ export const newZealandProfile: NationalTeamProfile = {
   shortName: "NZL",
   fifaCode: "NZL",
   groupId: "G",
-  flagCode: "NZ",
+  flag: newZealandFlag,
   rating: 68,
   attackRating: 67,
   midfieldRating: 68,
@@ -15,11 +16,15 @@ export const newZealandProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "maxime-teremoana-crocombe",
-      firstName: "Maxime Teremoana",
-      lastName: "CROCOMBE",
-      nameOnShirt: "CROCOMBE",
+      firstName: "Максиме",
+      lastName: "Крокомбе",
+      nameOnShirt: "Крокомбе",
+      originalFirstName: "Maxime Teremoana",
+      originalLastName: "CROCOMBE",
+      originalNameOnShirt: "CROCOMBE",
+
       dateOfBirth: "12/08/1993",
       age: 32,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 250_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexander-noah-paulsen",
-      firstName: "Alexander Noah",
-      lastName: "PAULSEN",
-      nameOnShirt: "PAULSEN",
+      firstName: "Александер",
+      lastName: "Паулсен",
+      nameOnShirt: "Паулсен",
+      originalFirstName: "Alexander Noah",
+      originalLastName: "PAULSEN",
+      originalNameOnShirt: "PAULSEN",
+
       dateOfBirth: "04/07/2002",
       age: 23,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 165_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-cornelis-woud",
-      firstName: "Michael Cornelis",
-      lastName: "WOUD",
-      nameOnShirt: "WOUD",
+      firstName: "Майкл",
+      lastName: "Уауд",
+      nameOnShirt: "Уауд",
+      originalFirstName: "Michael Cornelis",
+      originalLastName: "WOUD",
+      originalNameOnShirt: "WOUD",
+
       dateOfBirth: "16/01/1999",
       age: 27,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const newZealandProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "timothy-john-payne",
-      firstName: "Timothy John",
-      lastName: "PAYNE",
-      nameOnShirt: "PAYNE",
+      firstName: "Тимоти",
+      lastName: "Пейне",
+      nameOnShirt: "Пейне",
+      originalFirstName: "Timothy John",
+      originalLastName: "PAYNE",
+      originalNameOnShirt: "PAYNE",
+
       dateOfBirth: "10/01/1994",
       age: 32,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "francis-de-vries",
-      firstName: "Francis",
-      lastName: "DE VRIES",
-      nameOnShirt: "DE VRIES",
+      firstName: "Франсис",
+      lastName: "Де Вриес",
+      nameOnShirt: "Де Вриес",
+      originalFirstName: "Francis",
+      originalLastName: "DE VRIES",
+      originalNameOnShirt: "DE VRIES",
+
       dateOfBirth: "28/11/1994",
       age: 31,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "tyler-grant-bindon",
-      firstName: "Tyler Grant",
-      lastName: "BINDON",
-      nameOnShirt: "BINDON",
+      firstName: "Тайлер",
+      lastName: "Биндон",
+      nameOnShirt: "Биндон",
+      originalFirstName: "Tyler Grant",
+      originalLastName: "BINDON",
+      originalNameOnShirt: "BINDON",
+
       dateOfBirth: "27/01/2005",
       age: 21,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 295_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-joseph-boxall",
-      firstName: "Michael Joseph",
-      lastName: "BOXALL",
-      nameOnShirt: "BOXALL",
+      firstName: "Майкл",
+      lastName: "Боксалл",
+      nameOnShirt: "Боксалл",
+      originalFirstName: "Michael Joseph",
+      originalLastName: "BOXALL",
+      originalNameOnShirt: "BOXALL",
+
       dateOfBirth: "18/08/1988",
       age: 37,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 250_000,
       isInjured: false,
     },
-    {
+        {
       id: "liberato-gianpaolo-cacace",
-      firstName: "Liberato Gianpaolo",
-      lastName: "CACACE",
-      nameOnShirt: "CACACE",
+      firstName: "Либерато",
+      lastName: "Какасе",
+      nameOnShirt: "Какасе",
+      originalFirstName: "Liberato Gianpaolo",
+      originalLastName: "CACACE",
+      originalNameOnShirt: "CACACE",
+
       dateOfBirth: "27/09/2000",
       age: 25,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "nando-zen-pijnaker",
-      firstName: "Nando Zen",
-      lastName: "PIJNAKER",
-      nameOnShirt: "PIJNAKER",
+      firstName: "Нандо",
+      lastName: "Пиджнакер",
+      nameOnShirt: "Пиджнакер",
+      originalFirstName: "Nando Zen",
+      originalLastName: "PIJNAKER",
+      originalNameOnShirt: "PIJNAKER",
+
       dateOfBirth: "25/02/1999",
       age: 27,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "finn-surman",
-      firstName: "Finn",
-      lastName: "SURMAN",
-      nameOnShirt: "SURMAN",
+      firstName: "Финн",
+      lastName: "Сурман",
+      nameOnShirt: "Сурман",
+      originalFirstName: "Finn",
+      originalLastName: "SURMAN",
+      originalNameOnShirt: "SURMAN",
+
       dateOfBirth: "23/09/2003",
       age: 22,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 225_000,
       isInjured: false,
     },
-    {
+        {
       id: "callan-rennie-elliot",
-      firstName: "Callan Rennie",
-      lastName: "ELLIOT",
-      nameOnShirt: "ELLIOT",
+      firstName: "Каллан",
+      lastName: "Еллиот",
+      nameOnShirt: "Еллиот",
+      originalFirstName: "Callan Rennie",
+      originalLastName: "ELLIOT",
+      originalNameOnShirt: "ELLIOT",
+
       dateOfBirth: "07/07/1999",
       age: 26,
       shirtNumber: 24,
@@ -248,11 +293,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 180_000,
       isInjured: false,
     },
-    {
+        {
       id: "thomas-jefferson-smith",
-      firstName: "Thomas Jefferson",
-      lastName: "SMITH",
-      nameOnShirt: "SMITH",
+      firstName: "Томас",
+      lastName: "Смит",
+      nameOnShirt: "Смит",
+      originalFirstName: "Thomas Jefferson",
+      originalLastName: "SMITH",
+      originalNameOnShirt: "SMITH",
+
       dateOfBirth: "31/03/1990",
       age: 36,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const newZealandProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "joe-zen-robert-bell",
-      firstName: "Joe Zen Robert",
-      lastName: "BELL",
-      nameOnShirt: "BELL",
+      firstName: "Джое",
+      lastName: "Белл",
+      nameOnShirt: "Белл",
+      originalFirstName: "Joe Zen Robert",
+      originalLastName: "BELL",
+      originalNameOnShirt: "BELL",
+
       dateOfBirth: "27/04/1999",
       age: 27,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 245_000,
       isInjured: false,
     },
-    {
+        {
       id: "marko-seufatu-nikola-stamenic",
-      firstName: "Marko Seufatu Nikola",
-      lastName: "STAMENIC",
-      nameOnShirt: "STAMENIC",
+      firstName: "Марко",
+      lastName: "Стаменик",
+      nameOnShirt: "Стаменик",
+      originalFirstName: "Marko Seufatu Nikola",
+      originalLastName: "STAMENIC",
+      originalNameOnShirt: "STAMENIC",
+
       dateOfBirth: "19/02/2002",
       age: 24,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 255_000,
       isInjured: false,
     },
-    {
+        {
       id: "sarpreet-singh",
-      firstName: "Sarpreet",
-      lastName: "SINGH",
-      nameOnShirt: "SINGH",
+      firstName: "Сарприт",
+      lastName: "Сингх",
+      nameOnShirt: "Сингх",
+      originalFirstName: "Sarpreet",
+      originalLastName: "SINGH",
+      originalNameOnShirt: "SINGH",
+
       dateOfBirth: "20/02/1999",
       age: 27,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 245_000,
       isInjured: false,
     },
-    {
+        {
       id: "elijah-henry-just",
-      firstName: "Elijah Henry",
-      lastName: "JUST",
-      nameOnShirt: "JUST",
+      firstName: "Елиджах",
+      lastName: "Джуст",
+      nameOnShirt: "Джуст",
+      originalFirstName: "Elijah Henry",
+      originalLastName: "JUST",
+      originalNameOnShirt: "JUST",
+
       dateOfBirth: "01/05/2000",
       age: 26,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "alex-arthur-rufer",
-      firstName: "Alex Arthur",
-      lastName: "RUFER",
-      nameOnShirt: "RUFER",
+      firstName: "Алекс",
+      lastName: "Руфер",
+      nameOnShirt: "Руфер",
+      originalFirstName: "Alex Arthur",
+      originalLastName: "RUFER",
+      originalNameOnShirt: "RUFER",
+
       dateOfBirth: "12/06/1996",
       age: 29,
       shirtNumber: 14,
@@ -376,11 +445,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 180_000,
       isInjured: false,
     },
-    {
+        {
       id: "benjamin-craig-old",
-      firstName: "Benjamin Craig",
-      lastName: "OLD",
-      nameOnShirt: "OLD",
+      firstName: "Бенжамен",
+      lastName: "Олд",
+      nameOnShirt: "Олд",
+      originalFirstName: "Benjamin Craig",
+      originalLastName: "OLD",
+      originalNameOnShirt: "OLD",
+
       dateOfBirth: "13/08/2002",
       age: 23,
       shirtNumber: 19,
@@ -397,11 +470,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "callum-william-mccowatt",
-      firstName: "Callum William",
-      lastName: "MCCOWATT",
-      nameOnShirt: "MCCOWATT",
+      firstName: "Каллум",
+      lastName: "Мккоуатт",
+      nameOnShirt: "Мккоуатт",
+      originalFirstName: "Callum William",
+      originalLastName: "MCCOWATT",
+      originalNameOnShirt: "MCCOWATT",
+
       dateOfBirth: "30/04/1999",
       age: 27,
       shirtNumber: 20,
@@ -418,11 +495,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "ryan-jared-thomas",
-      firstName: "Ryan Jared",
-      lastName: "THOMAS",
-      nameOnShirt: "THOMAS",
+      firstName: "Риан",
+      lastName: "Томас",
+      nameOnShirt: "Томас",
+      originalFirstName: "Ryan Jared",
+      originalLastName: "THOMAS",
+      originalNameOnShirt: "THOMAS",
+
       dateOfBirth: "20/12/1994",
       age: 31,
       shirtNumber: 23,
@@ -439,11 +520,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "lachlan-ryan-bayliss",
-      firstName: "Lachlan Ryan",
-      lastName: "BAYLISS",
-      nameOnShirt: "BAYLISS",
+      firstName: "Лачлан",
+      lastName: "Бейлисс",
+      nameOnShirt: "Бейлисс",
+      originalFirstName: "Lachlan Ryan",
+      originalLastName: "BAYLISS",
+      originalNameOnShirt: "BAYLISS",
+
       dateOfBirth: "24/07/2002",
       age: 23,
       shirtNumber: 25,
@@ -462,11 +547,15 @@ export const newZealandProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "logan-tipene-rogerson",
-      firstName: "Logan Tipene",
-      lastName: "ROGERSON",
-      nameOnShirt: "ROGERSON",
+      firstName: "Логан",
+      lastName: "Роджерсон",
+      nameOnShirt: "Роджерсон",
+      originalFirstName: "Logan Tipene",
+      originalLastName: "ROGERSON",
+      originalNameOnShirt: "ROGERSON",
+
       dateOfBirth: "28/05/1998",
       age: 28,
       shirtNumber: 7,
@@ -483,11 +572,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 245_000,
       isInjured: false,
     },
-    {
+        {
       id: "christopher-grant-wood",
-      firstName: "Christopher Grant",
-      lastName: "WOOD",
-      nameOnShirt: "WOOD",
+      firstName: "Крис",
+      lastName: "Вуд",
+      nameOnShirt: "Ууд",
+      originalFirstName: "Christopher Grant",
+      originalLastName: "WOOD",
+      originalNameOnShirt: "WOOD",
+
       dateOfBirth: "07/12/1991",
       age: 34,
       shirtNumber: 9,
@@ -504,11 +597,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "kosta-barbarouses",
-      firstName: "Kosta",
-      lastName: "BARBAROUSES",
-      nameOnShirt: "BARBAROUSES",
+      firstName: "Коста",
+      lastName: "Барбараусес",
+      nameOnShirt: "Барбараусес",
+      originalFirstName: "Kosta",
+      originalLastName: "BARBAROUSES",
+      originalNameOnShirt: "BARBAROUSES",
+
       dateOfBirth: "19/02/1990",
       age: 36,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 220_000,
       isInjured: false,
     },
-    {
+        {
       id: "benjamin-peter-waine",
-      firstName: "Benjamin Peter",
-      lastName: "WAINE",
-      nameOnShirt: "WAINE",
+      firstName: "Бенжамен",
+      lastName: "Уейне",
+      nameOnShirt: "Уейне",
+      originalFirstName: "Benjamin Peter",
+      originalLastName: "WAINE",
+      originalNameOnShirt: "WAINE",
+
       dateOfBirth: "11/06/2001",
       age: 25,
       shirtNumber: 18,
@@ -546,11 +647,15 @@ export const newZealandProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "jesse-carmichael-randall",
-      firstName: "Jesse Carmichael",
-      lastName: "RANDALL",
-      nameOnShirt: "RANDALL",
+      firstName: "Джессе",
+      lastName: "Рандалл",
+      nameOnShirt: "Рандалл",
+      originalFirstName: "Jesse Carmichael",
+      originalLastName: "RANDALL",
+      originalNameOnShirt: "RANDALL",
+
       dateOfBirth: "19/08/2002",
       age: 23,
       shirtNumber: 21,

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import iraqFlag from '@/data/nationalTeams/worldCup2026/flags/iraq.png'
 
 export const iraqProfile: NationalTeamProfile = {
   id: "iraq",
@@ -6,7 +7,7 @@ export const iraqProfile: NationalTeamProfile = {
   shortName: "IRQ",
   fifaCode: "IRQ",
   groupId: "I",
-  flagCode: "IQ",
+  flag: iraqFlag,
   rating: 69,
   attackRating: 68,
   midfieldRating: 69,
@@ -15,11 +16,15 @@ export const iraqProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "fahad-talib-raheem-raheem",
-      firstName: "Fahad Talib Raheem",
-      lastName: "RAHEEM",
-      nameOnShirt: "FAHAD",
+      firstName: "Фахад",
+      lastName: "Рахим",
+      nameOnShirt: "Фахад",
+      originalFirstName: "Fahad Talib Raheem",
+      originalLastName: "RAHEEM",
+      originalNameOnShirt: "FAHAD",
+
       dateOfBirth: "21/10/1994",
       age: 31,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "jalal-hasan-hachim-hachim",
-      firstName: "Jalal Hasan Hachim",
-      lastName: "HACHIM",
-      nameOnShirt: "JALAL",
+      firstName: "Джалал",
+      lastName: "Хачим",
+      nameOnShirt: "Джалал",
+      originalFirstName: "Jalal Hasan Hachim",
+      originalLastName: "HACHIM",
+      originalNameOnShirt: "JALAL",
+
       dateOfBirth: "18/05/1991",
       age: 35,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-basil-fadhil-al-fadhli",
-      firstName: "Ahmed Basil Fadhil",
-      lastName: "AL-FADHLI",
-      nameOnShirt: "AHMED B.",
+      firstName: "Ахмед",
+      lastName: "Ал-Фазли",
+      nameOnShirt: "Ахмед Б.",
+      originalFirstName: "Ahmed Basil Fadhil",
+      originalLastName: "AL-FADHLI",
+      originalNameOnShirt: "AHMED B.",
+
       dateOfBirth: "19/08/1996",
       age: 29,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const iraqProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "rebin-ghareeb-solaka-adhamat",
-      firstName: "Rebin Ghareeb Solaka",
-      lastName: "ADHAMAT",
-      nameOnShirt: "REBIN",
+      firstName: "Ребин",
+      lastName: "Азамат",
+      nameOnShirt: "Ребин",
+      originalFirstName: "Rebin Ghareeb Solaka",
+      originalLastName: "ADHAMAT",
+      originalNameOnShirt: "REBIN",
+
       dateOfBirth: "12/04/1992",
       age: 34,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "hussein-haydar-hussein-ali",
-      firstName: "Hussein Haydar Hussein",
-      lastName: "ALI",
-      nameOnShirt: "HUSSEIN",
+      firstName: "Хуссеин",
+      lastName: "Али",
+      nameOnShirt: "Хуссеин",
+      originalFirstName: "Hussein Haydar Hussein",
+      originalLastName: "ALI",
+      originalNameOnShirt: "HUSSEIN",
+
       dateOfBirth: "01/03/2002",
       age: 24,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "zaid-tahseen-abd-zaid-hantoosh",
-      firstName: "Zaid Tahseen Abd Zaid",
-      lastName: "HANTOOSH",
-      nameOnShirt: "ZAID T.",
+      firstName: "Зайд",
+      lastName: "Хантуш",
+      nameOnShirt: "Зайд Т.",
+      originalFirstName: "Zaid Tahseen Abd Zaid",
+      originalLastName: "HANTOOSH",
+      originalNameOnShirt: "ZAID T.",
+
       dateOfBirth: "29/01/2001",
       age: 25,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "akam-hashim-rahman-rahman",
-      firstName: "Akam Hashim Rahman",
-      lastName: "RAHMAN",
-      nameOnShirt: "AKAM",
+      firstName: "Акам",
+      lastName: "Рахман",
+      nameOnShirt: "Акам",
+      originalFirstName: "Akam Hashim Rahman",
+      originalLastName: "RAHMAN",
+      originalNameOnShirt: "AKAM",
+
       dateOfBirth: "16/08/1998",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "munaf-younus-hashim-al-tekreeti",
-      firstName: "Munaf Younus Hashim",
-      lastName: "AL-TEKREETI",
-      nameOnShirt: "MUNAF",
+      firstName: "Мунаф",
+      lastName: "Ал-Текрити",
+      nameOnShirt: "Мунаф",
+      originalFirstName: "Munaf Younus Hashim",
+      originalLastName: "AL-TEKREETI",
+      originalNameOnShirt: "MUNAF",
+
       dateOfBirth: "16/11/1996",
       age: 29,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-hasan-maknazi-al-deeshawee",
-      firstName: "Ahmed Hasan Maknazi",
-      lastName: "AL-DEESHAWEE",
-      nameOnShirt: "AHMED H.",
+      firstName: "Ахмед",
+      lastName: "Ал-Дишави",
+      nameOnShirt: "Ахмед Х.",
+      originalFirstName: "Ahmed Hasan Maknazi",
+      originalLastName: "AL-DEESHAWEE",
+      originalNameOnShirt: "AHMED H.",
+
       dateOfBirth: "24/09/2001",
       age: 24,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 195_000,
       isInjured: false,
     },
-    {
+        {
       id: "merchas-ghazi-salih-salih",
-      firstName: "Merchas Ghazi Salih",
-      lastName: "SALIH",
-      nameOnShirt: "DOSKI",
+      firstName: "Мерчас",
+      lastName: "Салих",
+      nameOnShirt: "Доски",
+      originalFirstName: "Merchas Ghazi Salih",
+      originalLastName: "SALIH",
+      originalNameOnShirt: "DOSKI",
+
       dateOfBirth: "07/12/1999",
       age: 26,
       shirtNumber: 23,
@@ -227,11 +268,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "mustafa-saadoon-abbood-al-korji",
-      firstName: "Mustafa Saadoon Abbood",
-      lastName: "AL-KORJI",
-      nameOnShirt: "MUSTAFA",
+      firstName: "Мустафа",
+      lastName: "Ал-Корджи",
+      nameOnShirt: "Мустафа",
+      originalFirstName: "Mustafa Saadoon Abbood",
+      originalLastName: "AL-KORJI",
+      originalNameOnShirt: "MUSTAFA",
+
       dateOfBirth: "25/05/2001",
       age: 25,
       shirtNumber: 25,
@@ -248,11 +293,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "frans-dhia-jirjis-haddad",
-      firstName: "Frans Dhia Jirjis",
-      lastName: "HADDAD",
-      nameOnShirt: "FRANS",
+      firstName: "Франс",
+      lastName: "Хаддад",
+      nameOnShirt: "Франс",
+      originalFirstName: "Frans Dhia Jirjis",
+      originalLastName: "HADDAD",
+      originalNameOnShirt: "FRANS",
+
       dateOfBirth: "14/07/1993",
       age: 32,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const iraqProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "youssef-wali-faeq-amyn",
-      firstName: "Youssef Wali Faeq",
-      lastName: "AMYN",
-      nameOnShirt: "YOUSSEF",
+      firstName: "Йуссеф",
+      lastName: "Амйн",
+      nameOnShirt: "Йуссеф",
+      originalFirstName: "Youssef Wali Faeq",
+      originalLastName: "AMYN",
+      originalNameOnShirt: "YOUSSEF",
+
       dateOfBirth: "21/08/2003",
       age: 22,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-bayesh-kamil-al-kaabawi",
-      firstName: "Ibrahim Bayesh Kamil",
-      lastName: "AL-KAABAWI",
-      nameOnShirt: "IBRAHIM",
+      firstName: "Ибрахим",
+      lastName: "Ал-Кабави",
+      nameOnShirt: "Ибрахим",
+      originalFirstName: "Ibrahim Bayesh Kamil",
+      originalLastName: "AL-KAABAWI",
+      originalNameOnShirt: "IBRAHIM",
+
       dateOfBirth: "01/05/2000",
       age: 26,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "zidane-aamar-iqbal-iqbal",
-      firstName: "Zidane Aamar Iqbal",
-      lastName: "IQBAL",
-      nameOnShirt: "Z. IQBAL",
+      firstName: "Зидане",
+      lastName: "Икбал",
+      nameOnShirt: "З. Икбал",
+      originalFirstName: "Zidane Aamar Iqbal",
+      originalLastName: "IQBAL",
+      originalNameOnShirt: "Z. IQBAL",
+
       dateOfBirth: "27/04/2003",
       age: 23,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "amir-fouad-aboud-al-ammari",
-      firstName: "Amir Fouad Aboud",
-      lastName: "AL-AMMARI",
-      nameOnShirt: "AL-AMMARI",
+      firstName: "Амир",
+      lastName: "Ал-Аммари",
+      nameOnShirt: "Ал-Аммари",
+      originalFirstName: "Amir Fouad Aboud",
+      originalLastName: "AL-AMMARI",
+      originalNameOnShirt: "AL-AMMARI",
+
       dateOfBirth: "27/07/1997",
       age: 28,
       shirtNumber: 16,
@@ -355,11 +420,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "kevin-enkido-yakob-william-william",
-      firstName: "Kevin Enkido Yakob William",
-      lastName: "WILLIAM",
-      nameOnShirt: "K. YAKOB",
+      firstName: "Кевин",
+      lastName: "Уильям",
+      nameOnShirt: "К. Йакоб",
+      originalFirstName: "Kevin Enkido Yakob William",
+      originalLastName: "WILLIAM",
+      originalNameOnShirt: "K. YAKOB",
+
       dateOfBirth: "10/10/2000",
       age: 25,
       shirtNumber: 19,
@@ -376,11 +445,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "aimar-hazar-anwar-sher",
-      firstName: "Aimar Hazar Anwar",
-      lastName: "SHER",
-      nameOnShirt: "AIMAR",
+      firstName: "Аймар",
+      lastName: "Шер",
+      nameOnShirt: "Аймар",
+      originalFirstName: "Aimar Hazar Anwar",
+      originalLastName: "SHER",
+      originalNameOnShirt: "AIMAR",
+
       dateOfBirth: "20/12/2002",
       age: 23,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 255_000,
       isInjured: false,
     },
-    {
+        {
       id: "zaid-ismael-khaleel-al-dulaimi",
-      firstName: "Zaid Ismael Khaleel",
-      lastName: "AL-DULAIMI",
-      nameOnShirt: "ZAID I.",
+      firstName: "Зайд",
+      lastName: "Ал-Дулайми",
+      nameOnShirt: "Зайд И.",
+      originalFirstName: "Zaid Ismael Khaleel",
+      originalLastName: "AL-DULAIMI",
+      originalNameOnShirt: "ZAID I.",
+
       dateOfBirth: "03/01/2002",
       age: 24,
       shirtNumber: 24,
@@ -420,11 +497,15 @@ export const iraqProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "ali-ibrahim-karim-alzubaidi",
-      firstName: "Ali Ibrahim Karim",
-      lastName: "ALZUBAIDI",
-      nameOnShirt: "AL-HAMADI",
+      firstName: "Али",
+      lastName: "Аль-Зубайди",
+      nameOnShirt: "Ал-Хамади",
+      originalFirstName: "Ali Ibrahim Karim",
+      originalLastName: "ALZUBAIDI",
+      originalNameOnShirt: "AL-HAMADI",
+
       dateOfBirth: "01/03/2002",
       age: 24,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 255_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohanad-ali-kadhim-al-shammari",
-      firstName: "Mohanad Ali Kadhim",
-      lastName: "AL-SHAMMARI",
-      nameOnShirt: "MOHANAD",
+      firstName: "Моханад",
+      lastName: "Ал-Шаммари",
+      nameOnShirt: "Моханад",
+      originalFirstName: "Mohanad Ali Kadhim",
+      originalLastName: "AL-SHAMMARI",
+      originalNameOnShirt: "MOHANAD",
+
       dateOfBirth: "20/06/2000",
       age: 25,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-ihab-ahmed-ahmed",
-      firstName: "Ahmed Ihab Ahmed",
-      lastName: "AHMED",
-      nameOnShirt: "AHMED Q.",
+      firstName: "Ахмед",
+      lastName: "Ахмед",
+      nameOnShirt: "Ахмед К.",
+      originalFirstName: "Ahmed Ihab Ahmed",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "AHMED Q.",
+
       dateOfBirth: "12/07/2003",
       age: 22,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 165_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-yousif-hashim-najatee",
-      firstName: "Ali Yousif Hashim",
-      lastName: "NAJATEE",
-      nameOnShirt: "ALI Y.",
+      firstName: "Али",
+      lastName: "Наджати",
+      nameOnShirt: "Али Й.",
+      originalFirstName: "Ali Yousif Hashim",
+      originalLastName: "NAJATEE",
+      originalNameOnShirt: "ALI Y.",
+
       dateOfBirth: "19/01/1996",
       age: 30,
       shirtNumber: 13,
@@ -504,11 +597,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-jasim-elaibi-al-tameemi",
-      firstName: "Ali Jasim Elaibi",
-      lastName: "AL-TAMEEMI",
-      nameOnShirt: "ALI J.",
+      firstName: "Али",
+      lastName: "Ал-Тамими",
+      nameOnShirt: "Али Дж.",
+      originalFirstName: "Ali Jasim Elaibi",
+      originalLastName: "AL-TAMEEMI",
+      originalNameOnShirt: "ALI J.",
+
       dateOfBirth: "20/01/2004",
       age: 22,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 255_000,
       isInjured: false,
     },
-    {
+        {
       id: "aymen-hussein-ghadhban-ghadhban",
-      firstName: "Aymen Hussein Ghadhban",
-      lastName: "GHADHBAN",
-      nameOnShirt: "AYMEN",
+      firstName: "Аймен",
+      lastName: "Газбан",
+      nameOnShirt: "Аймен",
+      originalFirstName: "Aymen Hussein Ghadhban",
+      originalLastName: "GHADHBAN",
+      originalNameOnShirt: "AYMEN",
+
       dateOfBirth: "22/03/1996",
       age: 30,
       shirtNumber: 18,
@@ -546,11 +647,15 @@ export const iraqProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "marko-jabbar-hussein-hussein",
-      firstName: "Marko Jabbar Hussein",
-      lastName: "HUSSEIN",
-      nameOnShirt: "MARKO",
+      firstName: "Марко",
+      lastName: "Хуссеин",
+      nameOnShirt: "Марко",
+      originalFirstName: "Marko Jabbar Hussein",
+      originalLastName: "HUSSEIN",
+      originalNameOnShirt: "MARKO",
+
       dateOfBirth: "16/03/2004",
       age: 22,
       shirtNumber: 21,

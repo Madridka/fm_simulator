@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import czechiaFlag from '@/data/nationalTeams/worldCup2026/flags/czechia.png'
 
 export const czechiaProfile: NationalTeamProfile = {
   id: "czechia",
@@ -6,7 +7,7 @@ export const czechiaProfile: NationalTeamProfile = {
   shortName: "CZE",
   fifaCode: "CZE",
   groupId: "A",
-  flagCode: "CZ",
+  flag: czechiaFlag,
   rating: 77,
   attackRating: 76,
   midfieldRating: 78,
@@ -15,11 +16,15 @@ export const czechiaProfile: NationalTeamProfile = {
   secondaryColor: "#D7141A",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "matej-kovar",
-      firstName: "Matěj",
-      lastName: "KOVÁŘ",
-      nameOnShirt: "KOVÁŘ",
+      firstName: "Матей",
+      lastName: "Коварж",
+      nameOnShirt: "Коварж",
+      originalFirstName: "Matěj",
+      originalLastName: "KOVÁŘ",
+      originalNameOnShirt: "KOVÁŘ",
+
       dateOfBirth: "17/05/2000",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "jindrich-stanek",
-      firstName: "Jindřich",
-      lastName: "STANĚK",
-      nameOnShirt: "STANĚK",
+      firstName: "Йиндржих",
+      lastName: "Станек",
+      nameOnShirt: "Станек",
+      originalFirstName: "Jindřich",
+      originalLastName: "STANĚK",
+      originalNameOnShirt: "STANĚK",
+
       dateOfBirth: "27/04/1996",
       age: 30,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "lukas-hornicek",
-      firstName: "Lukáš",
-      lastName: "HORNÍČEK",
-      nameOnShirt: "HORNÍČEK",
+      firstName: "Лукаш",
+      lastName: "Хорничек",
+      nameOnShirt: "Хорничек",
+      originalFirstName: "Lukáš",
+      originalLastName: "HORNÍČEK",
+      originalNameOnShirt: "HORNÍČEK",
+
       dateOfBirth: "13/07/2002",
       age: 23,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const czechiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "david-zima",
-      firstName: "David",
-      lastName: "ZIMA",
-      nameOnShirt: "ZIMA",
+      firstName: "Давид",
+      lastName: "Зима",
+      nameOnShirt: "Зима",
+      originalFirstName: "David",
+      originalLastName: "ZIMA",
+      originalNameOnShirt: "ZIMA",
+
       dateOfBirth: "08/11/2000",
       age: 25,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "tomas-holes",
-      firstName: "Tomáš",
-      lastName: "HOLEŠ",
-      nameOnShirt: "HOLEŠ",
+      firstName: "Томаш",
+      lastName: "Холеш",
+      nameOnShirt: "Холеш",
+      originalFirstName: "Tomáš",
+      originalLastName: "HOLEŠ",
+      originalNameOnShirt: "HOLEŠ",
+
       dateOfBirth: "31/03/1993",
       age: 33,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "robin-hranac",
-      firstName: "Robin",
-      lastName: "HRANÁČ",
-      nameOnShirt: "HRANÁČ",
+      firstName: "Робин",
+      lastName: "Хранач",
+      nameOnShirt: "Хранач",
+      originalFirstName: "Robin",
+      originalLastName: "HRANÁČ",
+      originalNameOnShirt: "HRANÁČ",
+
       dateOfBirth: "29/01/2000",
       age: 26,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "vladimir-coufal",
-      firstName: "Vladimír",
-      lastName: "COUFAL",
-      nameOnShirt: "COUFAL",
+      firstName: "Владимир",
+      lastName: "Цоуфал",
+      nameOnShirt: "Цоуфал",
+      originalFirstName: "Vladimír",
+      originalLastName: "COUFAL",
+      originalNameOnShirt: "COUFAL",
+
       dateOfBirth: "22/08/1992",
       age: 33,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "stepan-chaloupek",
-      firstName: "Štěpán",
-      lastName: "CHALOUPEK",
-      nameOnShirt: "CHALOUPEK",
+      firstName: "Штепан",
+      lastName: "Халоупек",
+      nameOnShirt: "Халоупек",
+      originalFirstName: "Štěpán",
+      originalLastName: "CHALOUPEK",
+      originalNameOnShirt: "CHALOUPEK",
+
       dateOfBirth: "08/03/2003",
       age: 23,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "ladislav-krejci",
-      firstName: "Ladislav",
-      lastName: "KREJČÍ",
-      nameOnShirt: "KREJČÍ",
+      firstName: "Ладислав",
+      lastName: "Крейчи",
+      nameOnShirt: "Крейчи",
+      originalFirstName: "Ladislav",
+      originalLastName: "KREJČÍ",
+      originalNameOnShirt: "KREJČÍ",
+
       dateOfBirth: "20/04/1999",
       age: 27,
       shirtNumber: 7,
@@ -206,11 +243,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "david-jurasek",
-      firstName: "David",
-      lastName: "JURÁSEK",
-      nameOnShirt: "JURÁSEK",
+      firstName: "Давид",
+      lastName: "Йурасек",
+      nameOnShirt: "Йурасек",
+      originalFirstName: "David",
+      originalLastName: "JURÁSEK",
+      originalNameOnShirt: "JURÁSEK",
+
       dateOfBirth: "07/08/2000",
       age: 25,
       shirtNumber: 14,
@@ -227,11 +268,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "jaroslav-zeleny",
-      firstName: "Jaroslav",
-      lastName: "ZELENÝ",
-      nameOnShirt: "ZELENÝ",
+      firstName: "Йарослав",
+      lastName: "Зелени",
+      nameOnShirt: "Зелени",
+      originalFirstName: "Jaroslav",
+      originalLastName: "ZELENÝ",
+      originalNameOnShirt: "ZELENÝ",
+
       dateOfBirth: "20/08/1992",
       age: 33,
       shirtNumber: 20,
@@ -248,11 +293,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "david-doudera",
-      firstName: "David",
-      lastName: "DOUDĚRA",
-      nameOnShirt: "DOUDĚRA",
+      firstName: "Давид",
+      lastName: "Доудера",
+      nameOnShirt: "Доудера",
+      originalFirstName: "David",
+      originalLastName: "DOUDĚRA",
+      originalNameOnShirt: "DOUDĚRA",
+
       dateOfBirth: "31/05/1998",
       age: 28,
       shirtNumber: 21,
@@ -271,11 +320,15 @@ export const czechiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "vladimir-darida",
-      firstName: "Vladimír",
-      lastName: "DARIDA",
-      nameOnShirt: "DARIDA",
+      firstName: "Владимир",
+      lastName: "Дарида",
+      nameOnShirt: "Дарида",
+      originalFirstName: "Vladimír",
+      originalLastName: "DARIDA",
+      originalNameOnShirt: "DARIDA",
+
       dateOfBirth: "08/08/1990",
       age: 35,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "lukas-cerv",
-      firstName: "Lukáš",
-      lastName: "ČERV",
-      nameOnShirt: "ČERV",
+      firstName: "Лукаш",
+      lastName: "Черв",
+      nameOnShirt: "Черв",
+      originalFirstName: "Lukáš",
+      originalLastName: "ČERV",
+      originalNameOnShirt: "ČERV",
+
       dateOfBirth: "10/04/2001",
       age: 25,
       shirtNumber: 12,
@@ -313,11 +370,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "lukas-provod",
-      firstName: "Lukáš",
-      lastName: "PROVOD",
-      nameOnShirt: "PROVOD",
+      firstName: "Лукаш",
+      lastName: "Провод",
+      nameOnShirt: "Провод",
+      originalFirstName: "Lukáš",
+      originalLastName: "PROVOD",
+      originalNameOnShirt: "PROVOD",
+
       dateOfBirth: "23/10/1996",
       age: 29,
       shirtNumber: 17,
@@ -334,11 +395,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "michal-sadilek",
-      firstName: "Michal",
-      lastName: "SADÍLEK",
-      nameOnShirt: "SADÍLEK",
+      firstName: "Михал",
+      lastName: "Садилек",
+      nameOnShirt: "Садилек",
+      originalFirstName: "Michal",
+      originalLastName: "SADÍLEK",
+      originalNameOnShirt: "SADÍLEK",
+
       dateOfBirth: "31/05/1999",
       age: 27,
       shirtNumber: 18,
@@ -355,11 +420,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "tomas-soucek",
-      firstName: "Tomáš",
-      lastName: "SOUČEK",
-      nameOnShirt: "SOUČEK",
+      firstName: "Томаш",
+      lastName: "Соучек",
+      nameOnShirt: "Соучек",
+      originalFirstName: "Tomáš",
+      originalLastName: "SOUČEK",
+      originalNameOnShirt: "SOUČEK",
+
       dateOfBirth: "27/02/1995",
       age: 31,
       shirtNumber: 22,
@@ -376,11 +445,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexandr-sojka",
-      firstName: "Alexandr",
-      lastName: "SOJKA",
-      nameOnShirt: "SOJKA",
+      firstName: "Александр",
+      lastName: "Сойка",
+      nameOnShirt: "Сойка",
+      originalFirstName: "Alexandr",
+      originalLastName: "SOJKA",
+      originalNameOnShirt: "SOJKA",
+
       dateOfBirth: "02/04/2003",
       age: 23,
       shirtNumber: 24,
@@ -397,11 +470,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "hugo-soch-rek",
-      firstName: "Hugo",
-      lastName: "SOCHŮREK",
-      nameOnShirt: "SOCHŮREK",
+      firstName: "Хуго",
+      lastName: "Сохурек",
+      nameOnShirt: "Сохурек",
+      originalFirstName: "Hugo",
+      originalLastName: "SOCHŮREK",
+      originalNameOnShirt: "SOCHŮREK",
+
       dateOfBirth: "07/06/2008",
       age: 18,
       shirtNumber: 25,
@@ -420,11 +497,15 @@ export const czechiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "adam-hlozek",
-      firstName: "Adam",
-      lastName: "HLOŽEK",
-      nameOnShirt: "HLOŽEK",
+      firstName: "Адам",
+      lastName: "Хложек",
+      nameOnShirt: "Хложек",
+      originalFirstName: "Adam",
+      originalLastName: "HLOŽEK",
+      originalNameOnShirt: "HLOŽEK",
+
       dateOfBirth: "25/07/2002",
       age: 23,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "patrik-schick",
-      firstName: "Patrik",
-      lastName: "SCHICK",
-      nameOnShirt: "SCHICK",
+      firstName: "Патрик",
+      lastName: "Схицк",
+      nameOnShirt: "Схицк",
+      originalFirstName: "Patrik",
+      originalLastName: "SCHICK",
+      originalNameOnShirt: "SCHICK",
+
       dateOfBirth: "24/01/1996",
       age: 30,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "jan-kuchta",
-      firstName: "Jan",
-      lastName: "KUCHTA",
-      nameOnShirt: "KUCHTA",
+      firstName: "Ян",
+      lastName: "Кухта",
+      nameOnShirt: "Кухта",
+      originalFirstName: "Jan",
+      originalLastName: "KUCHTA",
+      originalNameOnShirt: "KUCHTA",
+
       dateOfBirth: "08/01/1997",
       age: 29,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "mojmir-chytil",
-      firstName: "Mojmír",
-      lastName: "CHYTIL",
-      nameOnShirt: "CHYTIL",
+      firstName: "Моймир",
+      lastName: "Хитил",
+      nameOnShirt: "Хитил",
+      originalFirstName: "Mojmír",
+      originalLastName: "CHYTIL",
+      originalNameOnShirt: "CHYTIL",
+
       dateOfBirth: "29/04/1999",
       age: 27,
       shirtNumber: 13,
@@ -504,11 +597,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "pavel-sulc",
-      firstName: "Pavel",
-      lastName: "ŠULC",
-      nameOnShirt: "ŠULC",
+      firstName: "Павел",
+      lastName: "Шулц",
+      nameOnShirt: "Шулц",
+      originalFirstName: "Pavel",
+      originalLastName: "ŠULC",
+      originalNameOnShirt: "ŠULC",
+
       dateOfBirth: "29/12/2000",
       age: 25,
       shirtNumber: 15,
@@ -525,11 +622,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "tomas-chory",
-      firstName: "Tomáš",
-      lastName: "CHORÝ",
-      nameOnShirt: "CHORÝ",
+      firstName: "Томаш",
+      lastName: "Хори",
+      nameOnShirt: "Хори",
+      originalFirstName: "Tomáš",
+      originalLastName: "CHORÝ",
+      originalNameOnShirt: "CHORÝ",
+
       dateOfBirth: "26/01/1995",
       age: 31,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const czechiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "denis-visinsky",
-      firstName: "Denis",
-      lastName: "VIŠINSKÝ",
-      nameOnShirt: "VIŠINSKÝ",
+      firstName: "Денис",
+      lastName: "Вишински",
+      nameOnShirt: "Вишински",
+      originalFirstName: "Denis",
+      originalLastName: "VIŠINSKÝ",
+      originalNameOnShirt: "VIŠINSKÝ",
+
       dateOfBirth: "21/03/2003",
       age: 23,
       shirtNumber: 26,

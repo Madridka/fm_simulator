@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import ecuadorFlag from '@/data/nationalTeams/worldCup2026/flags/ecuador.png'
 
 export const ecuadorProfile: NationalTeamProfile = {
   id: "ecuador",
@@ -6,7 +7,7 @@ export const ecuadorProfile: NationalTeamProfile = {
   shortName: "ECU",
   fifaCode: "ECU",
   groupId: "E",
-  flagCode: "EC",
+  flag: ecuadorFlag,
   rating: 76,
   attackRating: 76,
   midfieldRating: 75,
@@ -15,11 +16,15 @@ export const ecuadorProfile: NationalTeamProfile = {
   secondaryColor: "#034EA2",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "hernan-ismael-galindez",
-      firstName: "Hernán Ismael",
-      lastName: "GALÍNDEZ",
-      nameOnShirt: "GALINDEZ",
+      firstName: "Ернан",
+      lastName: "Галиндес",
+      nameOnShirt: "Галиндес",
+      originalFirstName: "Hernán Ismael",
+      originalLastName: "GALÍNDEZ",
+      originalNameOnShirt: "GALINDEZ",
+
       dateOfBirth: "30/03/1987",
       age: 39,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "wellington-moises-ramirez-preciado",
-      firstName: "Wellington Moisés",
-      lastName: "RAMÍREZ PRECIADO",
-      nameOnShirt: "RAMÍREZ",
+      firstName: "Вельингтон",
+      lastName: "Рамирес Пресиадо",
+      nameOnShirt: "Рамирес",
+      originalFirstName: "Wellington Moisés",
+      originalLastName: "RAMÍREZ PRECIADO",
+      originalNameOnShirt: "RAMÍREZ",
+
       dateOfBirth: "09/09/2000",
       age: 25,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "gonzalo-roberto-valle-bustamante",
-      firstName: "Gonzalo Roberto",
-      lastName: "VALLE BUSTAMANTE",
-      nameOnShirt: "VALLE",
+      firstName: "Гонсало",
+      lastName: "Валье Бустаманте",
+      nameOnShirt: "Валье",
+      originalFirstName: "Gonzalo Roberto",
+      originalLastName: "VALLE BUSTAMANTE",
+      originalNameOnShirt: "VALLE",
+
       dateOfBirth: "28/02/1996",
       age: 30,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const ecuadorProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "felix-eduardo-torres-caicedo",
-      firstName: "Félix Eduardo",
-      lastName: "TORRES CAICEDO",
-      nameOnShirt: "TORRES",
+      firstName: "Феликс",
+      lastName: "Торрес Каиседо",
+      nameOnShirt: "Торрес",
+      originalFirstName: "Félix Eduardo",
+      originalLastName: "TORRES CAICEDO",
+      originalNameOnShirt: "TORRES",
+
       dateOfBirth: "11/01/1997",
       age: 29,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "piero-martin-hincapie-reyna",
-      firstName: "Piero Martin",
-      lastName: "HINCAPIÉ REYNA",
-      nameOnShirt: "HINCAPIE",
+      firstName: "Пиеро",
+      lastName: "Инкапие Рейна",
+      nameOnShirt: "Инкапие",
+      originalFirstName: "Piero Martin",
+      originalLastName: "HINCAPIÉ REYNA",
+      originalNameOnShirt: "HINCAPIE",
+
       dateOfBirth: "09/01/2002",
       age: 24,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "joel-leandro-ordonez-guerrero",
-      firstName: "Joel Leandro",
-      lastName: "ORDÓÑEZ GUERRERO",
-      nameOnShirt: "ORDÓÑEZ",
+      firstName: "Хоел",
+      lastName: "Ордон'Ес Герреро",
+      nameOnShirt: "Ордон'Ес",
+      originalFirstName: "Joel Leandro",
+      originalLastName: "ORDÓÑEZ GUERRERO",
+      originalNameOnShirt: "ORDÓÑEZ",
+
       dateOfBirth: "21/04/2004",
       age: 22,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "willian-joel-pacho-tenorio",
-      firstName: "Willian Joel",
-      lastName: "PACHO TENORIO",
-      nameOnShirt: "PACHO",
+      firstName: "Вильиан",
+      lastName: "Пачо Тенорио",
+      nameOnShirt: "Пачо",
+      originalFirstName: "Willian Joel",
+      originalLastName: "PACHO TENORIO",
+      originalNameOnShirt: "PACHO",
+
       dateOfBirth: "16/10/2001",
       age: 24,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "pervis-josue-estupinan-tenorio",
-      firstName: "Pervis Josue",
-      lastName: "ESTUPIÑÁN TENORIO",
-      nameOnShirt: "ESTUPIÑÁN",
+      firstName: "Первис",
+      lastName: "Еступин'Ан Тенорио",
+      nameOnShirt: "Еступин'Ан",
+      originalFirstName: "Pervis Josue",
+      originalLastName: "ESTUPIÑÁN TENORIO",
+      originalNameOnShirt: "ESTUPIÑÁN",
+
       dateOfBirth: "21/01/1998",
       age: 28,
       shirtNumber: 7,
@@ -185,11 +218,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "angelo-smit-preciado-quinonez",
-      firstName: "Ángelo Smit",
-      lastName: "PRECIADO QUIÑONEZ",
-      nameOnShirt: "PRECIADO",
+      firstName: "Анхело",
+      lastName: "Пресиадо Кин'Онес",
+      nameOnShirt: "Пресиадо",
+      originalFirstName: "Ángelo Smit",
+      originalLastName: "PRECIADO QUIÑONEZ",
+      originalNameOnShirt: "PRECIADO",
+
       dateOfBirth: "18/02/1998",
       age: 28,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "jackson-gabriel-porozo-vernaza",
-      firstName: "Jackson Gabriel",
-      lastName: "POROZO VERNAZA",
-      nameOnShirt: "POROZO",
+      firstName: "Хакксон",
+      lastName: "Поросо Вернаса",
+      nameOnShirt: "Поросо",
+      originalFirstName: "Jackson Gabriel",
+      originalLastName: "POROZO VERNAZA",
+      originalNameOnShirt: "POROZO",
+
       dateOfBirth: "04/08/2000",
       age: 25,
       shirtNumber: 25,
@@ -227,11 +268,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "yaimar-abel-medina-ortiz",
-      firstName: "Yaimar Abel",
-      lastName: "MEDINA ORTIZ",
-      nameOnShirt: "MEDINA",
+      firstName: "Йаимар",
+      lastName: "Медина Ортис",
+      nameOnShirt: "Медина",
+      originalFirstName: "Yaimar Abel",
+      originalLastName: "MEDINA ORTIZ",
+      originalNameOnShirt: "MEDINA",
+
       dateOfBirth: "05/11/2004",
       age: 21,
       shirtNumber: 26,
@@ -250,11 +295,15 @@ export const ecuadorProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "jordy-jose-alcivar-macias",
-      firstName: "Jordy Jose",
-      lastName: "ALCÍVAR MACÍAS",
-      nameOnShirt: "ALCIVAR",
+      firstName: "Хордй",
+      lastName: "Алсивар Масиас",
+      nameOnShirt: "Алсивар",
+      originalFirstName: "Jordy Jose",
+      originalLastName: "ALCÍVAR MACÍAS",
+      originalNameOnShirt: "ALCIVAR",
+
       dateOfBirth: "05/08/1999",
       age: 26,
       shirtNumber: 5,
@@ -271,11 +320,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "anthony-lenin-valencia-bajana",
-      firstName: "Anthony Lenin",
-      lastName: "VALENCIA BAJAÑA",
-      nameOnShirt: "A. VALENCIA",
+      firstName: "Антонй",
+      lastName: "Валенсиа Бахан'А",
+      nameOnShirt: "А. Валенсиа",
+      originalFirstName: "Anthony Lenin",
+      originalLastName: "VALENCIA BAJAÑA",
+      originalNameOnShirt: "A. VALENCIA",
+
       dateOfBirth: "21/07/2003",
       age: 22,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "ray-kendry-paez-andrade",
-      firstName: "Ray Kendry",
-      lastName: "PAEZ ANDRADE",
-      nameOnShirt: "KENDRY",
+      firstName: "Рай",
+      lastName: "Паес Андраде",
+      nameOnShirt: "Кендрй",
+      originalFirstName: "Ray Kendry",
+      originalLastName: "PAEZ ANDRADE",
+      originalNameOnShirt: "KENDRY",
+
       dateOfBirth: "04/05/2007",
       age: 19,
       shirtNumber: 10,
@@ -313,11 +370,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "alan-steve-minda-garcia",
-      firstName: "Alan Steve",
-      lastName: "MINDA GARCIA",
-      nameOnShirt: "MINDA",
+      firstName: "Алан",
+      lastName: "Минда Гарсиа",
+      nameOnShirt: "Минда",
+      originalFirstName: "Alan Steve",
+      originalLastName: "MINDA GARCIA",
+      originalNameOnShirt: "MINDA",
+
       dateOfBirth: "14/05/2003",
       age: 23,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "pedro-jeampierre-vite-uca",
-      firstName: "Pedro Jeampierre",
-      lastName: "VITE UCA",
-      nameOnShirt: "VITE",
+      firstName: "Педру",
+      lastName: "Вите Ука",
+      nameOnShirt: "Вите",
+      originalFirstName: "Pedro Jeampierre",
+      originalLastName: "VITE UCA",
+      originalNameOnShirt: "VITE",
+
       dateOfBirth: "09/03/2002",
       age: 24,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "denil-daniel-castillo-preciado",
-      firstName: "Denil Daniel",
-      lastName: "CASTILLO PRECIADO",
-      nameOnShirt: "CASTILLO",
+      firstName: "Денил",
+      lastName: "Кастильо Пресиадо",
+      nameOnShirt: "Кастильо",
+      originalFirstName: "Denil Daniel",
+      originalLastName: "CASTILLO PRECIADO",
+      originalNameOnShirt: "CASTILLO",
+
       dateOfBirth: "24/03/2004",
       age: 22,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "alan-steven-franco-palma",
-      firstName: "Alan Steven",
-      lastName: "FRANCO PALMA",
-      nameOnShirt: "FRANCO",
+      firstName: "Алан",
+      lastName: "Франко Палма",
+      nameOnShirt: "Франко",
+      originalFirstName: "Alan Steven",
+      originalLastName: "FRANCO PALMA",
+      originalNameOnShirt: "FRANCO",
+
       dateOfBirth: "21/08/1998",
       age: 27,
       shirtNumber: 21,
@@ -397,11 +470,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "moises-isaac-caicedo-corozo",
-      firstName: "Moisés Isaac",
-      lastName: "CAICEDO COROZO",
-      nameOnShirt: "M. CAICEDO",
+      firstName: "Моисес",
+      lastName: "Каиседо Коросо",
+      nameOnShirt: "М. Каиседо",
+      originalFirstName: "Moisés Isaac",
+      originalLastName: "CAICEDO COROZO",
+      originalNameOnShirt: "M. CAICEDO",
+
       dateOfBirth: "02/11/2001",
       age: 24,
       shirtNumber: 23,
@@ -420,11 +497,15 @@ export const ecuadorProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "john-yeboah-zamora",
-      firstName: "John",
-      lastName: "YEBOAH ZAMORA",
-      nameOnShirt: "YEBOAH ZAMORA",
+      firstName: "Джон",
+      lastName: "Йебоа Самора",
+      nameOnShirt: "Йебоа Самора",
+      originalFirstName: "John",
+      originalLastName: "YEBOAH ZAMORA",
+      originalNameOnShirt: "YEBOAH ZAMORA",
+
       dateOfBirth: "23/06/2000",
       age: 25,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "kevin-jose-rodriguez-cortez",
-      firstName: "Kevin Jose",
-      lastName: "RODRÍGUEZ CORTEZ",
-      nameOnShirt: "RODRIGUEZ",
+      firstName: "Кевин",
+      lastName: "Родригес Кортес",
+      nameOnShirt: "Родригес",
+      originalFirstName: "Kevin Jose",
+      originalLastName: "RODRÍGUEZ CORTEZ",
+      originalNameOnShirt: "RODRIGUEZ",
+
       dateOfBirth: "04/03/2000",
       age: 26,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "enner-remberto-valencia-lastra",
-      firstName: "Enner Remberto",
-      lastName: "VALENCIA LASTRA",
-      nameOnShirt: "E. VALENCIA",
+      firstName: "Эннер",
+      lastName: "Валенсия",
+      nameOnShirt: "Е. Валенсиа",
+      originalFirstName: "Enner Remberto",
+      originalLastName: "VALENCIA LASTRA",
+      originalNameOnShirt: "E. VALENCIA",
+
       dateOfBirth: "04/11/1989",
       age: 36,
       shirtNumber: 13,
@@ -483,11 +572,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "jordy-josue-caicedo-medina",
-      firstName: "Jordy Josue",
-      lastName: "CAICEDO MEDINA",
-      nameOnShirt: "J. CAICEDO",
+      firstName: "Хордй",
+      lastName: "Каиседо Медина",
+      nameOnShirt: "Дж. Каиседо",
+      originalFirstName: "Jordy Josue",
+      originalLastName: "CAICEDO MEDINA",
+      originalNameOnShirt: "J. CAICEDO",
+
       dateOfBirth: "18/11/1997",
       age: 28,
       shirtNumber: 16,
@@ -504,11 +597,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "gonzalo-jordy-plata-jimenez",
-      firstName: "Gonzalo Jordy",
-      lastName: "PLATA JIMENEZ",
-      nameOnShirt: "PLATA",
+      firstName: "Гонсало",
+      lastName: "Плата Хименес",
+      nameOnShirt: "Плата",
+      originalFirstName: "Gonzalo Jordy",
+      originalLastName: "PLATA JIMENEZ",
+      originalNameOnShirt: "PLATA",
+
       dateOfBirth: "01/11/2000",
       age: 25,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "nilson-david-angulo-ramirez",
-      firstName: "Nilson David",
-      lastName: "ANGULO RAMIREZ",
-      nameOnShirt: "ANGULO",
+      firstName: "Нилсон",
+      lastName: "Ангуло Рамирес",
+      nameOnShirt: "Ангуло",
+      originalFirstName: "Nilson David",
+      originalLastName: "ANGULO RAMIREZ",
+      originalNameOnShirt: "ANGULO",
+
       dateOfBirth: "19/06/2003",
       age: 22,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const ecuadorProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "jeremy-alberto-arevalo-mera",
-      firstName: "Jeremy Alberto",
-      lastName: "AREVALO MERA",
-      nameOnShirt: "AREVALO",
+      firstName: "Херемй",
+      lastName: "Аревало Мера",
+      nameOnShirt: "Аревало",
+      originalFirstName: "Jeremy Alberto",
+      originalLastName: "AREVALO MERA",
+      originalNameOnShirt: "AREVALO",
+
       dateOfBirth: "19/03/2005",
       age: 21,
       shirtNumber: 24,

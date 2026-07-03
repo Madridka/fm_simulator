@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import scotlandFlag from '@/data/nationalTeams/worldCup2026/flags/scotland.png'
 
 export const scotlandProfile: NationalTeamProfile = {
   id: "scotland",
@@ -6,7 +7,7 @@ export const scotlandProfile: NationalTeamProfile = {
   shortName: "SCO",
   fifaCode: "SCO",
   groupId: "C",
-  flagCode: "GB",
+  flag: scotlandFlag,
   rating: 75,
   attackRating: 74,
   midfieldRating: 75,
@@ -15,11 +16,15 @@ export const scotlandProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "angus-fraser-james-gunn",
-      firstName: "Angus Fraser James",
-      lastName: "GUNN",
-      nameOnShirt: "GUNN",
+      firstName: "Ангус",
+      lastName: "Гунн",
+      nameOnShirt: "Гунн",
+      originalFirstName: "Angus Fraser James",
+      originalLastName: "GUNN",
+      originalNameOnShirt: "GUNN",
+
       dateOfBirth: "22/01/1996",
       age: 30,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "liam-patrick-kelly",
-      firstName: "Liam Patrick",
-      lastName: "KELLY",
-      nameOnShirt: "KELLY",
+      firstName: "Лиам",
+      lastName: "Келли",
+      nameOnShirt: "Келли",
+      originalFirstName: "Liam Patrick",
+      originalLastName: "KELLY",
+      originalNameOnShirt: "KELLY",
+
       dateOfBirth: "23/01/1996",
       age: 30,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "craig-sinclair-gordon",
-      firstName: "Craig Sinclair",
-      lastName: "GORDON",
-      nameOnShirt: "GORDON",
+      firstName: "Крейг",
+      lastName: "Гордон",
+      nameOnShirt: "Гордон",
+      originalFirstName: "Craig Sinclair",
+      originalLastName: "GORDON",
+      originalNameOnShirt: "GORDON",
+
       dateOfBirth: "31/12/1982",
       age: 43,
       shirtNumber: 21,
@@ -80,11 +93,15 @@ export const scotlandProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "aaron-buchanan-hickey",
-      firstName: "Aaron Buchanan",
-      lastName: "HICKEY",
-      nameOnShirt: "HICKEY",
+      firstName: "Аарон",
+      lastName: "Хикеи",
+      nameOnShirt: "Хикеи",
+      originalFirstName: "Aaron Buchanan",
+      originalLastName: "HICKEY",
+      originalNameOnShirt: "HICKEY",
+
       dateOfBirth: "10/06/2002",
       age: 24,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "andrew-henry-robertson",
-      firstName: "Andrew Henry",
-      lastName: "ROBERTSON",
-      nameOnShirt: "ROBERTSON",
+      firstName: "Эндрю",
+      lastName: "Робертсон",
+      nameOnShirt: "Робертсон",
+      originalFirstName: "Andrew Henry",
+      originalLastName: "ROBERTSON",
+      originalNameOnShirt: "ROBERTSON",
+
       dateOfBirth: "11/03/1994",
       age: 32,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "grant-campbell-hanley",
-      firstName: "Grant Campbell",
-      lastName: "HANLEY",
-      nameOnShirt: "HANLEY",
+      firstName: "Грант",
+      lastName: "Ханлеи",
+      nameOnShirt: "Ханлеи",
+      originalFirstName: "Grant Campbell",
+      originalLastName: "HANLEY",
+      originalNameOnShirt: "HANLEY",
+
       dateOfBirth: "20/11/1991",
       age: 34,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "kieran-tierney",
-      firstName: "Kieran",
-      lastName: "TIERNEY",
-      nameOnShirt: "TIERNEY",
+      firstName: "Киеран",
+      lastName: "Тиернеи",
+      nameOnShirt: "Тиернеи",
+      originalFirstName: "Kieran",
+      originalLastName: "TIERNEY",
+      originalNameOnShirt: "TIERNEY",
+
       dateOfBirth: "05/06/1997",
       age: 29,
       shirtNumber: 6,
@@ -164,11 +193,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "jack-william-hendry",
-      firstName: "Jack William",
-      lastName: "HENDRY",
-      nameOnShirt: "HENDRY",
+      firstName: "Джек",
+      lastName: "Хендри",
+      nameOnShirt: "Хендри",
+      originalFirstName: "Jack William",
+      originalLastName: "HENDRY",
+      originalNameOnShirt: "HENDRY",
+
       dateOfBirth: "07/05/1995",
       age: 31,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "john-francis-souttar",
-      firstName: "John Francis",
-      lastName: "SOUTTAR",
-      nameOnShirt: "SOUTTAR",
+      firstName: "Джон",
+      lastName: "Сауттар",
+      nameOnShirt: "Сауттар",
+      originalFirstName: "John Francis",
+      originalLastName: "SOUTTAR",
+      originalNameOnShirt: "SOUTTAR",
+
       dateOfBirth: "25/09/1996",
       age: 29,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "dominic-john-hyam",
-      firstName: "Dominic John",
-      lastName: "HYAM",
-      nameOnShirt: "HYAM",
+      firstName: "Доминик",
+      lastName: "Хиам",
+      nameOnShirt: "Хиам",
+      originalFirstName: "Dominic John",
+      originalLastName: "HYAM",
+      originalNameOnShirt: "HYAM",
+
       dateOfBirth: "20/12/1995",
       age: 30,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathan-kenneth-patterson",
-      firstName: "Nathan Kenneth",
-      lastName: "PATTERSON",
-      nameOnShirt: "PATTERSON",
+      firstName: "Натан",
+      lastName: "Паттерсон",
+      nameOnShirt: "Паттерсон",
+      originalFirstName: "Nathan Kenneth",
+      originalLastName: "PATTERSON",
+      originalNameOnShirt: "PATTERSON",
+
       dateOfBirth: "16/10/2001",
       age: 24,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "anthony-ralston",
-      firstName: "Anthony",
-      lastName: "RALSTON",
-      nameOnShirt: "RALSTON",
+      firstName: "Антони",
+      lastName: "Ралстон",
+      nameOnShirt: "Ралстон",
+      originalFirstName: "Anthony",
+      originalLastName: "RALSTON",
+      originalNameOnShirt: "RALSTON",
+
       dateOfBirth: "16/11/1998",
       age: 27,
       shirtNumber: 24,
@@ -269,11 +318,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "scott-fraser-mckenna",
-      firstName: "Scott Fraser",
-      lastName: "MCKENNA",
-      nameOnShirt: "MCKENNA",
+      firstName: "Скотт",
+      lastName: "Мкенна",
+      nameOnShirt: "Мкенна",
+      originalFirstName: "Scott Fraser",
+      originalLastName: "MCKENNA",
+      originalNameOnShirt: "MCKENNA",
+
       dateOfBirth: "12/11/1996",
       age: 29,
       shirtNumber: 26,
@@ -292,11 +345,15 @@ export const scotlandProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "scott-francis-mctominay",
-      firstName: "Scott Francis",
-      lastName: "MCTOMINAY",
-      nameOnShirt: "MCTOMINAY",
+      firstName: "Скотт",
+      lastName: "Мктоминей",
+      nameOnShirt: "Мктоминей",
+      originalFirstName: "Scott Francis",
+      originalLastName: "MCTOMINAY",
+      originalNameOnShirt: "MCTOMINAY",
+
       dateOfBirth: "08/12/1996",
       age: 29,
       shirtNumber: 4,
@@ -313,11 +370,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "john-mcginn",
-      firstName: "John",
-      lastName: "MCGINN",
-      nameOnShirt: "MCGINN",
+      firstName: "Джон",
+      lastName: "Мкджинн",
+      nameOnShirt: "Мкджинн",
+      originalFirstName: "John",
+      originalLastName: "MCGINN",
+      originalNameOnShirt: "MCGINN",
+
       dateOfBirth: "18/10/1994",
       age: 31,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "tyler-robert-fletcher",
-      firstName: "Tyler Robert",
-      lastName: "FLETCHER",
-      nameOnShirt: "FLETCHER",
+      firstName: "Тайлер",
+      lastName: "Флечер",
+      nameOnShirt: "Флечер",
+      originalFirstName: "Tyler Robert",
+      originalLastName: "FLETCHER",
+      originalNameOnShirt: "FLETCHER",
+
       dateOfBirth: "19/03/2007",
       age: 19,
       shirtNumber: 8,
@@ -355,11 +420,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "ryan-christie",
-      firstName: "Ryan",
-      lastName: "CHRISTIE",
-      nameOnShirt: "CHRISTIE",
+      firstName: "Риан",
+      lastName: "Чристие",
+      nameOnShirt: "Чристие",
+      originalFirstName: "Ryan",
+      originalLastName: "CHRISTIE",
+      originalNameOnShirt: "CHRISTIE",
+
       dateOfBirth: "22/02/1995",
       age: 31,
       shirtNumber: 11,
@@ -376,11 +445,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "lewis-ferguson",
-      firstName: "Lewis",
-      lastName: "FERGUSON",
-      nameOnShirt: "FERGUSON",
+      firstName: "Леуис",
+      lastName: "Фергусон",
+      nameOnShirt: "Фергусон",
+      originalFirstName: "Lewis",
+      originalLastName: "FERGUSON",
+      originalNameOnShirt: "FERGUSON",
+
       dateOfBirth: "24/08/1999",
       age: 26,
       shirtNumber: 19,
@@ -397,11 +470,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "kenneth-mclean",
-      firstName: "Kenneth",
-      lastName: "MCLEAN",
-      nameOnShirt: "MCLEAN",
+      firstName: "Кеннет",
+      lastName: "Мклин",
+      nameOnShirt: "Мклин",
+      originalFirstName: "Kenneth",
+      originalLastName: "MCLEAN",
+      originalNameOnShirt: "MCLEAN",
+
       dateOfBirth: "08/01/1992",
       age: 34,
       shirtNumber: 23,
@@ -420,11 +497,15 @@ export const scotlandProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "lyndon-john-dykes",
-      firstName: "Lyndon John",
-      lastName: "DYKES",
-      nameOnShirt: "DYKES",
+      firstName: "Линдон",
+      lastName: "Дикес",
+      nameOnShirt: "Дикес",
+      originalFirstName: "Lyndon John",
+      originalLastName: "DYKES",
+      originalNameOnShirt: "DYKES",
+
       dateOfBirth: "07/10/1995",
       age: 30,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "che-sac-everton-fred-adams",
-      firstName: "Che Sac Everton Fred",
-      lastName: "ADAMS",
-      nameOnShirt: "ADAMS",
+      firstName: "Че",
+      lastName: "Адамс",
+      nameOnShirt: "Адамс",
+      originalFirstName: "Che Sac Everton Fred",
+      originalLastName: "ADAMS",
+      originalNameOnShirt: "ADAMS",
+
       dateOfBirth: "13/07/1996",
       age: 29,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "ross-cameron-stewart",
-      firstName: "Ross Cameron",
-      lastName: "STEWART",
-      nameOnShirt: "STEWART",
+      firstName: "Росс",
+      lastName: "Стеуарт",
+      nameOnShirt: "Стеуарт",
+      originalFirstName: "Ross Cameron",
+      originalLastName: "STEWART",
+      originalNameOnShirt: "STEWART",
+
       dateOfBirth: "11/07/1996",
       age: 29,
       shirtNumber: 14,
@@ -483,11 +572,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "ben-gannon-doak",
-      firstName: "Ben Gannon",
-      lastName: "DOAK",
-      nameOnShirt: "GANNON DOAK",
+      firstName: "Бен",
+      lastName: "Доак",
+      nameOnShirt: "Ганнон Доак",
+      originalFirstName: "Ben Gannon",
+      originalLastName: "DOAK",
+      originalNameOnShirt: "GANNON DOAK",
+
       dateOfBirth: "11/11/2005",
       age: 20,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "george-david-eric-hirst",
-      firstName: "George David Eric",
-      lastName: "HIRST",
-      nameOnShirt: "HIRST",
+      firstName: "Джеордже",
+      lastName: "Хирст",
+      nameOnShirt: "Хирст",
+      originalFirstName: "George David Eric",
+      originalLastName: "HIRST",
+      originalNameOnShirt: "HIRST",
+
       dateOfBirth: "15/02/1999",
       age: 27,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "lawrence-shankland",
-      firstName: "Lawrence",
-      lastName: "SHANKLAND",
-      nameOnShirt: "SHANKLAND",
+      firstName: "Ларенсе",
+      lastName: "Шанкланд",
+      nameOnShirt: "Шанкланд",
+      originalFirstName: "Lawrence",
+      originalLastName: "SHANKLAND",
+      originalNameOnShirt: "SHANKLAND",
+
       dateOfBirth: "10/08/1995",
       age: 30,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const scotlandProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "findlay-kenneth-curtis",
-      firstName: "Findlay Kenneth",
-      lastName: "CURTIS",
-      nameOnShirt: "CURTIS",
+      firstName: "Финдлей",
+      lastName: "Куртис",
+      nameOnShirt: "Куртис",
+      originalFirstName: "Findlay Kenneth",
+      originalLastName: "CURTIS",
+      originalNameOnShirt: "CURTIS",
+
       dateOfBirth: "09/06/2006",
       age: 20,
       shirtNumber: 25,

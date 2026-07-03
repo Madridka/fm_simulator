@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import jordanFlag from '@/data/nationalTeams/worldCup2026/flags/jordan.png'
 
 export const jordanProfile: NationalTeamProfile = {
   id: "jordan",
@@ -6,7 +7,7 @@ export const jordanProfile: NationalTeamProfile = {
   shortName: "JOR",
   fifaCode: "JOR",
   groupId: "J",
-  flagCode: "JO",
+  flag: jordanFlag,
   rating: 70,
   attackRating: 69,
   midfieldRating: 70,
@@ -15,11 +16,15 @@ export const jordanProfile: NationalTeamProfile = {
   secondaryColor: "#000000",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "yazeed-moien-hasan-abulaila",
-      firstName: "Yazeed Mo'ien Hasan",
-      lastName: "ABULAILA",
-      nameOnShirt: "YAZEED",
+      firstName: "Йазид",
+      lastName: "Абулайла",
+      nameOnShirt: "Йазид",
+      originalFirstName: "Yazeed Mo'ien Hasan",
+      originalLastName: "ABULAILA",
+      originalNameOnShirt: "YAZEED",
+
       dateOfBirth: "08/01/1993",
       age: 33,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "noureddin-zaid-khaleel-bani-ateyah",
-      firstName: "Noureddin Zaid Khaleel",
-      lastName: "BANI ATEYAH",
-      nameOnShirt: "BANI ATEYAH",
+      firstName: "Нуреддин",
+      lastName: "Бани Атейах",
+      nameOnShirt: "Бани Атейах",
+      originalFirstName: "Noureddin Zaid Khaleel",
+      originalLastName: "BANI ATEYAH",
+      originalNameOnShirt: "BANI ATEYAH",
+
       dateOfBirth: "25/01/1993",
       age: 33,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 140_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdallah-raed-mahmoud-alfakhori",
-      firstName: "Abdallah Ra'ed Mahmoud",
-      lastName: "ALFAKHORI",
-      nameOnShirt: "ALFAKHORI",
+      firstName: "Абдалла",
+      lastName: "Аль-Фахори",
+      nameOnShirt: "Аль-Фахори",
+      originalFirstName: "Abdallah Ra'ed Mahmoud",
+      originalLastName: "ALFAKHORI",
+      originalNameOnShirt: "ALFAKHORI",
+
       dateOfBirth: "22/01/2000",
       age: 26,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const jordanProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "mohammad-ali-hasan-abuhasheesh",
-      firstName: "Mohammad Ali Hasan",
-      lastName: "ABUHASHEESH",
-      nameOnShirt: "ABU HASHEESH",
+      firstName: "Мохаммад",
+      lastName: "Абухашиш",
+      nameOnShirt: "Абу Хашиш",
+      originalFirstName: "Mohammad Ali Hasan",
+      originalLastName: "ABUHASHEESH",
+      originalNameOnShirt: "ABU HASHEESH",
+
       dateOfBirth: "09/05/1995",
       age: 31,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdallah-mousa-musallam-nasib",
-      firstName: "Abdallah Mousa Musallam",
-      lastName: "NASIB",
-      nameOnShirt: "NASIB",
+      firstName: "Абдалла",
+      lastName: "Насиб",
+      nameOnShirt: "Насиб",
+      originalFirstName: "Abdallah Mousa Musallam",
+      originalLastName: "NASIB",
+      originalNameOnShirt: "NASIB",
+
       dateOfBirth: "25/02/1994",
       age: 32,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "husam-ali-mohammad-abudahab",
-      firstName: "Husam Ali Mohammad",
-      lastName: "ABUDAHAB",
-      nameOnShirt: "ABU DAHAB",
+      firstName: "Хусам",
+      lastName: "Абудахаб",
+      nameOnShirt: "Абу Дахаб",
+      originalFirstName: "Husam Ali Mohammad",
+      originalLastName: "ABUDAHAB",
+      originalNameOnShirt: "ABU DAHAB",
+
       dateOfBirth: "13/05/2000",
       age: 26,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "yazan-mousa-mahmoud-alarab",
-      firstName: "Yazan Mousa Mahmoud",
-      lastName: "ALARAB",
-      nameOnShirt: "ALARAB",
+      firstName: "Йазан",
+      lastName: "Аль-Араб",
+      nameOnShirt: "Аль-Араб",
+      originalFirstName: "Yazan Mousa Mahmoud",
+      originalLastName: "ALARAB",
+      originalNameOnShirt: "ALARAB",
+
       dateOfBirth: "31/01/1996",
       age: 30,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammad-majed-jamil-abualnadi",
-      firstName: "Mohammad Majed Jamil",
-      lastName: "ABUALNADI",
-      nameOnShirt: "ABU ALNADI",
+      firstName: "Мохаммад",
+      lastName: "Абуалнади",
+      nameOnShirt: "Абу аль-Нади",
+      originalFirstName: "Mohammad Majed Jamil",
+      originalLastName: "ABUALNADI",
+      originalNameOnShirt: "ABU ALNADI",
+
       dateOfBirth: "08/02/2001",
       age: 25,
       shirtNumber: 16,
@@ -185,11 +218,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "saleem-amer-saleem-obaid",
-      firstName: "Saleem Amer Saleem",
-      lastName: "OBAID",
-      nameOnShirt: "SALEEM",
+      firstName: "Салим",
+      lastName: "Обайд",
+      nameOnShirt: "Салим",
+      originalFirstName: "Saleem Amer Saleem",
+      originalLastName: "OBAID",
+      originalNameOnShirt: "SALEEM",
+
       dateOfBirth: "17/01/1992",
       age: 34,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 250_000,
       isInjured: false,
     },
-    {
+        {
       id: "saed-ahmad-salameh-alrosan",
-      firstName: "Sa'ed Ahmad Salameh",
-      lastName: "ALROSAN",
-      nameOnShirt: "SA'ED",
+      firstName: "Са'Ед",
+      lastName: "Аль-Росан",
+      nameOnShirt: "Са'Ед",
+      originalFirstName: "Sa'ed Ahmad Salameh",
+      originalLastName: "ALROSAN",
+      originalNameOnShirt: "SA'ED",
+
       dateOfBirth: "01/02/1997",
       age: 29,
       shirtNumber: 19,
@@ -227,11 +268,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "ehsan-manel-farhan-haddad",
-      firstName: "Ehsan Manel Farhan",
-      lastName: "HADDAD",
-      nameOnShirt: "EHSAN",
+      firstName: "Ехсан",
+      lastName: "Хаддад",
+      nameOnShirt: "Ехсан",
+      originalFirstName: "Ehsan Manel Farhan",
+      originalLastName: "HADDAD",
+      originalNameOnShirt: "EHSAN",
+
       dateOfBirth: "05/02/1994",
       age: 32,
       shirtNumber: 23,
@@ -248,11 +293,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "anas-said-ghazi-badawi",
-      firstName: "Anas Said Ghazi",
-      lastName: "BADAWI",
-      nameOnShirt: "BADAWI",
+      firstName: "Анас",
+      lastName: "Бадави",
+      nameOnShirt: "Бадави",
+      originalFirstName: "Anas Said Ghazi",
+      originalLastName: "BADAWI",
+      originalNameOnShirt: "BADAWI",
+
       dateOfBirth: "13/09/1997",
       age: 28,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const jordanProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "amer-rasem-adel-jamous",
-      firstName: "Amer Rasem Adel",
-      lastName: "JAMOUS",
-      nameOnShirt: "JAMOUS",
+      firstName: "Амер",
+      lastName: "Джамус",
+      nameOnShirt: "Джамус",
+      originalFirstName: "Amer Rasem Adel",
+      originalLastName: "JAMOUS",
+      originalNameOnShirt: "JAMOUS",
+
       dateOfBirth: "03/07/2002",
       age: 23,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "noor-al-deen-mahmoud-ali-al-rawabdeh",
-      firstName: "Noor Al-Deen Mahmoud Ali",
-      lastName: "AL RAWABDEH",
-      nameOnShirt: "ALRAWABDEH",
+      firstName: "Нур",
+      lastName: "Ал Равабдех",
+      nameOnShirt: "Аль-Равабдех",
+      originalFirstName: "Noor Al-Deen Mahmoud Ali",
+      originalLastName: "AL RAWABDEH",
+      originalNameOnShirt: "ALRAWABDEH",
+
       dateOfBirth: "24/02/1997",
       age: 29,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "rajaei-ayed-fadel-hasan",
-      firstName: "Raja'ei Ayed Fadel",
-      lastName: "HASAN",
-      nameOnShirt: "RAJA'EI",
+      firstName: "Раджа'Еи",
+      lastName: "Хасан",
+      nameOnShirt: "Раджа'Еи",
+      originalFirstName: "Raja'ei Ayed Fadel",
+      originalLastName: "HASAN",
+      originalNameOnShirt: "RAJA'EI",
+
       dateOfBirth: "25/07/1993",
       age: 32,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-mohammad-sami-sadeh",
-      firstName: "Ibrahim Mohammad Sami",
-      lastName: "SA'DEH",
-      nameOnShirt: "SA'DEH",
+      firstName: "Ибрахим",
+      lastName: "Са'Дех",
+      nameOnShirt: "Са'Дех",
+      originalFirstName: "Ibrahim Mohammad Sami",
+      originalLastName: "SA'DEH",
+      originalNameOnShirt: "SA'DEH",
+
       dateOfBirth: "27/04/2000",
       age: 26,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammad-ahmed-mohammad-taha",
-      firstName: "Mohammad Ahmed Mohammad",
-      lastName: "TAHA",
-      nameOnShirt: "ABU GHOUSH",
+      firstName: "Мохаммад",
+      lastName: "Таха",
+      nameOnShirt: "Абу Гуш",
+      originalFirstName: "Mohammad Ahmed Mohammad",
+      originalLastName: "TAHA",
+      originalNameOnShirt: "ABU GHOUSH",
+
       dateOfBirth: "13/07/2005",
       age: 20,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 200_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohannad-mahmoud-saleh-abu-taha",
-      firstName: "Mohannad Mahmoud Saleh",
-      lastName: "ABU TAHA",
-      nameOnShirt: "ABU TAHA",
+      firstName: "Моханнад",
+      lastName: "Абу Таха",
+      nameOnShirt: "Абу Таха",
+      originalFirstName: "Mohannad Mahmoud Saleh",
+      originalLastName: "ABU TAHA",
+      originalNameOnShirt: "ABU TAHA",
+
       dateOfBirth: "02/02/2003",
       age: 23,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "nizar-mahmoud-ahmed-al-rashdan",
-      firstName: "Nizar Mahmoud Ahmed",
-      lastName: "AL-RASHDAN",
-      nameOnShirt: "NIZAR",
+      firstName: "Низар",
+      lastName: "Ал-Рашдан",
+      nameOnShirt: "Низар",
+      originalFirstName: "Nizar Mahmoud Ahmed",
+      originalLastName: "AL-RASHDAN",
+      originalNameOnShirt: "NIZAR",
+
       dateOfBirth: "23/03/1999",
       age: 27,
       shirtNumber: 21,
@@ -418,11 +495,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammad-ratib-mohammad-aldaoud",
-      firstName: "Mohammad Ratib Mohammad",
-      lastName: "ALDAOUD",
-      nameOnShirt: "ALDAOUD",
+      firstName: "Мохаммад",
+      lastName: "Аль-Дауд",
+      nameOnShirt: "Аль-Дауд",
+      originalFirstName: "Mohammad Ratib Mohammad",
+      originalLastName: "ALDAOUD",
+      originalNameOnShirt: "ALDAOUD",
+
       dateOfBirth: "12/04/1992",
       age: 34,
       shirtNumber: 25,
@@ -441,11 +522,15 @@ export const jordanProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "mohammad-faisal-yousef-abu-zraiq",
-      firstName: "Mohammad Faisal Yousef",
-      lastName: "ABU ZRAIQ",
-      nameOnShirt: "ABU ZRAIQ",
+      firstName: "Мохаммад",
+      lastName: "Абу Зрайк",
+      nameOnShirt: "Абу Зрайк",
+      originalFirstName: "Mohammad Faisal Yousef",
+      originalLastName: "ABU ZRAIQ",
+      originalNameOnShirt: "ABU ZRAIQ",
+
       dateOfBirth: "30/12/1997",
       age: 28,
       shirtNumber: 7,
@@ -462,11 +547,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-iyad-ali-olwan",
-      firstName: "Ali Iyad Ali",
-      lastName: "OLWAN",
-      nameOnShirt: "OLWAN",
+      firstName: "Али",
+      lastName: "Олван",
+      nameOnShirt: "Олван",
+      originalFirstName: "Ali Iyad Ali",
+      originalLastName: "OLWAN",
+      originalNameOnShirt: "OLWAN",
+
       dateOfBirth: "26/03/2000",
       age: 26,
       shirtNumber: 9,
@@ -483,11 +572,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "mousa-mohammad-mousa-suleiman",
-      firstName: "Mousa Mohammad Mousa",
-      lastName: "SULEIMAN",
-      nameOnShirt: "ALTAMARI",
+      firstName: "Муса",
+      lastName: "Сулеиман",
+      nameOnShirt: "Аль-Тамари",
+      originalFirstName: "Mousa Mohammad Mousa",
+      originalLastName: "SULEIMAN",
+      originalNameOnShirt: "ALTAMARI",
+
       dateOfBirth: "10/06/1997",
       age: 29,
       shirtNumber: 10,
@@ -504,11 +597,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "odeh-burhan-shehadeh-fakhoury",
-      firstName: "Odeh Burhan Shehadeh",
-      lastName: "FAKHOURY",
-      nameOnShirt: "ODEH",
+      firstName: "Одех",
+      lastName: "Фахурй",
+      nameOnShirt: "Одех",
+      originalFirstName: "Odeh Burhan Shehadeh",
+      originalLastName: "FAKHOURY",
+      originalNameOnShirt: "ODEH",
+
       dateOfBirth: "22/11/2005",
       age: 20,
       shirtNumber: 11,
@@ -525,11 +622,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 230_000,
       isInjured: false,
     },
-    {
+        {
       id: "mahmoud-nayef-ahmad-almardi",
-      firstName: "Mahmoud Nayef Ahmad",
-      lastName: "ALMARDI",
-      nameOnShirt: "ALMARDI",
+      firstName: "Махмуд",
+      lastName: "Аль-Марди",
+      nameOnShirt: "Аль-Марди",
+      originalFirstName: "Mahmoud Nayef Ahmad",
+      originalLastName: "ALMARDI",
+      originalNameOnShirt: "ALMARDI",
+
       dateOfBirth: "06/10/1993",
       age: 32,
       shirtNumber: 13,
@@ -546,11 +647,15 @@ export const jordanProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-ahmad-ali-azaizeh",
-      firstName: "Ali Ahmad Ali",
-      lastName: "AZAIZEH",
-      nameOnShirt: "AZAIZEH",
+      firstName: "Али",
+      lastName: "Азайзех",
+      nameOnShirt: "Азайзех",
+      originalFirstName: "Ali Ahmad Ali",
+      originalLastName: "AZAIZEH",
+      originalNameOnShirt: "AZAIZEH",
+
       dateOfBirth: "13/04/2004",
       age: 22,
       shirtNumber: 24,

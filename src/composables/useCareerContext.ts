@@ -67,10 +67,18 @@ export const useCareerContext = () => {
     return gameStore.selectedClub
   })
 
-  const teamFlag = computed(() =>
-    isWorldCupMode.value && worldCupStore.selectedTeam
-      ? flagEmoji(worldCupStore.selectedTeam.flagCode)
-      : undefined,
+  const teamFlag = computed(() => {
+    if (!isWorldCupMode.value || !worldCupStore.selectedTeam) {
+      return undefined
+    }
+    if (worldCupStore.selectedTeam.flagCode) {
+      return flagEmoji(worldCupStore.selectedTeam.flagCode)
+    }
+    return undefined
+  })
+
+  const teamFlagUrl = computed(() =>
+    isWorldCupMode.value ? worldCupStore.selectedTeam?.flag : undefined,
   )
 
   const lineup = computed<ClubLineup | undefined>(() => {
@@ -120,6 +128,7 @@ export const useCareerContext = () => {
     selectedTeamId,
     selectedClub,
     teamFlag,
+    teamFlagUrl,
     lineup,
     playerStats,
     updateLineup,

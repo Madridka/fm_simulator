@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import iranFlag from '@/data/nationalTeams/worldCup2026/flags/iran.png'
 
 export const iranProfile: NationalTeamProfile = {
   id: "iran",
@@ -6,7 +7,7 @@ export const iranProfile: NationalTeamProfile = {
   shortName: "IRN",
   fifaCode: "IRN",
   groupId: "G",
-  flagCode: "IR",
+  flag: iranFlag,
   rating: 76,
   attackRating: 75,
   midfieldRating: 76,
@@ -15,11 +16,15 @@ export const iranProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "ali-reza-safarbeiranvand",
-      firstName: "Ali Reza",
-      lastName: "SAFARBEIRANVAND",
-      nameOnShirt: "BEIRANVAND",
+      firstName: "Али",
+      lastName: "Сафарбеиранванд",
+      nameOnShirt: "Беиранванд",
+      originalFirstName: "Ali Reza",
+      originalLastName: "SAFARBEIRANVAND",
+      originalNameOnShirt: "BEIRANVAND",
+
       dateOfBirth: "21/09/1992",
       age: 33,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "seyedpayam-niazmand",
-      firstName: "Seyedpayam",
-      lastName: "NIAZMAND",
-      nameOnShirt: "PAYAM",
+      firstName: "Сейедпайам",
+      lastName: "Ниазманд",
+      nameOnShirt: "Пайам",
+      originalFirstName: "Seyedpayam",
+      originalLastName: "NIAZMAND",
+      originalNameOnShirt: "PAYAM",
+
       dateOfBirth: "06/04/1995",
       age: 31,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "seyedhossein-hosseini",
-      firstName: "Seyedhossein",
-      lastName: "HOSSEINI",
-      nameOnShirt: "HOSSEINI",
+      firstName: "Сейезоссеин",
+      lastName: "Хоссеини",
+      nameOnShirt: "Хоссеини",
+      originalFirstName: "Seyedhossein",
+      originalLastName: "HOSSEINI",
+      originalNameOnShirt: "HOSSEINI",
+
       dateOfBirth: "30/06/1992",
       age: 33,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const iranProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "saleh-hardani-kherad",
-      firstName: "Saleh",
-      lastName: "HARDANI KHERAD",
-      nameOnShirt: "SALEH",
+      firstName: "Салех",
+      lastName: "Хардани Херад",
+      nameOnShirt: "Салех",
+      originalFirstName: "Saleh",
+      originalLastName: "HARDANI KHERAD",
+      originalNameOnShirt: "SALEH",
+
       dateOfBirth: "26/12/1998",
       age: 27,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "ehsan-haji-safi",
-      firstName: "Ehsan",
-      lastName: "HAJI SAFI",
-      nameOnShirt: "E. HAJISAFI",
+      firstName: "Ехсан",
+      lastName: "Хаджи Сафи",
+      nameOnShirt: "Е. Хаджисафи",
+      originalFirstName: "Ehsan",
+      originalLastName: "HAJI SAFI",
+      originalNameOnShirt: "E. HAJISAFI",
+
       dateOfBirth: "25/02/1990",
       age: 36,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "shojae-khalilzadeh",
-      firstName: "Shojae",
-      lastName: "KHALILZADEH",
-      nameOnShirt: "SHOJA",
+      firstName: "Шоджае",
+      lastName: "Халилзадех",
+      nameOnShirt: "Шоджа",
+      originalFirstName: "Shojae",
+      originalLastName: "KHALILZADEH",
+      originalNameOnShirt: "SHOJA",
+
       dateOfBirth: "14/05/1989",
       age: 37,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "milad-mohammadikeshmarzi",
-      firstName: "Milad",
-      lastName: "MOHAMMADIKESHMARZI",
-      nameOnShirt: "M. MOHAMMADI",
+      firstName: "Милад",
+      lastName: "Мохаммадикешмарзи",
+      nameOnShirt: "М. Мохаммади",
+      originalFirstName: "Milad",
+      originalLastName: "MOHAMMADIKESHMARZI",
+      originalNameOnShirt: "M. MOHAMMADI",
+
       dateOfBirth: "29/09/1993",
       age: 32,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammadhossein-kanani-zadegan",
-      firstName: "Mohammadhossein",
-      lastName: "KANANI ZADEGAN",
-      nameOnShirt: "KANANI",
+      firstName: "Мохаммазоссеин",
+      lastName: "Канани Задеган",
+      nameOnShirt: "Канани",
+      originalFirstName: "Mohammadhossein",
+      originalLastName: "KANANI ZADEGAN",
+      originalNameOnShirt: "KANANI",
+
       dateOfBirth: "23/03/1994",
       age: 32,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "arya-yousefi",
-      firstName: "Arya",
-      lastName: "YOUSEFI",
-      nameOnShirt: "ARYA",
+      firstName: "Арйа",
+      lastName: "Йусефи",
+      nameOnShirt: "Арйа",
+      originalFirstName: "Arya",
+      originalLastName: "YOUSEFI",
+      originalNameOnShirt: "ARYA",
+
       dateOfBirth: "22/04/2002",
       age: 24,
       shirtNumber: 17,
@@ -206,11 +243,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-nemati",
-      firstName: "Ali",
-      lastName: "NEMATI",
-      nameOnShirt: "ALI",
+      firstName: "Али",
+      lastName: "Немати",
+      nameOnShirt: "Али",
+      originalFirstName: "Ali",
+      originalLastName: "NEMATI",
+      originalNameOnShirt: "ALI",
+
       dateOfBirth: "08/02/1996",
       age: 30,
       shirtNumber: 19,
@@ -227,11 +268,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "ramin-rezaeiansemeskandi",
-      firstName: "Ramin",
-      lastName: "REZAEIANSEMESKANDI",
-      nameOnShirt: "RAMIN",
+      firstName: "Рамин",
+      lastName: "Резаеиансемесканди",
+      nameOnShirt: "Рамин",
+      originalFirstName: "Ramin",
+      originalLastName: "REZAEIANSEMESKANDI",
+      originalNameOnShirt: "RAMIN",
+
       dateOfBirth: "21/03/1990",
       age: 36,
       shirtNumber: 23,
@@ -248,11 +293,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "danial-iri",
-      firstName: "Danial",
-      lastName: "IRI",
-      nameOnShirt: "DANIAL",
+      firstName: "Даниал",
+      lastName: "Ири",
+      nameOnShirt: "Даниал",
+      originalFirstName: "Danial",
+      originalLastName: "IRI",
+      originalNameOnShirt: "DANIAL",
+
       dateOfBirth: "26/10/2003",
       age: 22,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const iranProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "saeid-ezatolahi-afagh",
-      firstName: "Saeid",
-      lastName: "EZATOLAHI AFAGH",
-      nameOnShirt: "S. EZATOLAHI",
+      firstName: "Саеид",
+      lastName: "Езатолахи Афаг",
+      nameOnShirt: "С. Езатолахи",
+      originalFirstName: "Saeid",
+      originalLastName: "EZATOLAHI AFAGH",
+      originalNameOnShirt: "S. EZATOLAHI",
+
       dateOfBirth: "01/10/1996",
       age: 29,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "alireza-jahanbakhsh-jirandeh",
-      firstName: "Alireza",
-      lastName: "JAHANBAKHSH JIRANDEH",
-      nameOnShirt: "A. JAHANBAKHSH",
+      firstName: "Алиреза",
+      lastName: "Джаханбахш",
+      nameOnShirt: "А. Джаханбахш",
+      originalFirstName: "Alireza",
+      originalLastName: "JAHANBAKHSH JIRANDEH",
+      originalNameOnShirt: "A. JAHANBAKHSH",
+
       dateOfBirth: "11/08/1993",
       age: 32,
       shirtNumber: 7,
@@ -313,11 +370,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammad-mohebbi",
-      firstName: "Mohammad",
-      lastName: "MOHEBBI",
-      nameOnShirt: "M. MOHEBBI",
+      firstName: "Мохаммад",
+      lastName: "Мохебби",
+      nameOnShirt: "М. Мохебби",
+      originalFirstName: "Mohammad",
+      originalLastName: "MOHEBBI",
+      originalNameOnShirt: "M. MOHEBBI",
+
       dateOfBirth: "20/12/1998",
       age: 27,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "seyed-saman-ghoddoos",
-      firstName: "Seyed Saman",
-      lastName: "GHODDOOS",
-      nameOnShirt: "GHODDOS",
+      firstName: "Сейед",
+      lastName: "Годдус",
+      nameOnShirt: "Годдос",
+      originalFirstName: "Seyed Saman",
+      originalLastName: "GHODDOOS",
+      originalNameOnShirt: "GHODDOS",
+
       dateOfBirth: "06/09/1993",
       age: 32,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "roozbeh-cheshmi",
-      firstName: "Roozbeh",
-      lastName: "CHESHMI",
-      nameOnShirt: "ROOZBEH",
+      firstName: "Рузбех",
+      lastName: "Чешми",
+      nameOnShirt: "Рузбех",
+      originalFirstName: "Roozbeh",
+      originalLastName: "CHESHMI",
+      originalNameOnShirt: "ROOZBEH",
+
       dateOfBirth: "24/07/1993",
       age: 32,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mahdi-torabi",
-      firstName: "Mahdi",
-      lastName: "TORABI",
-      nameOnShirt: "M. TORABI",
+      firstName: "Махди",
+      lastName: "Тораби",
+      nameOnShirt: "М. Тораби",
+      originalFirstName: "Mahdi",
+      originalLastName: "TORABI",
+      originalNameOnShirt: "M. TORABI",
+
       dateOfBirth: "10/09/1994",
       age: 31,
       shirtNumber: 16,
@@ -397,11 +470,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammad-ghorbani",
-      firstName: "Mohammad",
-      lastName: "GHORBANI",
-      nameOnShirt: "MOHAMMAD",
+      firstName: "Мохаммад",
+      lastName: "Горбани",
+      nameOnShirt: "Мохаммад",
+      originalFirstName: "Mohammad",
+      originalLastName: "GHORBANI",
+      originalNameOnShirt: "MOHAMMAD",
+
       dateOfBirth: "07/10/2001",
       age: 24,
       shirtNumber: 21,
@@ -418,11 +495,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "amirmohammad-razaghinia",
-      firstName: "Amirmohammad",
-      lastName: "RAZAGHINIA",
-      nameOnShirt: "RAZAGH",
+      firstName: "Амирмохаммад",
+      lastName: "Разагиниа",
+      nameOnShirt: "Разаг",
+      originalFirstName: "Amirmohammad",
+      originalLastName: "RAZAGHINIA",
+      originalNameOnShirt: "RAZAGH",
+
       dateOfBirth: "11/04/2006",
       age: 20,
       shirtNumber: 26,
@@ -441,11 +522,15 @@ export const iranProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "mehdi-taremi",
-      firstName: "Mehdi",
-      lastName: "TAREMI",
-      nameOnShirt: "TAREMI",
+      firstName: "Мехди",
+      lastName: "Тареми",
+      nameOnShirt: "Тареми",
+      originalFirstName: "Mehdi",
+      originalLastName: "TAREMI",
+      originalNameOnShirt: "TAREMI",
+
       dateOfBirth: "18/07/1992",
       age: 33,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "mehdi-ghayedi",
-      firstName: "Mehdi",
-      lastName: "GHAYEDI",
-      nameOnShirt: "MEHDI GHAYEDI",
+      firstName: "Мехди",
+      lastName: "Гайеди",
+      nameOnShirt: "Мехди Гайеди",
+      originalFirstName: "Mehdi",
+      originalLastName: "GHAYEDI",
+      originalNameOnShirt: "MEHDI GHAYEDI",
+
       dateOfBirth: "05/12/1998",
       age: 27,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-alipourghara",
-      firstName: "Ali",
-      lastName: "ALIPOURGHARA",
-      nameOnShirt: "A. ALIPOUR",
+      firstName: "Али",
+      lastName: "Аль-Ипургара",
+      nameOnShirt: "А. аль-Ипур",
+      originalFirstName: "Ali",
+      originalLastName: "ALIPOURGHARA",
+      originalNameOnShirt: "A. ALIPOUR",
+
       dateOfBirth: "11/11/1995",
       age: 30,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "amirhossein-hosseinzadehtazehgheshlagh",
-      firstName: "Amirhossein",
-      lastName: "HOSSEINZADEHTAZEHGHESHLAGH",
-      nameOnShirt: "AMIRHOSSEIN",
+      firstName: "Амирхоссеин",
+      lastName: "Хоссеинзадехтазехгешлаг",
+      nameOnShirt: "Амирхоссеин",
+      originalFirstName: "Amirhossein",
+      originalLastName: "HOSSEINZADEHTAZEHGHESHLAGH",
+      originalNameOnShirt: "AMIRHOSSEIN",
+
       dateOfBirth: "30/10/2000",
       age: 25,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "shahriyar-moghanloo",
-      firstName: "Shahriyar",
-      lastName: "MOGHANLOO",
-      nameOnShirt: "SHAHRIYAR",
+      firstName: "Шахрийар",
+      lastName: "Моганлу",
+      nameOnShirt: "Шахрийар",
+      originalFirstName: "Shahriyar",
+      originalLastName: "MOGHANLOO",
+      originalNameOnShirt: "SHAHRIYAR",
+
       dateOfBirth: "21/12/1994",
       age: 31,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const iranProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "dennis-dargahi",
-      firstName: "Dennis",
-      lastName: "DARGAHI",
-      nameOnShirt: "DARGAHI",
+      firstName: "Деннис",
+      lastName: "Даргахи",
+      nameOnShirt: "Даргахи",
+      originalFirstName: "Dennis",
+      originalLastName: "DARGAHI",
+      originalNameOnShirt: "DARGAHI",
+
       dateOfBirth: "09/01/1997",
       age: 29,
       shirtNumber: 24,

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import austriaFlag from '@/data/nationalTeams/worldCup2026/flags/austria.png'
 
 export const austriaProfile: NationalTeamProfile = {
   id: "austria",
@@ -6,7 +7,7 @@ export const austriaProfile: NationalTeamProfile = {
   shortName: "AUT",
   fifaCode: "AUT",
   groupId: "J",
-  flagCode: "AT",
+  flag: austriaFlag,
   rating: 78,
   attackRating: 77,
   midfieldRating: 78,
@@ -15,11 +16,15 @@ export const austriaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "alexander-schlager",
-      firstName: "Alexander",
-      lastName: "SCHLAGER",
-      nameOnShirt: "SCHLAGER",
+      firstName: "Александер",
+      lastName: "Шлагер",
+      nameOnShirt: "Шлагер",
+      originalFirstName: "Alexander",
+      originalLastName: "SCHLAGER",
+      originalNameOnShirt: "SCHLAGER",
+
       dateOfBirth: "01/02/1996",
       age: 30,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "florian-wiegele",
-      firstName: "Florian",
-      lastName: "WIEGELE",
-      nameOnShirt: "WIEGELE",
+      firstName: "Флориан",
+      lastName: "Вигеле",
+      nameOnShirt: "Вигеле",
+      originalFirstName: "Florian",
+      originalLastName: "WIEGELE",
+      originalNameOnShirt: "WIEGELE",
+
       dateOfBirth: "21/03/2001",
       age: 25,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "patrick-pentz",
-      firstName: "Patrick",
-      lastName: "PENTZ",
-      nameOnShirt: "PENTZ",
+      firstName: "Патрик",
+      lastName: "Пентц",
+      nameOnShirt: "Пентц",
+      originalFirstName: "Patrick",
+      originalLastName: "PENTZ",
+      originalNameOnShirt: "PENTZ",
+
       dateOfBirth: "02/01/1997",
       age: 29,
       shirtNumber: 13,
@@ -80,11 +93,15 @@ export const austriaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "david-leopold-affengruber",
-      firstName: "David Leopold",
-      lastName: "AFFENGRUBER",
-      nameOnShirt: "AFFENGRUBER",
+      firstName: "Давид",
+      lastName: "Аффенгрубер",
+      nameOnShirt: "Аффенгрубер",
+      originalFirstName: "David Leopold",
+      originalLastName: "AFFENGRUBER",
+      originalNameOnShirt: "AFFENGRUBER",
+
       dateOfBirth: "19/03/2001",
       age: 25,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "kevin-danso",
-      firstName: "Kevin",
-      lastName: "DANSO",
-      nameOnShirt: "DANSO",
+      firstName: "Кевин",
+      lastName: "Дансо",
+      nameOnShirt: "Дансо",
+      originalFirstName: "Kevin",
+      originalLastName: "DANSO",
+      originalNameOnShirt: "DANSO",
+
       dateOfBirth: "19/09/1998",
       age: 27,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "stefan-posch",
-      firstName: "Stefan",
-      lastName: "POSCH",
-      nameOnShirt: "POSCH",
+      firstName: "Стефан",
+      lastName: "Пош",
+      nameOnShirt: "Пош",
+      originalFirstName: "Stefan",
+      originalLastName: "POSCH",
+      originalNameOnShirt: "POSCH",
+
       dateOfBirth: "14/05/1997",
       age: 29,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "david-alaba",
-      firstName: "David",
-      lastName: "ALABA",
-      nameOnShirt: "ALABA",
+      firstName: "Давид",
+      lastName: "Алаба",
+      nameOnShirt: "Алаба",
+      originalFirstName: "David",
+      originalLastName: "ALABA",
+      originalNameOnShirt: "ALABA",
+
       dateOfBirth: "24/06/1992",
       age: 33,
       shirtNumber: 8,
@@ -164,11 +193,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "philipp-lienhart",
-      firstName: "Philipp",
-      lastName: "LIENHART",
-      nameOnShirt: "LIENHART",
+      firstName: "Пхилипп",
+      lastName: "Линхарт",
+      nameOnShirt: "Линхарт",
+      originalFirstName: "Philipp",
+      originalLastName: "LIENHART",
+      originalNameOnShirt: "LIENHART",
+
       dateOfBirth: "11/07/1996",
       age: 29,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "phillip-mwene",
-      firstName: "Phillip",
-      lastName: "MWENE",
-      nameOnShirt: "MWENE",
+      firstName: "Пхиллип",
+      lastName: "Мвене",
+      nameOnShirt: "Мвене",
+      originalFirstName: "Phillip",
+      originalLastName: "MWENE",
+      originalNameOnShirt: "MWENE",
+
       dateOfBirth: "29/01/1994",
       age: 32,
       shirtNumber: 16,
@@ -206,11 +243,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "marco-friedl",
-      firstName: "Marco",
-      lastName: "FRIEDL",
-      nameOnShirt: "FRIEDL",
+      firstName: "Марко",
+      lastName: "Фридл",
+      nameOnShirt: "Фридл",
+      originalFirstName: "Marco",
+      originalLastName: "FRIEDL",
+      originalNameOnShirt: "FRIEDL",
+
       dateOfBirth: "16/03/1998",
       age: 28,
       shirtNumber: 23,
@@ -227,11 +268,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-svoboda",
-      firstName: "Michael",
-      lastName: "SVOBODA",
-      nameOnShirt: "SVOBODA",
+      firstName: "Майкл",
+      lastName: "Сфобода",
+      nameOnShirt: "Сфобода",
+      originalFirstName: "Michael",
+      originalLastName: "SVOBODA",
+      originalNameOnShirt: "SVOBODA",
+
       dateOfBirth: "15/10/1998",
       age: 27,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const austriaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "xaver-schlager",
-      firstName: "Xaver",
-      lastName: "SCHLAGER",
-      nameOnShirt: "XAVER",
+      firstName: "Ксафер",
+      lastName: "Шлагер",
+      nameOnShirt: "Ксафер",
+      originalFirstName: "Xaver",
+      originalLastName: "SCHLAGER",
+      originalNameOnShirt: "XAVER",
+
       dateOfBirth: "28/09/1997",
       age: 28,
       shirtNumber: 4,
@@ -271,11 +320,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-seiwald",
-      firstName: "Nicolas",
-      lastName: "SEIWALD",
-      nameOnShirt: "SEIWALD",
+      firstName: "Николас",
+      lastName: "Сайвалд",
+      nameOnShirt: "Сайвалд",
+      originalFirstName: "Nicolas",
+      originalLastName: "SEIWALD",
+      originalNameOnShirt: "SEIWALD",
+
       dateOfBirth: "04/05/2001",
       age: 25,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcel-sabitzer",
-      firstName: "Marcel",
-      lastName: "SABITZER",
-      nameOnShirt: "SABITZER",
+      firstName: "Марсель",
+      lastName: "Забитцер",
+      nameOnShirt: "Сабитцер",
+      originalFirstName: "Marcel",
+      originalLastName: "SABITZER",
+      originalNameOnShirt: "SABITZER",
+
       dateOfBirth: "17/03/1994",
       age: 32,
       shirtNumber: 9,
@@ -313,11 +370,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "florian-grillitsch",
-      firstName: "Florian",
-      lastName: "GRILLITSCH",
-      nameOnShirt: "GRILLITSCH",
+      firstName: "Флориан",
+      lastName: "Гриллич",
+      nameOnShirt: "Гриллич",
+      originalFirstName: "Florian",
+      originalLastName: "GRILLITSCH",
+      originalNameOnShirt: "GRILLITSCH",
+
       dateOfBirth: "07/08/1995",
       age: 30,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "carney-chibueze-chukwuemeka",
-      firstName: "Carney Chibueze",
-      lastName: "CHUKWUEMEKA",
-      nameOnShirt: "CHUKWUEMEKA",
+      firstName: "Карнеи",
+      lastName: "Хуквюмека",
+      nameOnShirt: "Хуквюмека",
+      originalFirstName: "Carney Chibueze",
+      originalLastName: "CHUKWUEMEKA",
+      originalNameOnShirt: "CHUKWUEMEKA",
+
       dateOfBirth: "20/10/2003",
       age: 22,
       shirtNumber: 17,
@@ -355,11 +420,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "romano-schmid",
-      firstName: "Romano",
-      lastName: "SCHMID",
-      nameOnShirt: "SCHMID",
+      firstName: "Романо",
+      lastName: "Шмид",
+      nameOnShirt: "Шмид",
+      originalFirstName: "Romano",
+      originalLastName: "SCHMID",
+      originalNameOnShirt: "SCHMID",
+
       dateOfBirth: "27/01/2000",
       age: 26,
       shirtNumber: 18,
@@ -376,11 +445,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "dejan-ljubicic",
-      firstName: "Dejan",
-      lastName: "LJUBIČIĆ",
-      nameOnShirt: "LJUBICIC",
+      firstName: "Дейан",
+      lastName: "Лйубицик",
+      nameOnShirt: "Лйубицик",
+      originalFirstName: "Dejan",
+      originalLastName: "LJUBIČIĆ",
+      originalNameOnShirt: "LJUBICIC",
+
       dateOfBirth: "08/10/1997",
       age: 28,
       shirtNumber: 19,
@@ -397,11 +470,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "konrad-laimer",
-      firstName: "Konrad",
-      lastName: "LAIMER",
-      nameOnShirt: "LAIMER",
+      firstName: "Конрад",
+      lastName: "Лаимер",
+      nameOnShirt: "Лаимер",
+      originalFirstName: "Konrad",
+      originalLastName: "LAIMER",
+      originalNameOnShirt: "LAIMER",
+
       dateOfBirth: "27/05/1997",
       age: 29,
       shirtNumber: 20,
@@ -418,11 +495,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexander-prass",
-      firstName: "Alexander",
-      lastName: "PRASS",
-      nameOnShirt: "PRASS",
+      firstName: "Александер",
+      lastName: "Прасс",
+      nameOnShirt: "Прасс",
+      originalFirstName: "Alexander",
+      originalLastName: "PRASS",
+      originalNameOnShirt: "PRASS",
+
       dateOfBirth: "26/05/2001",
       age: 25,
       shirtNumber: 22,
@@ -439,11 +520,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "paul-wanner",
-      firstName: "Paul",
-      lastName: "WANNER",
-      nameOnShirt: "WANNER",
+      firstName: "Паул",
+      lastName: "Ваннер",
+      nameOnShirt: "Ваннер",
+      originalFirstName: "Paul",
+      originalLastName: "WANNER",
+      originalNameOnShirt: "WANNER",
+
       dateOfBirth: "23/12/2005",
       age: 20,
       shirtNumber: 24,
@@ -460,11 +545,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "alessandro-andre-schopf",
-      firstName: "Alessandro Andre",
-      lastName: "SCHÖPF",
-      nameOnShirt: "SCHÖPF",
+      firstName: "Алессандро",
+      lastName: "Шиопф",
+      nameOnShirt: "Шиопф",
+      originalFirstName: "Alessandro Andre",
+      originalLastName: "SCHÖPF",
+      originalNameOnShirt: "SCHÖPF",
+
       dateOfBirth: "07/02/1994",
       age: 32,
       shirtNumber: 26,
@@ -483,11 +572,15 @@ export const austriaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "marko-arnautovic",
-      firstName: "Marko",
-      lastName: "ARNAUTOVIC",
-      nameOnShirt: "ARNAUTOVIC",
+      firstName: "Марко",
+      lastName: "Арнаутович",
+      nameOnShirt: "Арнаутофик",
+      originalFirstName: "Marko",
+      originalLastName: "ARNAUTOVIC",
+      originalNameOnShirt: "ARNAUTOVIC",
+
       dateOfBirth: "19/04/1989",
       age: 37,
       shirtNumber: 7,
@@ -504,11 +597,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-gregoritsch",
-      firstName: "Michael",
-      lastName: "GREGORITSCH",
-      nameOnShirt: "GREGORITSCH",
+      firstName: "Майкл",
+      lastName: "Грегорич",
+      nameOnShirt: "Грегорич",
+      originalFirstName: "Michael",
+      originalLastName: "GREGORITSCH",
+      originalNameOnShirt: "GREGORITSCH",
+
       dateOfBirth: "18/04/1994",
       age: 32,
       shirtNumber: 11,
@@ -525,11 +622,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "sasa-kalajdzic",
-      firstName: "Saša",
-      lastName: "KALAJDŽIĆ",
-      nameOnShirt: "KALAJDZIC",
+      firstName: "Саса",
+      lastName: "Калайдцик",
+      nameOnShirt: "Калайдцик",
+      originalFirstName: "Saša",
+      originalLastName: "KALAJDŽIĆ",
+      originalNameOnShirt: "KALAJDZIC",
+
       dateOfBirth: "07/07/1997",
       age: 28,
       shirtNumber: 14,
@@ -546,11 +647,15 @@ export const austriaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "patrick-wimmer",
-      firstName: "Patrick",
-      lastName: "WIMMER",
-      nameOnShirt: "WIMMER",
+      firstName: "Патрик",
+      lastName: "Виммер",
+      nameOnShirt: "Виммер",
+      originalFirstName: "Patrick",
+      originalLastName: "WIMMER",
+      originalNameOnShirt: "WIMMER",
+
       dateOfBirth: "30/05/2001",
       age: 25,
       shirtNumber: 21,

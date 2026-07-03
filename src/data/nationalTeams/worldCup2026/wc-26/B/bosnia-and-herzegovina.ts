@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import bosniaAndHerzegovinaFlag from '@/data/nationalTeams/worldCup2026/flags/bosnia-and-herzegovina.png'
 
 export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
   id: "bosnia-and-herzegovina",
@@ -6,7 +7,7 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
   shortName: "BIH",
   fifaCode: "BIH",
   groupId: "B",
-  flagCode: "BA",
+  flag: bosniaAndHerzegovinaFlag,
   rating: 74,
   attackRating: 74,
   midfieldRating: 73,
@@ -15,11 +16,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
   secondaryColor: "#FECB00",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "nikola-vasilj",
-      firstName: "Nikola",
-      lastName: "VASILJ",
-      nameOnShirt: "VASILJ",
+      firstName: "Никола",
+      lastName: "Василь",
+      nameOnShirt: "Василь",
+      originalFirstName: "Nikola",
+      originalLastName: "VASILJ",
+      originalNameOnShirt: "VASILJ",
+
       dateOfBirth: "02/12/1995",
       age: 30,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mladen-jurkas",
-      firstName: "Mladen",
-      lastName: "JURKAS",
-      nameOnShirt: "JURKAS",
+      firstName: "Младен",
+      lastName: "Йуркас",
+      nameOnShirt: "Йуркас",
+      originalFirstName: "Mladen",
+      originalLastName: "JURKAS",
+      originalNameOnShirt: "JURKAS",
+
       dateOfBirth: "07/10/2007",
       age: 18,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 230_000,
       isInjured: false,
     },
-    {
+        {
       id: "martin-zlomislic",
-      firstName: "Martin",
-      lastName: "ZLOMISLIĆ",
-      nameOnShirt: "ZLOMISLIĆ",
+      firstName: "Мартин",
+      lastName: "Зломислич",
+      nameOnShirt: "Зломислич",
+      originalFirstName: "Martin",
+      originalLastName: "ZLOMISLIĆ",
+      originalNameOnShirt: "ZLOMISLIĆ",
+
       dateOfBirth: "16/08/1998",
       age: 27,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "nihad-mujakic",
-      firstName: "Nihad",
-      lastName: "MUJAKIĆ",
-      nameOnShirt: "MUJAKIĆ",
+      firstName: "Нихад",
+      lastName: "Муйакич",
+      nameOnShirt: "Муйакич",
+      originalFirstName: "Nihad",
+      originalLastName: "MUJAKIĆ",
+      originalNameOnShirt: "MUJAKIĆ",
+
       dateOfBirth: "15/04/1998",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "dennis-hadzikadunic",
-      firstName: "Dennis",
-      lastName: "HADŽIKADUNIĆ",
-      nameOnShirt: "HADŽIKADUNIĆ",
+      firstName: "Деннис",
+      lastName: "Хаджикадунич",
+      nameOnShirt: "Хаджикадунич",
+      originalFirstName: "Dennis",
+      originalLastName: "HADŽIKADUNIĆ",
+      originalNameOnShirt: "HADŽIKADUNIĆ",
+
       dateOfBirth: "09/07/1998",
       age: 27,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "tarik-muharemovic",
-      firstName: "Tarik",
-      lastName: "MUHAREMOVIĆ",
-      nameOnShirt: "MUHAREMOVIĆ",
+      firstName: "Тарик",
+      lastName: "Мухаремович",
+      nameOnShirt: "Мухаремович",
+      originalFirstName: "Tarik",
+      originalLastName: "MUHAREMOVIĆ",
+      originalNameOnShirt: "MUHAREMOVIĆ",
+
       dateOfBirth: "28/02/2003",
       age: 23,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "sead-kolasinac",
-      firstName: "Sead",
-      lastName: "KOLAŠINAC",
-      nameOnShirt: "KOLAŠINAC",
+      firstName: "Сеад",
+      lastName: "Колашинац",
+      nameOnShirt: "Колашинац",
+      originalFirstName: "Sead",
+      originalLastName: "KOLAŠINAC",
+      originalNameOnShirt: "KOLAŠINAC",
+
       dateOfBirth: "20/06/1993",
       age: 32,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "amar-dedic",
-      firstName: "Amar",
-      lastName: "DEDIĆ",
-      nameOnShirt: "DEDIĆ",
+      firstName: "Амар",
+      lastName: "Дедич",
+      nameOnShirt: "Дедич",
+      originalFirstName: "Amar",
+      originalLastName: "DEDIĆ",
+      originalNameOnShirt: "DEDIĆ",
+
       dateOfBirth: "18/08/2002",
       age: 23,
       shirtNumber: 7,
@@ -185,11 +218,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "nikola-katic",
-      firstName: "Nikola",
-      lastName: "KATIĆ",
-      nameOnShirt: "KATIĆ",
+      firstName: "Никола",
+      lastName: "Катич",
+      nameOnShirt: "Катич",
+      originalFirstName: "Nikola",
+      originalLastName: "KATIĆ",
+      originalNameOnShirt: "KATIĆ",
+
       dateOfBirth: "10/10/1996",
       age: 29,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "stjepan-radeljic",
-      firstName: "Stjepan",
-      lastName: "RADELJIĆ",
-      nameOnShirt: "RADELJIĆ",
+      firstName: "Стйепан",
+      lastName: "Радельич",
+      nameOnShirt: "Радельич",
+      originalFirstName: "Stjepan",
+      originalLastName: "RADELJIĆ",
+      originalNameOnShirt: "RADELJIĆ",
+
       dateOfBirth: "05/09/1997",
       age: 28,
       shirtNumber: 21,
@@ -227,11 +268,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "arjan-malic",
-      firstName: "Arjan",
-      lastName: "MALIĆ",
-      nameOnShirt: "MALIĆ",
+      firstName: "Арйан",
+      lastName: "Малич",
+      nameOnShirt: "Малич",
+      originalFirstName: "Arjan",
+      originalLastName: "MALIĆ",
+      originalNameOnShirt: "MALIĆ",
+
       dateOfBirth: "28/08/2005",
       age: 20,
       shirtNumber: 24,
@@ -250,11 +295,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "benjamin-tahirovic",
-      firstName: "Benjamin",
-      lastName: "TAHIROVIC",
-      nameOnShirt: "TAHIROVIĆ",
+      firstName: "Бенжамен",
+      lastName: "Тахировиц",
+      nameOnShirt: "Тахирович",
+      originalFirstName: "Benjamin",
+      originalLastName: "TAHIROVIC",
+      originalNameOnShirt: "TAHIROVIĆ",
+
       dateOfBirth: "03/03/2003",
       age: 23,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "armin-gigovic",
-      firstName: "Armin",
-      lastName: "GIGOVIĆ",
-      nameOnShirt: "GIGOVIĆ",
+      firstName: "Армин",
+      lastName: "Гигович",
+      nameOnShirt: "Гигович",
+      originalFirstName: "Armin",
+      originalLastName: "GIGOVIĆ",
+      originalNameOnShirt: "GIGOVIĆ",
+
       dateOfBirth: "06/04/2002",
       age: 24,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "ivan-basic",
-      firstName: "Ivan",
-      lastName: "BAŠIĆ",
-      nameOnShirt: "BAŠIĆ",
+      firstName: "Иван",
+      lastName: "Башич",
+      nameOnShirt: "Башич",
+      originalFirstName: "Ivan",
+      originalLastName: "BAŠIĆ",
+      originalNameOnShirt: "BAŠIĆ",
+
       dateOfBirth: "30/04/2002",
       age: 24,
       shirtNumber: 13,
@@ -313,11 +370,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "ivan-sunjic",
-      firstName: "Ivan",
-      lastName: "ŠUNJIĆ",
-      nameOnShirt: "ŠUNJIĆ",
+      firstName: "Иван",
+      lastName: "Шуньич",
+      nameOnShirt: "Шуньич",
+      originalFirstName: "Ivan",
+      originalLastName: "ŠUNJIĆ",
+      originalNameOnShirt: "ŠUNJIĆ",
+
       dateOfBirth: "09/10/1996",
       age: 29,
       shirtNumber: 14,
@@ -334,11 +395,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "amar-memic",
-      firstName: "Amar",
-      lastName: "MEMIĆ",
-      nameOnShirt: "MEMIĆ",
+      firstName: "Амар",
+      lastName: "Мемич",
+      nameOnShirt: "Мемич",
+      originalFirstName: "Amar",
+      originalLastName: "MEMIĆ",
+      originalNameOnShirt: "MEMIĆ",
+
       dateOfBirth: "20/01/2001",
       age: 25,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "amir-hadziahmetovic",
-      firstName: "Amir",
-      lastName: "HADŽIAHMETOVIĆ",
-      nameOnShirt: "HADŽIAHMETOVIĆ",
+      firstName: "Амир",
+      lastName: "Хаджиахметович",
+      nameOnShirt: "Хаджиахметович",
+      originalFirstName: "Amir",
+      originalLastName: "HADŽIAHMETOVIĆ",
+      originalNameOnShirt: "HADŽIAHMETOVIĆ",
+
       dateOfBirth: "08/03/1997",
       age: 29,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "dzenis-burnic",
-      firstName: "Dženis",
-      lastName: "BURNIĆ",
-      nameOnShirt: "BURNIĆ",
+      firstName: "Дженис",
+      lastName: "Бурнич",
+      nameOnShirt: "Бурнич",
+      originalFirstName: "Dženis",
+      originalLastName: "BURNIĆ",
+      originalNameOnShirt: "BURNIĆ",
+
       dateOfBirth: "22/05/1998",
       age: 28,
       shirtNumber: 17,
@@ -397,11 +470,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "ermin-mahmic",
-      firstName: "Ermin",
-      lastName: "MAHMIĆ",
-      nameOnShirt: "MAHMIĆ",
+      firstName: "Ермин",
+      lastName: "Махмич",
+      nameOnShirt: "Махмич",
+      originalFirstName: "Ermin",
+      originalLastName: "MAHMIĆ",
+      originalNameOnShirt: "MAHMIĆ",
+
       dateOfBirth: "14/03/2005",
       age: 21,
       shirtNumber: 26,
@@ -420,11 +497,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "samed-bazdar",
-      firstName: "Samed",
-      lastName: "BAŽDAR",
-      nameOnShirt: "BAŽDAR",
+      firstName: "Самед",
+      lastName: "Баждар",
+      nameOnShirt: "Баждар",
+      originalFirstName: "Samed",
+      originalLastName: "BAŽDAR",
+      originalNameOnShirt: "BAŽDAR",
+
       dateOfBirth: "31/01/2004",
       age: 22,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "ermedin-demirovic",
-      firstName: "Ermedin",
-      lastName: "DEMIROVIĆ",
-      nameOnShirt: "DEMIROVIĆ",
+      firstName: "Ермедин",
+      lastName: "Демирович",
+      nameOnShirt: "Демирович",
+      originalFirstName: "Ermedin",
+      originalLastName: "DEMIROVIĆ",
+      originalNameOnShirt: "DEMIROVIĆ",
+
       dateOfBirth: "25/03/1998",
       age: 28,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "edin-dzeko",
-      firstName: "Edin",
-      lastName: "DŽEKO",
-      nameOnShirt: "DŽEKO",
+      firstName: "Эдин",
+      lastName: "Джеко",
+      nameOnShirt: "Джеко",
+      originalFirstName: "Edin",
+      originalLastName: "DŽEKO",
+      originalNameOnShirt: "DŽEKO",
+
       dateOfBirth: "17/03/1986",
       age: 40,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "kerim-alajbegovic",
-      firstName: "Kerim",
-      lastName: "ALAJBEGOVIĆ",
-      nameOnShirt: "ALAJBEGOVIĆ",
+      firstName: "Керим",
+      lastName: "Алайбегович",
+      nameOnShirt: "Алайбегович",
+      originalFirstName: "Kerim",
+      originalLastName: "ALAJBEGOVIĆ",
+      originalNameOnShirt: "ALAJBEGOVIĆ",
+
       dateOfBirth: "21/09/2007",
       age: 18,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 410_000,
       isInjured: false,
     },
-    {
+        {
       id: "esmir-bajraktarevic",
-      firstName: "Esmir",
-      lastName: "BAJRAKTAREVIĆ",
-      nameOnShirt: "BAJRAKTAREVIĆ",
+      firstName: "Есмир",
+      lastName: "Байрактаревич",
+      nameOnShirt: "Байрактаревич",
+      originalFirstName: "Esmir",
+      originalLastName: "BAJRAKTAREVIĆ",
+      originalNameOnShirt: "BAJRAKTAREVIĆ",
+
       dateOfBirth: "10/03/2005",
       age: 21,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "haris-tabakovic",
-      firstName: "Haris",
-      lastName: "TABAKOVIĆ",
-      nameOnShirt: "TABAKOVIĆ",
+      firstName: "Харис",
+      lastName: "Табакович",
+      nameOnShirt: "Табакович",
+      originalFirstName: "Haris",
+      originalLastName: "TABAKOVIĆ",
+      originalNameOnShirt: "TABAKOVIĆ",
+
       dateOfBirth: "20/06/1994",
       age: 31,
       shirtNumber: 23,
@@ -546,11 +647,15 @@ export const bosniaAndHerzegovinaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "jovo-lukic",
-      firstName: "Jovo",
-      lastName: "LUKIĆ",
-      nameOnShirt: "LUKIĆ",
+      firstName: "Йово",
+      lastName: "Лукич",
+      nameOnShirt: "Лукич",
+      originalFirstName: "Jovo",
+      originalLastName: "LUKIĆ",
+      originalNameOnShirt: "LUKIĆ",
+
       dateOfBirth: "28/11/1998",
       age: 27,
       shirtNumber: 25,

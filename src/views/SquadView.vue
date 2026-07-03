@@ -6,7 +6,7 @@ import { useSquadStore } from '@/stores/squad/squadStore'
 import { useCareerContext } from '@/composables/useCareerContext'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type { Formation, Player, PlayerPosition, PlayerStats, TacticalStyle } from '@/types/football'
-import { formatMoney } from '@/utils/format'
+import { formatMoney, formatPlayerName } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import SectionHero from '@/components/ui/SectionHero.vue'
 import { seasonsUntilPlayerRetirement } from '@/data/gameConfig/career'
@@ -64,6 +64,9 @@ const selectedTouchPayload = ref<DragPayload | null>(null)
 const activeSection = ref<'lineup' | 'stats' | 'contracts'>('lineup')
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
+
+const playerDisplayName = (player?: Player): string =>
+  player ? formatPlayerName(player.firstName, player.lastName) : ''
 
 // СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
@@ -726,9 +729,9 @@ onBeforeRouteLeave(() => {
                 </span>
               </span>
               <span
-                class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.55rem] font-black uppercase sm:text-[0.68rem] xl:text-[0.78rem]"
+                class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.55rem] font-black sm:text-[0.68rem] xl:text-[0.78rem]"
               >
-                {{ slotPlayer(slot.id)?.lastName }}
+                {{ playerDisplayName(slotPlayer(slot.id)) }}
               </span>
               <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
@@ -839,8 +842,8 @@ onBeforeRouteLeave(() => {
               >
             </span>
             <span
-              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-black uppercase"
-              >{{ player.lastName }}</span
+              class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-black"
+              >{{ playerDisplayName(player) }}</span
             >
             <span
               class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.58rem] font-bold text-slate-200/75"
@@ -933,7 +936,7 @@ onBeforeRouteLeave(() => {
               <span class="grid min-w-0">
                 <span
                   class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-950"
-                  >{{ player.firstName }} {{ player.lastName }}</span
+                  >{{ playerDisplayName(player) }}</span
                 >
                 <span
                   class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] text-slate-500"

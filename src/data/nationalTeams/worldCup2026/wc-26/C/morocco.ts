@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import moroccoFlag from '@/data/nationalTeams/worldCup2026/flags/morocco.png'
 
 export const moroccoProfile: NationalTeamProfile = {
   id: "morocco",
@@ -6,7 +7,7 @@ export const moroccoProfile: NationalTeamProfile = {
   shortName: "MAR",
   fifaCode: "MAR",
   groupId: "C",
-  flagCode: "MA",
+  flag: moroccoFlag,
   rating: 82,
   attackRating: 81,
   midfieldRating: 82,
@@ -15,11 +16,15 @@ export const moroccoProfile: NationalTeamProfile = {
   secondaryColor: "#006233",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "yassine-bounou",
-      firstName: "Yassine",
-      lastName: "BOUNOU",
-      nameOnShirt: "BONO",
+      firstName: "Яссин",
+      lastName: "Буну",
+      nameOnShirt: "Боно",
+      originalFirstName: "Yassine",
+      originalLastName: "BOUNOU",
+      originalNameOnShirt: "BONO",
+
       dateOfBirth: "05/04/1991",
       age: 35,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "monir-el-kajoui",
-      firstName: "Monir",
-      lastName: "EL KAJOUI",
-      nameOnShirt: "EL KAJOUI",
+      firstName: "Монир",
+      lastName: "Ел Каджуи",
+      nameOnShirt: "Ел Каджуи",
+      originalFirstName: "Monir",
+      originalLastName: "EL KAJOUI",
+      originalNameOnShirt: "EL KAJOUI",
+
       dateOfBirth: "10/05/1989",
       age: 37,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-reda-tagnaouti",
-      firstName: "Ahmed Reda",
-      lastName: "TAGNAOUTI",
-      nameOnShirt: "TAGNAOUTI",
+      firstName: "Ахмед",
+      lastName: "Тагнаути",
+      nameOnShirt: "Тагнаути",
+      originalFirstName: "Ahmed Reda",
+      originalLastName: "TAGNAOUTI",
+      originalNameOnShirt: "TAGNAOUTI",
+
       dateOfBirth: "05/04/1996",
       age: 30,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const moroccoProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "achraf-hakimi",
-      firstName: "Achraf",
-      lastName: "HAKIMI",
-      nameOnShirt: "HAKIMI",
+      firstName: "Ашраф",
+      lastName: "Хакими",
+      nameOnShirt: "Хакими",
+      originalFirstName: "Achraf",
+      originalLastName: "HAKIMI",
+      originalNameOnShirt: "HAKIMI",
+
       dateOfBirth: "04/11/1998",
       age: 27,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "noussair-mazraoui",
-      firstName: "Noussair",
-      lastName: "MAZRAOUI",
-      nameOnShirt: "MAZRAOUI",
+      firstName: "Нуссаир",
+      lastName: "Мазрауи",
+      nameOnShirt: "Мазрауи",
+      originalFirstName: "Noussair",
+      originalLastName: "MAZRAOUI",
+      originalNameOnShirt: "MAZRAOUI",
+
       dateOfBirth: "14/11/1997",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "marwane-saadane",
-      firstName: "Marwane",
-      lastName: "SAADANE",
-      nameOnShirt: "SAADANE",
+      firstName: "Марване",
+      lastName: "Садане",
+      nameOnShirt: "Садане",
+      originalFirstName: "Marwane",
+      originalLastName: "SAADANE",
+      originalNameOnShirt: "SAADANE",
+
       dateOfBirth: "17/01/1992",
       age: 34,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "zakaria-el-ouahdi",
-      firstName: "Zakaria",
-      lastName: "EL OUAHDI",
-      nameOnShirt: "EL OUAHDI",
+      firstName: "Закариа",
+      lastName: "Ел Уахди",
+      nameOnShirt: "Ел Уахди",
+      originalFirstName: "Zakaria",
+      originalLastName: "EL OUAHDI",
+      originalNameOnShirt: "EL OUAHDI",
+
       dateOfBirth: "31/12/2001",
       age: 24,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "issa-laye-lucas-jean-diop",
-      firstName: "Issa Laye Lucas Jean",
-      lastName: "DIOP",
-      nameOnShirt: "ISSA",
+      firstName: "Исса",
+      lastName: "Диоп",
+      nameOnShirt: "Исса",
+      originalFirstName: "Issa Laye Lucas Jean",
+      originalLastName: "DIOP",
+      originalNameOnShirt: "ISSA",
+
       dateOfBirth: "09/01/1997",
       age: 29,
       shirtNumber: 14,
@@ -185,11 +218,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "chadi-riad",
-      firstName: "Chadi",
-      lastName: "RIAD",
-      nameOnShirt: "RIAD",
+      firstName: "Чади",
+      lastName: "Риад",
+      nameOnShirt: "Риад",
+      originalFirstName: "Chadi",
+      originalLastName: "RIAD",
+      originalNameOnShirt: "RIAD",
+
       dateOfBirth: "17/06/2003",
       age: 22,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_015_000,
       isInjured: false,
     },
-    {
+        {
       id: "youssef-belammari",
-      firstName: "Youssef",
-      lastName: "BELAMMARI",
-      nameOnShirt: "BELAMMARI",
+      firstName: "Йуссеф",
+      lastName: "Беламмари",
+      nameOnShirt: "Беламмари",
+      originalFirstName: "Youssef",
+      originalLastName: "BELAMMARI",
+      originalNameOnShirt: "BELAMMARI",
+
       dateOfBirth: "20/09/1998",
       age: 27,
       shirtNumber: 19,
@@ -227,11 +268,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "redouane-halhal",
-      firstName: "Redouane",
-      lastName: "HALHAL",
-      nameOnShirt: "HALHAL",
+      firstName: "Редуане",
+      lastName: "Халхал",
+      nameOnShirt: "Халхал",
+      originalFirstName: "Redouane",
+      originalLastName: "HALHAL",
+      originalNameOnShirt: "HALHAL",
+
       dateOfBirth: "05/03/2003",
       age: 23,
       shirtNumber: 25,
@@ -248,11 +293,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "anass-salah-eddine",
-      firstName: "Anass",
-      lastName: "SALAH EDDINE",
-      nameOnShirt: "SALAH-EDDINE",
+      firstName: "Анасс",
+      lastName: "Салах Еддине",
+      nameOnShirt: "Салах-Еддине",
+      originalFirstName: "Anass",
+      originalLastName: "SALAH EDDINE",
+      originalNameOnShirt: "SALAH-EDDINE",
+
       dateOfBirth: "18/01/2002",
       age: 24,
       shirtNumber: 26,
@@ -271,11 +320,15 @@ export const moroccoProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "sofyan-amrabat",
-      firstName: "Sofyan",
-      lastName: "AMRABAT",
-      nameOnShirt: "AMRABAT",
+      firstName: "Софьян",
+      lastName: "Амрабат",
+      nameOnShirt: "Амрабат",
+      originalFirstName: "Sofyan",
+      originalLastName: "AMRABAT",
+      originalNameOnShirt: "AMRABAT",
+
       dateOfBirth: "21/08/1996",
       age: 29,
       shirtNumber: 4,
@@ -292,11 +345,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayyoub-bouaddi",
-      firstName: "Ayyoub",
-      lastName: "BOUADDI",
-      nameOnShirt: "BOUADDI",
+      firstName: "Аййуб",
+      lastName: "Буадди",
+      nameOnShirt: "Буадди",
+      originalFirstName: "Ayyoub",
+      originalLastName: "BOUADDI",
+      originalNameOnShirt: "BOUADDI",
+
       dateOfBirth: "02/10/2007",
       age: 18,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 660_000,
       isInjured: false,
     },
-    {
+        {
       id: "chemsdine-talbi",
-      firstName: "Chemsdine",
-      lastName: "TALBI",
-      nameOnShirt: "TALBI",
+      firstName: "Чемсдине",
+      lastName: "Талби",
+      nameOnShirt: "Талби",
+      originalFirstName: "Chemsdine",
+      originalLastName: "TALBI",
+      originalNameOnShirt: "TALBI",
+
       dateOfBirth: "09/05/2005",
       age: 21,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 775_000,
       isInjured: false,
     },
-    {
+        {
       id: "azz-eddine-ounahi",
-      firstName: "Azz-Eddine",
-      lastName: "OUNAHI",
-      nameOnShirt: "OUNAHI",
+      firstName: "Азз-Еддине",
+      lastName: "Унахи",
+      nameOnShirt: "Унахи",
+      originalFirstName: "Azz-Eddine",
+      originalLastName: "OUNAHI",
+      originalNameOnShirt: "OUNAHI",
+
       dateOfBirth: "19/04/2000",
       age: 26,
       shirtNumber: 8,
@@ -355,11 +420,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismael-saibari",
-      firstName: "Ismael",
-      lastName: "SAIBARI",
-      nameOnShirt: "SAIBARI",
+      firstName: "Исмаел",
+      lastName: "Сайбари",
+      nameOnShirt: "Сайбари",
+      originalFirstName: "Ismael",
+      originalLastName: "SAIBARI",
+      originalNameOnShirt: "SAIBARI",
+
       dateOfBirth: "28/01/2001",
       age: 25,
       shirtNumber: 11,
@@ -376,11 +445,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "samir-el-mourabet",
-      firstName: "Samir",
-      lastName: "EL MOURABET",
-      nameOnShirt: "EL MOURABET",
+      firstName: "Самир",
+      lastName: "Ел Мурабет",
+      nameOnShirt: "Ел Мурабет",
+      originalFirstName: "Samir",
+      originalLastName: "EL MOURABET",
+      originalNameOnShirt: "EL MOURABET",
+
       dateOfBirth: "06/10/2005",
       age: 20,
       shirtNumber: 15,
@@ -397,11 +470,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 715_000,
       isInjured: false,
     },
-    {
+        {
       id: "gessime-ben-youssef-mustapha-yassine",
-      firstName: "Gessime Ben Youssef Mustapha",
-      lastName: "YASSINE",
-      nameOnShirt: "YASSINE",
+      firstName: "Гессиме",
+      lastName: "Яссин",
+      nameOnShirt: "Яссин",
+      originalFirstName: "Gessime Ben Youssef Mustapha",
+      originalLastName: "YASSINE",
+      originalNameOnShirt: "YASSINE",
+
       dateOfBirth: "22/11/2005",
       age: 20,
       shirtNumber: 16,
@@ -418,11 +495,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 840_000,
       isInjured: false,
     },
-    {
+        {
       id: "bilal-el-khannouss",
-      firstName: "Bilal",
-      lastName: "EL KHANNOUSS",
-      nameOnShirt: "EL KHANNOUSS",
+      firstName: "Билал",
+      lastName: "Ел Ханнусс",
+      nameOnShirt: "Ел Ханнусс",
+      originalFirstName: "Bilal",
+      originalLastName: "EL KHANNOUSS",
+      originalNameOnShirt: "EL KHANNOUSS",
+
       dateOfBirth: "10/05/2004",
       age: 22,
       shirtNumber: 23,
@@ -439,11 +520,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_015_000,
       isInjured: false,
     },
-    {
+        {
       id: "neil-yoni-el-aynaoui",
-      firstName: "Neil Yoni",
-      lastName: "EL AYNAOUI",
-      nameOnShirt: "EL AYNAOUI",
+      firstName: "Неил",
+      lastName: "Ел Айнауи",
+      nameOnShirt: "Ел Айнауи",
+      originalFirstName: "Neil Yoni",
+      originalLastName: "EL AYNAOUI",
+      originalNameOnShirt: "EL AYNAOUI",
+
       dateOfBirth: "02/07/2001",
       age: 24,
       shirtNumber: 24,
@@ -462,11 +547,15 @@ export const moroccoProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "soufiane-rahimi",
-      firstName: "Soufiane",
-      lastName: "RAHIMI",
-      nameOnShirt: "RAHIMI",
+      firstName: "Суфиане",
+      lastName: "Рахими",
+      nameOnShirt: "Рахими",
+      originalFirstName: "Soufiane",
+      originalLastName: "RAHIMI",
+      originalNameOnShirt: "RAHIMI",
+
       dateOfBirth: "02/06/1996",
       age: 30,
       shirtNumber: 9,
@@ -483,11 +572,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "brahim-abdelkader-diaz",
-      firstName: "Brahim",
-      lastName: "ABDELKADER DIAZ",
-      nameOnShirt: "BRAHIM",
+      firstName: "Брахим",
+      lastName: "Абделкадер Диаз",
+      nameOnShirt: "Брахим",
+      originalFirstName: "Brahim",
+      originalLastName: "ABDELKADER DIAZ",
+      originalNameOnShirt: "BRAHIM",
+
       dateOfBirth: "03/08/1999",
       age: 26,
       shirtNumber: 10,
@@ -504,11 +597,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-amine-sbai",
-      firstName: "Mohamed Amine",
-      lastName: "SBAI",
-      nameOnShirt: "SBAÏ",
+      firstName: "Мохамед",
+      lastName: "Сбай",
+      nameOnShirt: "Сбай",
+      originalFirstName: "Mohamed Amine",
+      originalLastName: "SBAI",
+      originalNameOnShirt: "SBAÏ",
+
       dateOfBirth: "05/11/2000",
       age: 25,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayoub-el-kaabi",
-      firstName: "Ayoub",
-      lastName: "EL KAABI",
-      nameOnShirt: "EL KAABI",
+      firstName: "Айуб",
+      lastName: "Ел Каби",
+      nameOnShirt: "Ел Каби",
+      originalFirstName: "Ayoub",
+      originalLastName: "EL KAABI",
+      originalNameOnShirt: "EL KAABI",
+
       dateOfBirth: "25/06/1993",
       age: 32,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const moroccoProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "ayoube-amaimouni",
-      firstName: "Ayoube",
-      lastName: "AMAIMOUNI",
-      nameOnShirt: "AMAIMOUNI",
+      firstName: "Айубе",
+      lastName: "Амаймуни",
+      nameOnShirt: "Амаймуни",
+      originalFirstName: "Ayoube",
+      originalLastName: "AMAIMOUNI",
+      originalNameOnShirt: "AMAIMOUNI",
+
       dateOfBirth: "30/11/2004",
       age: 21,
       shirtNumber: 21,

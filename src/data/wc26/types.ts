@@ -7,6 +7,9 @@ export interface NationalTeamPlayer {
   firstName: string
   lastName: string
   nameOnShirt: string
+  originalFirstName: string
+  originalLastName: string
+  originalNameOnShirt: string
   dateOfBirth: string
   age: number
   shirtNumber: number
@@ -30,7 +33,8 @@ export interface NationalTeamProfile {
   shortName: string
   fifaCode: string
   groupId: WorldCupGroupId
-  flagCode: string
+  flag: string
+  flagCode?: string
   rating: number
   attackRating: number
   midfieldRating: number

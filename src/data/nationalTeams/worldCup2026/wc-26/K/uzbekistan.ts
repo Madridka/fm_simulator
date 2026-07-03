@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import uzbekistanFlag from '@/data/nationalTeams/worldCup2026/flags/uzbekistan.png'
 
 export const uzbekistanProfile: NationalTeamProfile = {
   id: "uzbekistan",
@@ -6,7 +7,7 @@ export const uzbekistanProfile: NationalTeamProfile = {
   shortName: "UZB",
   fifaCode: "UZB",
   groupId: "K",
-  flagCode: "UZ",
+  flag: uzbekistanFlag,
   rating: 72,
   attackRating: 71,
   midfieldRating: 72,
@@ -15,11 +16,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
   secondaryColor: "#0099B5",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "utkir-yusupov",
-      firstName: "Utkir",
-      lastName: "YUSUPOV",
-      nameOnShirt: "YUSUPOV",
+      firstName: "Уткир",
+      lastName: "Юсупов",
+      nameOnShirt: "Юсупов",
+      originalFirstName: "Utkir",
+      originalLastName: "YUSUPOV",
+      originalNameOnShirt: "YUSUPOV",
+
       dateOfBirth: "04/01/1991",
       age: 35,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "abduvakhid-nematov",
-      firstName: "Abduvakhid",
-      lastName: "NEMATOV",
-      nameOnShirt: "NEMATOV",
+      firstName: "Абдувахид",
+      lastName: "Нематов",
+      nameOnShirt: "Нематов",
+      originalFirstName: "Abduvakhid",
+      originalLastName: "NEMATOV",
+      originalNameOnShirt: "NEMATOV",
+
       dateOfBirth: "20/03/2001",
       age: 25,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "botirali-ergashev",
-      firstName: "Botirali",
-      lastName: "ERGASHEV",
-      nameOnShirt: "ERGASHEV",
+      firstName: "Ботирали",
+      lastName: "Ергашев",
+      nameOnShirt: "Ергашев",
+      originalFirstName: "Botirali",
+      originalLastName: "ERGASHEV",
+      originalNameOnShirt: "ERGASHEV",
+
       dateOfBirth: "23/06/1995",
       age: 30,
       shirtNumber: 16,
@@ -80,11 +93,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "abdukodir-khusanov",
-      firstName: "Abdukodir",
-      lastName: "KHUSANOV",
-      nameOnShirt: "KHUSANOV",
+      firstName: "Абдукодир",
+      lastName: "Хусанов",
+      nameOnShirt: "Хусанов",
+      originalFirstName: "Abdukodir",
+      originalLastName: "KHUSANOV",
+      originalNameOnShirt: "KHUSANOV",
+
       dateOfBirth: "29/02/2004",
       age: 22,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "khojiakbar-alijonov",
-      firstName: "Khojiakbar",
-      lastName: "ALIJONOV",
-      nameOnShirt: "ALIJONOV",
+      firstName: "Хожиакбар",
+      lastName: "Алижонов",
+      nameOnShirt: "Алижонов",
+      originalFirstName: "Khojiakbar",
+      originalLastName: "ALIJONOV",
+      originalNameOnShirt: "ALIJONOV",
+
       dateOfBirth: "19/04/1997",
       age: 29,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "farrukh-sayfiev",
-      firstName: "Farrukh",
-      lastName: "SAYFIEV",
-      nameOnShirt: "SAYFIEV",
+      firstName: "Фаррух",
+      lastName: "Сайфиев",
+      nameOnShirt: "Сайфиев",
+      originalFirstName: "Farrukh",
+      originalLastName: "SAYFIEV",
+      originalNameOnShirt: "SAYFIEV",
+
       dateOfBirth: "17/01/1991",
       age: 35,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "rustamjon-ashurmatov",
-      firstName: "Rustamjon",
-      lastName: "ASHURMATOV",
-      nameOnShirt: "ASHURMATOV",
+      firstName: "Рустамжон",
+      lastName: "Ашурматов",
+      nameOnShirt: "Ашурматов",
+      originalFirstName: "Rustamjon",
+      originalLastName: "ASHURMATOV",
+      originalNameOnShirt: "ASHURMATOV",
+
       dateOfBirth: "07/07/1996",
       age: 29,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "sherzod-nasrullaev",
-      firstName: "Sherzod",
-      lastName: "NASRULLAEV",
-      nameOnShirt: "NASRULLAEV",
+      firstName: "Шерзод",
+      lastName: "Насруллаев",
+      nameOnShirt: "Насруллаев",
+      originalFirstName: "Sherzod",
+      originalLastName: "NASRULLAEV",
+      originalNameOnShirt: "NASRULLAEV",
+
       dateOfBirth: "23/07/1998",
       age: 27,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "umarbek-eshmurodov",
-      firstName: "Umarbek",
-      lastName: "ESHMURODOV",
-      nameOnShirt: "ESHMURODOV",
+      firstName: "Умарбек",
+      lastName: "Ешмуродов",
+      nameOnShirt: "Ешмуродов",
+      originalFirstName: "Umarbek",
+      originalLastName: "ESHMURODOV",
+      originalNameOnShirt: "ESHMURODOV",
+
       dateOfBirth: "30/11/1992",
       age: 33,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdulla-abdullaev",
-      firstName: "Abdulla",
-      lastName: "ABDULLAEV",
-      nameOnShirt: "ABDULLAEV",
+      firstName: "Абдулла",
+      lastName: "Абдуллаев",
+      nameOnShirt: "Абдуллаев",
+      originalFirstName: "Abdulla",
+      originalLastName: "ABDULLAEV",
+      originalNameOnShirt: "ABDULLAEV",
+
       dateOfBirth: "01/09/1997",
       age: 28,
       shirtNumber: 18,
@@ -227,11 +268,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "behruzjon-karimov",
-      firstName: "Behruzjon",
-      lastName: "KARIMOV",
-      nameOnShirt: "KARIMOV",
+      firstName: "Бехрузжон",
+      lastName: "Каримов",
+      nameOnShirt: "Каримов",
+      originalFirstName: "Behruzjon",
+      originalLastName: "KARIMOV",
+      originalNameOnShirt: "KARIMOV",
+
       dateOfBirth: "07/08/2007",
       age: 18,
       shirtNumber: 24,
@@ -248,11 +293,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 260_000,
       isInjured: false,
     },
-    {
+        {
       id: "avazbek-ulmasaliyev",
-      firstName: "Avazbek",
-      lastName: "ULMASALIYEV",
-      nameOnShirt: "ULMASALIYEV",
+      firstName: "Авазбек",
+      lastName: "Улмасалийев",
+      nameOnShirt: "Улмасалийев",
+      originalFirstName: "Avazbek",
+      originalLastName: "ULMASALIYEV",
+      originalNameOnShirt: "ULMASALIYEV",
+
       dateOfBirth: "27/03/2000",
       age: 26,
       shirtNumber: 25,
@@ -269,11 +318,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "jakhongir-urozov",
-      firstName: "Jakhongir",
-      lastName: "UROZOV",
-      nameOnShirt: "UROZOV",
+      firstName: "Жахонгир",
+      lastName: "Урозов",
+      nameOnShirt: "Урозов",
+      originalFirstName: "Jakhongir",
+      originalLastName: "UROZOV",
+      originalNameOnShirt: "UROZOV",
+
       dateOfBirth: "18/01/2004",
       age: 22,
       shirtNumber: 26,
@@ -292,11 +345,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "akmal-mozgovoy",
-      firstName: "Akmal",
-      lastName: "MOZGOVOY",
-      nameOnShirt: "MOZGOVOY",
+      firstName: "Акмал",
+      lastName: "Мозговой",
+      nameOnShirt: "Мозговой",
+      originalFirstName: "Akmal",
+      originalLastName: "MOZGOVOY",
+      originalNameOnShirt: "MOZGOVOY",
+
       dateOfBirth: "02/04/1999",
       age: 27,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "otabek-shukurov",
-      firstName: "Otabek",
-      lastName: "SHUKUROV",
-      nameOnShirt: "SHUKUROV",
+      firstName: "Отабек",
+      lastName: "Шукуров",
+      nameOnShirt: "Шукуров",
+      originalFirstName: "Otabek",
+      originalLastName: "SHUKUROV",
+      originalNameOnShirt: "SHUKUROV",
+
       dateOfBirth: "22/06/1996",
       age: 29,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "jamshid-iskanderov",
-      firstName: "Jamshid",
-      lastName: "ISKANDEROV",
-      nameOnShirt: "ISKANDEROV",
+      firstName: "Жамшид",
+      lastName: "Искандеров",
+      nameOnShirt: "Искандеров",
+      originalFirstName: "Jamshid",
+      originalLastName: "ISKANDEROV",
+      originalNameOnShirt: "ISKANDEROV",
+
       dateOfBirth: "16/10/1993",
       age: 32,
       shirtNumber: 8,
@@ -355,11 +420,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "odiljon-xamrobekov",
-      firstName: "Odiljon",
-      lastName: "XAMROBEKOV",
-      nameOnShirt: "XAMROBEKOV",
+      firstName: "Одилжон",
+      lastName: "Ксамробеков",
+      nameOnShirt: "Ксамробеков",
+      originalFirstName: "Odiljon",
+      originalLastName: "XAMROBEKOV",
+      originalNameOnShirt: "XAMROBEKOV",
+
       dateOfBirth: "13/02/1996",
       age: 30,
       shirtNumber: 9,
@@ -376,11 +445,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "ruslanbek-jiyanov",
-      firstName: "Ruslanbek",
-      lastName: "JIYANOV",
-      nameOnShirt: "JIYANOV",
+      firstName: "Русланбек",
+      lastName: "Жиянов",
+      nameOnShirt: "Жиянов",
+      originalFirstName: "Ruslanbek",
+      originalLastName: "JIYANOV",
+      originalNameOnShirt: "JIYANOV",
+
       dateOfBirth: "05/06/2001",
       age: 25,
       shirtNumber: 10,
@@ -397,11 +470,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "oston-urunov",
-      firstName: "Oston",
-      lastName: "URUNOV",
-      nameOnShirt: "URUNOV",
+      firstName: "Остон",
+      lastName: "Урунов",
+      nameOnShirt: "Урунов",
+      originalFirstName: "Oston",
+      originalLastName: "URUNOV",
+      originalNameOnShirt: "URUNOV",
+
       dateOfBirth: "19/12/2000",
       age: 25,
       shirtNumber: 11,
@@ -418,11 +495,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "dostonbek-khamdamov",
-      firstName: "Dostonbek",
-      lastName: "KHAMDAMOV",
-      nameOnShirt: "KHAMDAMOV",
+      firstName: "Достонбек",
+      lastName: "Хамдамов",
+      nameOnShirt: "Хамдамов",
+      originalFirstName: "Dostonbek",
+      originalLastName: "KHAMDAMOV",
+      originalNameOnShirt: "KHAMDAMOV",
+
       dateOfBirth: "24/07/1996",
       age: 29,
       shirtNumber: 17,
@@ -439,11 +520,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "azizjon-ganiev",
-      firstName: "Azizjon",
-      lastName: "GANIEV",
-      nameOnShirt: "GANIEV",
+      firstName: "Азизжон",
+      lastName: "Ганиев",
+      nameOnShirt: "Ганиев",
+      originalFirstName: "Azizjon",
+      originalLastName: "GANIEV",
+      originalNameOnShirt: "GANIEV",
+
       dateOfBirth: "22/02/1998",
       age: 28,
       shirtNumber: 19,
@@ -460,11 +545,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "abbosbek-fayzullaev",
-      firstName: "Abbosbek",
-      lastName: "FAYZULLAEV",
-      nameOnShirt: "FAYZULLAEV",
+      firstName: "Аббосбек",
+      lastName: "Файзуллаев",
+      nameOnShirt: "Файзуллаев",
+      originalFirstName: "Abbosbek",
+      originalLastName: "FAYZULLAEV",
+      originalNameOnShirt: "FAYZULLAEV",
+
       dateOfBirth: "03/10/2003",
       age: 22,
       shirtNumber: 22,
@@ -481,11 +570,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "sherzod-esanov",
-      firstName: "Sherzod",
-      lastName: "ESANOV",
-      nameOnShirt: "ESANOV",
+      firstName: "Шерзод",
+      lastName: "Есанов",
+      nameOnShirt: "Есанов",
+      originalFirstName: "Sherzod",
+      originalLastName: "ESANOV",
+      originalNameOnShirt: "ESANOV",
+
       dateOfBirth: "01/02/2003",
       age: 23,
       shirtNumber: 23,
@@ -504,11 +597,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "eldor-shomurodov",
-      firstName: "Eldor",
-      lastName: "SHOMURODOV",
-      nameOnShirt: "SHOMURODOV",
+      firstName: "Элдор",
+      lastName: "Шомуродов",
+      nameOnShirt: "Шомуродов",
+      originalFirstName: "Eldor",
+      originalLastName: "SHOMURODOV",
+      originalNameOnShirt: "SHOMURODOV",
+
       dateOfBirth: "29/06/1995",
       age: 30,
       shirtNumber: 14,
@@ -525,11 +622,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "azizbek-amonov",
-      firstName: "Azizbek",
-      lastName: "AMONOV",
-      nameOnShirt: "AMONOV",
+      firstName: "Азизбек",
+      lastName: "Амонов",
+      nameOnShirt: "Амонов",
+      originalFirstName: "Azizbek",
+      originalLastName: "AMONOV",
+      originalNameOnShirt: "AMONOV",
+
       dateOfBirth: "30/10/1997",
       age: 28,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const uzbekistanProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "igor-sergeev",
-      firstName: "Igor",
-      lastName: "SERGEEV",
-      nameOnShirt: "SERGEEV",
+      firstName: "Игор",
+      lastName: "Сергеев",
+      nameOnShirt: "Сергеев",
+      originalFirstName: "Igor",
+      originalLastName: "SERGEEV",
+      originalNameOnShirt: "SERGEEV",
+
       dateOfBirth: "30/04/1993",
       age: 33,
       shirtNumber: 21,

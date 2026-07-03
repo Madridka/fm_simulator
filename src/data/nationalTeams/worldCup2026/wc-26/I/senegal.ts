@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import senegalFlag from '@/data/nationalTeams/worldCup2026/flags/senegal.png'
 
 export const senegalProfile: NationalTeamProfile = {
   id: "senegal",
@@ -6,7 +7,7 @@ export const senegalProfile: NationalTeamProfile = {
   shortName: "SEN",
   fifaCode: "SEN",
   groupId: "I",
-  flagCode: "SN",
+  flag: senegalFlag,
   rating: 80,
   attackRating: 80,
   midfieldRating: 79,
@@ -15,11 +16,15 @@ export const senegalProfile: NationalTeamProfile = {
   secondaryColor: "#FDEF42",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "yehvann-djibril-victor-diouf",
-      firstName: "Yehvann Djibril Victor",
-      lastName: "DIOUF",
-      nameOnShirt: "Y. DIOUF",
+      firstName: "Иеванн",
+      lastName: "Диуф",
+      nameOnShirt: "Й. Диуф",
+      originalFirstName: "Yehvann Djibril Victor",
+      originalLastName: "DIOUF",
+      originalNameOnShirt: "Y. DIOUF",
+
       dateOfBirth: "16/11/1999",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "edouard-osoque-mendy",
-      firstName: "Edouard Osoque",
-      lastName: "MENDY",
-      nameOnShirt: "MENDY",
+      firstName: "Едуард",
+      lastName: "Менди",
+      nameOnShirt: "Менди",
+      originalFirstName: "Edouard Osoque",
+      originalLastName: "MENDY",
+      originalNameOnShirt: "MENDY",
+
       dateOfBirth: "01/03/1992",
       age: 34,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "mory-diaw",
-      firstName: "Mory",
-      lastName: "DIAW",
-      nameOnShirt: "DIAW",
+      firstName: "Мори",
+      lastName: "Диав",
+      nameOnShirt: "Диав",
+      originalFirstName: "Mory",
+      originalLastName: "DIAW",
+      originalNameOnShirt: "DIAW",
+
       dateOfBirth: "22/06/1993",
       age: 32,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const senegalProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "mamadou-sarr",
-      firstName: "Mamadou",
-      lastName: "SARR",
-      nameOnShirt: "SARR",
+      firstName: "Мамаду",
+      lastName: "Сарр",
+      nameOnShirt: "Сарр",
+      originalFirstName: "Mamadou",
+      originalLastName: "SARR",
+      originalNameOnShirt: "SARR",
+
       dateOfBirth: "29/08/2005",
       age: 20,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 840_000,
       isInjured: false,
     },
-    {
+        {
       id: "kalidou-koulibaly",
-      firstName: "Kalidou",
-      lastName: "KOULIBALY",
-      nameOnShirt: "KOULIBALY",
+      firstName: "Калиду",
+      lastName: "Кулибали",
+      nameOnShirt: "Кулибали",
+      originalFirstName: "Kalidou",
+      originalLastName: "KOULIBALY",
+      originalNameOnShirt: "KOULIBALY",
+
       dateOfBirth: "20/06/1991",
       age: 34,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdoulaye-seck",
-      firstName: "Abdoulaye",
-      lastName: "SECK",
-      nameOnShirt: "SECK",
+      firstName: "Абдулаие",
+      lastName: "Секк",
+      nameOnShirt: "Секк",
+      originalFirstName: "Abdoulaye",
+      originalLastName: "SECK",
+      originalNameOnShirt: "SECK",
+
       dateOfBirth: "04/06/1992",
       age: 34,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismail-joshua-jakobs",
-      firstName: "Ismail Joshua",
-      lastName: "JAKOBS",
-      nameOnShirt: "JAKOBS",
+      firstName: "Исмел",
+      lastName: "Жакобс",
+      nameOnShirt: "Жакобс",
+      originalFirstName: "Ismail Joshua",
+      originalLastName: "JAKOBS",
+      originalNameOnShirt: "JAKOBS",
+
       dateOfBirth: "17/08/1999",
       age: 26,
       shirtNumber: 14,
@@ -164,11 +193,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "krepin-diatta",
-      firstName: "Krepin",
-      lastName: "DIATTA",
-      nameOnShirt: "DIATTA",
+      firstName: "Крепин",
+      lastName: "Диатта",
+      nameOnShirt: "Диатта",
+      originalFirstName: "Krepin",
+      originalLastName: "DIATTA",
+      originalNameOnShirt: "DIATTA",
+
       dateOfBirth: "25/02/1999",
       age: 27,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "moussa-niakhate",
-      firstName: "Moussa",
-      lastName: "NIAKHATE",
-      nameOnShirt: "NIAKHATÉ",
+      firstName: "Мусса",
+      lastName: "Ниакате",
+      nameOnShirt: "Ниакате",
+      originalFirstName: "Moussa",
+      originalLastName: "NIAKHATE",
+      originalNameOnShirt: "NIAKHATÉ",
+
       dateOfBirth: "08/03/1996",
       age: 30,
       shirtNumber: 19,
@@ -206,11 +243,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "antoine-alpha-mendy",
-      firstName: "Antoine Alpha",
-      lastName: "MENDY",
-      nameOnShirt: "A. MENDY",
+      firstName: "Антуан",
+      lastName: "Менди",
+      nameOnShirt: "А. Менди",
+      originalFirstName: "Antoine Alpha",
+      originalLastName: "MENDY",
+      originalNameOnShirt: "A. MENDY",
+
       dateOfBirth: "27/05/2004",
       age: 22,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "el-hadji-malick-diouf",
-      firstName: "El Hadji Malick",
-      lastName: "DIOUF",
-      nameOnShirt: "DIOUF",
+      firstName: "Ел",
+      lastName: "Диуф",
+      nameOnShirt: "Диуф",
+      originalFirstName: "El Hadji Malick",
+      originalLastName: "DIOUF",
+      originalNameOnShirt: "DIOUF",
+
       dateOfBirth: "29/12/2004",
       age: 21,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const senegalProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "idrissa-gana-gueye",
-      firstName: "Idrissa Gana",
-      lastName: "GUEYE",
-      nameOnShirt: "GANA",
+      firstName: "Идрисса",
+      lastName: "Гуейе",
+      nameOnShirt: "Гана",
+      originalFirstName: "Idrissa Gana",
+      originalLastName: "GUEYE",
+      originalNameOnShirt: "GANA",
+
       dateOfBirth: "26/09/1989",
       age: 36,
       shirtNumber: 5,
@@ -271,11 +320,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismaila-pathe-ciss",
-      firstName: "Ismaila Pathe",
-      lastName: "CISS",
-      nameOnShirt: "P.I. CISS",
+      firstName: "Исмела",
+      lastName: "Сисс",
+      nameOnShirt: "П.И. Сисс",
+      originalFirstName: "Ismaila Pathe",
+      originalLastName: "CISS",
+      originalNameOnShirt: "P.I. CISS",
+
       dateOfBirth: "16/03/1994",
       age: 32,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "lamine-camara",
-      firstName: "Lamine",
-      lastName: "CAMARA",
-      nameOnShirt: "LAMINE",
+      firstName: "Ламин",
+      lastName: "Камара",
+      nameOnShirt: "Ламин",
+      originalFirstName: "Lamine",
+      originalLastName: "CAMARA",
+      originalNameOnShirt: "LAMINE",
+
       dateOfBirth: "01/01/2004",
       age: 22,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "pape-matar-sarr",
-      firstName: "Pape Matar",
-      lastName: "SARR",
-      nameOnShirt: "P.M. SARR",
+      firstName: "Папе",
+      lastName: "Сарр",
+      nameOnShirt: "П.М. Сарр",
+      originalFirstName: "Pape Matar",
+      originalLastName: "SARR",
+      originalNameOnShirt: "P.M. SARR",
+
       dateOfBirth: "14/09/2002",
       age: 23,
       shirtNumber: 17,
@@ -334,11 +395,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "mouhamadou-habib-mbacke-diarra",
-      firstName: "Mouhamadou Habib Mbacke",
-      lastName: "DIARRA",
-      nameOnShirt: "H. DIARRA",
+      firstName: "Муамаду",
+      lastName: "Диарра",
+      nameOnShirt: "Х. Диарра",
+      originalFirstName: "Mouhamadou Habib Mbacke",
+      originalLastName: "DIARRA",
+      originalNameOnShirt: "H. DIARRA",
+
       dateOfBirth: "03/01/2004",
       age: 22,
       shirtNumber: 21,
@@ -355,11 +420,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "bara-sapoko-ndiaye",
-      firstName: "Bara Sapoko",
-      lastName: "NDIAYE",
-      nameOnShirt: "BARA",
+      firstName: "Бара",
+      lastName: "Ндиаие",
+      nameOnShirt: "Бара",
+      originalFirstName: "Bara Sapoko",
+      originalLastName: "NDIAYE",
+      originalNameOnShirt: "BARA",
+
       dateOfBirth: "31/12/2007",
       age: 18,
       shirtNumber: 22,
@@ -376,11 +445,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 605_000,
       isInjured: false,
     },
-    {
+        {
       id: "pape-alassane-gueye",
-      firstName: "Pape Alassane",
-      lastName: "GUEYE",
-      nameOnShirt: "GUEYE",
+      firstName: "Папе",
+      lastName: "Гуейе",
+      nameOnShirt: "Гуейе",
+      originalFirstName: "Pape Alassane",
+      originalLastName: "GUEYE",
+      originalNameOnShirt: "GUEYE",
+
       dateOfBirth: "24/01/1999",
       age: 27,
       shirtNumber: 26,
@@ -399,11 +472,15 @@ export const senegalProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "assane-diao",
-      firstName: "Assane",
-      lastName: "DIAO",
-      nameOnShirt: "A. DIAO",
+      firstName: "Ассане",
+      lastName: "Диао",
+      nameOnShirt: "А. Диао",
+      originalFirstName: "Assane",
+      originalLastName: "DIAO",
+      originalNameOnShirt: "A. DIAO",
+
       dateOfBirth: "07/09/2005",
       age: 20,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "cheikh-ahmadou-bamba-mbacke-dieng",
-      firstName: "Cheikh Ahmadou Bamba Mbacke",
-      lastName: "DIENG",
-      nameOnShirt: "BAMBA",
+      firstName: "Шеик",
+      lastName: "Диенг",
+      nameOnShirt: "Бамба",
+      originalFirstName: "Cheikh Ahmadou Bamba Mbacke",
+      originalLastName: "DIENG",
+      originalNameOnShirt: "BAMBA",
+
       dateOfBirth: "23/03/2000",
       age: 26,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "sadio-mane",
-      firstName: "Sadio",
-      lastName: "MANE",
-      nameOnShirt: "MANÉ",
+      firstName: "Садио",
+      lastName: "Мане",
+      nameOnShirt: "Мане",
+      originalFirstName: "Sadio",
+      originalLastName: "MANE",
+      originalNameOnShirt: "MANÉ",
+
       dateOfBirth: "10/04/1992",
       age: 34,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-jackson",
-      firstName: "Nicolas",
-      lastName: "JACKSON",
-      nameOnShirt: "N. JACKSON",
+      firstName: "Николас",
+      lastName: "Жакксон",
+      nameOnShirt: "Н. Жакксон",
+      originalFirstName: "Nicolas",
+      originalLastName: "JACKSON",
+      originalNameOnShirt: "N. JACKSON",
+
       dateOfBirth: "20/06/2001",
       age: 24,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 1_090_000,
       isInjured: false,
     },
-    {
+        {
       id: "pape-cherif-ndiaye",
-      firstName: "Pape Cherif",
-      lastName: "NDIAYE",
-      nameOnShirt: "CHÉRIF",
+      firstName: "Папе",
+      lastName: "Ндиаие",
+      nameOnShirt: "Шериф",
+      originalFirstName: "Pape Cherif",
+      originalLastName: "NDIAYE",
+      originalNameOnShirt: "CHÉRIF",
+
       dateOfBirth: "23/01/1996",
       age: 30,
       shirtNumber: 12,
@@ -504,11 +597,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "iliman-cheikh-baroy-ndiaye",
-      firstName: "Iliman Cheikh Baroy",
-      lastName: "NDIAYE",
-      nameOnShirt: "NDIAYE",
+      firstName: "Илиман",
+      lastName: "Ндиаие",
+      nameOnShirt: "Ндиаие",
+      originalFirstName: "Iliman Cheikh Baroy",
+      originalLastName: "NDIAYE",
+      originalNameOnShirt: "NDIAYE",
+
       dateOfBirth: "06/03/2000",
       age: 26,
       shirtNumber: 13,
@@ -525,11 +622,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismaila-sarr",
-      firstName: "Ismaila",
-      lastName: "SARR",
-      nameOnShirt: "ISMAÏLA",
+      firstName: "Исмела",
+      lastName: "Сарр",
+      nameOnShirt: "Исмела",
+      originalFirstName: "Ismaila",
+      originalLastName: "SARR",
+      originalNameOnShirt: "ISMAÏLA",
+
       dateOfBirth: "25/02/1998",
       age: 28,
       shirtNumber: 18,
@@ -546,11 +647,15 @@ export const senegalProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "ibrahim-mbaye",
-      firstName: "Ibrahim",
-      lastName: "MBAYE",
-      nameOnShirt: "I. MBAYE",
+      firstName: "Ибраим",
+      lastName: "Мбаие",
+      nameOnShirt: "И. Мбаие",
+      originalFirstName: "Ibrahim",
+      originalLastName: "MBAYE",
+      originalNameOnShirt: "I. MBAYE",
+
       dateOfBirth: "24/01/2008",
       age: 18,
       shirtNumber: 20,

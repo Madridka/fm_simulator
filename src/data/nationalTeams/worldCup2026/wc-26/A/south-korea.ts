@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import southKoreaFlag from '@/data/nationalTeams/worldCup2026/flags/south-korea.png'
 
 export const southKoreaProfile: NationalTeamProfile = {
   id: "south-korea",
@@ -6,7 +7,7 @@ export const southKoreaProfile: NationalTeamProfile = {
   shortName: "KOR",
   fifaCode: "KOR",
   groupId: "A",
-  flagCode: "KR",
+  flag: southKoreaFlag,
   rating: 79,
   attackRating: 78,
   midfieldRating: 79,
@@ -15,11 +16,15 @@ export const southKoreaProfile: NationalTeamProfile = {
   secondaryColor: "#0047A0",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "seunggyu-kim",
-      firstName: "Seunggyu",
-      lastName: "KIM",
-      nameOnShirt: "SEUNGGYU",
+      firstName: "Сынкйу",
+      lastName: "Ким",
+      nameOnShirt: "Сынкйу",
+      originalFirstName: "Seunggyu",
+      originalLastName: "KIM",
+      originalNameOnShirt: "SEUNGGYU",
+
       dateOfBirth: "30/09/1990",
       age: 35,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "bumkeun-song",
-      firstName: "Bumkeun",
-      lastName: "SONG",
-      nameOnShirt: "BUMKEUN",
+      firstName: "Пумкын",
+      lastName: "Сонк",
+      nameOnShirt: "Пумкын",
+      originalFirstName: "Bumkeun",
+      originalLastName: "SONG",
+      originalNameOnShirt: "BUMKEUN",
+
       dateOfBirth: "15/10/1997",
       age: 28,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "hyeonwoo-jo",
-      firstName: "Hyeonwoo",
-      lastName: "JO",
-      nameOnShirt: "HYEONWOO",
+      firstName: "Хйонвоо",
+      lastName: "Джо",
+      nameOnShirt: "Хйонвоо",
+      originalFirstName: "Hyeonwoo",
+      originalLastName: "JO",
+      originalNameOnShirt: "HYEONWOO",
+
       dateOfBirth: "25/09/1991",
       age: 34,
       shirtNumber: 21,
@@ -80,11 +93,15 @@ export const southKoreaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "hanbeom-lee",
-      firstName: "Hanbeom",
-      lastName: "LEE",
-      nameOnShirt: "HANBEOM",
+      firstName: "Ханпом",
+      lastName: "Ли",
+      nameOnShirt: "Ханпом",
+      originalFirstName: "Hanbeom",
+      originalLastName: "LEE",
+      originalNameOnShirt: "HANBEOM",
+
       dateOfBirth: "17/06/2002",
       age: 23,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "minjae-kim",
-      firstName: "Minjae",
-      lastName: "KIM",
-      nameOnShirt: "MINJAE",
+      firstName: "Минджэ",
+      lastName: "Ким",
+      nameOnShirt: "Минджэ",
+      originalFirstName: "Minjae",
+      originalLastName: "KIM",
+      originalNameOnShirt: "MINJAE",
+
       dateOfBirth: "15/11/1996",
       age: 29,
       shirtNumber: 4,
@@ -122,11 +143,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "taehyeon-kim",
-      firstName: "Taehyeon",
-      lastName: "KIM",
-      nameOnShirt: "TAEHYEON",
+      firstName: "Тэхйон",
+      lastName: "Ким",
+      nameOnShirt: "Тэхйон",
+      originalFirstName: "Taehyeon",
+      originalLastName: "KIM",
+      originalNameOnShirt: "TAEHYEON",
+
       dateOfBirth: "17/09/2000",
       age: 25,
       shirtNumber: 5,
@@ -143,11 +168,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "taeseok-lee",
-      firstName: "Taeseok",
-      lastName: "LEE",
-      nameOnShirt: "TAESEOK",
+      firstName: "Тэсок",
+      lastName: "Ли",
+      nameOnShirt: "Тэсок",
+      originalFirstName: "Taeseok",
+      originalLastName: "LEE",
+      originalNameOnShirt: "TAESEOK",
+
       dateOfBirth: "28/07/2002",
       age: 23,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "wije-cho",
-      firstName: "Wije",
-      lastName: "CHO",
-      nameOnShirt: "WIJE",
+      firstName: "Видже",
+      lastName: "Чо",
+      nameOnShirt: "Видже",
+      originalFirstName: "Wije",
+      originalLastName: "CHO",
+      originalNameOnShirt: "WIJE",
+
       dateOfBirth: "25/08/2001",
       age: 24,
       shirtNumber: 14,
@@ -185,11 +218,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "moonhwan-kim",
-      firstName: "Moonhwan",
-      lastName: "KIM",
-      nameOnShirt: "MOONHWAN",
+      firstName: "Моонхван",
+      lastName: "Ким",
+      nameOnShirt: "Моонхван",
+      originalFirstName: "Moonhwan",
+      originalLastName: "KIM",
+      originalNameOnShirt: "MOONHWAN",
+
       dateOfBirth: "01/08/1995",
       age: 30,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "jinseob-park",
-      firstName: "Jinseob",
-      lastName: "PARK",
-      nameOnShirt: "JINSEOB",
+      firstName: "Джинсоп",
+      lastName: "Пак",
+      nameOnShirt: "Джинсоп",
+      originalFirstName: "Jinseob",
+      originalLastName: "PARK",
+      originalNameOnShirt: "JINSEOB",
+
       dateOfBirth: "23/10/1995",
       age: 30,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "youngwoo-seol",
-      firstName: "Youngwoo",
-      lastName: "SEOL",
-      nameOnShirt: "YOUNGWOO",
+      firstName: "Ёнвоо",
+      lastName: "Сол",
+      nameOnShirt: "Ёнвоо",
+      originalFirstName: "Youngwoo",
+      originalLastName: "SEOL",
+      originalNameOnShirt: "YOUNGWOO",
+
       dateOfBirth: "05/12/1998",
       age: 27,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "jens-castrop",
-      firstName: "Jens",
-      lastName: "CASTROP",
-      nameOnShirt: "JENS",
+      firstName: "Дженс",
+      lastName: "Кастроп",
+      nameOnShirt: "Дженс",
+      originalFirstName: "Jens",
+      originalLastName: "CASTROP",
+      originalNameOnShirt: "JENS",
+
       dateOfBirth: "29/07/2003",
       age: 22,
       shirtNumber: 23,
@@ -271,11 +320,15 @@ export const southKoreaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "gihyuk-lee",
-      firstName: "Gihyuk",
-      lastName: "LEE",
-      nameOnShirt: "GIHYUK",
+      firstName: "Кихйук",
+      lastName: "Ли",
+      nameOnShirt: "Кихйук",
+      originalFirstName: "Gihyuk",
+      originalLastName: "LEE",
+      originalNameOnShirt: "GIHYUK",
+
       dateOfBirth: "07/07/2000",
       age: 25,
       shirtNumber: 3,
@@ -292,11 +345,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "inbeom-hwang",
-      firstName: "Inbeom",
-      lastName: "HWANG",
-      nameOnShirt: "INBEOM",
+      firstName: "Инпом",
+      lastName: "Хванк",
+      nameOnShirt: "Инпом",
+      originalFirstName: "Inbeom",
+      originalLastName: "HWANG",
+      originalNameOnShirt: "INBEOM",
+
       dateOfBirth: "20/09/1996",
       age: 29,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "seungho-paik",
-      firstName: "Seungho",
-      lastName: "PAIK",
-      nameOnShirt: "SEUNGHO",
+      firstName: "Сынхо",
+      lastName: "Паик",
+      nameOnShirt: "Сынхо",
+      originalFirstName: "Seungho",
+      originalLastName: "PAIK",
+      originalNameOnShirt: "SEUNGHO",
+
       dateOfBirth: "17/03/1997",
       age: 29,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "jae-sung-lee",
-      firstName: "Jae Sung",
-      lastName: "LEE",
-      nameOnShirt: "JAESUNG",
+      firstName: "Джэ Сон",
+      lastName: "Ли",
+      nameOnShirt: "Джэсон",
+      originalFirstName: "Jae Sung",
+      originalLastName: "LEE",
+      originalNameOnShirt: "JAESUNG",
+
       dateOfBirth: "10/08/1992",
       age: 33,
       shirtNumber: 10,
@@ -355,11 +420,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 785_000,
       isInjured: false,
     },
-    {
+        {
       id: "hee-chan-hwang",
-      firstName: "Hee Chan",
-      lastName: "HWANG",
-      nameOnShirt: "HEECHAN",
+      firstName: "Хее Чан",
+      lastName: "Хванк",
+      nameOnShirt: "Хеечан",
+      originalFirstName: "Hee Chan",
+      originalLastName: "HWANG",
+      originalNameOnShirt: "HEECHAN",
+
       dateOfBirth: "26/01/1996",
       age: 30,
       shirtNumber: 11,
@@ -376,11 +445,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "junho-bae",
-      firstName: "Junho",
-      lastName: "BAE",
-      nameOnShirt: "JUNHO",
+      firstName: "Джунхо",
+      lastName: "Пэ",
+      nameOnShirt: "Джунхо",
+      originalFirstName: "Junho",
+      originalLastName: "BAE",
+      originalNameOnShirt: "JUNHO",
+
       dateOfBirth: "21/08/2003",
       age: 22,
       shirtNumber: 17,
@@ -397,11 +470,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "kangin-lee",
-      firstName: "Kangin",
-      lastName: "LEE",
-      nameOnShirt: "KANGIN",
+      firstName: "Канин",
+      lastName: "Ли",
+      nameOnShirt: "Канин",
+      originalFirstName: "Kangin",
+      originalLastName: "LEE",
+      originalNameOnShirt: "KANGIN",
+
       dateOfBirth: "19/02/2001",
       age: 25,
       shirtNumber: 19,
@@ -418,11 +495,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 1_105_000,
       isInjured: false,
     },
-    {
+        {
       id: "hyunjun-yang",
-      firstName: "Hyunjun",
-      lastName: "YANG",
-      nameOnShirt: "HYUNJUN",
+      firstName: "Хёнджун",
+      lastName: "Йанк",
+      nameOnShirt: "Хёнджун",
+      originalFirstName: "Hyunjun",
+      originalLastName: "YANG",
+      originalNameOnShirt: "HYUNJUN",
+
       dateOfBirth: "25/05/2002",
       age: 24,
       shirtNumber: 20,
@@ -439,11 +520,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "jingyu-kim",
-      firstName: "Jingyu",
-      lastName: "KIM",
-      nameOnShirt: "JINGYU",
+      firstName: "Джинкйу",
+      lastName: "Ким",
+      nameOnShirt: "Джинкйу",
+      originalFirstName: "Jingyu",
+      originalLastName: "KIM",
+      originalNameOnShirt: "JINGYU",
+
       dateOfBirth: "24/02/1997",
       age: 29,
       shirtNumber: 24,
@@ -460,11 +545,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "jisung-eom",
-      firstName: "Jisung",
-      lastName: "EOM",
-      nameOnShirt: "JISUNG",
+      firstName: "Джисон",
+      lastName: "Ом",
+      nameOnShirt: "Джисон",
+      originalFirstName: "Jisung",
+      originalLastName: "EOM",
+      originalNameOnShirt: "JISUNG",
+
       dateOfBirth: "09/05/2002",
       age: 24,
       shirtNumber: 25,
@@ -481,11 +570,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "donggyeong-lee",
-      firstName: "Donggyeong",
-      lastName: "LEE",
-      nameOnShirt: "DONGGYEONG",
+      firstName: "Донкён",
+      lastName: "Ли",
+      nameOnShirt: "Донкён",
+      originalFirstName: "Donggyeong",
+      originalLastName: "LEE",
+      originalNameOnShirt: "DONGGYEONG",
+
       dateOfBirth: "20/09/1997",
       age: 28,
       shirtNumber: 26,
@@ -504,11 +597,15 @@ export const southKoreaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "heung-min-son",
-      firstName: "Heung Min",
-      lastName: "SON",
-      nameOnShirt: "HEUNGMIN",
+      firstName: "Хын Мин",
+      lastName: "Сон",
+      nameOnShirt: "Хынмин",
+      originalFirstName: "Heung Min",
+      originalLastName: "SON",
+      originalNameOnShirt: "HEUNGMIN",
+
       dateOfBirth: "08/07/1992",
       age: 33,
       shirtNumber: 7,
@@ -525,11 +622,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "guesung-cho",
-      firstName: "Guesung",
-      lastName: "CHO",
-      nameOnShirt: "GUESUNG",
+      firstName: "Куесон",
+      lastName: "Чо",
+      nameOnShirt: "Куесон",
+      originalFirstName: "Guesung",
+      originalLastName: "CHO",
+      originalNameOnShirt: "GUESUNG",
+
       dateOfBirth: "25/01/1998",
       age: 28,
       shirtNumber: 9,
@@ -546,11 +647,15 @@ export const southKoreaProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "hyeongyu-oh",
-      firstName: "Hyeongyu",
-      lastName: "OH",
-      nameOnShirt: "HYEONGYU",
+      firstName: "Хёнйу",
+      lastName: "Ох",
+      nameOnShirt: "Хёнйу",
+      originalFirstName: "Hyeongyu",
+      originalLastName: "OH",
+      originalNameOnShirt: "HYEONGYU",
+
       dateOfBirth: "12/04/2001",
       age: 25,
       shirtNumber: 18,

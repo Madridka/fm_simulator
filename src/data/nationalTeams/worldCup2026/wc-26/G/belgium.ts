@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import belgiumFlag from '@/data/nationalTeams/worldCup2026/flags/belgium.png'
 
 export const belgiumProfile: NationalTeamProfile = {
   id: "belgium",
@@ -6,7 +7,7 @@ export const belgiumProfile: NationalTeamProfile = {
   shortName: "BEL",
   fifaCode: "BEL",
   groupId: "G",
-  flagCode: "BE",
+  flag: belgiumFlag,
   rating: 84,
   attackRating: 85,
   midfieldRating: 83,
@@ -15,11 +16,15 @@ export const belgiumProfile: NationalTeamProfile = {
   secondaryColor: "#FDDA24",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "thibaut-nicolas-m-courtois",
-      firstName: "Thibaut Nicolas M",
-      lastName: "COURTOIS",
-      nameOnShirt: "COURTOIS",
+      firstName: "Тибо",
+      lastName: "Куртуа",
+      nameOnShirt: "Коуртоис",
+      originalFirstName: "Thibaut Nicolas M",
+      originalLastName: "COURTOIS",
+      originalNameOnShirt: "COURTOIS",
+
       dateOfBirth: "11/05/1992",
       age: 34,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_225_000,
       isInjured: false,
     },
-    {
+        {
       id: "senne-lammens",
-      firstName: "Senne",
-      lastName: "LAMMENS",
-      nameOnShirt: "LAMMENS",
+      firstName: "Сенне",
+      lastName: "Ламменс",
+      nameOnShirt: "Ламменс",
+      originalFirstName: "Senne",
+      originalLastName: "LAMMENS",
+      originalNameOnShirt: "LAMMENS",
+
       dateOfBirth: "07/07/2002",
       age: 23,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 940_000,
       isInjured: false,
     },
-    {
+        {
       id: "mike-louis-penders",
-      firstName: "Mike Louis",
-      lastName: "PENDERS",
-      nameOnShirt: "PENDERS",
+      firstName: "Мике",
+      lastName: "Пендерс",
+      nameOnShirt: "Пендерс",
+      originalFirstName: "Mike Louis",
+      originalLastName: "PENDERS",
+      originalNameOnShirt: "PENDERS",
+
       dateOfBirth: "31/07/2005",
       age: 20,
       shirtNumber: 13,
@@ -80,11 +93,15 @@ export const belgiumProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "zeno-koen-debast",
-      firstName: "Zeno Koen",
-      lastName: "DEBAST",
-      nameOnShirt: "DEBAST",
+      firstName: "Зено",
+      lastName: "Дебаст",
+      nameOnShirt: "Дебаст",
+      originalFirstName: "Zeno Koen",
+      originalLastName: "DEBAST",
+      originalNameOnShirt: "DEBAST",
+
       dateOfBirth: "24/10/2003",
       age: 22,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_170_000,
       isInjured: false,
     },
-    {
+        {
       id: "arthur-nicolas-r-theate",
-      firstName: "Arthur Nicolas R",
-      lastName: "THEATE",
-      nameOnShirt: "THEATE",
+      firstName: "Артхур",
+      lastName: "Тхеате",
+      nameOnShirt: "Тхеате",
+      originalFirstName: "Arthur Nicolas R",
+      originalLastName: "THEATE",
+      originalNameOnShirt: "THEATE",
+
       dateOfBirth: "25/05/2000",
       age: 26,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "brandon-erik-mechele",
-      firstName: "Brandon Erik",
-      lastName: "MECHELE",
-      nameOnShirt: "MECHELE",
+      firstName: "Брандон",
+      lastName: "Мехеле",
+      nameOnShirt: "Мехеле",
+      originalFirstName: "Brandon Erik",
+      originalLastName: "MECHELE",
+      originalNameOnShirt: "MECHELE",
+
       dateOfBirth: "28/01/1993",
       age: 33,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "maxim-peter-m-de-cuyper",
-      firstName: "Maxim Peter M",
-      lastName: "DE CUYPER",
-      nameOnShirt: "DE CUYPER",
+      firstName: "Максим",
+      lastName: "Де Куипер",
+      nameOnShirt: "Де Куипер",
+      originalFirstName: "Maxim Peter M",
+      originalLastName: "DE CUYPER",
+      originalNameOnShirt: "DE CUYPER",
+
       dateOfBirth: "22/12/2000",
       age: 25,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "thomas-andre-a-meunier",
-      firstName: "Thomas Andre A",
-      lastName: "MEUNIER",
-      nameOnShirt: "MEUNIER",
+      firstName: "Тхомас",
+      lastName: "Мёниер",
+      nameOnShirt: "Мёниер",
+      originalFirstName: "Thomas Andre A",
+      originalLastName: "MEUNIER",
+      originalNameOnShirt: "MEUNIER",
+
       dateOfBirth: "12/09/1991",
       age: 34,
       shirtNumber: 15,
@@ -185,11 +218,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "koni-de-winter",
-      firstName: "Koni",
-      lastName: "DE WINTER",
-      nameOnShirt: "DE WINTER",
+      firstName: "Кони",
+      lastName: "Де Винтер",
+      nameOnShirt: "Де Винтер",
+      originalFirstName: "Koni",
+      originalLastName: "DE WINTER",
+      originalNameOnShirt: "DE WINTER",
+
       dateOfBirth: "12/06/2002",
       age: 23,
       shirtNumber: 16,
@@ -206,11 +243,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "joaquin-ronny-seys",
-      firstName: "Joaquin Ronny",
-      lastName: "SEYS",
-      nameOnShirt: "SEYS",
+      firstName: "Йоакёйн",
+      lastName: "Сеис",
+      nameOnShirt: "Сеис",
+      originalFirstName: "Joaquin Ronny",
+      originalLastName: "SEYS",
+      originalNameOnShirt: "SEYS",
+
       dateOfBirth: "28/03/2005",
       age: 21,
       shirtNumber: 18,
@@ -227,11 +268,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 775_000,
       isInjured: false,
     },
-    {
+        {
       id: "timothy-castagne",
-      firstName: "Timothy",
-      lastName: "CASTAGNE",
-      nameOnShirt: "CASTAGNE",
+      firstName: "Тимотхи",
+      lastName: "Кастахне",
+      nameOnShirt: "Кастахне",
+      originalFirstName: "Timothy",
+      originalLastName: "CASTAGNE",
+      originalNameOnShirt: "CASTAGNE",
+
       dateOfBirth: "05/12/1995",
       age: 30,
       shirtNumber: 21,
@@ -248,11 +293,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathan-ngoy",
-      firstName: "Nathan",
-      lastName: "NGOY",
-      nameOnShirt: "NGOY",
+      firstName: "Натхан",
+      lastName: "Нхои",
+      nameOnShirt: "Нхои",
+      originalFirstName: "Nathan",
+      originalLastName: "NGOY",
+      originalNameOnShirt: "NGOY",
+
       dateOfBirth: "10/06/2003",
       age: 23,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const belgiumProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "axel-laurent-a-witsel",
-      firstName: "Axel Laurent A",
-      lastName: "WITSEL",
-      nameOnShirt: "WITSEL",
+      firstName: "Аксель",
+      lastName: "Витсел",
+      nameOnShirt: "Витсел",
+      originalFirstName: "Axel Laurent A",
+      originalLastName: "WITSEL",
+      originalNameOnShirt: "WITSEL",
+
       dateOfBirth: "12/01/1989",
       age: 37,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "kevin-de-bruyne",
-      firstName: "Kevin",
-      lastName: "DE BRUYNE",
-      nameOnShirt: "DE BRUYNE",
+      firstName: "Кевин",
+      lastName: "Де Брёйне",
+      nameOnShirt: "Де Бруине",
+      originalFirstName: "Kevin",
+      originalLastName: "DE BRUYNE",
+      originalNameOnShirt: "DE BRUYNE",
+
       dateOfBirth: "28/06/1991",
       age: 34,
       shirtNumber: 7,
@@ -313,11 +370,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_225_000,
       isInjured: false,
     },
-    {
+        {
       id: "youri-marion-a-tielemans",
-      firstName: "Youri Marion A",
-      lastName: "TIELEMANS",
-      nameOnShirt: "TIELEMANS",
+      firstName: "Иоури",
+      lastName: "Тиелеманс",
+      nameOnShirt: "Тиелеманс",
+      originalFirstName: "Youri Marion A",
+      originalLastName: "TIELEMANS",
+      originalNameOnShirt: "TIELEMANS",
+
       dateOfBirth: "07/05/1997",
       age: 29,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "diego-manuel-j-da-silva-moreira",
-      firstName: "Diego Manuel J",
-      lastName: "DA SILVA MOREIRA",
-      nameOnShirt: "MOREIRA JR",
+      firstName: "Диехо",
+      lastName: "Да Силва Мореира",
+      nameOnShirt: "Мореира Жуниор",
+      originalFirstName: "Diego Manuel J",
+      originalLastName: "DA SILVA MOREIRA",
+      originalNameOnShirt: "MOREIRA JR",
+
       dateOfBirth: "06/08/2004",
       age: 21,
       shirtNumber: 19,
@@ -355,11 +420,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 775_000,
       isInjured: false,
     },
-    {
+        {
       id: "hans-vanaken",
-      firstName: "Hans",
-      lastName: "VANAKEN",
-      nameOnShirt: "VANAKEN",
+      firstName: "Ханс",
+      lastName: "Ванакен",
+      nameOnShirt: "Ванакен",
+      originalFirstName: "Hans",
+      originalLastName: "VANAKEN",
+      originalNameOnShirt: "VANAKEN",
+
       dateOfBirth: "24/08/1992",
       age: 33,
       shirtNumber: 20,
@@ -376,11 +445,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexis-jesse-m-saelemaekers",
-      firstName: "Alexis Jesse M",
-      lastName: "SAELEMAEKERS",
-      nameOnShirt: "SAELEMAEKERS",
+      firstName: "Алексис",
+      lastName: "Саелемаекерс",
+      nameOnShirt: "Саелемаекерс",
+      originalFirstName: "Alexis Jesse M",
+      originalLastName: "SAELEMAEKERS",
+      originalNameOnShirt: "SAELEMAEKERS",
+
       dateOfBirth: "27/06/1999",
       age: 26,
       shirtNumber: 22,
@@ -397,11 +470,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "nicolas-thierry-y-raskin",
-      firstName: "Nicolas Thierry Y",
-      lastName: "RASKIN",
-      nameOnShirt: "RASKIN",
+      firstName: "Николас",
+      lastName: "Раскин",
+      nameOnShirt: "Раскин",
+      originalFirstName: "Nicolas Thierry Y",
+      originalLastName: "RASKIN",
+      originalNameOnShirt: "RASKIN",
+
       dateOfBirth: "23/02/2001",
       age: 25,
       shirtNumber: 23,
@@ -418,11 +495,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "amadou-ba-z-mvom-onana",
-      firstName: "Amadou Ba Z",
-      lastName: "MVOM ONANA",
-      nameOnShirt: "ONANA",
+      firstName: "Амадоу",
+      lastName: "Мвом Онана",
+      nameOnShirt: "Онана",
+      originalFirstName: "Amadou Ba Z",
+      originalLastName: "MVOM ONANA",
+      originalNameOnShirt: "ONANA",
+
       dateOfBirth: "16/08/2001",
       age: 24,
       shirtNumber: 24,
@@ -441,11 +522,15 @@ export const belgiumProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "romelu-lukaku-bolingoli",
-      firstName: "Romelu",
-      lastName: "LUKAKU BOLINGOLI",
-      nameOnShirt: "LUKAKU",
+      firstName: "Ромелу",
+      lastName: "Лукаку",
+      nameOnShirt: "Лукаку",
+      originalFirstName: "Romelu",
+      originalLastName: "LUKAKU BOLINGOLI",
+      originalNameOnShirt: "LUKAKU",
+
       dateOfBirth: "13/05/1993",
       age: 33,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "leandro-trossard",
-      firstName: "Leandro",
-      lastName: "TROSSARD",
-      nameOnShirt: "TROSSARD",
+      firstName: "Леандро",
+      lastName: "Троссард",
+      nameOnShirt: "Троссард",
+      originalFirstName: "Leandro",
+      originalLastName: "TROSSARD",
+      originalNameOnShirt: "TROSSARD",
+
       dateOfBirth: "04/12/1994",
       age: 31,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "jeremy-baffour-doku",
-      firstName: "Jeremy Baffour",
-      lastName: "DOKU",
-      nameOnShirt: "DOKU",
+      firstName: "Йереми",
+      lastName: "Доку",
+      nameOnShirt: "Доку",
+      originalFirstName: "Jeremy Baffour",
+      originalLastName: "DOKU",
+      originalNameOnShirt: "DOKU",
+
       dateOfBirth: "27/05/2002",
       age: 24,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "dodi-lukebakio-ngandoli",
-      firstName: "Dodi",
-      lastName: "LUKEBAKIO NGANDOLI",
-      nameOnShirt: "LUKEBAKIO",
+      firstName: "Доди",
+      lastName: "Лукебакио Нхандоли",
+      nameOnShirt: "Лукебакио",
+      originalFirstName: "Dodi",
+      originalLastName: "LUKEBAKIO NGANDOLI",
+      originalNameOnShirt: "LUKEBAKIO",
+
       dateOfBirth: "24/09/1997",
       age: 28,
       shirtNumber: 14,
@@ -525,11 +622,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "charles-marc-s-de-ketelaere",
-      firstName: "Charles Marc S",
-      lastName: "DE KETELAERE",
-      nameOnShirt: "DE KETELAERE",
+      firstName: "Харлес",
+      lastName: "Де Кетелаере",
+      nameOnShirt: "Де Кетелаере",
+      originalFirstName: "Charles Marc S",
+      originalLastName: "DE KETELAERE",
+      originalNameOnShirt: "DE KETELAERE",
+
       dateOfBirth: "10/03/2001",
       age: 25,
       shirtNumber: 17,
@@ -546,11 +647,15 @@ export const belgiumProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "matias-fernandez-pardo",
-      firstName: "Matias",
-      lastName: "FERNANDEZ-PARDO",
-      nameOnShirt: "FERNANDEZ-PARDO",
+      firstName: "Матиас",
+      lastName: "Фернандез-Пардо",
+      nameOnShirt: "Фернандез-Пардо",
+      originalFirstName: "Matias",
+      originalLastName: "FERNANDEZ-PARDO",
+      originalNameOnShirt: "FERNANDEZ-PARDO",
+
       dateOfBirth: "03/02/2005",
       age: 21,
       shirtNumber: 26,

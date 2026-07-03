@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import brazilFlag from '@/data/nationalTeams/worldCup2026/flags/brazil.png'
 
 export const brazilProfile: NationalTeamProfile = {
   id: "brazil",
@@ -6,7 +7,7 @@ export const brazilProfile: NationalTeamProfile = {
   shortName: "BRA",
   fifaCode: "BRA",
   groupId: "C",
-  flagCode: "BR",
+  flag: brazilFlag,
   rating: 88,
   attackRating: 89,
   midfieldRating: 87,
@@ -15,11 +16,15 @@ export const brazilProfile: NationalTeamProfile = {
   secondaryColor: "#009C3B",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "alisson-ramses-becker",
-      firstName: "Álisson Ramsés",
-      lastName: "BECKER",
-      nameOnShirt: "A. BECKER",
+      firstName: "Алиссон",
+      lastName: "Бекер",
+      nameOnShirt: "А. Беккер",
+      originalFirstName: "Álisson Ramsés",
+      originalLastName: "BECKER",
+      originalNameOnShirt: "A. BECKER",
+
       dateOfBirth: "02/10/1992",
       age: 33,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_570_000,
       isInjured: false,
     },
-    {
+        {
       id: "weverton-pereira-da-silva",
-      firstName: "Weverton",
-      lastName: "PEREIRA DA SILVA",
-      nameOnShirt: "WEVERTON",
+      firstName: "Вевертон",
+      lastName: "Перейра да Силва",
+      nameOnShirt: "Вевертон",
+      originalFirstName: "Weverton",
+      originalLastName: "PEREIRA DA SILVA",
+      originalNameOnShirt: "WEVERTON",
+
       dateOfBirth: "13/12/1987",
       age: 38,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "ederson-santana-de-moraes",
-      firstName: "Ederson",
-      lastName: "SANTANA DE MORAES",
-      nameOnShirt: "EDERSON",
+      firstName: "Эдерсон",
+      lastName: "Мораес",
+      nameOnShirt: "Едерсон",
+      originalFirstName: "Ederson",
+      originalLastName: "SANTANA DE MORAES",
+      originalNameOnShirt: "EDERSON",
+
       dateOfBirth: "17/08/1993",
       age: 32,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const brazilProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "gabriel-dos-santos-magalhaes",
-      firstName: "Gabriel",
-      lastName: "DOS SANTOS MAGALHÃES",
-      nameOnShirt: "GABRIEL",
+      firstName: "Габриэл",
+      lastName: "Дос Сантос Магальаес",
+      nameOnShirt: "Габриэл",
+      originalFirstName: "Gabriel",
+      originalLastName: "DOS SANTOS MAGALHÃES",
+      originalNameOnShirt: "GABRIEL",
+
       dateOfBirth: "19/12/1997",
       age: 28,
       shirtNumber: 3,
@@ -101,11 +118,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcos-aoas-correa",
-      firstName: "Marcos",
-      lastName: "AOAS CORREA",
-      nameOnShirt: "MARQUINHOS",
+      firstName: "Маркиньос",
+      lastName: "",
+      nameOnShirt: "Маркуиньос",
+      originalFirstName: "Marcos",
+      originalLastName: "AOAS CORREA",
+      originalNameOnShirt: "MARQUINHOS",
+
       dateOfBirth: "14/05/1994",
       age: 32,
       shirtNumber: 4,
@@ -122,11 +143,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_660_000,
       isInjured: false,
     },
-    {
+        {
       id: "alex-sandro-lobo-silva",
-      firstName: "Alex Sandro",
-      lastName: "LOBO SILVA",
-      nameOnShirt: "ALEX SANDRO",
+      firstName: "Алекс",
+      lastName: "Лобо Силва",
+      nameOnShirt: "Алекс Сандро",
+      originalFirstName: "Alex Sandro",
+      originalLastName: "LOBO SILVA",
+      originalNameOnShirt: "ALEX SANDRO",
+
       dateOfBirth: "26/01/1991",
       age: 35,
       shirtNumber: 6,
@@ -143,11 +168,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "danilo-luiz-da-silva",
-      firstName: "Danilo Luiz",
-      lastName: "DA SILVA",
-      nameOnShirt: "DANILO",
+      firstName: "Данило",
+      lastName: "Да Силва",
+      nameOnShirt: "Данило",
+      originalFirstName: "Danilo Luiz",
+      originalLastName: "DA SILVA",
+      originalNameOnShirt: "DANILO",
+
       dateOfBirth: "15/07/1991",
       age: 34,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "gleison-bremer-silva-nascimento",
-      firstName: "Gleison Bremer",
-      lastName: "SILVA NASCIMENTO",
-      nameOnShirt: "BREMER",
+      firstName: "Глейсон",
+      lastName: "Силва Нассименто",
+      nameOnShirt: "Бремер",
+      originalFirstName: "Gleison Bremer",
+      originalLastName: "SILVA NASCIMENTO",
+      originalNameOnShirt: "BREMER",
+
       dateOfBirth: "18/03/1997",
       age: 29,
       shirtNumber: 14,
@@ -185,11 +218,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "leonardo-pereira",
-      firstName: "Leonardo",
-      lastName: "PEREIRA",
-      nameOnShirt: "LÉO PEREIRA",
+      firstName: "Леонардо",
+      lastName: "Перейра",
+      nameOnShirt: "Лео Перейра",
+      originalFirstName: "Leonardo",
+      originalLastName: "PEREIRA",
+      originalNameOnShirt: "LÉO PEREIRA",
+
       dateOfBirth: "31/01/1996",
       age: 30,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "douglas-dos-santos-justino-de-melo",
-      firstName: "Douglas",
-      lastName: "DOS SANTOS JUSTINO DE MELO",
-      nameOnShirt: "DOUGLAS S.",
+      firstName: "Доуглас",
+      lastName: "Дос Сантос Жустино де Мело",
+      nameOnShirt: "Доуглас С.",
+      originalFirstName: "Douglas",
+      originalLastName: "DOS SANTOS JUSTINO DE MELO",
+      originalNameOnShirt: "DOUGLAS S.",
+
       dateOfBirth: "22/03/1994",
       age: 32,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_225_000,
       isInjured: false,
     },
-    {
+        {
       id: "roger-ibanez-da-silva",
-      firstName: "Roger",
-      lastName: "IBAÑEZ DA SILVA",
-      nameOnShirt: "IBAÑEZ",
+      firstName: "Рожер",
+      lastName: "Ибанез да Силва",
+      nameOnShirt: "Ибанез",
+      originalFirstName: "Roger",
+      originalLastName: "IBAÑEZ DA SILVA",
+      originalNameOnShirt: "IBAÑEZ",
+
       dateOfBirth: "23/11/1998",
       age: 27,
       shirtNumber: 24,
@@ -250,11 +295,15 @@ export const brazilProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "ederson-jose-dos-santos-lourenco-da-silva",
-      firstName: "Éderson José",
-      lastName: "DOS SANTOS LOURENÇO DA SILVA",
-      nameOnShirt: "ÉDERSON S.",
+      firstName: "Едерсон",
+      lastName: "Дос Сантос Лоуренсо да Силва",
+      nameOnShirt: "Едерсон С.",
+      originalFirstName: "Éderson José",
+      originalLastName: "DOS SANTOS LOURENÇO DA SILVA",
+      originalNameOnShirt: "ÉDERSON S.",
+
       dateOfBirth: "07/07/1999",
       age: 26,
       shirtNumber: 2,
@@ -271,11 +320,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "carlos-henrique-casimiro",
-      firstName: "Carlos Henrique",
-      lastName: "CASIMIRO",
-      nameOnShirt: "CASEMIRO",
+      firstName: "Карлос",
+      lastName: "Касимиро",
+      nameOnShirt: "Касемиро",
+      originalFirstName: "Carlos Henrique",
+      originalLastName: "CASIMIRO",
+      originalNameOnShirt: "CASEMIRO",
+
       dateOfBirth: "23/02/1992",
       age: 34,
       shirtNumber: 5,
@@ -292,11 +345,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_570_000,
       isInjured: false,
     },
-    {
+        {
       id: "bruno-guimaraes-rodriguez-moura",
-      firstName: "Bruno",
-      lastName: "GUIMARÃES RODRIGUEZ MOURA",
-      nameOnShirt: "BRUNO G.",
+      firstName: "Бруну",
+      lastName: "Гуимараес Родригуез Моура",
+      nameOnShirt: "Бруну Г.",
+      originalFirstName: "Bruno",
+      originalLastName: "GUIMARÃES RODRIGUEZ MOURA",
+      originalNameOnShirt: "BRUNO G.",
+
       dateOfBirth: "16/11/1997",
       age: 28,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "fabio-henrique-tavares",
-      firstName: "Fabio Henrique",
-      lastName: "TAVARES",
-      nameOnShirt: "FABINHO",
+      firstName: "Фабио",
+      lastName: "Таварес",
+      nameOnShirt: "Фабиньо",
+      originalFirstName: "Fabio Henrique",
+      originalLastName: "TAVARES",
+      originalNameOnShirt: "FABINHO",
+
       dateOfBirth: "23/10/1993",
       age: 32,
       shirtNumber: 17,
@@ -334,11 +395,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_305_000,
       isInjured: false,
     },
-    {
+        {
       id: "danilo-dos-santos-de-oliveira",
-      firstName: "Danilo",
-      lastName: "DOS SANTOS DE OLIVEIRA",
-      nameOnShirt: "DANILO S.",
+      firstName: "Данило",
+      lastName: "Дос Сантос де Оливейра",
+      nameOnShirt: "Данило С.",
+      originalFirstName: "Danilo",
+      originalLastName: "DOS SANTOS DE OLIVEIRA",
+      originalNameOnShirt: "DANILO S.",
+
       dateOfBirth: "29/04/2001",
       age: 25,
       shirtNumber: 18,
@@ -355,11 +420,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "lucas-tolentino-coelho-de-lima",
-      firstName: "Lucas",
-      lastName: "TOLENTINO COELHO DE LIMA",
-      nameOnShirt: "L. PAQUETÁ",
+      firstName: "Лукас",
+      lastName: "Толентино Коельо де Лима",
+      nameOnShirt: "Л. Пакуета",
+      originalFirstName: "Lucas",
+      originalLastName: "TOLENTINO COELHO DE LIMA",
+      originalNameOnShirt: "L. PAQUETÁ",
+
       dateOfBirth: "27/08/1997",
       age: 28,
       shirtNumber: 20,
@@ -378,11 +447,15 @@ export const brazilProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "vinicius-jose-paixao-de-oliveira-junior",
-      firstName: "Vinicius José",
-      lastName: "PAIXÃO DE OLIVEIRA JÚNIOR",
-      nameOnShirt: "VINI JR.",
+      firstName: "Винисиус",
+      lastName: "Жуниор",
+      nameOnShirt: "Вини Жуниор.",
+      originalFirstName: "Vinicius José",
+      originalLastName: "PAIXÃO DE OLIVEIRA JÚNIOR",
+      originalNameOnShirt: "VINI JR.",
+
       dateOfBirth: "12/07/2000",
       age: 25,
       shirtNumber: 7,
@@ -399,11 +472,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 2_065_000,
       isInjured: false,
     },
-    {
+        {
       id: "matheus-santos-carneiro-da-cunha",
-      firstName: "Matheus",
-      lastName: "SANTOS CARNEIRO DA CUNHA",
-      nameOnShirt: "CUNHA",
+      firstName: "Матхеус",
+      lastName: "Сантос Карнейро да Куньа",
+      nameOnShirt: "Куньа",
+      originalFirstName: "Matheus",
+      originalLastName: "SANTOS CARNEIRO DA CUNHA",
+      originalNameOnShirt: "CUNHA",
+
       dateOfBirth: "27/05/1999",
       age: 27,
       shirtNumber: 9,
@@ -420,11 +497,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "neymar-da-silva-santos-junior",
-      firstName: "Neymar",
-      lastName: "DA SILVA SANTOS JÚNIOR",
-      nameOnShirt: "NEYMAR JR",
+      firstName: "Неймар",
+      lastName: "Жуниор",
+      nameOnShirt: "Неймар Жуниор",
+      originalFirstName: "Neymar",
+      originalLastName: "DA SILVA SANTOS JÚNIOR",
+      originalNameOnShirt: "NEYMAR JR",
+
       dateOfBirth: "05/02/1992",
       age: 34,
       shirtNumber: 10,
@@ -441,11 +522,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_570_000,
       isInjured: false,
     },
-    {
+        {
       id: "raphael-dias-belloli",
-      firstName: "Raphael",
-      lastName: "DIAS BELLOLI",
-      nameOnShirt: "RAPHINHA",
+      firstName: "Рапхаел",
+      lastName: "Диас Беллоли",
+      nameOnShirt: "Рапхиньа",
+      originalFirstName: "Raphael",
+      originalLastName: "DIAS BELLOLI",
+      originalNameOnShirt: "RAPHINHA",
+
       dateOfBirth: "14/12/1996",
       age: 29,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_955_000,
       isInjured: false,
     },
-    {
+        {
       id: "endrick-felipe-moreira-de-sousa-pessoa",
-      firstName: "Endrick Felipe",
-      lastName: "MOREIRA DE SOUSA PESSOA",
-      nameOnShirt: "ENDRICK",
+      firstName: "Ендрикк",
+      lastName: "Морейра де Соуса Пессоа",
+      nameOnShirt: "Ендрикк",
+      originalFirstName: "Endrick Felipe",
+      originalLastName: "MOREIRA DE SOUSA PESSOA",
+      originalNameOnShirt: "ENDRICK",
+
       dateOfBirth: "21/07/2006",
       age: 19,
       shirtNumber: 19,
@@ -483,11 +572,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_265_000,
       isInjured: false,
     },
-    {
+        {
       id: "luiz-henrique-andre-rosa-da-silva",
-      firstName: "Luiz Henrique André",
-      lastName: "ROSA DA SILVA",
-      nameOnShirt: "L. HENRIQUE",
+      firstName: "Луиз",
+      lastName: "Роса да Силва",
+      nameOnShirt: "Л. Хенрикуе",
+      originalFirstName: "Luiz Henrique André",
+      originalLastName: "ROSA DA SILVA",
+      originalNameOnShirt: "L. HENRIQUE",
+
       dateOfBirth: "02/01/2001",
       age: 25,
       shirtNumber: 21,
@@ -504,11 +597,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "gabriel-teodoro-martinelli-silva",
-      firstName: "Gabriel",
-      lastName: "TEODORO MARTINELLI SILVA",
-      nameOnShirt: "MARTINELLI",
+      firstName: "Габриэл",
+      lastName: "Теодоро Мартинелли Силва",
+      nameOnShirt: "Мартинелли",
+      originalFirstName: "Gabriel",
+      originalLastName: "TEODORO MARTINELLI SILVA",
+      originalNameOnShirt: "MARTINELLI",
+
       dateOfBirth: "18/06/2001",
       age: 24,
       shirtNumber: 22,
@@ -525,11 +622,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_700_000,
       isInjured: false,
     },
-    {
+        {
       id: "igor-thiago-nascimento-rodrigues",
-      firstName: "Igor Thiago",
-      lastName: "NASCIMENTO RODRIGUES",
-      nameOnShirt: "THIAGO",
+      firstName: "Игор",
+      lastName: "Нассименто Родригуес",
+      nameOnShirt: "Тиаго",
+      originalFirstName: "Igor Thiago",
+      originalLastName: "NASCIMENTO RODRIGUES",
+      originalNameOnShirt: "THIAGO",
+
       dateOfBirth: "26/06/2001",
       age: 24,
       shirtNumber: 25,
@@ -546,11 +647,15 @@ export const brazilProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "rayan-vitor-simplicio-rocha",
-      firstName: "Rayan Vitor",
-      lastName: "SIMPLICIO ROCHA",
-      nameOnShirt: "RAYAN",
+      firstName: "Раиан",
+      lastName: "Симплисио Роша",
+      nameOnShirt: "Раиан",
+      originalFirstName: "Rayan Vitor",
+      originalLastName: "SIMPLICIO ROCHA",
+      originalNameOnShirt: "RAYAN",
+
       dateOfBirth: "03/08/2006",
       age: 19,
       shirtNumber: 26,

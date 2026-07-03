@@ -15,7 +15,7 @@ import {
 import { worldCup2026SaveRepository } from '@/repositories/worldCup2026SaveRepository'
 import type { WorldCup2026State } from '@/stores/worldCup2026/types'
 import type { NationalTeam } from '@/data/wc26/nationalTeam'
-import { flagEmoji } from '@/data/wc26/nationalTeam'
+import { resolveTeamFlagEmoji } from '@/data/wc26/nationalTeam'
 import type { ClubLineup, MatchResult, PlayedLineup, PreparedMatchContext } from '@/types/football'
 import { matchTeamToClub, nationalTeamToMatchTeam } from '@/types/matchTeam'
 
@@ -212,7 +212,7 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
 
   const getTeamFlag = (teamId: string): string => {
     const team = state.value?.teams.find((candidate) => candidate.id === teamId)
-    return team ? flagEmoji(team.flagCode) : '⚽'
+    return team ? resolveTeamFlagEmoji(team.flagCode) : '⚽'
   }
 
   const getTeamName = (teamId: string): string => {

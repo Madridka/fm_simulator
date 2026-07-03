@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import turkeyFlag from '@/data/nationalTeams/worldCup2026/flags/turkey.png'
 
 export const turkeyProfile: NationalTeamProfile = {
   id: "turkey",
@@ -6,7 +7,7 @@ export const turkeyProfile: NationalTeamProfile = {
   shortName: "TUR",
   fifaCode: "TUR",
   groupId: "D",
-  flagCode: "TR",
+  flag: turkeyFlag,
   rating: 78,
   attackRating: 78,
   midfieldRating: 77,
@@ -15,11 +16,15 @@ export const turkeyProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "fehmi-mert-gunok",
-      firstName: "Fehmi Mert",
-      lastName: "GÜNOK",
-      nameOnShirt: "MERT",
+      firstName: "Фехми",
+      lastName: "Гиунок",
+      nameOnShirt: "Мерт",
+      originalFirstName: "Fehmi Mert",
+      originalLastName: "GÜNOK",
+      originalNameOnShirt: "MERT",
+
       dateOfBirth: "01/03/1989",
       age: 37,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "altay-bayindir",
-      firstName: "Altay",
-      lastName: "BAYINDIR",
-      nameOnShirt: "ALTAY",
+      firstName: "Алтай",
+      lastName: "Байиндир",
+      nameOnShirt: "Алтай",
+      originalFirstName: "Altay",
+      originalLastName: "BAYINDIR",
+      originalNameOnShirt: "ALTAY",
+
       dateOfBirth: "14/04/1998",
       age: 28,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "ugurcan-cakir",
-      firstName: "Uğurcan",
-      lastName: "ÇAKIR",
-      nameOnShirt: "UĞURCAN",
+      firstName: "Уурджан",
+      lastName: "Чакир",
+      nameOnShirt: "Уурджан",
+      originalFirstName: "Uğurcan",
+      originalLastName: "ÇAKIR",
+      originalNameOnShirt: "UĞURCAN",
+
       dateOfBirth: "05/04/1996",
       age: 30,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const turkeyProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "mehmet-zeki-celik",
-      firstName: "Mehmet Zeki",
-      lastName: "ÇELIK",
-      nameOnShirt: "ZEKİ ÇELİK",
+      firstName: "Мехмет",
+      lastName: "Челик",
+      nameOnShirt: "Зеки Челик",
+      originalFirstName: "Mehmet Zeki",
+      originalLastName: "ÇELIK",
+      originalNameOnShirt: "ZEKİ ÇELİK",
+
       dateOfBirth: "17/02/1997",
       age: 29,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "merih-demiral",
-      firstName: "Merih",
-      lastName: "DEMİRAL",
-      nameOnShirt: "DEMİRAL",
+      firstName: "Мерих",
+      lastName: "Демирал",
+      nameOnShirt: "Демирал",
+      originalFirstName: "Merih",
+      originalLastName: "DEMİRAL",
+      originalNameOnShirt: "DEMİRAL",
+
       dateOfBirth: "05/03/1998",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "caglar-soyuncu",
-      firstName: "Çağlar",
-      lastName: "SÖYÜNCÜ",
-      nameOnShirt: "ÇAĞLAR",
+      firstName: "Чалар",
+      lastName: "Сиойиунджиу",
+      nameOnShirt: "Чалар",
+      originalFirstName: "Çağlar",
+      originalLastName: "SÖYÜNCÜ",
+      originalNameOnShirt: "ÇAĞLAR",
+
       dateOfBirth: "23/05/1996",
       age: 30,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "evren-eren-elmali",
-      firstName: "Evren Eren",
-      lastName: "ELMALI",
-      nameOnShirt: "EREN ELMALI",
+      firstName: "Еврен",
+      lastName: "Елмали",
+      nameOnShirt: "Ерен Елмали",
+      originalFirstName: "Evren Eren",
+      originalLastName: "ELMALI",
+      originalNameOnShirt: "EREN ELMALI",
+
       dateOfBirth: "07/07/2000",
       age: 25,
       shirtNumber: 13,
@@ -164,11 +193,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdulkerim-bardakci",
-      firstName: "Abdülkerİm",
-      lastName: "BARDAKCI",
-      nameOnShirt: "ABDÜLKERİM",
+      firstName: "Абдиулкерим",
+      lastName: "Бардакджи",
+      nameOnShirt: "Абдиулкерим",
+      originalFirstName: "Abdülkerİm",
+      originalLastName: "BARDAKCI",
+      originalNameOnShirt: "ABDÜLKERİM",
+
       dateOfBirth: "07/09/1994",
       age: 31,
       shirtNumber: 14,
@@ -185,11 +218,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "ozan-muhammed-kabak",
-      firstName: "Ozan Muhammed",
-      lastName: "KABAK",
-      nameOnShirt: "OZAN KABAK",
+      firstName: "Озан",
+      lastName: "Кабак",
+      nameOnShirt: "Озан Кабак",
+      originalFirstName: "Ozan Muhammed",
+      originalLastName: "KABAK",
+      originalNameOnShirt: "OZAN KABAK",
+
       dateOfBirth: "25/03/2000",
       age: 26,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "mert-muldur",
-      firstName: "Mert",
-      lastName: "MÜLDÜR",
-      nameOnShirt: "MERT MÜLDÜR",
+      firstName: "Мерт",
+      lastName: "Миулдиур",
+      nameOnShirt: "Мерт Миулдиур",
+      originalFirstName: "Mert",
+      originalLastName: "MÜLDÜR",
+      originalNameOnShirt: "MERT MÜLDÜR",
+
       dateOfBirth: "03/04/1999",
       age: 27,
       shirtNumber: 18,
@@ -227,11 +268,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "ferdi-erenay-kadioglu",
-      firstName: "Ferdi Erenay",
-      lastName: "KADIOĞLU",
-      nameOnShirt: "F. KADIOĞLU",
+      firstName: "Ферди",
+      lastName: "Кадиолу",
+      nameOnShirt: "Ф. Кадиолу",
+      originalFirstName: "Ferdi Erenay",
+      originalLastName: "KADIOĞLU",
+      originalNameOnShirt: "F. KADIOĞLU",
+
       dateOfBirth: "07/10/1999",
       age: 26,
       shirtNumber: 20,
@@ -248,11 +293,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "samet-akaydin",
-      firstName: "Samet",
-      lastName: "AKAYDIN",
-      nameOnShirt: "SAMET AKAYDIN",
+      firstName: "Самет",
+      lastName: "Акайдин",
+      nameOnShirt: "Самет Акайдин",
+      originalFirstName: "Samet",
+      originalLastName: "AKAYDIN",
+      originalNameOnShirt: "SAMET AKAYDIN",
+
       dateOfBirth: "13/03/1994",
       age: 32,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const turkeyProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "salih-ozcan",
-      firstName: "Salih",
-      lastName: "ÖZCAN",
-      nameOnShirt: "ÖZCAN",
+      firstName: "Салих",
+      lastName: "Иозджан",
+      nameOnShirt: "Иозджан",
+      originalFirstName: "Salih",
+      originalLastName: "ÖZCAN",
+      originalNameOnShirt: "ÖZCAN",
+
       dateOfBirth: "11/01/1998",
       age: 28,
       shirtNumber: 5,
@@ -292,11 +345,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "orkun-kokcu",
-      firstName: "Orkun",
-      lastName: "KÖKÇÜ",
-      nameOnShirt: "ORKUN KÖKÇÜ",
+      firstName: "Оркун",
+      lastName: "Киокчиу",
+      nameOnShirt: "Оркун Киокчиу",
+      originalFirstName: "Orkun",
+      originalLastName: "KÖKÇÜ",
+      originalNameOnShirt: "ORKUN KÖKÇÜ",
+
       dateOfBirth: "29/12/2000",
       age: 25,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "hakan-calhanoglu",
-      firstName: "Hakan",
-      lastName: "ÇALHANOĞLU",
-      nameOnShirt: "ÇALHANOĞLU",
+      firstName: "Хакан",
+      lastName: "Чалханоглу",
+      nameOnShirt: "Чалханолу",
+      originalFirstName: "Hakan",
+      originalLastName: "ÇALHANOĞLU",
+      originalNameOnShirt: "ÇALHANOĞLU",
+
       dateOfBirth: "08/02/1994",
       age: 32,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismail-yuksek",
-      firstName: "İsmaİl",
-      lastName: "YÜKSEK",
-      nameOnShirt: "İSMAİL",
+      firstName: "Исмаил",
+      lastName: "Йиуксек",
+      nameOnShirt: "Исмаил",
+      originalFirstName: "İsmaİl",
+      originalLastName: "YÜKSEK",
+      originalNameOnShirt: "İSMAİL",
+
       dateOfBirth: "26/01/1999",
       age: 27,
       shirtNumber: 16,
@@ -355,11 +420,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "kaan-ayhan",
-      firstName: "Kaan",
-      lastName: "AYHAN",
-      nameOnShirt: "KAAN",
+      firstName: "Каан",
+      lastName: "Айхан",
+      nameOnShirt: "Каан",
+      originalFirstName: "Kaan",
+      originalLastName: "AYHAN",
+      originalNameOnShirt: "KAAN",
+
       dateOfBirth: "10/11/1994",
       age: 31,
       shirtNumber: 22,
@@ -378,11 +447,15 @@ export const turkeyProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "muhammed-kerem-akturkoglu",
-      firstName: "Muhammed Kerem",
-      lastName: "AKTÜRKOĞLU",
-      nameOnShirt: "AKTÜRKOĞLU",
+      firstName: "Мухаммед",
+      lastName: "Актиурколу",
+      nameOnShirt: "Актиурколу",
+      originalFirstName: "Muhammed Kerem",
+      originalLastName: "AKTÜRKOĞLU",
+      originalNameOnShirt: "AKTÜRKOĞLU",
+
       dateOfBirth: "21/10/1998",
       age: 27,
       shirtNumber: 7,
@@ -399,11 +472,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "arda-guler",
-      firstName: "Arda",
-      lastName: "GÜLER",
-      nameOnShirt: "ARDA GÜLER",
+      firstName: "Арда",
+      lastName: "Гиулер",
+      nameOnShirt: "Арда Гиулер",
+      originalFirstName: "Arda",
+      originalLastName: "GÜLER",
+      originalNameOnShirt: "ARDA GÜLER",
+
       dateOfBirth: "25/02/2005",
       age: 21,
       shirtNumber: 8,
@@ -420,11 +497,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 840_000,
       isInjured: false,
     },
-    {
+        {
       id: "deniz-daniel-gul",
-      firstName: "Deniz Daniel",
-      lastName: "GÜL",
-      nameOnShirt: "DENİZ GÜL",
+      firstName: "Дениз",
+      lastName: "Гиул",
+      nameOnShirt: "Дениз Гиул",
+      originalFirstName: "Deniz Daniel",
+      originalLastName: "GÜL",
+      originalNameOnShirt: "DENİZ GÜL",
+
       dateOfBirth: "02/07/2004",
       age: 21,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "kenan-yildiz",
-      firstName: "Kenan",
-      lastName: "YILDIZ",
-      nameOnShirt: "YILDIZ",
+      firstName: "Кенан",
+      lastName: "Йилдиз",
+      nameOnShirt: "Йилдиз",
+      originalFirstName: "Kenan",
+      originalLastName: "YILDIZ",
+      originalNameOnShirt: "YILDIZ",
+
       dateOfBirth: "04/05/2005",
       age: 21,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 775_000,
       isInjured: false,
     },
-    {
+        {
       id: "irfan-kahveci",
-      firstName: "İrfan",
-      lastName: "KAHVECİ",
-      nameOnShirt: "KAHVECİ",
+      firstName: "Ирфан",
+      lastName: "Кахведжи",
+      nameOnShirt: "Кахведжи",
+      originalFirstName: "İrfan",
+      originalLastName: "KAHVECİ",
+      originalNameOnShirt: "KAHVECİ",
+
       dateOfBirth: "15/07/1995",
       age: 30,
       shirtNumber: 17,
@@ -483,11 +572,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "yunus-akgun",
-      firstName: "Yunus",
-      lastName: "AKGÜN",
-      nameOnShirt: "YUNUS",
+      firstName: "Йунус",
+      lastName: "Акгиун",
+      nameOnShirt: "Йунус",
+      originalFirstName: "Yunus",
+      originalLastName: "AKGÜN",
+      originalNameOnShirt: "YUNUS",
+
       dateOfBirth: "07/07/2000",
       age: 25,
       shirtNumber: 19,
@@ -504,11 +597,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "baris-alper-yilmaz",
-      firstName: "Barış Alper",
-      lastName: "YILMAZ",
-      nameOnShirt: "BARIŞ",
+      firstName: "Барйш",
+      lastName: "Йилмаз",
+      nameOnShirt: "Бариш",
+      originalFirstName: "Barış Alper",
+      originalLastName: "YILMAZ",
+      originalNameOnShirt: "BARIŞ",
+
       dateOfBirth: "23/05/2000",
       age: 26,
       shirtNumber: 21,
@@ -525,11 +622,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "oguz-aydin",
-      firstName: "Oğuz",
-      lastName: "AYDIN",
-      nameOnShirt: "OĞUZ",
+      firstName: "Оуз",
+      lastName: "Айдин",
+      nameOnShirt: "Оуз",
+      originalFirstName: "Oğuz",
+      originalLastName: "AYDIN",
+      originalNameOnShirt: "OĞUZ",
+
       dateOfBirth: "27/10/2000",
       age: 25,
       shirtNumber: 24,
@@ -546,11 +647,15 @@ export const turkeyProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "can-yilmaz-uzun",
-      firstName: "Can Yılmaz",
-      lastName: "UZUN",
-      nameOnShirt: "CAN UZUN",
+      firstName: "Джан",
+      lastName: "Узун",
+      nameOnShirt: "Джан Узун",
+      originalFirstName: "Can Yılmaz",
+      originalLastName: "UZUN",
+      originalNameOnShirt: "CAN UZUN",
+
       dateOfBirth: "11/11/2005",
       age: 20,
       shirtNumber: 26,

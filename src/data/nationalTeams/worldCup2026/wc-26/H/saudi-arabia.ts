@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import saudiArabiaFlag from '@/data/nationalTeams/worldCup2026/flags/saudi-arabia.png'
 
 export const saudiArabiaProfile: NationalTeamProfile = {
   id: "saudi-arabia",
@@ -6,7 +7,7 @@ export const saudiArabiaProfile: NationalTeamProfile = {
   shortName: "KSA",
   fifaCode: "KSA",
   groupId: "H",
-  flagCode: "SA",
+  flag: saudiArabiaFlag,
   rating: 73,
   attackRating: 72,
   midfieldRating: 73,
@@ -15,11 +16,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "nawaf-dhahi-f-alaqidi",
-      firstName: "Nawaf Dhahi F",
-      lastName: "ALAQIDI",
-      nameOnShirt: "ALAQIDI",
+      firstName: "Наваф",
+      lastName: "Аль-Акиди",
+      nameOnShirt: "Аль-Акиди",
+      originalFirstName: "Nawaf Dhahi F",
+      originalLastName: "ALAQIDI",
+      originalNameOnShirt: "ALAQIDI",
+
       dateOfBirth: "10/05/2000",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammed-khalil-i-alowais",
-      firstName: "Mohammed Khalil I",
-      lastName: "ALOWAIS",
-      nameOnShirt: "ALOWAIS",
+      firstName: "Мохаммед",
+      lastName: "Аль-Овайс",
+      nameOnShirt: "Аль-Овайс",
+      originalFirstName: "Mohammed Khalil I",
+      originalLastName: "ALOWAIS",
+      originalNameOnShirt: "ALOWAIS",
+
       dateOfBirth: "10/10/1991",
       age: 34,
       shirtNumber: 21,
@@ -57,11 +66,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-ali-h-alkassar",
-      firstName: "Ahmed Ali H",
-      lastName: "ALKASSAR",
-      nameOnShirt: "ALKASSAR",
+      firstName: "Ахмед",
+      lastName: "Аль-Кассар",
+      nameOnShirt: "Аль-Кассар",
+      originalFirstName: "Ahmed Ali H",
+      originalLastName: "ALKASSAR",
+      originalNameOnShirt: "ALKASSAR",
+
       dateOfBirth: "08/05/1991",
       age: 35,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "ali-hassan-m-majrashi",
-      firstName: "Ali Hassan M",
-      lastName: "MAJRASHI",
-      nameOnShirt: "MAJRASHI",
+      firstName: "Али",
+      lastName: "Маджраши",
+      nameOnShirt: "Маджраши",
+      originalFirstName: "Ali Hassan M",
+      originalLastName: "MAJRASHI",
+      originalNameOnShirt: "MAJRASHI",
+
       dateOfBirth: "02/10/1999",
       age: 26,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-mohammed-a-lajami",
-      firstName: "Ali Mohammed A",
-      lastName: "LAJAMI",
-      nameOnShirt: "LAJAMI",
+      firstName: "Али",
+      lastName: "Ладжами",
+      nameOnShirt: "Ладжами",
+      originalFirstName: "Ali Mohammed A",
+      originalLastName: "LAJAMI",
+      originalNameOnShirt: "LAJAMI",
+
       dateOfBirth: "24/04/1996",
       age: 30,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdulelah-ali-a-alamri",
-      firstName: "Abdulelah Ali A",
-      lastName: "ALAMRI",
-      nameOnShirt: "ALAMRI",
+      firstName: "Абдулелах",
+      lastName: "Аль-Амри",
+      nameOnShirt: "Аль-Амри",
+      originalFirstName: "Abdulelah Ali A",
+      originalLastName: "ALAMRI",
+      originalNameOnShirt: "ALAMRI",
+
       dateOfBirth: "15/01/1997",
       age: 29,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "hassan-mohammed-o-altambakti",
-      firstName: "Hassan Mohammed O",
-      lastName: "ALTAMBAKTI",
-      nameOnShirt: "ALTAMBAKTI",
+      firstName: "Хассан",
+      lastName: "Аль-Тамбакти",
+      nameOnShirt: "Аль-Тамбакти",
+      originalFirstName: "Hassan Mohammed O",
+      originalLastName: "ALTAMBAKTI",
+      originalNameOnShirt: "ALTAMBAKTI",
+
       dateOfBirth: "09/02/1999",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "saud-abdullah-s-abdulhamid",
-      firstName: "Saud Abdullah S",
-      lastName: "ABDULHAMID",
-      nameOnShirt: "SAUD",
+      firstName: "Сауд",
+      lastName: "Абдулхамид",
+      nameOnShirt: "Сауд",
+      originalFirstName: "Saud Abdullah S",
+      originalLastName: "ABDULHAMID",
+      originalNameOnShirt: "SAUD",
+
       dateOfBirth: "18/07/1999",
       age: 26,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "nawaf-meshari-m-bu-washl",
-      firstName: "Nawaf Meshari M",
-      lastName: "BU WASHL",
-      nameOnShirt: "NAWAF",
+      firstName: "Наваф",
+      lastName: "Бу Вашл",
+      nameOnShirt: "Наваф",
+      originalFirstName: "Nawaf Meshari M",
+      originalLastName: "BU WASHL",
+      originalNameOnShirt: "NAWAF",
+
       dateOfBirth: "16/09/1999",
       age: 26,
       shirtNumber: 13,
@@ -206,11 +243,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "hassan-kadish-y-mahbub",
-      firstName: "Hassan Kadish Y",
-      lastName: "MAHBUB",
-      nameOnShirt: "KADISH",
+      firstName: "Хассан",
+      lastName: "Махбуб",
+      nameOnShirt: "Кадиш",
+      originalFirstName: "Hassan Kadish Y",
+      originalLastName: "MAHBUB",
+      originalNameOnShirt: "KADISH",
+
       dateOfBirth: "26/09/1992",
       age: 33,
       shirtNumber: 14,
@@ -227,11 +268,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "moteb-saad-s-alharbi",
-      firstName: "Moteb Saad S",
-      lastName: "ALHARBI",
-      nameOnShirt: "MOTEB",
+      firstName: "Мотеб",
+      lastName: "Аль-Харби",
+      nameOnShirt: "Мотеб",
+      originalFirstName: "Moteb Saad S",
+      originalLastName: "ALHARBI",
+      originalNameOnShirt: "MOTEB",
+
       dateOfBirth: "20/02/2000",
       age: 26,
       shirtNumber: 24,
@@ -248,11 +293,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "jehad-abdullatif-a-thikri",
-      firstName: "Jehad Abdullatif A",
-      lastName: "THIKRI",
-      nameOnShirt: "JEHAD",
+      firstName: "Джехад",
+      lastName: "Сикри",
+      nameOnShirt: "Джехад",
+      originalFirstName: "Jehad Abdullatif A",
+      originalLastName: "THIKRI",
+      originalNameOnShirt: "JEHAD",
+
       dateOfBirth: "21/07/2001",
       age: 24,
       shirtNumber: 25,
@@ -269,11 +318,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohammed-waheeb-s-abu-alshamat",
-      firstName: "Mohammed Waheeb S",
-      lastName: "ABU ALSHAMAT",
-      nameOnShirt: "MOHAMMED",
+      firstName: "Мохаммед",
+      lastName: "Абу аль-Шамат",
+      nameOnShirt: "Мохаммед",
+      originalFirstName: "Mohammed Waheeb S",
+      originalLastName: "ABU ALSHAMAT",
+      originalNameOnShirt: "MOHAMMED",
+
       dateOfBirth: "11/08/2002",
       age: 23,
       shirtNumber: 26,
@@ -292,11 +345,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "nasser-essa-s-aldawsari",
-      firstName: "Nasser Essa S",
-      lastName: "ALDAWSARI",
-      nameOnShirt: "NASSER",
+      firstName: "Нассер",
+      lastName: "Аль-Давсари",
+      nameOnShirt: "Нассер",
+      originalFirstName: "Nasser Essa S",
+      originalLastName: "ALDAWSARI",
+      originalNameOnShirt: "NASSER",
+
       dateOfBirth: "19/12/1998",
       age: 27,
       shirtNumber: 6,
@@ -313,11 +370,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "musab-fahad-z-aljuwayr",
-      firstName: "Musab Fahad Z",
-      lastName: "ALJUWAYR",
-      nameOnShirt: "MUSAB",
+      firstName: "Мусаб",
+      lastName: "Аль-Джувайр",
+      nameOnShirt: "Мусаб",
+      originalFirstName: "Musab Fahad Z",
+      originalLastName: "ALJUWAYR",
+      originalNameOnShirt: "MUSAB",
+
       dateOfBirth: "20/06/2003",
       age: 22,
       shirtNumber: 7,
@@ -334,11 +395,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdullah-mohammed-h-alkhaibari",
-      firstName: "Abdullah Mohammed H",
-      lastName: "ALKHAIBARI",
-      nameOnShirt: "ALKHAIBARI",
+      firstName: "Абдулла",
+      lastName: "Аль-Хайбари",
+      nameOnShirt: "Аль-Хайбари",
+      originalFirstName: "Abdullah Mohammed H",
+      originalLastName: "ALKHAIBARI",
+      originalNameOnShirt: "ALKHAIBARI",
+
       dateOfBirth: "16/08/1996",
       age: 29,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "ziyad-mubarak-e-aljohani",
-      firstName: "Ziyad Mubarak E",
-      lastName: "ALJOHANI",
-      nameOnShirt: "ZIYAD",
+      firstName: "Зийад",
+      lastName: "Аль-Джохани",
+      nameOnShirt: "Зийад",
+      originalFirstName: "Ziyad Mubarak E",
+      originalLastName: "ALJOHANI",
+      originalNameOnShirt: "ZIYAD",
+
       dateOfBirth: "11/11/2001",
       age: 24,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "ala-mohsen-a-alhajji",
-      firstName: "Ala Mohsen A",
-      lastName: "ALHAJJI",
-      nameOnShirt: "ALHAJJI",
+      firstName: "Ала",
+      lastName: "Аль-Хаджджи",
+      nameOnShirt: "Аль-Хаджджи",
+      originalFirstName: "Ala Mohsen A",
+      originalLastName: "ALHAJJI",
+      originalNameOnShirt: "ALHAJJI",
+
       dateOfBirth: "03/12/1995",
       age: 30,
       shirtNumber: 18,
@@ -397,11 +470,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-ibrahim-a-kanno",
-      firstName: "Mohamed Ibrahim A",
-      lastName: "KANNO",
-      nameOnShirt: "KANNO",
+      firstName: "Мохамед",
+      lastName: "Канно",
+      nameOnShirt: "Канно",
+      originalFirstName: "Mohamed Ibrahim A",
+      originalLastName: "KANNO",
+      originalNameOnShirt: "KANNO",
+
       dateOfBirth: "22/09/1994",
       age: 31,
       shirtNumber: 23,
@@ -420,11 +497,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "aiman-yahya-y-ahmed",
-      firstName: "Aiman Yahya Y",
-      lastName: "AHMED",
-      nameOnShirt: "AIMAN",
+      firstName: "Айман",
+      lastName: "Ахмед",
+      nameOnShirt: "Айман",
+      originalFirstName: "Aiman Yahya Y",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "AIMAN",
+
       dateOfBirth: "14/05/2001",
       age: 25,
       shirtNumber: 8,
@@ -441,11 +522,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "feras-tariq-n-albrikan",
-      firstName: "Feras Tariq N",
-      lastName: "ALBRIKAN",
-      nameOnShirt: "FERAS",
+      firstName: "Ферас",
+      lastName: "Аль-Брикан",
+      nameOnShirt: "Ферас",
+      originalFirstName: "Feras Tariq N",
+      originalLastName: "ALBRIKAN",
+      originalNameOnShirt: "FERAS",
+
       dateOfBirth: "14/05/2000",
       age: 26,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "salem-mohammed-s-aldawsari",
-      firstName: "Salem Mohammed S",
-      lastName: "ALDAWSARI",
-      nameOnShirt: "SALEM",
+      firstName: "Салем",
+      lastName: "Аль-Давсари",
+      nameOnShirt: "Салем",
+      originalFirstName: "Salem Mohammed S",
+      originalLastName: "ALDAWSARI",
+      originalNameOnShirt: "SALEM",
+
       dateOfBirth: "19/08/1991",
       age: 34,
       shirtNumber: 10,
@@ -483,11 +572,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "saleh-khalid-m-alshehri",
-      firstName: "Saleh Khalid M",
-      lastName: "ALSHEHRI",
-      nameOnShirt: "ALSHEHRI",
+      firstName: "Салех",
+      lastName: "Аль-Шехри",
+      nameOnShirt: "Аль-Шехри",
+      originalFirstName: "Saleh Khalid M",
+      originalLastName: "ALSHEHRI",
+      originalNameOnShirt: "ALSHEHRI",
+
       dateOfBirth: "01/11/1993",
       age: 32,
       shirtNumber: 11,
@@ -504,11 +597,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "khalid-essa-m-alghannam",
-      firstName: "Khalid Essa M",
-      lastName: "ALGHANNAM",
-      nameOnShirt: "KHALID",
+      firstName: "Халид",
+      lastName: "Аль-Ганнам",
+      nameOnShirt: "Халид",
+      originalFirstName: "Khalid Essa M",
+      originalLastName: "ALGHANNAM",
+      originalNameOnShirt: "KHALID",
+
       dateOfBirth: "08/11/2000",
       age: 25,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "abdullah-abdulrahman-a-alhamddan",
-      firstName: "Abdullah Abdulrahman A",
-      lastName: "ALHAMDDAN",
-      nameOnShirt: "ALHAMDDAN",
+      firstName: "Абдулла",
+      lastName: "Аль-Хамддан",
+      nameOnShirt: "Аль-Хамддан",
+      originalFirstName: "Abdullah Abdulrahman A",
+      originalLastName: "ALHAMDDAN",
+      originalNameOnShirt: "ALHAMDDAN",
+
       dateOfBirth: "13/09/1999",
       age: 26,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const saudiArabiaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "sultan-ahmed-m-mandash",
-      firstName: "Sultan Ahmed M",
-      lastName: "MANDASH",
-      nameOnShirt: "MANDASH",
+      firstName: "Султан",
+      lastName: "Мандаш",
+      nameOnShirt: "Мандаш",
+      originalFirstName: "Sultan Ahmed M",
+      originalLastName: "MANDASH",
+      originalNameOnShirt: "MANDASH",
+
       dateOfBirth: "17/10/1994",
       age: 31,
       shirtNumber: 20,

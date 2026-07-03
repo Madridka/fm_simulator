@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import paraguayFlag from '@/data/nationalTeams/worldCup2026/flags/paraguay.png'
 
 export const paraguayProfile: NationalTeamProfile = {
   id: "paraguay",
@@ -6,7 +7,7 @@ export const paraguayProfile: NationalTeamProfile = {
   shortName: "PAR",
   fifaCode: "PAR",
   groupId: "D",
-  flagCode: "PY",
+  flag: paraguayFlag,
   rating: 73,
   attackRating: 72,
   midfieldRating: 73,
@@ -15,11 +16,15 @@ export const paraguayProfile: NationalTeamProfile = {
   secondaryColor: "#0038A8",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "roberto-junior-fernandez-torres",
-      firstName: "Roberto Junior",
-      lastName: "FERNANDEZ TORRES",
-      nameOnShirt: "FERNÁNDEZ",
+      firstName: "Роберто",
+      lastName: "Фернандес Торрес",
+      nameOnShirt: "Фернандес",
+      originalFirstName: "Roberto Junior",
+      originalLastName: "FERNANDEZ TORRES",
+      originalNameOnShirt: "FERNÁNDEZ",
+
       dateOfBirth: "29/03/1988",
       age: 38,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "orlando-daniel-gill-noldin",
-      firstName: "Orlando Daniel",
-      lastName: "GILL NOLDIN",
-      nameOnShirt: "O. GILL",
+      firstName: "Орландо",
+      lastName: "Хиль Нолдин",
+      nameOnShirt: "О. Хиль",
+      originalFirstName: "Orlando Daniel",
+      originalLastName: "GILL NOLDIN",
+      originalNameOnShirt: "O. GILL",
+
       dateOfBirth: "11/06/2000",
       age: 26,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "gaston-hernan-olveira-echeverria",
-      firstName: "Gastón Hernán",
-      lastName: "OLVEIRA ECHEVERRIA",
-      nameOnShirt: "OLVEIRA",
+      firstName: "Гастон",
+      lastName: "Олвеира Ечеверриа",
+      nameOnShirt: "Олвеира",
+      originalFirstName: "Gastón Hernán",
+      originalLastName: "OLVEIRA ECHEVERRIA",
+      originalNameOnShirt: "OLVEIRA",
+
       dateOfBirth: "21/04/1993",
       age: 33,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const paraguayProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "victor-gustavo-velazquez-ramos",
-      firstName: "Victor Gustavo",
-      lastName: "VELAZQUEZ RAMOS",
-      nameOnShirt: "VELÁZQUEZ",
+      firstName: "Виктор",
+      lastName: "Веласкес Рамос",
+      nameOnShirt: "Веласкес",
+      originalFirstName: "Victor Gustavo",
+      originalLastName: "VELAZQUEZ RAMOS",
+      originalNameOnShirt: "VELÁZQUEZ",
+
       dateOfBirth: "17/04/1991",
       age: 35,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "omar-federico-alderete-fernandez",
-      firstName: "Omar Federico",
-      lastName: "ALDERETE FERNANDEZ",
-      nameOnShirt: "ALDERETE",
+      firstName: "Омар",
+      lastName: "Алдерете Фернандес",
+      nameOnShirt: "Алдерете",
+      originalFirstName: "Omar Federico",
+      originalLastName: "ALDERETE FERNANDEZ",
+      originalNameOnShirt: "ALDERETE",
+
       dateOfBirth: "26/12/1996",
       age: 29,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "juan-jose-caceres",
-      firstName: "Juan Jose",
-      lastName: "CACERES",
-      nameOnShirt: "CÁCERES",
+      firstName: "Хуан",
+      lastName: "Касерес",
+      nameOnShirt: "Касерес",
+      originalFirstName: "Juan Jose",
+      originalLastName: "CACERES",
+      originalNameOnShirt: "CÁCERES",
+
       dateOfBirth: "01/06/2000",
       age: 26,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "fabian-cornelio-balbuena-gonzalez",
-      firstName: "Fabián Cornelio",
-      lastName: "BALBUENA GONZÁLEZ",
-      nameOnShirt: "BALBUENA",
+      firstName: "Фабиан",
+      lastName: "Балбуена Гонсалес",
+      nameOnShirt: "Балбуена",
+      originalFirstName: "Fabián Cornelio",
+      originalLastName: "BALBUENA GONZÁLEZ",
+      originalNameOnShirt: "BALBUENA",
+
       dateOfBirth: "23/08/1991",
       age: 34,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "junior-osmar-ignacio-alonso-mujica",
-      firstName: "Júnior Osmar Ignacio",
-      lastName: "ALONSO MUJICA",
-      nameOnShirt: "ALONSO",
+      firstName: "Жуниор",
+      lastName: "Алонсо Мухика",
+      nameOnShirt: "Алонсо",
+      originalFirstName: "Júnior Osmar Ignacio",
+      originalLastName: "ALONSO MUJICA",
+      originalNameOnShirt: "ALONSO",
+
       dateOfBirth: "09/02/1993",
       age: 33,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-maria-canale-dominguez",
-      firstName: "Jose Maria",
-      lastName: "CANALE DOMINGUEZ",
-      nameOnShirt: "CANALE",
+      firstName: "Хосе",
+      lastName: "Канале Домингес",
+      nameOnShirt: "Канале",
+      originalFirstName: "Jose Maria",
+      originalLastName: "CANALE DOMINGUEZ",
+      originalNameOnShirt: "CANALE",
+
       dateOfBirth: "20/07/1996",
       age: 29,
       shirtNumber: 13,
@@ -206,11 +243,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "gustavo-raul-gomez-portillo",
-      firstName: "Gustavo Raul",
-      lastName: "GÓMEZ PORTILLO",
-      nameOnShirt: "G. GÓMEZ",
+      firstName: "Густаво",
+      lastName: "Гомес Портильо",
+      nameOnShirt: "Г. Гомес",
+      originalFirstName: "Gustavo Raul",
+      originalLastName: "GÓMEZ PORTILLO",
+      originalNameOnShirt: "G. GÓMEZ",
+
       dateOfBirth: "06/05/1993",
       age: 33,
       shirtNumber: 15,
@@ -227,11 +268,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "alexandro-maidana-mendieta",
-      firstName: "Alexandro",
-      lastName: "MAIDANA MENDIETA",
-      nameOnShirt: "MAIDANA",
+      firstName: "Александро",
+      lastName: "Маидана Мендиета",
+      nameOnShirt: "Маидана",
+      originalFirstName: "Alexandro",
+      originalLastName: "MAIDANA MENDIETA",
+      originalNameOnShirt: "MAIDANA",
+
       dateOfBirth: "26/07/2005",
       age: 20,
       shirtNumber: 26,
@@ -250,11 +295,15 @@ export const paraguayProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "ramon-sosa-acosta",
-      firstName: "Ramón",
-      lastName: "SOSA ACOSTA",
-      nameOnShirt: "SOSA",
+      firstName: "Рамон",
+      lastName: "Соса Акоста",
+      nameOnShirt: "Соса",
+      originalFirstName: "Ramón",
+      originalLastName: "SOSA ACOSTA",
+      originalNameOnShirt: "SOSA",
+
       dateOfBirth: "31/08/1999",
       age: 26,
       shirtNumber: 7,
@@ -271,11 +320,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "diego-alexander-gomez-amarilla",
-      firstName: "Diego Alexander",
-      lastName: "GOMEZ AMARILLA",
-      nameOnShirt: "D. GÓMEZ",
+      firstName: "Диего",
+      lastName: "Гомес Амарильа",
+      nameOnShirt: "Д. Гомес",
+      originalFirstName: "Diego Alexander",
+      originalLastName: "GOMEZ AMARILLA",
+      originalNameOnShirt: "D. GÓMEZ",
+
       dateOfBirth: "27/03/2003",
       age: 23,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "miguel-angel-almiron-rejala",
-      firstName: "Miguel Angel",
-      lastName: "ALMIRON REJALA",
-      nameOnShirt: "ALMIRÓN",
+      firstName: "Мигел",
+      lastName: "Алмирон Рехала",
+      nameOnShirt: "Алмирон",
+      originalFirstName: "Miguel Angel",
+      originalLastName: "ALMIRON REJALA",
+      originalNameOnShirt: "ALMIRÓN",
+
       dateOfBirth: "10/02/1994",
       age: 32,
       shirtNumber: 10,
@@ -313,11 +370,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 500_000,
       isInjured: false,
     },
-    {
+        {
       id: "mauricio-magalhaes-prado",
-      firstName: "Mauricio",
-      lastName: "MAGALHAES PRADO",
-      nameOnShirt: "MAURICIO",
+      firstName: "Маурисио",
+      lastName: "Магалаес Прадо",
+      nameOnShirt: "Маурисио",
+      originalFirstName: "Mauricio",
+      originalLastName: "MAGALHAES PRADO",
+      originalNameOnShirt: "MAURICIO",
+
       dateOfBirth: "22/06/2001",
       age: 24,
       shirtNumber: 11,
@@ -334,11 +395,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "adrian-andres-cubas",
-      firstName: "Adrián Andrés",
-      lastName: "CUBAS",
-      nameOnShirt: "CUBAS",
+      firstName: "Адриан",
+      lastName: "Кубас",
+      nameOnShirt: "Кубас",
+      originalFirstName: "Adrián Andrés",
+      originalLastName: "CUBAS",
+      originalNameOnShirt: "CUBAS",
+
       dateOfBirth: "11/05/1996",
       age: 30,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "damian-josue-bobadilla-benitez",
-      firstName: "Damián Josue",
-      lastName: "BOBADILLA BENITEZ",
-      nameOnShirt: "BOBADILLA",
+      firstName: "Дамиан",
+      lastName: "Бобадильа Бенитес",
+      nameOnShirt: "Бобадильа",
+      originalFirstName: "Damián Josue",
+      originalLastName: "BOBADILLA BENITEZ",
+      originalNameOnShirt: "BOBADILLA",
+
       dateOfBirth: "11/07/2001",
       age: 24,
       shirtNumber: 16,
@@ -376,11 +445,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "braian-oscar-ojeda-rodriguez",
-      firstName: "Braian Oscar",
-      lastName: "OJEDA RODRIGUEZ",
-      nameOnShirt: "OJEDA",
+      firstName: "Браиан",
+      lastName: "Охеда Родригес",
+      nameOnShirt: "Охеда",
+      originalFirstName: "Braian Oscar",
+      originalLastName: "OJEDA RODRIGUEZ",
+      originalNameOnShirt: "OJEDA",
+
       dateOfBirth: "27/06/2000",
       age: 25,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "matias-galarza-fonda",
-      firstName: "Matias",
-      lastName: "GALARZA FONDA",
-      nameOnShirt: "GALARZA",
+      firstName: "Матиас",
+      lastName: "Галарса Фонда",
+      nameOnShirt: "Галарса",
+      originalFirstName: "Matias",
+      originalLastName: "GALARZA FONDA",
+      originalNameOnShirt: "GALARZA",
+
       dateOfBirth: "11/02/2002",
       age: 24,
       shirtNumber: 23,
@@ -418,11 +495,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "gustavo-ruben-caballero-gonzalez",
-      firstName: "Gustavo Ruben",
-      lastName: "CABALLERO GONZALEZ",
-      nameOnShirt: "CABALLERO",
+      firstName: "Густаво",
+      lastName: "Кабальеро Гонсалес",
+      nameOnShirt: "Кабальеро",
+      originalFirstName: "Gustavo Ruben",
+      originalLastName: "CABALLERO GONZALEZ",
+      originalNameOnShirt: "CABALLERO",
+
       dateOfBirth: "21/09/2001",
       age: 24,
       shirtNumber: 24,
@@ -441,11 +522,15 @@ export const paraguayProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "arnaldo-antonio-sanabria-ayala",
-      firstName: "Arnaldo Antonio",
-      lastName: "SANABRIA AYALA",
-      nameOnShirt: "SANABRIA",
+      firstName: "Арналдо",
+      lastName: "Санабриа Айала",
+      nameOnShirt: "Санабриа",
+      originalFirstName: "Arnaldo Antonio",
+      originalLastName: "SANABRIA AYALA",
+      originalNameOnShirt: "SANABRIA",
+
       dateOfBirth: "04/03/1996",
       age: 30,
       shirtNumber: 9,
@@ -462,11 +547,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "alejandro-sebastian-romero-gamarra",
-      firstName: "Alejandro Sebastian",
-      lastName: "ROMERO GAMARRA",
-      nameOnShirt: "R. GAMARRA",
+      firstName: "Алехандро",
+      lastName: "Ромеро Гамарра",
+      nameOnShirt: "Р. Гамарра",
+      originalFirstName: "Alejandro Sebastian",
+      originalLastName: "ROMERO GAMARRA",
+      originalNameOnShirt: "R. GAMARRA",
+
       dateOfBirth: "11/01/1995",
       age: 31,
       shirtNumber: 17,
@@ -483,11 +572,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "alex-adrian-arce-barrios",
-      firstName: "Alex Adrian",
-      lastName: "ARCE BARRIOS",
-      nameOnShirt: "ARCE",
+      firstName: "Алекс",
+      lastName: "Арсе Барриос",
+      nameOnShirt: "Арсе",
+      originalFirstName: "Alex Adrian",
+      originalLastName: "ARCE BARRIOS",
+      originalNameOnShirt: "ARCE",
+
       dateOfBirth: "16/06/1995",
       age: 30,
       shirtNumber: 18,
@@ -504,11 +597,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "julio-cesar-enciso-espinola",
-      firstName: "Julio Cesar",
-      lastName: "ENCISO ESPINOLA",
-      nameOnShirt: "ENCISO",
+      firstName: "Хулио",
+      lastName: "Енсисо Еспинола",
+      nameOnShirt: "Енсисо",
+      originalFirstName: "Julio Cesar",
+      originalLastName: "ENCISO ESPINOLA",
+      originalNameOnShirt: "ENCISO",
+
       dateOfBirth: "23/01/2004",
       age: 22,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "gabriel-avalos-stumpfs",
-      firstName: "Gabriel",
-      lastName: "AVALOS STUMPFS",
-      nameOnShirt: "AVALOS",
+      firstName: "Габриэл",
+      lastName: "Авалос Стумпфс",
+      nameOnShirt: "Авалос",
+      originalFirstName: "Gabriel",
+      originalLastName: "AVALOS STUMPFS",
+      originalNameOnShirt: "AVALOS",
+
       dateOfBirth: "09/07/1991",
       age: 34,
       shirtNumber: 21,
@@ -546,11 +647,15 @@ export const paraguayProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "isidro-miguel-pitta-saldivar",
-      firstName: "Isidro Miguel",
-      lastName: "PITTA SALDIVAR",
-      nameOnShirt: "PITTA",
+      firstName: "Исидро",
+      lastName: "Питта Салдивар",
+      nameOnShirt: "Питта",
+      originalFirstName: "Isidro Miguel",
+      originalLastName: "PITTA SALDIVAR",
+      originalNameOnShirt: "PITTA",
+
       dateOfBirth: "14/08/1999",
       age: 26,
       shirtNumber: 25,

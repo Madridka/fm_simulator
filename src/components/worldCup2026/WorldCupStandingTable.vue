@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { flagEmoji } from '@/data/nationalTeams/worldCup2026/teams'
-import { worldCup2026ProfilesById } from '@/data/nationalTeams/worldCup2026/ratings'
+import { resolveTeamFlagEmoji } from '@/data/wc26/nationalTeam'
+import { worldCup2026ProfilesById } from '@/data/wc26/teams/index'
 import type { WorldCupStanding } from '@/stores/worldCup2026/types'
 
 const props = defineProps<{
@@ -13,8 +13,9 @@ const props = defineProps<{
 const sortedRows = computed(() => [...props.rows].sort((a, b) => a.position - b.position))
 
 const teamName = (teamId: string): string => worldCup2026ProfilesById[teamId]?.name ?? teamId
-const teamFlag = (teamId: string): string =>
-  flagEmoji(worldCup2026ProfilesById[teamId]?.flagCode ?? '')
+const teamFlagUrl = (teamId: string): string | undefined => worldCup2026ProfilesById[teamId]?.flag
+const teamFlagEmoji = (teamId: string): string =>
+  resolveTeamFlagEmoji(worldCup2026ProfilesById[teamId]?.flagCode)
 </script>
 
 <template>
@@ -41,7 +42,13 @@ const teamFlag = (teamId: string): string =>
         >
           <td class="px-3 py-2 font-bold text-slate-400">{{ row.position }}</td>
           <td class="px-3 py-2 font-semibold text-slate-800">
-            <span class="mr-1">{{ teamFlag(row.teamId) }}</span>
+            <img
+              v-if="teamFlagUrl(row.teamId)"
+              :src="teamFlagUrl(row.teamId)"
+              :alt="teamName(row.teamId)"
+              class="mr-1.5 inline-block h-5 w-5 rounded object-cover align-middle"
+            />
+            <span v-else class="mr-1">{{ teamFlagEmoji(row.teamId) }}</span>
             {{ teamName(row.teamId) }}
           </td>
           <td class="px-3 py-2 text-center text-slate-600">{{ row.played }}</td>

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import australiaFlag from '@/data/nationalTeams/worldCup2026/flags/australia.png'
 
 export const australiaProfile: NationalTeamProfile = {
   id: "australia",
@@ -6,7 +7,7 @@ export const australiaProfile: NationalTeamProfile = {
   shortName: "AUS",
   fifaCode: "AUS",
   groupId: "D",
-  flagCode: "AU",
+  flag: australiaFlag,
   rating: 76,
   attackRating: 75,
   midfieldRating: 76,
@@ -15,11 +16,15 @@ export const australiaProfile: NationalTeamProfile = {
   secondaryColor: "#FFCD00",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "mathew-david-ryan",
-      firstName: "Mathew David",
-      lastName: "RYAN",
-      nameOnShirt: "RYAN",
+      firstName: "Мэтью",
+      lastName: "Райан",
+      nameOnShirt: "Риан",
+      originalFirstName: "Mathew David",
+      originalLastName: "RYAN",
+      originalNameOnShirt: "RYAN",
+
       dateOfBirth: "08/04/1992",
       age: 34,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "paul-david-izzo",
-      firstName: "Paul David",
-      lastName: "IZZO",
-      nameOnShirt: "IZZO",
+      firstName: "Паул",
+      lastName: "Иззо",
+      nameOnShirt: "Иззо",
+      originalFirstName: "Paul David",
+      originalLastName: "IZZO",
+      originalNameOnShirt: "IZZO",
+
       dateOfBirth: "06/01/1995",
       age: 31,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "patrick-thomas-beach",
-      firstName: "Patrick Thomas",
-      lastName: "BEACH",
-      nameOnShirt: "BEACH",
+      firstName: "Патрик",
+      lastName: "Бич",
+      nameOnShirt: "Бич",
+      originalFirstName: "Patrick Thomas",
+      originalLastName: "BEACH",
+      originalNameOnShirt: "BEACH",
+
       dateOfBirth: "06/08/2003",
       age: 22,
       shirtNumber: 18,
@@ -80,11 +93,15 @@ export const australiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "milos-degenek",
-      firstName: "Milos",
-      lastName: "DEGENEK",
-      nameOnShirt: "DEGENEK",
+      firstName: "Милос",
+      lastName: "Дедженек",
+      nameOnShirt: "Дедженек",
+      originalFirstName: "Milos",
+      originalLastName: "DEGENEK",
+      originalNameOnShirt: "DEGENEK",
+
       dateOfBirth: "28/04/1994",
       age: 32,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "alessandro-circati",
-      firstName: "Alessandro",
-      lastName: "CIRCATI",
-      nameOnShirt: "CIRCATI",
+      firstName: "Алессандро",
+      lastName: "Сиркати",
+      nameOnShirt: "Сиркати",
+      originalFirstName: "Alessandro",
+      originalLastName: "CIRCATI",
+      originalNameOnShirt: "CIRCATI",
+
       dateOfBirth: "10/10/2003",
       age: 22,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 620_000,
       isInjured: false,
     },
-    {
+        {
       id: "jacob-michael-italiano",
-      firstName: "Jacob Michael",
-      lastName: "ITALIANO",
-      nameOnShirt: "ITALIANO",
+      firstName: "Джакоб",
+      lastName: "Италиано",
+      nameOnShirt: "Италиано",
+      originalFirstName: "Jacob Michael",
+      originalLastName: "ITALIANO",
+      originalNameOnShirt: "ITALIANO",
+
       dateOfBirth: "30/07/2001",
       age: 24,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "jordan-jacob-bos",
-      firstName: "Jordan Jacob",
-      lastName: "BOS",
-      nameOnShirt: "BOS",
+      firstName: "Джордан",
+      lastName: "Бос",
+      nameOnShirt: "Бос",
+      originalFirstName: "Jordan Jacob",
+      originalLastName: "BOS",
+      originalNameOnShirt: "BOS",
+
       dateOfBirth: "29/10/2002",
       age: 23,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "jason-kato-geria",
-      firstName: "Jason Kato",
-      lastName: "GERIA",
-      nameOnShirt: "GERIA",
+      firstName: "Джасон",
+      lastName: "Джериа",
+      nameOnShirt: "Джериа",
+      originalFirstName: "Jason Kato",
+      originalLastName: "GERIA",
+      originalNameOnShirt: "GERIA",
+
       dateOfBirth: "10/05/1993",
       age: 33,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "kai-clifton-trewin",
-      firstName: "Kai Clifton",
-      lastName: "TREWIN",
-      nameOnShirt: "TREWIN",
+      firstName: "Кай",
+      lastName: "Треуин",
+      nameOnShirt: "Треуин",
+      originalFirstName: "Kai Clifton",
+      originalLastName: "TREWIN",
+      originalNameOnShirt: "TREWIN",
+
       dateOfBirth: "18/05/2001",
       age: 25,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "aziz-behich",
-      firstName: "Aziz",
-      lastName: "BEHICH",
-      nameOnShirt: "BEHICH",
+      firstName: "Азиз",
+      lastName: "Бехич",
+      nameOnShirt: "Бехич",
+      originalFirstName: "Aziz",
+      originalLastName: "BEHICH",
+      originalNameOnShirt: "BEHICH",
+
       dateOfBirth: "16/12/1990",
       age: 35,
       shirtNumber: 16,
@@ -227,11 +268,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "harry-james-souttar",
-      firstName: "Harry James",
-      lastName: "SOUTTAR",
-      nameOnShirt: "SOUTTAR",
+      firstName: "Гарри",
+      lastName: "Сауттар",
+      nameOnShirt: "Сауттар",
+      originalFirstName: "Harry James",
+      originalLastName: "SOUTTAR",
+      originalNameOnShirt: "SOUTTAR",
+
       dateOfBirth: "22/10/1998",
       age: 27,
       shirtNumber: 19,
@@ -248,11 +293,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "cameron-robert-burgess",
-      firstName: "Cameron Robert",
-      lastName: "BURGESS",
-      nameOnShirt: "BURGESS",
+      firstName: "Камерон",
+      lastName: "Бурджесс",
+      nameOnShirt: "Бурджесс",
+      originalFirstName: "Cameron Robert",
+      originalLastName: "BURGESS",
+      originalNameOnShirt: "BURGESS",
+
       dateOfBirth: "21/10/1995",
       age: 30,
       shirtNumber: 21,
@@ -269,11 +318,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "lucas-herrington",
-      firstName: "Lucas",
-      lastName: "HERRINGTON",
-      nameOnShirt: "HERRINGTON",
+      firstName: "Лукас",
+      lastName: "Херрингтон",
+      nameOnShirt: "Херрингтон",
+      originalFirstName: "Lucas",
+      originalLastName: "HERRINGTON",
+      originalNameOnShirt: "HERRINGTON",
+
       dateOfBirth: "05/09/2007",
       age: 18,
       shirtNumber: 25,
@@ -292,11 +345,15 @@ export const australiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "connor-isaac-metcalfe",
-      firstName: "Connor Isaac",
-      lastName: "METCALFE",
-      nameOnShirt: "METCALFE",
+      firstName: "Коннор",
+      lastName: "Меткалфе",
+      nameOnShirt: "Меткалфе",
+      originalFirstName: "Connor Isaac",
+      originalLastName: "METCALFE",
+      originalNameOnShirt: "METCALFE",
+
       dateOfBirth: "05/11/1999",
       age: 26,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "aiden-connor-oneill",
-      firstName: "Aiden Connor",
-      lastName: "O'NEILL",
-      nameOnShirt: "O'NEILL",
+      firstName: "Ейден",
+      lastName: "О'Неилл",
+      nameOnShirt: "О'Неилл",
+      originalFirstName: "Aiden Connor",
+      originalLastName: "O'NEILL",
+      originalNameOnShirt: "O'NEILL",
+
       dateOfBirth: "04/07/1998",
       age: 27,
       shirtNumber: 13,
@@ -334,11 +395,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "cameron-peter-devlin",
-      firstName: "Cameron Peter",
-      lastName: "DEVLIN",
-      nameOnShirt: "DEVLIN",
+      firstName: "Камерон",
+      lastName: "Девлин",
+      nameOnShirt: "Девлин",
+      originalFirstName: "Cameron Peter",
+      originalLastName: "DEVLIN",
+      originalNameOnShirt: "DEVLIN",
+
       dateOfBirth: "07/06/1998",
       age: 28,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "jackson-alexander-irvine",
-      firstName: "Jackson Alexander",
-      lastName: "IRVINE",
-      nameOnShirt: "IRVINE",
+      firstName: "Джаксон",
+      lastName: "Ирвине",
+      nameOnShirt: "Ирвине",
+      originalFirstName: "Jackson Alexander",
+      originalLastName: "IRVINE",
+      originalNameOnShirt: "IRVINE",
+
       dateOfBirth: "07/03/1993",
       age: 33,
       shirtNumber: 22,
@@ -376,11 +445,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 725_000,
       isInjured: false,
     },
-    {
+        {
       id: "paul-michael-junior-okon-engstler",
-      firstName: "Paul Michael Junior",
-      lastName: "OKON-ENGSTLER",
-      nameOnShirt: "OKON-ENGSTLER",
+      firstName: "Паул",
+      lastName: "Окон-Енгстлер",
+      nameOnShirt: "Окон-Енгстлер",
+      originalFirstName: "Paul Michael Junior",
+      originalLastName: "OKON-ENGSTLER",
+      originalNameOnShirt: "OKON-ENGSTLER",
+
       dateOfBirth: "24/01/2005",
       age: 21,
       shirtNumber: 24,
@@ -399,11 +472,15 @@ export const australiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "mathew-allan-leckie",
-      firstName: "Mathew Allan",
-      lastName: "LECKIE",
-      nameOnShirt: "LECKIE",
+      firstName: "Мэтью",
+      lastName: "Лекие",
+      nameOnShirt: "Лекие",
+      originalFirstName: "Mathew Allan",
+      originalLastName: "LECKIE",
+      originalNameOnShirt: "LECKIE",
+
       dateOfBirth: "04/02/1991",
       age: 35,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-a-toure",
-      firstName: "Mohamed A",
-      lastName: "TOURE",
-      nameOnShirt: "TOURE",
+      firstName: "Мохамед",
+      lastName: "Тауре",
+      nameOnShirt: "Тауре",
+      originalFirstName: "Mohamed A",
+      originalLastName: "TOURE",
+      originalNameOnShirt: "TOURE",
+
       dateOfBirth: "26/03/2004",
       age: 22,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "ajdin-hrustic",
-      firstName: "Ajdin",
-      lastName: "HRUSTIC",
-      nameOnShirt: "HRUSTIC",
+      firstName: "Адждин",
+      lastName: "Хрустик",
+      nameOnShirt: "Хрустик",
+      originalFirstName: "Ajdin",
+      originalLastName: "HRUSTIC",
+      originalNameOnShirt: "HRUSTIC",
+
       dateOfBirth: "05/07/1996",
       age: 29,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "awer-bul-mabil",
-      firstName: "Awer Bul",
-      lastName: "MABIL",
-      nameOnShirt: "MABIL",
+      firstName: "Ауер",
+      lastName: "Мабил",
+      nameOnShirt: "Мабил",
+      originalFirstName: "Awer Bul",
+      originalLastName: "MABIL",
+      originalNameOnShirt: "MABIL",
+
       dateOfBirth: "15/09/1995",
       age: 30,
       shirtNumber: 11,
@@ -483,11 +572,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "nestory-irankunda",
-      firstName: "Nestory",
-      lastName: "IRANKUNDA",
-      nameOnShirt: "IRANKUNDA",
+      firstName: "Нестори",
+      lastName: "Иранкунда",
+      nameOnShirt: "Иранкунда",
+      originalFirstName: "Nestory",
+      originalLastName: "IRANKUNDA",
+      originalNameOnShirt: "IRANKUNDA",
+
       dateOfBirth: "09/02/2006",
       age: 20,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "cristian-volpato",
-      firstName: "Cristian",
-      lastName: "VOLPATO",
-      nameOnShirt: "VOLPATO",
+      firstName: "Кристиан",
+      lastName: "Волпато",
+      nameOnShirt: "Волпато",
+      originalFirstName: "Cristian",
+      originalLastName: "VOLPATO",
+      originalNameOnShirt: "VOLPATO",
+
       dateOfBirth: "15/11/2003",
       age: 22,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "nishan-matthew-velupillay",
-      firstName: "Nishan Matthew",
-      lastName: "VELUPILLAY",
-      nameOnShirt: "VELUPILLAY",
+      firstName: "Нишан",
+      lastName: "Велупиллей",
+      nameOnShirt: "Велупиллей",
+      originalFirstName: "Nishan Matthew",
+      originalLastName: "VELUPILLAY",
+      originalNameOnShirt: "VELUPILLAY",
+
       dateOfBirth: "07/05/2001",
       age: 25,
       shirtNumber: 23,
@@ -546,11 +647,15 @@ export const australiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "tete-owen-yengi",
-      firstName: "Tete Owen",
-      lastName: "YENGI",
-      nameOnShirt: "YENGI",
+      firstName: "Тете",
+      lastName: "Иенджи",
+      nameOnShirt: "Иенджи",
+      originalFirstName: "Tete Owen",
+      originalLastName: "YENGI",
+      originalNameOnShirt: "YENGI",
+
       dateOfBirth: "28/11/2000",
       age: 25,
       shirtNumber: 26,

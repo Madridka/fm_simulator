@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import panamaFlag from '@/data/nationalTeams/worldCup2026/flags/panama.png'
 
 export const panamaProfile: NationalTeamProfile = {
   id: "panama",
@@ -6,7 +7,7 @@ export const panamaProfile: NationalTeamProfile = {
   shortName: "PAN",
   fifaCode: "PAN",
   groupId: "L",
-  flagCode: "PA",
+  flag: panamaFlag,
   rating: 71,
   attackRating: 70,
   midfieldRating: 71,
@@ -15,11 +16,15 @@ export const panamaProfile: NationalTeamProfile = {
   secondaryColor: "#005293",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "luis-ricardo-mejia-cajar",
-      firstName: "Luis Ricardo",
-      lastName: "MEJÍA CAJAR",
-      nameOnShirt: "MEJIA",
+      firstName: "Луис",
+      lastName: "Мехиа Кахар",
+      nameOnShirt: "Мехиа",
+      originalFirstName: "Luis Ricardo",
+      originalLastName: "MEJÍA CAJAR",
+      originalNameOnShirt: "MEJIA",
+
       dateOfBirth: "16/03/1991",
       age: 35,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "cesar-jair-samudio-murillo",
-      firstName: "Cesar Jair",
-      lastName: "SAMUDIO MURILLO",
-      nameOnShirt: "SAMUDIO",
+      firstName: "Сесар",
+      lastName: "Самудио Мурильо",
+      nameOnShirt: "Самудио",
+      originalFirstName: "Cesar Jair",
+      originalLastName: "SAMUDIO MURILLO",
+      originalNameOnShirt: "SAMUDIO",
+
       dateOfBirth: "23/02/1994",
       age: 32,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 190_000,
       isInjured: false,
     },
-    {
+        {
       id: "orlando-mosquera",
-      firstName: "Orlando",
-      lastName: "MOSQUERA",
-      nameOnShirt: "MOSQUERA",
+      firstName: "Орландо",
+      lastName: "Москера",
+      nameOnShirt: "Москера",
+      originalFirstName: "Orlando",
+      originalLastName: "MOSQUERA",
+      originalNameOnShirt: "MOSQUERA",
+
       dateOfBirth: "25/12/1994",
       age: 31,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const panamaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "cesar-rodolfo-blackman-camarena",
-      firstName: "Cesar Rodolfo",
-      lastName: "BLACKMAN CAMARENA",
-      nameOnShirt: "BLACKMAN",
+      firstName: "Сесар",
+      lastName: "Блаккман Камарена",
+      nameOnShirt: "Блаккман",
+      originalFirstName: "Cesar Rodolfo",
+      originalLastName: "BLACKMAN CAMARENA",
+      originalNameOnShirt: "BLACKMAN",
+
       dateOfBirth: "02/04/1998",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-angel-cordoba-chambers",
-      firstName: "Jose Angel",
-      lastName: "CORDOBA CHAMBERS",
-      nameOnShirt: "CORDOBA",
+      firstName: "Хосе",
+      lastName: "Кордоба Чамберс",
+      nameOnShirt: "Кордоба",
+      originalFirstName: "Jose Angel",
+      originalLastName: "CORDOBA CHAMBERS",
+      originalNameOnShirt: "CORDOBA",
+
       dateOfBirth: "03/06/2001",
       age: 25,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "fidel-escobar-mendieta",
-      firstName: "Fidel",
-      lastName: "ESCOBAR MENDIETA",
-      nameOnShirt: "F. ESCOBAR",
+      firstName: "Фидел",
+      lastName: "Ескобар Мендиета",
+      nameOnShirt: "Ф. Ескобар",
+      originalFirstName: "Fidel",
+      originalLastName: "ESCOBAR MENDIETA",
+      originalNameOnShirt: "F. ESCOBAR",
+
       dateOfBirth: "09/01/1995",
       age: 31,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "edgardo-issac-farina-wynter",
-      firstName: "Edgardo Issac",
-      lastName: "FARIÑA WYNTER",
-      nameOnShirt: "FARIÑA",
+      firstName: "Едгардо",
+      lastName: "Фарин'А Вйнтер",
+      nameOnShirt: "Фарин'А",
+      originalFirstName: "Edgardo Issac",
+      originalLastName: "FARIÑA WYNTER",
+      originalNameOnShirt: "FARIÑA",
+
       dateOfBirth: "19/10/2001",
       age: 24,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 195_000,
       isInjured: false,
     },
-    {
+        {
       id: "jiovany-javier-ramos-diaz",
-      firstName: "Jiovany Javier",
-      lastName: "RAMOS DIAZ",
-      nameOnShirt: "RAMOS",
+      firstName: "Хиованй",
+      lastName: "Рамос Диас",
+      nameOnShirt: "Рамос",
+      originalFirstName: "Jiovany Javier",
+      originalLastName: "RAMOS DIAZ",
+      originalNameOnShirt: "RAMOS",
+
       dateOfBirth: "26/01/1997",
       age: 29,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "carlos-miguel-harvey-cesneros",
-      firstName: "Carlos Miguel",
-      lastName: "HARVEY CESNEROS",
-      nameOnShirt: "HARVEY",
+      firstName: "Карлос",
+      lastName: "Арвей Сеснерос",
+      nameOnShirt: "Арвей",
+      originalFirstName: "Carlos Miguel",
+      originalLastName: "HARVEY CESNEROS",
+      originalNameOnShirt: "HARVEY",
+
       dateOfBirth: "03/02/2000",
       age: 26,
       shirtNumber: 14,
@@ -206,11 +243,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "eric-javier-davis-grajales",
-      firstName: "Eric Javier",
-      lastName: "DAVIS GRAJALES",
-      nameOnShirt: "DAVIS",
+      firstName: "Ерик",
+      lastName: "Давис Грахалес",
+      nameOnShirt: "Давис",
+      originalFirstName: "Eric Javier",
+      originalLastName: "DAVIS GRAJALES",
+      originalNameOnShirt: "DAVIS",
+
       dateOfBirth: "31/03/1991",
       age: 35,
       shirtNumber: 15,
@@ -227,11 +268,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "andres-alberto-andrade-cedeno",
-      firstName: "Andres Alberto",
-      lastName: "ANDRADE CEDEÑO",
-      nameOnShirt: "ANDRADE",
+      firstName: "Андрес",
+      lastName: "Андраде Седен'О",
+      nameOnShirt: "Андраде",
+      originalFirstName: "Andres Alberto",
+      originalLastName: "ANDRADE CEDEÑO",
+      originalNameOnShirt: "ANDRADE",
+
       dateOfBirth: "16/10/1998",
       age: 27,
       shirtNumber: 16,
@@ -248,11 +293,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "michael-amir-murillo-bermudez",
-      firstName: "Michael Amir",
-      lastName: "MURILLO BERMUDEZ",
-      nameOnShirt: "A. MURILLO",
+      firstName: "Майкл",
+      lastName: "Мурильо Бермудес",
+      nameOnShirt: "А. Мурильо",
+      originalFirstName: "Michael Amir",
+      originalLastName: "MURILLO BERMUDEZ",
+      originalNameOnShirt: "A. MURILLO",
+
       dateOfBirth: "11/02/1996",
       age: 30,
       shirtNumber: 23,
@@ -269,11 +318,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "roderick-alonso-miller-molina",
-      firstName: "Roderick Alonso",
-      lastName: "MILLER MOLINA",
-      nameOnShirt: "MILLER",
+      firstName: "Родерикк",
+      lastName: "Мильер Молина",
+      nameOnShirt: "Мильер",
+      originalFirstName: "Roderick Alonso",
+      originalLastName: "MILLER MOLINA",
+      originalNameOnShirt: "MILLER",
+
       dateOfBirth: "03/04/1992",
       age: 34,
       shirtNumber: 25,
@@ -290,11 +343,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 250_000,
       isInjured: false,
     },
-    {
+        {
       id: "jorge-abdiel-gutierrez-cornejo",
-      firstName: "Jorge Abdiel",
-      lastName: "GUTIERREZ CORNEJO",
-      nameOnShirt: "GUTIÉRREZ",
+      firstName: "Хорхе",
+      lastName: "Гутиеррес Корнехо",
+      nameOnShirt: "Гутиеррес",
+      originalFirstName: "Jorge Abdiel",
+      originalLastName: "GUTIERREZ CORNEJO",
+      originalNameOnShirt: "GUTIÉRREZ",
+
       dateOfBirth: "01/09/1998",
       age: 27,
       shirtNumber: 26,
@@ -313,11 +370,15 @@ export const panamaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "cristian-jesus-martinez",
-      firstName: "Cristian Jesus",
-      lastName: "MARTINEZ",
-      nameOnShirt: "MARTÍNEZ",
+      firstName: "Кристиан",
+      lastName: "Мартинес",
+      nameOnShirt: "Мартинес",
+      originalFirstName: "Cristian Jesus",
+      originalLastName: "MARTINEZ",
+      originalNameOnShirt: "MARTÍNEZ",
+
       dateOfBirth: "06/02/1997",
       age: 29,
       shirtNumber: 6,
@@ -334,11 +395,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-luis-rodriguez-francis",
-      firstName: "Jose Luis",
-      lastName: "RODRIGUEZ FRANCIS",
-      nameOnShirt: "J.L. RODRÍGUEZ",
+      firstName: "Хосе",
+      lastName: "Родригес Франсис",
+      nameOnShirt: "Дж.Л. Родригес",
+      originalFirstName: "Jose Luis",
+      originalLastName: "RODRIGUEZ FRANCIS",
+      originalNameOnShirt: "J.L. RODRÍGUEZ",
+
       dateOfBirth: "19/06/1998",
       age: 27,
       shirtNumber: 7,
@@ -355,11 +420,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "adalberto-eliecer-carrasquilla-alcazar",
-      firstName: "Adalberto Eliecer",
-      lastName: "CARRASQUILLA ALCAZAR",
-      nameOnShirt: "CARRASQUILLA",
+      firstName: "Адалберто",
+      lastName: "Карраскильа Алкасар",
+      nameOnShirt: "Карраскильа",
+      originalFirstName: "Adalberto Eliecer",
+      originalLastName: "CARRASQUILLA ALCAZAR",
+      originalNameOnShirt: "CARRASQUILLA",
+
       dateOfBirth: "28/11/1998",
       age: 27,
       shirtNumber: 8,
@@ -376,11 +445,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismael-diaz-de-leon",
-      firstName: "Ismael",
-      lastName: "DIAZ DE LEON",
-      nameOnShirt: "ISMAEL",
+      firstName: "Исмаел",
+      lastName: "Диас де Леон",
+      nameOnShirt: "Исмаел",
+      originalFirstName: "Ismael",
+      originalLastName: "DIAZ DE LEON",
+      originalNameOnShirt: "ISMAEL",
+
       dateOfBirth: "12/05/1997",
       age: 29,
       shirtNumber: 10,
@@ -397,11 +470,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "edgar-yoel-barcenas-herrera",
-      firstName: "Edgar Yoel",
-      lastName: "BARCENAS HERRERA",
-      nameOnShirt: "BÁRCENAS",
+      firstName: "Едгар",
+      lastName: "Барсенас Еррера",
+      nameOnShirt: "Барсенас",
+      originalFirstName: "Edgar Yoel",
+      originalLastName: "BARCENAS HERRERA",
+      originalNameOnShirt: "BÁRCENAS",
+
       dateOfBirth: "23/10/1993",
       age: 32,
       shirtNumber: 11,
@@ -418,11 +495,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "alberto-abdiel-quintero-medina",
-      firstName: "Alberto Abdiel",
-      lastName: "QUINTERO MEDINA",
-      nameOnShirt: "QUINTERO",
+      firstName: "Альберто",
+      lastName: "Кинтеро Медина",
+      nameOnShirt: "Кинтеро",
+      originalFirstName: "Alberto Abdiel",
+      originalLastName: "QUINTERO MEDINA",
+      originalNameOnShirt: "QUINTERO",
+
       dateOfBirth: "18/12/1987",
       age: 38,
       shirtNumber: 19,
@@ -439,11 +520,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "anibal-casis-godoy-lemus",
-      firstName: "Anibal Casis",
-      lastName: "GODOY LEMUS",
-      nameOnShirt: "GODOY",
+      firstName: "Анибал",
+      lastName: "Годой Лемус",
+      nameOnShirt: "Годой",
+      originalFirstName: "Anibal Casis",
+      originalLastName: "GODOY LEMUS",
+      originalNameOnShirt: "GODOY",
+
       dateOfBirth: "10/02/1990",
       age: 36,
       shirtNumber: 20,
@@ -460,11 +545,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 250_000,
       isInjured: false,
     },
-    {
+        {
       id: "cesar-augusto-yanis-velasco",
-      firstName: "Cesar Augusto",
-      lastName: "YANIS VELASCO",
-      nameOnShirt: "YANIS",
+      firstName: "Сесар",
+      lastName: "Йанис Веласко",
+      nameOnShirt: "Йанис",
+      originalFirstName: "Cesar Augusto",
+      originalLastName: "YANIS VELASCO",
+      originalNameOnShirt: "YANIS",
+
       dateOfBirth: "28/01/1996",
       age: 30,
       shirtNumber: 21,
@@ -483,11 +572,15 @@ export const panamaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "tomas-abdiel-rodriguez-mena",
-      firstName: "Tomas Abdiel",
-      lastName: "RODRIGUEZ MENA",
-      nameOnShirt: "T. RODRÍGUEZ",
+      firstName: "Томаш",
+      lastName: "Родригес Мена",
+      nameOnShirt: "Т. Родригес",
+      originalFirstName: "Tomas Abdiel",
+      originalLastName: "RODRIGUEZ MENA",
+      originalNameOnShirt: "T. RODRÍGUEZ",
+
       dateOfBirth: "09/03/1999",
       age: 27,
       shirtNumber: 9,
@@ -504,11 +597,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-fajardo-nelson",
-      firstName: "Jose",
-      lastName: "FAJARDO NELSON",
-      nameOnShirt: "FAJARDO",
+      firstName: "Хосе",
+      lastName: "Фахардо Нелсон",
+      nameOnShirt: "Фахардо",
+      originalFirstName: "Jose",
+      originalLastName: "FAJARDO NELSON",
+      originalNameOnShirt: "FAJARDO",
+
       dateOfBirth: "18/08/1993",
       age: 32,
       shirtNumber: 17,
@@ -525,11 +622,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "cecilio-alfonso-waterman-ruiz",
-      firstName: "Cecilio Alfonso",
-      lastName: "WATERMAN RUIZ",
-      nameOnShirt: "WATERMAN",
+      firstName: "Сесилио",
+      lastName: "Ватерман Руис",
+      nameOnShirt: "Ватерман",
+      originalFirstName: "Cecilio Alfonso",
+      originalLastName: "WATERMAN RUIZ",
+      originalNameOnShirt: "WATERMAN",
+
       dateOfBirth: "13/04/1991",
       age: 35,
       shirtNumber: 18,
@@ -546,11 +647,15 @@ export const panamaProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "azarias-emmanuel-londono-gonzalez",
-      firstName: "Azarías Emmanuel",
-      lastName: "LONDOÑO GONZALEZ",
-      nameOnShirt: "LONDOÑO",
+      firstName: "Асариас",
+      lastName: "Лондон'О Гонсалес",
+      nameOnShirt: "Лондон'О",
+      originalFirstName: "Azarías Emmanuel",
+      originalLastName: "LONDOÑO GONZALEZ",
+      originalNameOnShirt: "LONDOÑO",
+
       dateOfBirth: "21/06/2001",
       age: 24,
       shirtNumber: 24,

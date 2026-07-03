@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import capeVerdeFlag from '@/data/nationalTeams/worldCup2026/flags/cape-verde.png'
 
 export const capeVerdeProfile: NationalTeamProfile = {
   id: "cape-verde",
@@ -6,7 +7,7 @@ export const capeVerdeProfile: NationalTeamProfile = {
   shortName: "CPV",
   fifaCode: "CPV",
   groupId: "H",
-  flagCode: "CV",
+  flag: capeVerdeFlag,
   rating: 70,
   attackRating: 69,
   midfieldRating: 70,
@@ -15,11 +16,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "josimar-jose-evora-dias",
-      firstName: "Josimar José",
-      lastName: "ÉVORA DIAS",
-      nameOnShirt: "VOZINHA",
+      firstName: "Жосимар",
+      lastName: "Евора Диас",
+      nameOnShirt: "Возиньа",
+      originalFirstName: "Josimar José",
+      originalLastName: "ÉVORA DIAS",
+      originalNameOnShirt: "VOZINHA",
+
       dateOfBirth: "03/06/1986",
       age: 40,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "marcio-salomao-brazao-da-rosa",
-      firstName: "Márcio Salomão",
-      lastName: "BRAZÃO DA ROSA",
-      nameOnShirt: "MARCIO",
+      firstName: "Марсио",
+      lastName: "Бразау да Роса",
+      nameOnShirt: "Марсио",
+      originalFirstName: "Márcio Salomão",
+      originalLastName: "BRAZÃO DA ROSA",
+      originalNameOnShirt: "MARCIO",
+
       dateOfBirth: "23/02/1997",
       age: 29,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 245_000,
       isInjured: false,
     },
-    {
+        {
       id: "carlos-joaquim-antunes-dos-santos",
-      firstName: "Carlos Joaquim",
-      lastName: "ANTUNES DOS SANTOS",
-      nameOnShirt: "DOS SANTOS",
+      firstName: "Карлос",
+      lastName: "Антунес дос Сантос",
+      nameOnShirt: "Дос Сантос",
+      originalFirstName: "Carlos Joaquim",
+      originalLastName: "ANTUNES DOS SANTOS",
+      originalNameOnShirt: "DOS SANTOS",
+
       dateOfBirth: "24/08/2000",
       age: 25,
       shirtNumber: 23,
@@ -80,11 +93,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "ianique-dos-santos-tavares",
-      firstName: "Ianique",
-      lastName: "DOS SANTOS TAVARES",
-      nameOnShirt: "STOPIRA",
+      firstName: "Ианикуе",
+      lastName: "Дос Сантос Таварес",
+      nameOnShirt: "Стопира",
+      originalFirstName: "Ianique",
+      originalLastName: "DOS SANTOS TAVARES",
+      originalNameOnShirt: "STOPIRA",
+
       dateOfBirth: "20/05/1988",
       age: 38,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "edilson-alberto-monteiro-sanches-borges",
-      firstName: "Edilson Alberto",
-      lastName: "MONTEIRO SANCHES BORGES",
-      nameOnShirt: "BORGES",
+      firstName: "Едилсон",
+      lastName: "Монтейро Саншес Боржес",
+      nameOnShirt: "Боржес",
+      originalFirstName: "Edilson Alberto",
+      originalLastName: "MONTEIRO SANCHES BORGES",
+      originalNameOnShirt: "BORGES",
+
       dateOfBirth: "17/01/1995",
       age: 31,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "roberto-carlos-lopes",
-      firstName: "Roberto Carlos",
-      lastName: "LOPES",
-      nameOnShirt: "LOPES",
+      firstName: "Роберто",
+      lastName: "Лопес",
+      nameOnShirt: "Лопес",
+      originalFirstName: "Roberto Carlos",
+      originalLastName: "LOPES",
+      originalNameOnShirt: "LOPES",
+
       dateOfBirth: "17/06/1992",
       age: 33,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "logan-evans-costa",
-      firstName: "Logan Evans",
-      lastName: "COSTA",
-      nameOnShirt: "COSTA",
+      firstName: "Логан",
+      lastName: "Коста",
+      nameOnShirt: "Коста",
+      originalFirstName: "Logan Evans",
+      originalLastName: "COSTA",
+      originalNameOnShirt: "COSTA",
+
       dateOfBirth: "01/04/2001",
       age: 25,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "sidny-lopes-cabral",
-      firstName: "Sidny",
-      lastName: "LOPES CABRAL",
-      nameOnShirt: "LOPES CABRAL",
+      firstName: "Сидни",
+      lastName: "Лопес Кабрал",
+      nameOnShirt: "Лопес Кабрал",
+      originalFirstName: "Sidny",
+      originalLastName: "LOPES CABRAL",
+      originalNameOnShirt: "LOPES CABRAL",
+
       dateOfBirth: "18/09/2002",
       age: 23,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 415_000,
       isInjured: false,
     },
-    {
+        {
       id: "steven-moreira",
-      firstName: "Steven",
-      lastName: "MOREIRA",
-      nameOnShirt: "MOREIRA",
+      firstName: "Стевен",
+      lastName: "Морейра",
+      nameOnShirt: "Морейра",
+      originalFirstName: "Steven",
+      originalLastName: "MOREIRA",
+      originalNameOnShirt: "MOREIRA",
+
       dateOfBirth: "13/08/1994",
       age: 31,
       shirtNumber: 22,
@@ -206,11 +243,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "wagner-fabricio-cardoso-de-pina",
-      firstName: "Wagner Fabricio",
-      lastName: "CARDOSO DE PINA",
-      nameOnShirt: "WAGNER P.",
+      firstName: "Вагнер",
+      lastName: "Кардосо де Пина",
+      nameOnShirt: "Вагнер П.",
+      originalFirstName: "Wagner Fabricio",
+      originalLastName: "CARDOSO DE PINA",
+      originalNameOnShirt: "WAGNER P.",
+
       dateOfBirth: "03/11/2002",
       age: 23,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "kelvin-spencer-pires",
-      firstName: "Kelvin",
-      lastName: "SPENCER PIRES",
-      nameOnShirt: "KELVIN",
+      firstName: "Келвин",
+      lastName: "Спенсер Пирес",
+      nameOnShirt: "Келвин",
+      originalFirstName: "Kelvin",
+      originalLastName: "SPENCER PIRES",
+      originalNameOnShirt: "KELVIN",
+
       dateOfBirth: "05/06/2000",
       age: 26,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "kevin-lenini-goncalves-pereira-de-pina",
-      firstName: "Kevin Lenini",
-      lastName: "GONÇALVES PEREIRA DE PINA",
-      nameOnShirt: "KEVIN L.",
+      firstName: "Кевин",
+      lastName: "Гонсалвес Перейра де Пина",
+      nameOnShirt: "Кевин Л.",
+      originalFirstName: "Kevin Lenini",
+      originalLastName: "GONÇALVES PEREIRA DE PINA",
+      originalNameOnShirt: "KEVIN L.",
+
       dateOfBirth: "27/01/1997",
       age: 29,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "jovane-eduardo-borges-cabral",
-      firstName: "Jovane Eduardo",
-      lastName: "BORGES CABRAL",
-      nameOnShirt: "JOVANE",
+      firstName: "Жоване",
+      lastName: "Боржес Кабрал",
+      nameOnShirt: "Жоване",
+      originalFirstName: "Jovane Eduardo",
+      originalLastName: "BORGES CABRAL",
+      originalNameOnShirt: "JOVANE",
+
       dateOfBirth: "14/06/1998",
       age: 27,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 315_000,
       isInjured: false,
     },
-    {
+        {
       id: "joao-paulo-moreira-fernandes",
-      firstName: "João Paulo",
-      lastName: "MOREIRA FERNANDES",
-      nameOnShirt: "JOÃO PAULO",
+      firstName: "Жоау",
+      lastName: "Морейра Фернандес",
+      nameOnShirt: "Жоау Паулу",
+      originalFirstName: "João Paulo",
+      originalLastName: "MOREIRA FERNANDES",
+      originalNameOnShirt: "JOÃO PAULO",
+
       dateOfBirth: "26/05/1998",
       age: 28,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "jamiro-gregory-monteiro-alvarenga",
-      firstName: "Jamiro Gregory",
-      lastName: "MONTEIRO ALVARENGA",
-      nameOnShirt: "MONTEIRO",
+      firstName: "Жамиро",
+      lastName: "Монтейро Алваренга",
+      nameOnShirt: "Монтейро",
+      originalFirstName: "Jamiro Gregory",
+      originalLastName: "MONTEIRO ALVARENGA",
+      originalNameOnShirt: "MONTEIRO",
+
       dateOfBirth: "23/11/1993",
       age: 32,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 325_000,
       isInjured: false,
     },
-    {
+        {
       id: "garry-mendes-rodrigues",
-      firstName: "Garry",
-      lastName: "MENDES RODRIGUES",
-      nameOnShirt: "RODRIGUES",
+      firstName: "Гахи",
+      lastName: "Мендес Родригуес",
+      nameOnShirt: "Родригуес",
+      originalFirstName: "Garry",
+      originalLastName: "MENDES RODRIGUES",
+      originalNameOnShirt: "RODRIGUES",
+
       dateOfBirth: "27/11/1990",
       age: 35,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "deroy-dencarnacao-duarte",
-      firstName: "Deroy",
-      lastName: "D'ENCARNAÇÃO DUARTE",
-      nameOnShirt: "D. DUARTE",
+      firstName: "Дерои",
+      lastName: "Д'Енкарнасау Дуарте",
+      nameOnShirt: "Д. Дуарте",
+      originalFirstName: "Deroy",
+      originalLastName: "D'ENCARNAÇÃO DUARTE",
+      originalNameOnShirt: "D. DUARTE",
+
       dateOfBirth: "04/07/1999",
       age: 26,
       shirtNumber: 14,
@@ -376,11 +445,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "laros-michael-dencarnacao-duarte",
-      firstName: "Laros Michael",
-      lastName: "D'ENCARNAÇÃO DUARTE",
-      nameOnShirt: "L. DUARTE",
+      firstName: "Ларос",
+      lastName: "Д'Енкарнасау Дуарте",
+      nameOnShirt: "Л. Дуарте",
+      originalFirstName: "Laros Michael",
+      originalLastName: "D'ENCARNAÇÃO DUARTE",
+      originalNameOnShirt: "L. DUARTE",
+
       dateOfBirth: "28/02/1997",
       age: 29,
       shirtNumber: 15,
@@ -397,11 +470,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 280_000,
       isInjured: false,
     },
-    {
+        {
       id: "jair-semedo-monteiro",
-      firstName: "Jair",
-      lastName: "SEMEDO MONTEIRO",
-      nameOnShirt: "Y. SEMEDO",
+      firstName: "Жаир",
+      lastName: "Семедо Монтейро",
+      nameOnShirt: "Й. Семедо",
+      originalFirstName: "Jair",
+      originalLastName: "SEMEDO MONTEIRO",
+      originalNameOnShirt: "Y. SEMEDO",
+
       dateOfBirth: "29/12/1995",
       age: 30,
       shirtNumber: 16,
@@ -418,11 +495,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "willy-johnson-semedo-afonso",
-      firstName: "Willy Johnson",
-      lastName: "SEMEDO AFONSO",
-      nameOnShirt: "SEMEDO",
+      firstName: "Вилли",
+      lastName: "Семедо Афонсо",
+      nameOnShirt: "Семедо",
+      originalFirstName: "Willy Johnson",
+      originalLastName: "SEMEDO AFONSO",
+      originalNameOnShirt: "SEMEDO",
+
       dateOfBirth: "27/04/1994",
       age: 32,
       shirtNumber: 17,
@@ -439,11 +520,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 285_000,
       isInjured: false,
     },
-    {
+        {
       id: "telmo-emanuel-gomes-arcanjo",
-      firstName: "Telmo Emanuel",
-      lastName: "GOMES ARCANJO",
-      nameOnShirt: "ARCANJO",
+      firstName: "Телмо",
+      lastName: "Гомес Арканжо",
+      nameOnShirt: "Арканжо",
+      originalFirstName: "Telmo Emanuel",
+      originalLastName: "GOMES ARCANJO",
+      originalNameOnShirt: "ARCANJO",
+
       dateOfBirth: "21/06/2001",
       age: 24,
       shirtNumber: 18,
@@ -460,11 +545,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 165_000,
       isInjured: false,
     },
-    {
+        {
       id: "nuno-miguel-da-costa-joia",
-      firstName: "Nuno Miguel",
-      lastName: "DA COSTA JOIA",
-      nameOnShirt: "DA COSTA",
+      firstName: "Нуно",
+      lastName: "Да Коста Жоиа",
+      nameOnShirt: "Да Коста",
+      originalFirstName: "Nuno Miguel",
+      originalLastName: "DA COSTA JOIA",
+      originalNameOnShirt: "DA COSTA",
+
       dateOfBirth: "10/02/1991",
       age: 35,
       shirtNumber: 21,
@@ -481,11 +570,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 140_000,
       isInjured: false,
     },
-    {
+        {
       id: "helio-sandro-oliveira-alves-varela",
-      firstName: "Hélio Sandro",
-      lastName: "OLIVEIRA ALVES VARELA",
-      nameOnShirt: "HÉLIO",
+      firstName: "Хелио",
+      lastName: "Оливейра Алвес Варела",
+      nameOnShirt: "Хелио",
+      originalFirstName: "Hélio Sandro",
+      originalLastName: "OLIVEIRA ALVES VARELA",
+      originalNameOnShirt: "HÉLIO",
+
       dateOfBirth: "03/05/2002",
       age: 24,
       shirtNumber: 26,
@@ -504,11 +597,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "gilson-benchimol-tavares",
-      firstName: "Gilson",
-      lastName: "BENCHIMOL TAVARES",
-      nameOnShirt: "BENCHIMOL",
+      firstName: "Жилсон",
+      lastName: "Беншимол Таварес",
+      nameOnShirt: "Беншимол",
+      originalFirstName: "Gilson",
+      originalLastName: "BENCHIMOL TAVARES",
+      originalNameOnShirt: "BENCHIMOL",
+
       dateOfBirth: "29/12/2001",
       age: 24,
       shirtNumber: 9,
@@ -525,11 +622,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 290_000,
       isInjured: false,
     },
-    {
+        {
       id: "dailon-rocha-livramento",
-      firstName: "Dailon",
-      lastName: "ROCHA LIVRAMENTO",
-      nameOnShirt: "LIVRAMENTO",
+      firstName: "Даилон",
+      lastName: "Роша Ливраменто",
+      nameOnShirt: "Ливраменто",
+      originalFirstName: "Dailon",
+      originalLastName: "ROCHA LIVRAMENTO",
+      originalNameOnShirt: "LIVRAMENTO",
+
       dateOfBirth: "04/05/2001",
       age: 25,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const capeVerdeProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "ryan-isaac-da-graca-mendes",
-      firstName: "Ryan Isaac",
-      lastName: "DA GRACA MENDES",
-      nameOnShirt: "RYAN",
+      firstName: "Риан",
+      lastName: "Да Грака Мендес",
+      nameOnShirt: "Риан",
+      originalFirstName: "Ryan Isaac",
+      originalLastName: "DA GRACA MENDES",
+      originalNameOnShirt: "RYAN",
+
       dateOfBirth: "08/01/1990",
       age: 36,
       shirtNumber: 20,

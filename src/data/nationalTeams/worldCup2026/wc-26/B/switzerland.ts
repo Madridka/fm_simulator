@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import switzerlandFlag from '@/data/nationalTeams/worldCup2026/flags/switzerland.png'
 
 export const switzerlandProfile: NationalTeamProfile = {
   id: "switzerland",
@@ -6,7 +7,7 @@ export const switzerlandProfile: NationalTeamProfile = {
   shortName: "SUI",
   fifaCode: "SUI",
   groupId: "B",
-  flagCode: "CH",
+  flag: switzerlandFlag,
   rating: 80,
   attackRating: 79,
   midfieldRating: 81,
@@ -15,11 +16,15 @@ export const switzerlandProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "gregor-kobel",
-      firstName: "Gregor",
-      lastName: "KOBEL",
-      nameOnShirt: "KOBEL",
+      firstName: "Грегор",
+      lastName: "Кобел",
+      nameOnShirt: "Кобел",
+      originalFirstName: "Gregor",
+      originalLastName: "KOBEL",
+      originalNameOnShirt: "KOBEL",
+
       dateOfBirth: "06/12/1997",
       age: 28,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "yvon-landry-mvogo-nganoma",
-      firstName: "Yvon Landry",
-      lastName: "MVOGO NGANOMA",
-      nameOnShirt: "MVOGO",
+      firstName: "Ифон",
+      lastName: "Мфого Нганома",
+      nameOnShirt: "Мфого",
+      originalFirstName: "Yvon Landry",
+      originalLastName: "MVOGO NGANOMA",
+      originalNameOnShirt: "MVOGO",
+
       dateOfBirth: "06/06/1994",
       age: 32,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 665_000,
       isInjured: false,
     },
-    {
+        {
       id: "marvin-keller",
-      firstName: "Marvin",
-      lastName: "KELLER",
-      nameOnShirt: "KELLER",
+      firstName: "Марфин",
+      lastName: "Келлер",
+      nameOnShirt: "Келлер",
+      originalFirstName: "Marvin",
+      originalLastName: "KELLER",
+      originalNameOnShirt: "KELLER",
+
       dateOfBirth: "03/07/2002",
       age: 23,
       shirtNumber: 21,
@@ -80,11 +93,15 @@ export const switzerlandProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "miro-max-maria-muheim",
-      firstName: "Miro Max Maria",
-      lastName: "MUHEIM",
-      nameOnShirt: "MUHEIM",
+      firstName: "Миро",
+      lastName: "Мухайм",
+      nameOnShirt: "Мухайм",
+      originalFirstName: "Miro Max Maria",
+      originalLastName: "MUHEIM",
+      originalNameOnShirt: "MUHEIM",
+
       dateOfBirth: "24/03/1998",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "silvan-dominic-widmer",
-      firstName: "Silvan Dominic",
-      lastName: "WIDMER",
-      nameOnShirt: "WIDMER",
+      firstName: "Силфан",
+      lastName: "Видмер",
+      nameOnShirt: "Видмер",
+      originalFirstName: "Silvan Dominic",
+      originalLastName: "WIDMER",
+      originalNameOnShirt: "WIDMER",
+
       dateOfBirth: "05/03/1993",
       age: 33,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "nico-elvedi",
-      firstName: "Nico",
-      lastName: "ELVEDI",
-      nameOnShirt: "ELVEDI",
+      firstName: "Нико",
+      lastName: "Елфеди",
+      nameOnShirt: "Елфеди",
+      originalFirstName: "Nico",
+      originalLastName: "ELVEDI",
+      originalNameOnShirt: "ELVEDI",
+
       dateOfBirth: "30/09/1996",
       age: 29,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "manuel-obafemi-akanji",
-      firstName: "Manuel Obafemi",
-      lastName: "AKANJI",
-      nameOnShirt: "AKANJI",
+      firstName: "Мануэль",
+      lastName: "Аканйи",
+      nameOnShirt: "Аканйи",
+      originalFirstName: "Manuel Obafemi",
+      originalLastName: "AKANJI",
+      originalNameOnShirt: "AKANJI",
+
       dateOfBirth: "19/07/1995",
       age: 30,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "ricardo-ivan-rodriguez-araya",
-      firstName: "Ricardo Ivan",
-      lastName: "RODRIGUEZ ARAYA",
-      nameOnShirt: "RODRIGUEZ",
+      firstName: "Рикарду",
+      lastName: "Родригюц Араиа",
+      nameOnShirt: "Родригюц",
+      originalFirstName: "Ricardo Ivan",
+      originalLastName: "RODRIGUEZ ARAYA",
+      originalNameOnShirt: "RODRIGUEZ",
+
       dateOfBirth: "25/08/1992",
       age: 33,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 855_000,
       isInjured: false,
     },
-    {
+        {
       id: "eray-ervin-comert",
-      firstName: "Eray Ervin",
-      lastName: "CÖMERT",
-      nameOnShirt: "CÖMERT",
+      firstName: "Ераи",
+      lastName: "Циомерт",
+      nameOnShirt: "Циомерт",
+      originalFirstName: "Eray Ervin",
+      originalLastName: "CÖMERT",
+      originalNameOnShirt: "CÖMERT",
+
       dateOfBirth: "04/02/1998",
       age: 28,
       shirtNumber: 18,
@@ -206,11 +243,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "aurele-florian-amenda",
-      firstName: "Aurèle Florian",
-      lastName: "AMENDA",
-      nameOnShirt: "AMENDA",
+      firstName: "Ауреле",
+      lastName: "Аменда",
+      nameOnShirt: "Аменда",
+      originalFirstName: "Aurèle Florian",
+      originalLastName: "AMENDA",
+      originalNameOnShirt: "AMENDA",
+
       dateOfBirth: "31/07/2003",
       age: 22,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 680_000,
       isInjured: false,
     },
-    {
+        {
       id: "luca-antony-jaquez",
-      firstName: "Luca Antony",
-      lastName: "JAQUEZ",
-      nameOnShirt: "JAQUEZ",
+      firstName: "Лука",
+      lastName: "Йакюц",
+      nameOnShirt: "Йакюц",
+      originalFirstName: "Luca Antony",
+      originalLastName: "JAQUEZ",
+      originalNameOnShirt: "JAQUEZ",
+
       dateOfBirth: "02/06/2003",
       age: 23,
       shirtNumber: 25,
@@ -250,11 +295,15 @@ export const switzerlandProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "denis-lemi-zakaria-lako-lado",
-      firstName: "Denis Lemi",
-      lastName: "ZAKARIA LAKO LADO",
-      nameOnShirt: "ZAKARIA",
+      firstName: "Денис",
+      lastName: "Цакариа Лако Ладо",
+      nameOnShirt: "Цакариа",
+      originalFirstName: "Denis Lemi",
+      originalLastName: "ZAKARIA LAKO LADO",
+      originalNameOnShirt: "ZAKARIA",
+
       dateOfBirth: "20/11/1996",
       age: 29,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "remo-marco-freuler",
-      firstName: "Remo Marco",
-      lastName: "FREULER",
-      nameOnShirt: "FREULER",
+      firstName: "Ремо",
+      lastName: "Фройлер",
+      nameOnShirt: "Фройлер",
+      originalFirstName: "Remo Marco",
+      originalLastName: "FREULER",
+      originalNameOnShirt: "FREULER",
+
       dateOfBirth: "15/04/1992",
       age: 34,
       shirtNumber: 8,
@@ -292,11 +345,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "johan-kula-manzambi",
-      firstName: "Johan Kula",
-      lastName: "MANZAMBI",
-      nameOnShirt: "MANZAMBI",
+      firstName: "Йохан",
+      lastName: "Манцамби",
+      nameOnShirt: "Манцамби",
+      originalFirstName: "Johan Kula",
+      originalLastName: "MANZAMBI",
+      originalNameOnShirt: "MANZAMBI",
+
       dateOfBirth: "14/10/2005",
       age: 20,
       shirtNumber: 9,
@@ -313,11 +370,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 660_000,
       isInjured: false,
     },
-    {
+        {
       id: "granit-xhaka",
-      firstName: "Granit",
-      lastName: "XHAKA",
-      nameOnShirt: "XHAKA",
+      firstName: "Гранит",
+      lastName: "Джака",
+      nameOnShirt: "Ксхака",
+      originalFirstName: "Granit",
+      originalLastName: "XHAKA",
+      originalNameOnShirt: "XHAKA",
+
       dateOfBirth: "27/09/1992",
       age: 33,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 995_000,
       isInjured: false,
     },
-    {
+        {
       id: "ardon-jashari",
-      firstName: "Ardon",
-      lastName: "JASHARI",
-      nameOnShirt: "JASHARI",
+      firstName: "Ардон",
+      lastName: "Йасхари",
+      nameOnShirt: "Йасхари",
+      originalFirstName: "Ardon",
+      originalLastName: "JASHARI",
+      originalNameOnShirt: "JASHARI",
+
       dateOfBirth: "30/07/2002",
       age: 23,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 870_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohameth-djibril-ibrahima-sow",
-      firstName: "Mohameth Djibril Ibrahima",
-      lastName: "SOW",
-      nameOnShirt: "SOW",
+      firstName: "Мохаметх",
+      lastName: "Сов",
+      nameOnShirt: "Сов",
+      originalFirstName: "Mohameth Djibril Ibrahima",
+      originalLastName: "SOW",
+      originalNameOnShirt: "SOW",
+
       dateOfBirth: "06/02/1997",
       age: 29,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "michel-aebischer",
-      firstName: "Michel",
-      lastName: "AEBISCHER",
-      nameOnShirt: "AEBISCHER",
+      firstName: "Михел",
+      lastName: "Эбишер",
+      nameOnShirt: "Эбишер",
+      originalFirstName: "Michel",
+      originalLastName: "AEBISCHER",
+      originalNameOnShirt: "AEBISCHER",
+
       dateOfBirth: "06/01/1997",
       age: 29,
       shirtNumber: 20,
@@ -397,11 +470,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "fabian-rieder",
-      firstName: "Fabian",
-      lastName: "RIEDER",
-      nameOnShirt: "RIEDER",
+      firstName: "Фабиан",
+      lastName: "Ридер",
+      nameOnShirt: "Ридер",
+      originalFirstName: "Fabian",
+      originalLastName: "RIEDER",
+      originalNameOnShirt: "RIEDER",
+
       dateOfBirth: "16/02/2002",
       age: 24,
       shirtNumber: 22,
@@ -420,11 +497,15 @@ export const switzerlandProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "breel-donald-embolo",
-      firstName: "Breel Donald",
-      lastName: "EMBOLO",
-      nameOnShirt: "EMBOLO",
+      firstName: "Бреел",
+      lastName: "Емболо",
+      nameOnShirt: "Емболо",
+      originalFirstName: "Breel Donald",
+      originalLastName: "EMBOLO",
+      originalNameOnShirt: "EMBOLO",
+
       dateOfBirth: "14/02/1997",
       age: 29,
       shirtNumber: 7,
@@ -441,11 +522,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 1_025_000,
       isInjured: false,
     },
-    {
+        {
       id: "dan-ndoye",
-      firstName: "Dan",
-      lastName: "NDOYE",
-      nameOnShirt: "NDOYE",
+      firstName: "Дан",
+      lastName: "Ндоие",
+      nameOnShirt: "Ндоие",
+      originalFirstName: "Dan",
+      originalLastName: "NDOYE",
+      originalNameOnShirt: "NDOYE",
+
       dateOfBirth: "25/10/2000",
       age: 25,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "christian-andreas-fassnacht",
-      firstName: "Christian Andreas",
-      lastName: "FASSNACHT",
-      nameOnShirt: "FASSNACHT",
+      firstName: "Кристиан",
+      lastName: "Фасснахт",
+      nameOnShirt: "Фасснахт",
+      originalFirstName: "Christian Andreas",
+      originalLastName: "FASSNACHT",
+      originalNameOnShirt: "FASSNACHT",
+
       dateOfBirth: "11/11/1993",
       age: 32,
       shirtNumber: 16,
@@ -483,11 +572,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "ruben-estephan-vargas-martinez",
-      firstName: "Ruben Estephan",
-      lastName: "VARGAS MARTINEZ",
-      nameOnShirt: "VARGAS",
+      firstName: "Рубен",
+      lastName: "Фаргас Мартинец",
+      nameOnShirt: "Фаргас",
+      originalFirstName: "Ruben Estephan",
+      originalLastName: "VARGAS MARTINEZ",
+      originalNameOnShirt: "VARGAS",
+
       dateOfBirth: "05/08/1998",
       age: 27,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "noah-arinzechukwu-okafor",
-      firstName: "Noah Arinzechukwu",
-      lastName: "OKAFOR",
-      nameOnShirt: "OKAFOR",
+      firstName: "Ноах",
+      lastName: "Окафор",
+      nameOnShirt: "Окафор",
+      originalFirstName: "Noah Arinzechukwu",
+      originalLastName: "OKAFOR",
+      originalNameOnShirt: "OKAFOR",
+
       dateOfBirth: "24/05/2000",
       age: 26,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-zeki-amdouni",
-      firstName: "Mohamed Zeki",
-      lastName: "AMDOUNI",
-      nameOnShirt: "AMDOUNI",
+      firstName: "Мохамед",
+      lastName: "Амдоуни",
+      nameOnShirt: "Амдоуни",
+      originalFirstName: "Mohamed Zeki",
+      originalLastName: "AMDOUNI",
+      originalNameOnShirt: "AMDOUNI",
+
       dateOfBirth: "04/12/2000",
       age: 25,
       shirtNumber: 23,
@@ -546,11 +647,15 @@ export const switzerlandProfile: NationalTeamProfile = {
       salary: 875_000,
       isInjured: false,
     },
-    {
+        {
       id: "cedric-jan-itten",
-      firstName: "Cedric Jan",
-      lastName: "ITTEN",
-      nameOnShirt: "ITTEN",
+      firstName: "Цедрик",
+      lastName: "Иттен",
+      nameOnShirt: "Иттен",
+      originalFirstName: "Cedric Jan",
+      originalLastName: "ITTEN",
+      originalNameOnShirt: "ITTEN",
+
       dateOfBirth: "27/12/1996",
       age: 29,
       shirtNumber: 26,

@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import curacaoFlag from '@/data/nationalTeams/worldCup2026/flags/curacao.png'
 
 export const curacaoProfile: NationalTeamProfile = {
   id: "curacao",
@@ -6,7 +7,7 @@ export const curacaoProfile: NationalTeamProfile = {
   shortName: "CUW",
   fifaCode: "CUW",
   groupId: "E",
-  flagCode: "CW",
+  flag: curacaoFlag,
   rating: 64,
   attackRating: 63,
   midfieldRating: 64,
@@ -15,11 +16,15 @@ export const curacaoProfile: NationalTeamProfile = {
   secondaryColor: "#F9E814",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "eloy-victor-room",
-      firstName: "Eloy Victor",
-      lastName: "ROOM",
-      nameOnShirt: "ROOM",
+      firstName: "Елои",
+      lastName: "Ром",
+      nameOnShirt: "Ром",
+      originalFirstName: "Eloy Victor",
+      originalLastName: "ROOM",
+      originalNameOnShirt: "ROOM",
+
       dateOfBirth: "06/02/1989",
       age: 37,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 140_000,
       isInjured: false,
     },
-    {
+        {
       id: "tyrick-jeremy-bodak",
-      firstName: "Tyrick Jeremy",
-      lastName: "BODAK",
-      nameOnShirt: "BODAK",
+      firstName: "Тирикк",
+      lastName: "Бодак",
+      nameOnShirt: "Бодак",
+      originalFirstName: "Tyrick Jeremy",
+      originalLastName: "BODAK",
+      originalNameOnShirt: "BODAK",
+
       dateOfBirth: "15/05/2002",
       age: 24,
       shirtNumber: 25,
@@ -57,11 +66,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 55_000,
       isInjured: false,
     },
-    {
+        {
       id: "trevor-irving-doornbusch",
-      firstName: "Trevor Irving",
-      lastName: "DOORNBUSCH",
-      nameOnShirt: "DOORNBUSCH",
+      firstName: "Тревор",
+      lastName: "Дорнбусх",
+      nameOnShirt: "Дорнбусх",
+      originalFirstName: "Trevor Irving",
+      originalLastName: "DOORNBUSCH",
+      originalNameOnShirt: "DOORNBUSCH",
+
       dateOfBirth: "06/07/1999",
       age: 26,
       shirtNumber: 26,
@@ -80,11 +93,15 @@ export const curacaoProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "shurandy-ruggerio-sambo",
-      firstName: "Shurandy Ruggerio",
-      lastName: "SAMBO",
-      nameOnShirt: "SAMBO",
+      firstName: "Схуранди",
+      lastName: "Самбо",
+      nameOnShirt: "Самбо",
+      originalFirstName: "Shurandy Ruggerio",
+      originalLastName: "SAMBO",
+      originalNameOnShirt: "SAMBO",
+
       dateOfBirth: "19/08/2001",
       age: 24,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 140_000,
       isInjured: false,
     },
-    {
+        {
       id: "jurien-godfried-juan-gaari",
-      firstName: "Juriën Godfried Juan",
-      lastName: "GAARI",
-      nameOnShirt: "GAARI",
+      firstName: "Йуриен",
+      lastName: "Хари",
+      nameOnShirt: "Хари",
+      originalFirstName: "Juriën Godfried Juan",
+      originalLastName: "GAARI",
+      originalNameOnShirt: "GAARI",
+
       dateOfBirth: "23/12/1993",
       age: 32,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 160_000,
       isInjured: false,
     },
-    {
+        {
       id: "roshon-felix-romar-jordan-van-eijma",
-      firstName: "Róshón Felix Romar Jordan",
-      lastName: "VAN EIJMA",
-      nameOnShirt: "VAN EIJMA",
+      firstName: "Росхон",
+      lastName: "Ван Еейма",
+      nameOnShirt: "Ван Еейма",
+      originalFirstName: "Róshón Felix Romar Jordan",
+      originalLastName: "VAN EIJMA",
+      originalNameOnShirt: "VAN EIJMA",
+
       dateOfBirth: "09/06/1998",
       age: 28,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "sherel-constancio-floranus",
-      firstName: "Sherel Constancio",
-      lastName: "FLORANUS",
-      nameOnShirt: "FLORANUS",
+      firstName: "Схерел",
+      lastName: "Флоранус",
+      nameOnShirt: "Флоранус",
+      originalFirstName: "Sherel Constancio",
+      originalLastName: "FLORANUS",
+      originalNameOnShirt: "FLORANUS",
+
       dateOfBirth: "23/08/1998",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 180_000,
       isInjured: false,
     },
-    {
+        {
       id: "armando-maria-obispo",
-      firstName: "Armando Maria",
-      lastName: "OBISPO",
-      nameOnShirt: "OBISPO",
+      firstName: "Армандо",
+      lastName: "Обиспо",
+      nameOnShirt: "Обиспо",
+      originalFirstName: "Armando Maria",
+      originalLastName: "OBISPO",
+      originalNameOnShirt: "OBISPO",
+
       dateOfBirth: "05/03/1999",
       age: 27,
       shirtNumber: 18,
@@ -185,11 +218,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 245_000,
       isInjured: false,
     },
-    {
+        {
       id: "joshua-benjamin-brenet",
-      firstName: "Joshua Benjamin",
-      lastName: "BRENET",
-      nameOnShirt: "BRENET",
+      firstName: "Йозуа",
+      lastName: "Бренет",
+      nameOnShirt: "Бренет",
+      originalFirstName: "Joshua Benjamin",
+      originalLastName: "BRENET",
+      originalNameOnShirt: "BRENET",
+
       dateOfBirth: "20/03/1994",
       age: 32,
       shirtNumber: 20,
@@ -206,11 +243,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 140_000,
       isInjured: false,
     },
-    {
+        {
       id: "riechedly-guillermo-bazoer",
-      firstName: "Riechedly Guillermo",
-      lastName: "BAZOER",
-      nameOnShirt: "BAZOER",
+      firstName: "Риехедли",
+      lastName: "Базур",
+      nameOnShirt: "Базур",
+      originalFirstName: "Riechedly Guillermo",
+      originalLastName: "BAZOER",
+      originalNameOnShirt: "BAZOER",
+
       dateOfBirth: "12/10/1996",
       age: 29,
       shirtNumber: 23,
@@ -227,11 +268,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 130_000,
       isInjured: false,
     },
-    {
+        {
       id: "deveron-lenny-fonville",
-      firstName: "Deveron Lenny",
-      lastName: "FONVILLE",
-      nameOnShirt: "FONVILLE",
+      firstName: "Деверон",
+      lastName: "Фонвилле",
+      nameOnShirt: "Фонвилле",
+      originalFirstName: "Deveron Lenny",
+      originalLastName: "FONVILLE",
+      originalNameOnShirt: "FONVILLE",
+
       dateOfBirth: "16/05/2003",
       age: 23,
       shirtNumber: 24,
@@ -250,11 +295,15 @@ export const curacaoProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "godfried-roemeratoe",
-      firstName: "Godfried",
-      lastName: "ROEMERATOE",
-      nameOnShirt: "ROEMERATOE",
+      firstName: "Ходфриед",
+      lastName: "Румерату",
+      nameOnShirt: "Румерату",
+      originalFirstName: "Godfried",
+      originalLastName: "ROEMERATOE",
+      originalNameOnShirt: "ROEMERATOE",
+
       dateOfBirth: "19/08/1999",
       age: 26,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "juninho-gracielo-bacuna",
-      firstName: "Juninho Gracielo",
-      lastName: "BACUNA",
-      nameOnShirt: "J. BACUNA",
+      firstName: "Йунинхо",
+      lastName: "Бакуна",
+      nameOnShirt: "Дж. Бакуна",
+      originalFirstName: "Juninho Gracielo",
+      originalLastName: "BACUNA",
+      originalNameOnShirt: "J. BACUNA",
+
       dateOfBirth: "07/08/1997",
       age: 28,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 210_000,
       isInjured: false,
     },
-    {
+        {
       id: "livano-shyron-liomar-comenencia",
-      firstName: "Livano Shyron Liomar",
-      lastName: "COMENENCIA",
-      nameOnShirt: "COMENENCIA",
+      firstName: "Ливано",
+      lastName: "Комененкиа",
+      nameOnShirt: "Комененкиа",
+      originalFirstName: "Livano Shyron Liomar",
+      originalLastName: "COMENENCIA",
+      originalNameOnShirt: "COMENENCIA",
+
       dateOfBirth: "03/02/2004",
       age: 22,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 120_000,
       isInjured: false,
     },
-    {
+        {
       id: "leandro-jones-johan-bacuna",
-      firstName: "Leandro Jones Johan",
-      lastName: "BACUNA",
-      nameOnShirt: "L. BACUNA",
+      firstName: "Леандро",
+      lastName: "Бакуна",
+      nameOnShirt: "Л. Бакуна",
+      originalFirstName: "Leandro Jones Johan",
+      originalLastName: "BACUNA",
+      originalNameOnShirt: "L. BACUNA",
+
       dateOfBirth: "21/08/1991",
       age: 34,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 160_000,
       isInjured: false,
     },
-    {
+        {
       id: "arjany-jainel-archenir-martha",
-      firstName: "Ar'jany Jainel Archenir",
-      lastName: "MARTHA",
-      nameOnShirt: "MARTHA",
+      firstName: "Ар'Йани",
+      lastName: "Мартха",
+      nameOnShirt: "Мартха",
+      originalFirstName: "Ar'jany Jainel Archenir",
+      originalLastName: "MARTHA",
+      originalNameOnShirt: "MARTHA",
+
       dateOfBirth: "04/09/2003",
       age: 22,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 100_000,
       isInjured: false,
     },
-    {
+        {
       id: "tahith-jose-girigorio-djorkaef-chong",
-      firstName: "Tahith Jose Girigorio Djorkaef",
-      lastName: "CHONG",
-      nameOnShirt: "CHONG",
+      firstName: "Тахитх",
+      lastName: "Хонх",
+      nameOnShirt: "Хонх",
+      originalFirstName: "Tahith Jose Girigorio Djorkaef",
+      originalLastName: "CHONG",
+      originalNameOnShirt: "CHONG",
+
       dateOfBirth: "04/12/1999",
       age: 26,
       shirtNumber: 21,
@@ -376,11 +445,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "kevin-antonio-felida",
-      firstName: "Kevin Antonio",
-      lastName: "FELIDA",
-      nameOnShirt: "FELIDA",
+      firstName: "Кевин",
+      lastName: "Фелида",
+      nameOnShirt: "Фелида",
+      originalFirstName: "Kevin Antonio",
+      originalLastName: "FELIDA",
+      originalNameOnShirt: "FELIDA",
+
       dateOfBirth: "11/11/1999",
       age: 26,
       shirtNumber: 22,
@@ -399,11 +472,15 @@ export const curacaoProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "jurgen-leonardo-locadia",
-      firstName: "Jürgen Leonardo",
-      lastName: "LOCADIA",
-      nameOnShirt: "LOCADIA",
+      firstName: "Йурхен",
+      lastName: "Локадиа",
+      nameOnShirt: "Локадиа",
+      originalFirstName: "Jürgen Leonardo",
+      originalLastName: "LOCADIA",
+      originalNameOnShirt: "LOCADIA",
+
       dateOfBirth: "07/11/1993",
       age: 32,
       shirtNumber: 9,
@@ -420,11 +497,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 60_000,
       isInjured: false,
     },
-    {
+        {
       id: "jeremy-cornelis-jacobus-antonisse",
-      firstName: "Jeremy Cornelis Jacobus",
-      lastName: "ANTONISSE",
-      nameOnShirt: "ANTONISSE",
+      firstName: "Йереми",
+      lastName: "Антониссе",
+      nameOnShirt: "Антониссе",
+      originalFirstName: "Jeremy Cornelis Jacobus",
+      originalLastName: "ANTONISSE",
+      originalNameOnShirt: "ANTONISSE",
+
       dateOfBirth: "29/03/2002",
       age: 24,
       shirtNumber: 11,
@@ -441,11 +522,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 120_000,
       isInjured: false,
     },
-    {
+        {
       id: "misjonne-juniffer-naigelino-hansen",
-      firstName: "Misjonne Juniffer Naigelino",
-      lastName: "HANSEN",
-      nameOnShirt: "HANSEN",
+      firstName: "Мисйонне",
+      lastName: "Хансен",
+      nameOnShirt: "Хансен",
+      originalFirstName: "Misjonne Juniffer Naigelino",
+      originalLastName: "HANSEN",
+      originalNameOnShirt: "HANSEN",
+
       dateOfBirth: "18/05/2002",
       age: 24,
       shirtNumber: 12,
@@ -462,11 +547,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 85_000,
       isInjured: false,
     },
-    {
+        {
       id: "tyrese-yurvencey-noslin",
-      firstName: "Tyrese Yurvencey",
-      lastName: "NOSLIN",
-      nameOnShirt: "NOSLIN",
+      firstName: "Тиресе",
+      lastName: "Нослин",
+      nameOnShirt: "Нослин",
+      originalFirstName: "Tyrese Yurvencey",
+      originalLastName: "NOSLIN",
+      originalNameOnShirt: "NOSLIN",
+
       dateOfBirth: "11/09/2002",
       age: 23,
       shirtNumber: 13,
@@ -483,11 +572,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 75_000,
       isInjured: false,
     },
-    {
+        {
       id: "kenji-joel-gorre",
-      firstName: "Kenji Joël",
-      lastName: "GORRÉ",
-      nameOnShirt: "GORRÉ",
+      firstName: "Кенйи",
+      lastName: "Хорре",
+      nameOnShirt: "Хорре",
+      originalFirstName: "Kenji Joël",
+      originalLastName: "GORRÉ",
+      originalNameOnShirt: "GORRÉ",
+
       dateOfBirth: "29/09/1994",
       age: 31,
       shirtNumber: 14,
@@ -504,11 +597,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 130_000,
       isInjured: false,
     },
-    {
+        {
       id: "jearl-erwin-margaritha",
-      firstName: "Jearl Erwin",
-      lastName: "MARGARITHA",
-      nameOnShirt: "MARGARITHA",
+      firstName: "Йеарл",
+      lastName: "Мархаритха",
+      nameOnShirt: "Мархаритха",
+      originalFirstName: "Jearl Erwin",
+      originalLastName: "MARGARITHA",
+      originalNameOnShirt: "MARGARITHA",
+
       dateOfBirth: "10/04/2000",
       age: 26,
       shirtNumber: 16,
@@ -525,11 +622,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 155_000,
       isInjured: false,
     },
-    {
+        {
       id: "brandley-mack-olien-kuwas",
-      firstName: "Brandley Mack-Olien",
-      lastName: "KUWAS",
-      nameOnShirt: "KUWAS",
+      firstName: "Брандлеи",
+      lastName: "Кувас",
+      nameOnShirt: "Кувас",
+      originalFirstName: "Brandley Mack-Olien",
+      originalLastName: "KUWAS",
+      originalNameOnShirt: "KUWAS",
+
       dateOfBirth: "19/09/1992",
       age: 33,
       shirtNumber: 17,
@@ -546,11 +647,15 @@ export const curacaoProfile: NationalTeamProfile = {
       salary: 100_000,
       isInjured: false,
     },
-    {
+        {
       id: "gervane-zjandric-adonnis-kastaneer",
-      firstName: "Gervane Zjandric Adonnis",
-      lastName: "KASTANEER",
-      nameOnShirt: "KASTANEER",
+      firstName: "Херване",
+      lastName: "Кастанер",
+      nameOnShirt: "Кастанер",
+      originalFirstName: "Gervane Zjandric Adonnis",
+      originalLastName: "KASTANEER",
+      originalNameOnShirt: "KASTANEER",
+
       dateOfBirth: "09/06/1996",
       age: 30,
       shirtNumber: 19,

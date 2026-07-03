@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import drCongoFlag from '@/data/nationalTeams/worldCup2026/flags/dr-congo.png'
 
 export const drCongoProfile: NationalTeamProfile = {
   id: "dr-congo",
@@ -6,7 +7,7 @@ export const drCongoProfile: NationalTeamProfile = {
   shortName: "COD",
   fifaCode: "COD",
   groupId: "K",
-  flagCode: "CD",
+  flag: drCongoFlag,
   rating: 74,
   attackRating: 74,
   midfieldRating: 73,
@@ -15,11 +16,15 @@ export const drCongoProfile: NationalTeamProfile = {
   secondaryColor: "#F7D618",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "lionel-nzau-mpasi",
-      firstName: "Lionel Nzau",
-      lastName: "MPASI",
-      nameOnShirt: "MPASI",
+      firstName: "Лионель",
+      lastName: "Мпаси",
+      nameOnShirt: "Мпаси",
+      originalFirstName: "Lionel Nzau",
+      originalLastName: "MPASI",
+      originalNameOnShirt: "MPASI",
+
       dateOfBirth: "01/08/1994",
       age: 31,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "timothy-bruce-munzoko-fayulu",
-      firstName: "Timothy Bruce Munzoko",
-      lastName: "FAYULU",
-      nameOnShirt: "FAYULU",
+      firstName: "Тимоти",
+      lastName: "Фаиулу",
+      nameOnShirt: "Фаиулу",
+      originalFirstName: "Timothy Bruce Munzoko",
+      originalLastName: "FAYULU",
+      originalNameOnShirt: "FAYULU",
+
       dateOfBirth: "24/07/1999",
       age: 26,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "matthieu-luka-epolo",
-      firstName: "Matthieu Luka",
-      lastName: "EPOLO",
-      nameOnShirt: "EPOLO",
+      firstName: "Маттиеу",
+      lastName: "Еполо",
+      nameOnShirt: "Еполо",
+      originalFirstName: "Matthieu Luka",
+      originalLastName: "EPOLO",
+      originalNameOnShirt: "EPOLO",
+
       dateOfBirth: "15/01/2005",
       age: 21,
       shirtNumber: 21,
@@ -80,11 +93,15 @@ export const drCongoProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "wan-bissaka",
-      firstName: "Wan",
-      lastName: "BISSAKA",
-      nameOnShirt: "WAN BISSAKA",
+      firstName: "Ван",
+      lastName: "Биссака",
+      nameOnShirt: "Ван Биссака",
+      originalFirstName: "Wan",
+      originalLastName: "BISSAKA",
+      originalNameOnShirt: "WAN BISSAKA",
+
       dateOfBirth: "26/11/1997",
       age: 28,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "steve-nkanu-kapuadi",
-      firstName: "Steve Nkanu",
-      lastName: "KAPUADI",
-      nameOnShirt: "KAPUADI",
+      firstName: "Стеве",
+      lastName: "Капуади",
+      nameOnShirt: "Капуади",
+      originalFirstName: "Steve Nkanu",
+      originalLastName: "KAPUADI",
+      originalNameOnShirt: "KAPUADI",
+
       dateOfBirth: "30/04/1998",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "axel-tuanzebe",
-      firstName: "Axel",
-      lastName: "TUANZEBE",
-      nameOnShirt: "TUANZEBE",
+      firstName: "Аксель",
+      lastName: "Туанзебе",
+      nameOnShirt: "Туанзебе",
+      originalFirstName: "Axel",
+      originalLastName: "TUANZEBE",
+      originalNameOnShirt: "TUANZEBE",
+
       dateOfBirth: "14/11/1997",
       age: 28,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "dylan-buduka-batubinsika",
-      firstName: "Dylan Buduka",
-      lastName: "BATUBINSIKA",
-      nameOnShirt: "BATUBINSIKA",
+      firstName: "Дилан",
+      lastName: "Батубинсика",
+      nameOnShirt: "Батубинсика",
+      originalFirstName: "Dylan Buduka",
+      originalLastName: "BATUBINSIKA",
+      originalNameOnShirt: "BATUBINSIKA",
+
       dateOfBirth: "15/02/1996",
       age: 30,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "joris-kayembe-ditu",
-      firstName: "Joris",
-      lastName: "KAYEMBE-DITU",
-      nameOnShirt: "J. KAYEMBE",
+      firstName: "Жорис",
+      lastName: "Каиембе-Диту",
+      nameOnShirt: "Дж. Каиембе",
+      originalFirstName: "Joris",
+      originalLastName: "KAYEMBE-DITU",
+      originalNameOnShirt: "J. KAYEMBE",
+
       dateOfBirth: "08/08/1994",
       age: 31,
       shirtNumber: 12,
@@ -185,11 +218,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mangulu-chancel-mbemba",
-      firstName: "Mangulu Chancel",
-      lastName: "MBEMBA",
-      nameOnShirt: "MBEMBA",
+      firstName: "Мангулу",
+      lastName: "Мбемба",
+      nameOnShirt: "Мбемба",
+      originalFirstName: "Mangulu Chancel",
+      originalLastName: "MBEMBA",
+      originalNameOnShirt: "MBEMBA",
+
       dateOfBirth: "08/08/1994",
       age: 31,
       shirtNumber: 22,
@@ -206,11 +243,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "gedeon-tchingoma-kyatengwa-kalulu",
-      firstName: "Gédéon Tchingoma Kyatengwa",
-      lastName: "KALULU",
-      nameOnShirt: "KALULU",
+      firstName: "Жедеон",
+      lastName: "Калулу",
+      nameOnShirt: "Калулу",
+      originalFirstName: "Gédéon Tchingoma Kyatengwa",
+      originalLastName: "KALULU",
+      originalNameOnShirt: "KALULU",
+
       dateOfBirth: "29/08/1997",
       age: 28,
       shirtNumber: 24,
@@ -227,11 +268,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "arthur-fuka-masuaku-kawela",
-      firstName: "Arthur Fuka",
-      lastName: "MASUAKU KAWELA",
-      nameOnShirt: "MASUAKU",
+      firstName: "Артур",
+      lastName: "Масуаку Кавела",
+      nameOnShirt: "Масуаку",
+      originalFirstName: "Arthur Fuka",
+      originalLastName: "MASUAKU KAWELA",
+      originalNameOnShirt: "MASUAKU",
+
       dateOfBirth: "07/11/1993",
       age: 32,
       shirtNumber: 26,
@@ -250,11 +295,15 @@ export const drCongoProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "ngalayel-mukau",
-      firstName: "Ngal’ayel",
-      lastName: "MUKAU",
-      nameOnShirt: "MUKAU",
+      firstName: "Нгал'Аиел",
+      lastName: "Мукау",
+      nameOnShirt: "Мукау",
+      originalFirstName: "Ngal’ayel",
+      originalLastName: "MUKAU",
+      originalNameOnShirt: "MUKAU",
+
       dateOfBirth: "03/11/2004",
       age: 21,
       shirtNumber: 6,
@@ -271,11 +320,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathanael-mbuku",
-      firstName: "Nathanaël",
-      lastName: "MBUKU",
-      nameOnShirt: "MBUKU",
+      firstName: "Натанаел",
+      lastName: "Мбуку",
+      nameOnShirt: "Мбуку",
+      originalFirstName: "Nathanaël",
+      originalLastName: "MBUKU",
+      originalNameOnShirt: "MBUKU",
+
       dateOfBirth: "16/03/2002",
       age: 24,
       shirtNumber: 7,
@@ -292,11 +345,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "samuel-alain-moutoussamy",
-      firstName: "Samuel Alain",
-      lastName: "MOUTOUSSAMY",
-      nameOnShirt: "MOUTOUSSAMY",
+      firstName: "Самуел",
+      lastName: "Мутуссами",
+      nameOnShirt: "Мутуссами",
+      originalFirstName: "Samuel Alain",
+      originalLastName: "MOUTOUSSAMY",
+      originalNameOnShirt: "MOUTOUSSAMY",
+
       dateOfBirth: "12/08/1996",
       age: 29,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "theo-mbulofeko-batombo-bongonda",
-      firstName: "Theo Mbulofeko Batombo",
-      lastName: "BONGONDA",
-      nameOnShirt: "BONGONDA",
+      firstName: "Тео",
+      lastName: "Бонгонда",
+      nameOnShirt: "Бонгонда",
+      originalFirstName: "Theo Mbulofeko Batombo",
+      originalLastName: "BONGONDA",
+      originalNameOnShirt: "BONGONDA",
+
       dateOfBirth: "20/11/1995",
       age: 30,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "noah-junior-sadiki",
-      firstName: "Noah Junior",
-      lastName: "SADIKI",
-      nameOnShirt: "SADIKI",
+      firstName: "Ноа",
+      lastName: "Садики",
+      nameOnShirt: "Садики",
+      originalFirstName: "Noah Junior",
+      originalLastName: "SADIKI",
+      originalNameOnShirt: "SADIKI",
+
       dateOfBirth: "17/12/2004",
       age: 21,
       shirtNumber: 14,
@@ -355,11 +420,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "tshibola-aaron",
-      firstName: "Tshibola",
-      lastName: "AARON",
-      nameOnShirt: "TSHIBOLA",
+      firstName: "Тсибола",
+      lastName: "Аарон",
+      nameOnShirt: "Тсибола",
+      originalFirstName: "Tshibola",
+      originalLastName: "AARON",
+      originalNameOnShirt: "TSHIBOLA",
+
       dateOfBirth: "02/01/1995",
       age: 31,
       shirtNumber: 15,
@@ -376,11 +445,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 360_000,
       isInjured: false,
     },
-    {
+        {
       id: "charles-monginda-pickel",
-      firstName: "Charles Monginda",
-      lastName: "PICKEL",
-      nameOnShirt: "PICKEL",
+      firstName: "Шарлес",
+      lastName: "Пиккел",
+      nameOnShirt: "Пиккел",
+      originalFirstName: "Charles Monginda",
+      originalLastName: "PICKEL",
+      originalNameOnShirt: "PICKEL",
+
       dateOfBirth: "15/05/1997",
       age: 29,
       shirtNumber: 18,
@@ -397,11 +470,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "edo-kayembe-kayembe",
-      firstName: "Edo Kayembe",
-      lastName: "KAYEMBE",
-      nameOnShirt: "E. KAYEMBE",
+      firstName: "Едо",
+      lastName: "Каиембе",
+      nameOnShirt: "Е. Каиембе",
+      originalFirstName: "Edo Kayembe",
+      originalLastName: "KAYEMBE",
+      originalNameOnShirt: "E. KAYEMBE",
+
       dateOfBirth: "03/06/1998",
       age: 28,
       shirtNumber: 25,
@@ -420,11 +497,15 @@ export const drCongoProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "kibambe-brian-cipenga",
-      firstName: "Kibambe Brian",
-      lastName: "CIPENGA",
-      nameOnShirt: "CIPENGA",
+      firstName: "Кибамбе",
+      lastName: "Сипенга",
+      nameOnShirt: "Сипенга",
+      originalFirstName: "Kibambe Brian",
+      originalLastName: "CIPENGA",
+      originalNameOnShirt: "CIPENGA",
+
       dateOfBirth: "11/03/1998",
       age: 28,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 405_000,
       isInjured: false,
     },
-    {
+        {
       id: "mambenga-gael-romeo-kakuta",
-      firstName: "Mambenga Gaël Roméo",
-      lastName: "KAKUTA",
-      nameOnShirt: "KAKUTA",
+      firstName: "Мамбенга",
+      lastName: "Какута",
+      nameOnShirt: "Какута",
+      originalFirstName: "Mambenga Gaël Roméo",
+      originalLastName: "KAKUTA",
+      originalNameOnShirt: "KAKUTA",
+
       dateOfBirth: "21/06/1991",
       age: 34,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "meschack-lina-elia",
-      firstName: "Meschack Lina",
-      lastName: "ELIA",
-      nameOnShirt: "MESCHACK",
+      firstName: "Месшакк",
+      lastName: "Елиа",
+      nameOnShirt: "Месшакк",
+      originalFirstName: "Meschack Lina",
+      originalLastName: "ELIA",
+      originalNameOnShirt: "MESCHACK",
+
       dateOfBirth: "06/08/1997",
       age: 28,
       shirtNumber: 13,
@@ -483,11 +572,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "cedric-bakambu",
-      firstName: "Cedric",
-      lastName: "BAKAMBU",
-      nameOnShirt: "BAKAMBU",
+      firstName: "Седрик",
+      lastName: "Бакамбу",
+      nameOnShirt: "Бакамбу",
+      originalFirstName: "Cedric",
+      originalLastName: "BAKAMBU",
+      originalNameOnShirt: "BAKAMBU",
+
       dateOfBirth: "11/04/1991",
       age: 35,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "mayele-fiston-kalala",
-      firstName: "Mayele Fiston",
-      lastName: "KALALA",
-      nameOnShirt: "MAYELE",
+      firstName: "Маиеле",
+      lastName: "Калала",
+      nameOnShirt: "Маиеле",
+      originalFirstName: "Mayele Fiston",
+      originalLastName: "KALALA",
+      originalNameOnShirt: "MAYELE",
+
       dateOfBirth: "24/06/1994",
       age: 31,
       shirtNumber: 19,
@@ -525,11 +622,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "yoane-wissa",
-      firstName: "Yoane",
-      lastName: "WISSA",
-      nameOnShirt: "WISSA",
+      firstName: "Иоане",
+      lastName: "Висса",
+      nameOnShirt: "Висса",
+      originalFirstName: "Yoane",
+      originalLastName: "WISSA",
+      originalNameOnShirt: "WISSA",
+
       dateOfBirth: "03/09/1996",
       age: 29,
       shirtNumber: 20,
@@ -546,11 +647,15 @@ export const drCongoProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "simon-bokote-banza",
-      firstName: "Simon Bokote",
-      lastName: "BANZA",
-      nameOnShirt: "BANZA",
+      firstName: "Симон",
+      lastName: "Банза",
+      nameOnShirt: "Банза",
+      originalFirstName: "Simon Bokote",
+      originalLastName: "BANZA",
+      originalNameOnShirt: "BANZA",
+
       dateOfBirth: "13/08/1996",
       age: 29,
       shirtNumber: 23,

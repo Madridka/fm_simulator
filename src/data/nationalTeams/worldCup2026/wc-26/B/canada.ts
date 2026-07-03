@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import canadaFlag from '@/data/nationalTeams/worldCup2026/flags/canada.png'
 
 export const canadaProfile: NationalTeamProfile = {
   id: "canada",
@@ -6,7 +7,7 @@ export const canadaProfile: NationalTeamProfile = {
   shortName: "CAN",
   fifaCode: "CAN",
   groupId: "B",
-  flagCode: "CA",
+  flag: canadaFlag,
   rating: 76,
   attackRating: 75,
   midfieldRating: 76,
@@ -15,11 +16,15 @@ export const canadaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "dayne-tristan-st-clair",
-      firstName: "Dayne Tristan",
-      lastName: "ST. CLAIR",
-      nameOnShirt: "ST. CLAIR",
+      firstName: "Дейне",
+      lastName: "Ст. Клейр",
+      nameOnShirt: "Ст. Клейр",
+      originalFirstName: "Dayne Tristan",
+      originalLastName: "ST. CLAIR",
+      originalNameOnShirt: "ST. CLAIR",
+
       dateOfBirth: "09/05/1997",
       age: 29,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "maxime-crepeau",
-      firstName: "Maxime",
-      lastName: "CRÉPEAU",
-      nameOnShirt: "CRÉPEAU",
+      firstName: "Максиме",
+      lastName: "Крепиу",
+      nameOnShirt: "Крепиу",
+      originalFirstName: "Maxime",
+      originalLastName: "CRÉPEAU",
+      originalNameOnShirt: "CRÉPEAU",
+
       dateOfBirth: "11/05/1994",
       age: 32,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 455_000,
       isInjured: false,
     },
-    {
+        {
       id: "owen-olamidayo-goodman",
-      firstName: "Owen Olamidayo",
-      lastName: "GOODMAN",
-      nameOnShirt: "GOODMAN",
+      firstName: "Оуен",
+      lastName: "Гудман",
+      nameOnShirt: "Гудман",
+      originalFirstName: "Owen Olamidayo",
+      originalLastName: "GOODMAN",
+      originalNameOnShirt: "GOODMAN",
+
       dateOfBirth: "27/11/2003",
       age: 22,
       shirtNumber: 18,
@@ -80,11 +93,15 @@ export const canadaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "alistair-william-johnston",
-      firstName: "Alistair William",
-      lastName: "JOHNSTON",
-      nameOnShirt: "JOHNSTON",
+      firstName: "Алистейр",
+      lastName: "Джохнстон",
+      nameOnShirt: "Джохнстон",
+      originalFirstName: "Alistair William",
+      originalLastName: "JOHNSTON",
+      originalNameOnShirt: "JOHNSTON",
+
       dateOfBirth: "08/10/1998",
       age: 27,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "ale-charles-jones",
-      firstName: "Ale Charles",
-      lastName: "JONES",
-      nameOnShirt: "JONES",
+      firstName: "Але",
+      lastName: "Джонес",
+      nameOnShirt: "Джонес",
+      originalFirstName: "Ale Charles",
+      originalLastName: "JONES",
+      originalNameOnShirt: "JONES",
+
       dateOfBirth: "07/10/1997",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "luc-rollet-de-fougerolles",
-      firstName: "Luc",
-      lastName: "ROLLET DE FOUGEROLLES",
-      nameOnShirt: "DE FOUGEROLLES",
+      firstName: "Лук",
+      lastName: "Роллет де Фауджероллес",
+      nameOnShirt: "Де Фауджероллес",
+      originalFirstName: "Luc",
+      originalLastName: "ROLLET DE FOUGEROLLES",
+      originalNameOnShirt: "DE FOUGEROLLES",
+
       dateOfBirth: "12/10/2005",
       age: 20,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "joel-robert-waterman",
-      firstName: "Joel Robert",
-      lastName: "WATERMAN",
-      nameOnShirt: "WATERMAN",
+      firstName: "Джоел",
+      lastName: "Уатерман",
+      nameOnShirt: "Уатерман",
+      originalFirstName: "Joel Robert",
+      originalLastName: "WATERMAN",
+      originalNameOnShirt: "WATERMAN",
+
       dateOfBirth: "24/01/1996",
       age: 30,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "derek-austin-cornelius",
-      firstName: "Derek Austin",
-      lastName: "CORNELIUS",
-      nameOnShirt: "CORNELIUS",
+      firstName: "Дерек",
+      lastName: "Корнелиус",
+      nameOnShirt: "Корнелиус",
+      originalFirstName: "Derek Austin",
+      originalLastName: "CORNELIUS",
+      originalNameOnShirt: "CORNELIUS",
+
       dateOfBirth: "25/11/1997",
       age: 28,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "moise-bombito-lumpungu",
-      firstName: "Moïse Bombito",
-      lastName: "LUMPUNGU",
-      nameOnShirt: "BOMBITO",
+      firstName: "Мойсе",
+      lastName: "Лумпунгу",
+      nameOnShirt: "Бомбито",
+      originalFirstName: "Moïse Bombito",
+      originalLastName: "LUMPUNGU",
+      originalNameOnShirt: "BOMBITO",
+
       dateOfBirth: "30/03/2000",
       age: 26,
       shirtNumber: 15,
@@ -206,11 +243,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "alphonso-boyle-davies",
-      firstName: "Alphonso Boyle",
-      lastName: "DAVIES",
-      nameOnShirt: "DAVIES",
+      firstName: "Альфонсо",
+      lastName: "Дэвис",
+      nameOnShirt: "Давиес",
+      originalFirstName: "Alphonso Boyle",
+      originalLastName: "DAVIES",
+      originalNameOnShirt: "DAVIES",
+
       dateOfBirth: "02/11/2000",
       age: 25,
       shirtNumber: 19,
@@ -227,11 +268,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 950_000,
       isInjured: false,
     },
-    {
+        {
       id: "richmond-mamah-laryea",
-      firstName: "Richmond Mamah",
-      lastName: "LARYEA",
-      nameOnShirt: "LARYEA",
+      firstName: "Ричмонд",
+      lastName: "Ларии",
+      nameOnShirt: "Ларии",
+      originalFirstName: "Richmond Mamah",
+      originalLastName: "LARYEA",
+      originalNameOnShirt: "LARYEA",
+
       dateOfBirth: "07/01/1995",
       age: 31,
       shirtNumber: 22,
@@ -248,11 +293,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "niko-kristian-sigur",
-      firstName: "Niko Kristian",
-      lastName: "SIGUR",
-      nameOnShirt: "SIGUR",
+      firstName: "Нико",
+      lastName: "Сигур",
+      nameOnShirt: "Сигур",
+      originalFirstName: "Niko Kristian",
+      originalLastName: "SIGUR",
+      originalNameOnShirt: "SIGUR",
+
       dateOfBirth: "09/09/2003",
       age: 22,
       shirtNumber: 23,
@@ -271,11 +320,15 @@ export const canadaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "mathieu-choiniere",
-      firstName: "Mathieu",
-      lastName: "CHOINIÈRE",
-      nameOnShirt: "CHOINIÈRE",
+      firstName: "Матиеу",
+      lastName: "Чойниере",
+      nameOnShirt: "Чойниере",
+      originalFirstName: "Mathieu",
+      originalLastName: "CHOINIÈRE",
+      originalNameOnShirt: "CHOINIÈRE",
+
       dateOfBirth: "07/02/1999",
       age: 27,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "stephen-eustaquio",
-      firstName: "Stephen",
-      lastName: "EUSTAQUIO",
-      nameOnShirt: "EUSTÁQUIO",
+      firstName: "Стефен",
+      lastName: "Еустаквио",
+      nameOnShirt: "Еустаквио",
+      originalFirstName: "Stephen",
+      originalLastName: "EUSTAQUIO",
+      originalNameOnShirt: "EUSTÁQUIO",
+
       dateOfBirth: "21/12/1996",
       age: 29,
       shirtNumber: 7,
@@ -313,11 +370,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismael-kenneth-jordan-kone",
-      firstName: "Ismaël Kenneth Jordan",
-      lastName: "KONE",
-      nameOnShirt: "KONÉ",
+      firstName: "Исмаел",
+      lastName: "Коне",
+      nameOnShirt: "Коне",
+      originalFirstName: "Ismaël Kenneth Jordan",
+      originalLastName: "KONE",
+      originalNameOnShirt: "KONÉ",
+
       dateOfBirth: "16/06/2002",
       age: 23,
       shirtNumber: 8,
@@ -334,11 +395,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "liam-alan-millar",
-      firstName: "Liam Alan",
-      lastName: "MILLAR",
-      nameOnShirt: "MILLAR",
+      firstName: "Лиам",
+      lastName: "Миллар",
+      nameOnShirt: "Миллар",
+      originalFirstName: "Liam Alan",
+      originalLastName: "MILLAR",
+      originalNameOnShirt: "MILLAR",
+
       dateOfBirth: "27/09/1999",
       age: 26,
       shirtNumber: 11,
@@ -355,11 +420,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "jacob-everett-shaffelburg",
-      firstName: "Jacob Everett",
-      lastName: "SHAFFELBURG",
-      nameOnShirt: "SHAFFELBURG",
+      firstName: "Джакоб",
+      lastName: "Шаффелбург",
+      nameOnShirt: "Шаффелбург",
+      originalFirstName: "Jacob Everett",
+      originalLastName: "SHAFFELBURG",
+      originalNameOnShirt: "SHAFFELBURG",
+
       dateOfBirth: "26/11/1999",
       age: 26,
       shirtNumber: 14,
@@ -376,11 +445,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "jonathan-osorio",
-      firstName: "Jonathan",
-      lastName: "OSORIO",
-      nameOnShirt: "OSORIO",
+      firstName: "Джонатан",
+      lastName: "Осорио",
+      nameOnShirt: "Осорио",
+      originalFirstName: "Jonathan",
+      originalLastName: "OSORIO",
+      originalNameOnShirt: "OSORIO",
+
       dateOfBirth: "12/06/1992",
       age: 33,
       shirtNumber: 21,
@@ -397,11 +470,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "nathan-dylan-saliba",
-      firstName: "Nathan-Dylan",
-      lastName: "SALIBA",
-      nameOnShirt: "SALIBA",
+      firstName: "Натан-Дилан",
+      lastName: "Салиба",
+      nameOnShirt: "Салиба",
+      originalFirstName: "Nathan-Dylan",
+      originalLastName: "SALIBA",
+      originalNameOnShirt: "SALIBA",
+
       dateOfBirth: "07/02/2004",
       age: 22,
       shirtNumber: 25,
@@ -420,11 +497,15 @@ export const canadaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "cyle-christopher-larin",
-      firstName: "Cyle Christopher",
-      lastName: "LARIN",
-      nameOnShirt: "LARIN",
+      firstName: "Киле",
+      lastName: "Ларин",
+      nameOnShirt: "Ларин",
+      originalFirstName: "Cyle Christopher",
+      originalLastName: "LARIN",
+      originalNameOnShirt: "LARIN",
+
       dateOfBirth: "17/04/1995",
       age: 31,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "jonathan-christian-david",
-      firstName: "Jonathan Christian",
-      lastName: "DAVID",
-      nameOnShirt: "J. DAVID",
+      firstName: "Джонатан",
+      lastName: "Давид",
+      nameOnShirt: "Дж. Давид",
+      originalFirstName: "Jonathan Christian",
+      originalLastName: "DAVID",
+      originalNameOnShirt: "J. DAVID",
+
       dateOfBirth: "14/01/2000",
       age: 26,
       shirtNumber: 10,
@@ -462,11 +547,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 805_000,
       isInjured: false,
     },
-    {
+        {
       id: "tanitoluwa-oluwatimilehin-oluwaseyi",
-      firstName: "Tanitoluwa Oluwatimilehin",
-      lastName: "OLUWASEYI",
-      nameOnShirt: "OLUWASEYI",
+      firstName: "Танитолууа",
+      lastName: "Олууасеии",
+      nameOnShirt: "Олууасеии",
+      originalFirstName: "Tanitoluwa Oluwatimilehin",
+      originalLastName: "OLUWASEYI",
+      originalNameOnShirt: "OLUWASEYI",
+
       dateOfBirth: "15/05/2000",
       age: 26,
       shirtNumber: 12,
@@ -483,11 +572,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "tajon-trevor-buchanan",
-      firstName: "Tajon Trevor",
-      lastName: "BUCHANAN",
-      nameOnShirt: "BUCHANAN",
+      firstName: "Таджон",
+      lastName: "Бучанан",
+      nameOnShirt: "Бучанан",
+      originalFirstName: "Tajon Trevor",
+      originalLastName: "BUCHANAN",
+      originalNameOnShirt: "BUCHANAN",
+
       dateOfBirth: "08/02/1999",
       age: 27,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "ali-ahmed",
-      firstName: "Ali",
-      lastName: "AHMED",
-      nameOnShirt: "AHMED",
+      firstName: "Али",
+      lastName: "Ахмед",
+      nameOnShirt: "Ахмед",
+      originalFirstName: "Ali",
+      originalLastName: "AHMED",
+      originalNameOnShirt: "AHMED",
+
       dateOfBirth: "10/10/2000",
       age: 25,
       shirtNumber: 20,
@@ -525,11 +622,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "promise-oluwatobi-emmanuel-david",
-      firstName: "Promise Oluwatobi Emmanuel",
-      lastName: "DAVID",
-      nameOnShirt: "PROMISE",
+      firstName: "Промисе",
+      lastName: "Давид",
+      nameOnShirt: "Промисе",
+      originalFirstName: "Promise Oluwatobi Emmanuel",
+      originalLastName: "DAVID",
+      originalNameOnShirt: "PROMISE",
+
       dateOfBirth: "03/07/2001",
       age: 24,
       shirtNumber: 24,
@@ -546,11 +647,15 @@ export const canadaProfile: NationalTeamProfile = {
       salary: 465_000,
       isInjured: false,
     },
-    {
+        {
       id: "jayden-nelson",
-      firstName: "Jayden",
-      lastName: "NELSON",
-      nameOnShirt: "NELSON",
+      firstName: "Джейден",
+      lastName: "Нелсон",
+      nameOnShirt: "Нелсон",
+      originalFirstName: "Jayden",
+      originalLastName: "NELSON",
+      originalNameOnShirt: "NELSON",
+
       dateOfBirth: "26/09/2002",
       age: 23,
       shirtNumber: 26,

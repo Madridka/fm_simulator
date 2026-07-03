@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import portugalFlag from '@/data/nationalTeams/worldCup2026/flags/portugal.png'
 
 export const portugalProfile: NationalTeamProfile = {
   id: "portugal",
@@ -6,7 +7,7 @@ export const portugalProfile: NationalTeamProfile = {
   shortName: "POR",
   fifaCode: "POR",
   groupId: "K",
-  flagCode: "PT",
+  flag: portugalFlag,
   rating: 87,
   attackRating: 87,
   midfieldRating: 86,
@@ -15,11 +16,15 @@ export const portugalProfile: NationalTeamProfile = {
   secondaryColor: "#FF0000",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "diogo-meireles-da-costa",
-      firstName: "Diogo",
-      lastName: "MEIRELES DA COSTA",
-      nameOnShirt: "DIOGO COSTA",
+      firstName: "Диогу",
+      lastName: "Мейрелес да Коста",
+      nameOnShirt: "Диогу Коста",
+      originalFirstName: "Diogo",
+      originalLastName: "MEIRELES DA COSTA",
+      originalNameOnShirt: "DIOGO COSTA",
+
       dateOfBirth: "19/09/1999",
       age: 26,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-pedro-malheiro-de-sa",
-      firstName: "José Pedro",
-      lastName: "MALHEIRO DE SÁ",
-      nameOnShirt: "JOSÉ SÁ",
+      firstName: "Хосе",
+      lastName: "Мальейро де Са",
+      nameOnShirt: "Хосе Са",
+      originalFirstName: "José Pedro",
+      originalLastName: "MALHEIRO DE SÁ",
+      originalNameOnShirt: "JOSÉ SÁ",
+
       dateOfBirth: "17/01/1993",
       age: 33,
       shirtNumber: 12,
@@ -57,11 +66,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 920_000,
       isInjured: false,
     },
-    {
+        {
       id: "rui-tiago-dantas-da-silva",
-      firstName: "Rui Tiago",
-      lastName: "DANTAS DA SILVA",
-      nameOnShirt: "RUI SILVA",
+      firstName: "Руи",
+      lastName: "Дантас да Силва",
+      nameOnShirt: "Руи Силва",
+      originalFirstName: "Rui Tiago",
+      originalLastName: "DANTAS DA SILVA",
+      originalNameOnShirt: "RUI SILVA",
+
       dateOfBirth: "07/02/1994",
       age: 32,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const portugalProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "nelson-cabral-semedo",
-      firstName: "Nélson",
-      lastName: "CABRAL SEMEDO",
-      nameOnShirt: "N. SEMEDO",
+      firstName: "Нелсон",
+      lastName: "Кабрал Семедо",
+      nameOnShirt: "Н. Семедо",
+      originalFirstName: "Nélson",
+      originalLastName: "CABRAL SEMEDO",
+      originalNameOnShirt: "N. SEMEDO",
+
       dateOfBirth: "16/11/1993",
       age: 32,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_145_000,
       isInjured: false,
     },
-    {
+        {
       id: "ruben-dos-santos-gato-alves-dias",
-      firstName: "Rúben",
-      lastName: "DOS SANTOS GATO ALVES DIAS",
-      nameOnShirt: "RÚBEN DIAS",
+      firstName: "Рубен",
+      lastName: "Дос Сантос Гато Алвес Диас",
+      nameOnShirt: "Рубен Диас",
+      originalFirstName: "Rúben",
+      originalLastName: "DOS SANTOS GATO ALVES DIAS",
+      originalNameOnShirt: "RÚBEN DIAS",
+
       dateOfBirth: "14/05/1997",
       age: 29,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_845_000,
       isInjured: false,
     },
-    {
+        {
       id: "tomas-lemos-araujo",
-      firstName: "Tomás",
-      lastName: "LEMOS ARAÚJO",
-      nameOnShirt: "TOMÁS A.",
+      firstName: "Томаш",
+      lastName: "Лемос Араужо",
+      nameOnShirt: "Томаш А.",
+      originalFirstName: "Tomás",
+      originalLastName: "LEMOS ARAÚJO",
+      originalNameOnShirt: "TOMÁS A.",
+
       dateOfBirth: "16/05/2002",
       age: 24,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_250_000,
       isInjured: false,
     },
-    {
+        {
       id: "jose-diogo-dalot-teixeira",
-      firstName: "José Diogo",
-      lastName: "DALOT TEIXEIRA",
-      nameOnShirt: "DALOT",
+      firstName: "Хосе",
+      lastName: "Далот Тейшейра",
+      nameOnShirt: "Далот",
+      originalFirstName: "José Diogo",
+      originalLastName: "DALOT TEIXEIRA",
+      originalNameOnShirt: "DALOT",
+
       dateOfBirth: "18/03/1999",
       age: 27,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "renato-da-palma-veiga",
-      firstName: "Renato",
-      lastName: "DA PALMA VEIGA",
-      nameOnShirt: "RENATO VEIGA",
+      firstName: "Ренато",
+      lastName: "Да Палма Вейга",
+      nameOnShirt: "Ренато Вейга",
+      originalFirstName: "Renato",
+      originalLastName: "DA PALMA VEIGA",
+      originalNameOnShirt: "RENATO VEIGA",
+
       dateOfBirth: "29/07/2003",
       age: 22,
       shirtNumber: 13,
@@ -185,11 +218,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "goncalo-bernardo-inacio",
-      firstName: "Gonçalo",
-      lastName: "BERNARDO INÁCIO",
-      nameOnShirt: "G. INÁCIO",
+      firstName: "Гонсалу",
+      lastName: "Бернарду Инасио",
+      nameOnShirt: "Г. Инасио",
+      originalFirstName: "Gonçalo",
+      originalLastName: "BERNARDO INÁCIO",
+      originalNameOnShirt: "G. INÁCIO",
+
       dateOfBirth: "25/08/2001",
       age: 24,
       shirtNumber: 14,
@@ -206,11 +243,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_335_000,
       isInjured: false,
     },
-    {
+        {
       id: "joao-pedro-cavaco-cancelo",
-      firstName: "João Pedro",
-      lastName: "CAVACO CANCELO",
-      nameOnShirt: "JOÃO CANCELO",
+      firstName: "Жоау",
+      lastName: "Кавако Кансело",
+      nameOnShirt: "Жоау Кансело",
+      originalFirstName: "João Pedro",
+      originalLastName: "CAVACO CANCELO",
+      originalNameOnShirt: "JOÃO CANCELO",
+
       dateOfBirth: "27/05/1994",
       age: 32,
       shirtNumber: 20,
@@ -227,11 +268,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_480_000,
       isInjured: false,
     },
-    {
+        {
       id: "samuel-de-almeida-costa",
-      firstName: "Samuel",
-      lastName: "DE ALMEIDA COSTA",
-      nameOnShirt: "SAMU",
+      firstName: "Самуел",
+      lastName: "Де Алмейда Коста",
+      nameOnShirt: "Саму",
+      originalFirstName: "Samuel",
+      originalLastName: "DE ALMEIDA COSTA",
+      originalNameOnShirt: "SAMU",
+
       dateOfBirth: "27/11/2000",
       age: 25,
       shirtNumber: 24,
@@ -248,11 +293,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "nuno-alexandre-tavares-mendes",
-      firstName: "Nuno Alexandre",
-      lastName: "TAVARES MENDES",
-      nameOnShirt: "N. MENDES",
+      firstName: "Нуно",
+      lastName: "Таварес Мендес",
+      nameOnShirt: "Н. Мендес",
+      originalFirstName: "Nuno Alexandre",
+      originalLastName: "TAVARES MENDES",
+      originalNameOnShirt: "N. MENDES",
+
       dateOfBirth: "19/06/2002",
       age: 23,
       shirtNumber: 25,
@@ -271,11 +320,15 @@ export const portugalProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "matheus-luiz-nunes",
-      firstName: "Matheus Luiz",
-      lastName: "NUNES",
-      nameOnShirt: "MATHEUS N.",
+      firstName: "Матхеус",
+      lastName: "Нунес",
+      nameOnShirt: "Матхеус Н.",
+      originalFirstName: "Matheus Luiz",
+      originalLastName: "NUNES",
+      originalNameOnShirt: "MATHEUS N.",
+
       dateOfBirth: "27/08/1998",
       age: 27,
       shirtNumber: 6,
@@ -292,11 +345,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "bruno-miguel-borges-fernandes",
-      firstName: "Bruno Miguel",
-      lastName: "BORGES FERNANDES",
-      nameOnShirt: "B. FERNANDES",
+      firstName: "Бруну",
+      lastName: "Фернандеш",
+      nameOnShirt: "Б. Фернандес",
+      originalFirstName: "Bruno Miguel",
+      originalLastName: "BORGES FERNANDES",
+      originalNameOnShirt: "B. FERNANDES",
+
       dateOfBirth: "08/09/1994",
       age: 31,
       shirtNumber: 8,
@@ -313,11 +370,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_545_000,
       isInjured: false,
     },
-    {
+        {
       id: "bernardo-mota-veiga-de-carvalho-e-silva",
-      firstName: "Bernardo",
-      lastName: "MOTA VEIGA DE CARVALHO E SILVA",
-      nameOnShirt: "BERNARDO",
+      firstName: "Бернарду",
+      lastName: "Силва",
+      nameOnShirt: "Бернарду",
+      originalFirstName: "Bernardo",
+      originalLastName: "MOTA VEIGA DE CARVALHO E SILVA",
+      originalNameOnShirt: "BERNARDO",
+
       dateOfBirth: "10/08/1994",
       age: 31,
       shirtNumber: 10,
@@ -334,11 +395,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "joao-pedro-goncalves-neves",
-      firstName: "João Pedro",
-      lastName: "GONÇALVES NEVES",
-      nameOnShirt: "JOÃO NEVES",
+      firstName: "Жоау",
+      lastName: "Гонсалвес Невес",
+      nameOnShirt: "Жоау Невес",
+      originalFirstName: "João Pedro",
+      originalLastName: "GONÇALVES NEVES",
+      originalNameOnShirt: "JOÃO NEVES",
+
       dateOfBirth: "27/09/2004",
       age: 21,
       shirtNumber: 15,
@@ -355,11 +420,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_265_000,
       isInjured: false,
     },
-    {
+        {
       id: "ruben-diogo-da-silva-neves",
-      firstName: "Rúben Diogo",
-      lastName: "DA SILVA NEVES",
-      nameOnShirt: "R. NEVES",
+      firstName: "Рубен",
+      lastName: "Да Силва Невес",
+      nameOnShirt: "Р. Невес",
+      originalFirstName: "Rúben Diogo",
+      originalLastName: "DA SILVA NEVES",
+      originalNameOnShirt: "R. NEVES",
+
       dateOfBirth: "13/03/1997",
       age: 29,
       shirtNumber: 21,
@@ -376,11 +445,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_360_000,
       isInjured: false,
     },
-    {
+        {
       id: "vitor-machado-ferreira",
-      firstName: "Vitor",
-      lastName: "MACHADO FERREIRA",
-      nameOnShirt: "VITINHA",
+      firstName: "Витор",
+      lastName: "Машадо Фехейра",
+      nameOnShirt: "Витиньа",
+      originalFirstName: "Vitor",
+      originalLastName: "MACHADO FERREIRA",
+      originalNameOnShirt: "VITINHA",
+
       dateOfBirth: "13/02/2000",
       age: 26,
       shirtNumber: 23,
@@ -399,11 +472,15 @@ export const portugalProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "cristiano-ronaldo-dos-santos-aveiro",
-      firstName: "Cristiano Ronaldo",
-      lastName: "DOS SANTOS AVEIRO",
-      nameOnShirt: "RONALDO",
+      firstName: "Криштиану",
+      lastName: "Роналду",
+      nameOnShirt: "Роналду",
+      originalFirstName: "Cristiano Ronaldo",
+      originalLastName: "DOS SANTOS AVEIRO",
+      originalNameOnShirt: "RONALDO",
+
       dateOfBirth: "05/02/1985",
       age: 41,
       shirtNumber: 7,
@@ -420,11 +497,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_390_000,
       isInjured: false,
     },
-    {
+        {
       id: "goncalo-matias-ramos",
-      firstName: "Gonçalo",
-      lastName: "MATIAS RAMOS",
-      nameOnShirt: "G. RAMOS",
+      firstName: "Гонсалу",
+      lastName: "Матиас Рамос",
+      nameOnShirt: "Г. Рамос",
+      originalFirstName: "Gonçalo",
+      originalLastName: "MATIAS RAMOS",
+      originalNameOnShirt: "G. RAMOS",
+
       dateOfBirth: "20/06/2001",
       age: 24,
       shirtNumber: 9,
@@ -441,11 +522,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_700_000,
       isInjured: false,
     },
-    {
+        {
       id: "joao-felix-sequeira",
-      firstName: "João",
-      lastName: "FÉLIX SEQUEIRA",
-      nameOnShirt: "JOÃO FÉLIX",
+      firstName: "Жоау",
+      lastName: "Фелиш Секуейра",
+      nameOnShirt: "Жоау Фелиш",
+      originalFirstName: "João",
+      originalLastName: "FÉLIX SEQUEIRA",
+      originalNameOnShirt: "JOÃO FÉLIX",
+
       dateOfBirth: "10/11/1999",
       age: 26,
       shirtNumber: 11,
@@ -462,11 +547,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_270_000,
       isInjured: false,
     },
-    {
+        {
       id: "francisco-antonio-machado-mota-de-castro-trincao",
-      firstName: "Francisco António",
-      lastName: "MACHADO MOTA DE CASTRO TRINCÃO",
-      nameOnShirt: "TRINCÃO",
+      firstName: "Франсиско",
+      lastName: "Машадо Мота де Кастро Тринкау",
+      nameOnShirt: "Тринкау",
+      originalFirstName: "Francisco António",
+      originalLastName: "MACHADO MOTA DE CASTRO TRINCÃO",
+      originalNameOnShirt: "TRINCÃO",
+
       dateOfBirth: "29/12/1999",
       age: 26,
       shirtNumber: 16,
@@ -483,11 +572,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_185_000,
       isInjured: false,
     },
-    {
+        {
       id: "rafael-alexandre-da-conceicao-leao",
-      firstName: "Rafael Alexandre",
-      lastName: "DA CONCEIÇÃO LEÃO",
-      nameOnShirt: "RAFA LEÃO",
+      firstName: "Рафаэл",
+      lastName: "Да Конкейсау Леау",
+      nameOnShirt: "Рафа Леау",
+      originalFirstName: "Rafael Alexandre",
+      originalLastName: "DA CONCEIÇÃO LEÃO",
+      originalNameOnShirt: "RAFA LEÃO",
+
       dateOfBirth: "10/06/1999",
       age: 27,
       shirtNumber: 17,
@@ -504,11 +597,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_745_000,
       isInjured: false,
     },
-    {
+        {
       id: "pedro-lomba-neto",
-      firstName: "Pedro",
-      lastName: "LOMBA NETO",
-      nameOnShirt: "NETO",
+      firstName: "Педру",
+      lastName: "Ломба Нету",
+      nameOnShirt: "Нету",
+      originalFirstName: "Pedro",
+      originalLastName: "LOMBA NETO",
+      originalNameOnShirt: "NETO",
+
       dateOfBirth: "09/03/2000",
       age: 26,
       shirtNumber: 18,
@@ -525,11 +622,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_640_000,
       isInjured: false,
     },
-    {
+        {
       id: "goncalo-manuel-ganchinho-guedes",
-      firstName: "Gonçalo Manuel",
-      lastName: "GANCHINHO GUEDES",
-      nameOnShirt: "G. GUEDES",
+      firstName: "Гонсалу",
+      lastName: "Ганшиньо Гуедес",
+      nameOnShirt: "Г. Гуедес",
+      originalFirstName: "Gonçalo Manuel",
+      originalLastName: "GANCHINHO GUEDES",
+      originalNameOnShirt: "G. GUEDES",
+
       dateOfBirth: "29/11/1996",
       age: 29,
       shirtNumber: 19,
@@ -546,11 +647,15 @@ export const portugalProfile: NationalTeamProfile = {
       salary: 1_450_000,
       isInjured: false,
     },
-    {
+        {
       id: "francisco-fernandes-da-conceicao",
-      firstName: "Francisco",
-      lastName: "FERNANDES DA CONCEIÇÃO",
-      nameOnShirt: "F. CONCEIÇÃO",
+      firstName: "Франсиско",
+      lastName: "Фернандес да Конкейсау",
+      nameOnShirt: "Ф. Конкейсау",
+      originalFirstName: "Francisco",
+      originalLastName: "FERNANDES DA CONCEIÇÃO",
+      originalNameOnShirt: "F. CONCEIÇÃO",
+
       dateOfBirth: "14/12/2002",
       age: 23,
       shirtNumber: 26,

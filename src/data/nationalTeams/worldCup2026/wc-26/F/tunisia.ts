@@ -1,4 +1,5 @@
 import type { NationalTeamProfile } from '@/data/nationalTeams/worldCup2026/types'
+import tunisiaFlag from '@/data/nationalTeams/worldCup2026/flags/tunisia.png'
 
 export const tunisiaProfile: NationalTeamProfile = {
   id: "tunisia",
@@ -6,7 +7,7 @@ export const tunisiaProfile: NationalTeamProfile = {
   shortName: "TUN",
   fifaCode: "TUN",
   groupId: "F",
-  flagCode: "TN",
+  flag: tunisiaFlag,
   rating: 74,
   attackRating: 73,
   midfieldRating: 74,
@@ -15,11 +16,15 @@ export const tunisiaProfile: NationalTeamProfile = {
   secondaryColor: "#FFFFFF",
   squad: [
     // Goalkeepers
-    {
+        {
       id: "abdelmouhib-chamakh",
-      firstName: "Abdelmouhib",
-      lastName: "CHAMAKH",
-      nameOnShirt: "CHAMAKH",
+      firstName: "Абделмухиб",
+      lastName: "Чамах",
+      nameOnShirt: "Чамах",
+      originalFirstName: "Abdelmouhib",
+      originalLastName: "CHAMAKH",
+      originalNameOnShirt: "CHAMAKH",
+
       dateOfBirth: "25/08/2001",
       age: 24,
       shirtNumber: 1,
@@ -36,11 +41,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "aymen-dahmen",
-      firstName: "Aymen",
-      lastName: "DAHMEN",
-      nameOnShirt: "DAHMEN",
+      firstName: "Аймен",
+      lastName: "Дахмен",
+      nameOnShirt: "Дахмен",
+      originalFirstName: "Aymen",
+      originalLastName: "DAHMEN",
+      originalNameOnShirt: "DAHMEN",
+
       dateOfBirth: "28/01/1997",
       age: 29,
       shirtNumber: 16,
@@ -57,11 +66,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "sabri-ben-hsan",
-      firstName: "Sabri",
-      lastName: "BEN HSAN",
-      nameOnShirt: "BEN HESSEN",
+      firstName: "Сабри",
+      lastName: "Бен Хсан",
+      nameOnShirt: "Бен Хессен",
+      originalFirstName: "Sabri",
+      originalLastName: "BEN HSAN",
+      originalNameOnShirt: "BEN HESSEN",
+
       dateOfBirth: "13/06/1996",
       age: 29,
       shirtNumber: 22,
@@ -80,11 +93,15 @@ export const tunisiaProfile: NationalTeamProfile = {
     },
 
     // Defenders
-    {
+        {
       id: "ali-elabdi",
-      firstName: "Ali",
-      lastName: "ELABDI",
-      nameOnShirt: "ABDI",
+      firstName: "Али",
+      lastName: "Елабди",
+      nameOnShirt: "Абди",
+      originalFirstName: "Ali",
+      originalLastName: "ELABDI",
+      originalNameOnShirt: "ABDI",
+
       dateOfBirth: "20/12/1993",
       age: 32,
       shirtNumber: 2,
@@ -101,11 +118,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 610_000,
       isInjured: false,
     },
-    {
+        {
       id: "montassar-omar-talbi",
-      firstName: "Montassar Omar",
-      lastName: "TALBI",
-      nameOnShirt: "TALBI",
+      firstName: "Монтассар",
+      lastName: "Талби",
+      nameOnShirt: "Талби",
+      originalFirstName: "Montassar Omar",
+      originalLastName: "TALBI",
+      originalNameOnShirt: "TALBI",
+
       dateOfBirth: "26/05/1998",
       age: 28,
       shirtNumber: 3,
@@ -122,11 +143,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 740_000,
       isInjured: false,
     },
-    {
+        {
       id: "omar-rekik",
-      firstName: "Omar",
-      lastName: "REKIK",
-      nameOnShirt: "REKIK",
+      firstName: "Омар",
+      lastName: "Рекик",
+      nameOnShirt: "Рекик",
+      originalFirstName: "Omar",
+      originalLastName: "REKIK",
+      originalNameOnShirt: "REKIK",
+
       dateOfBirth: "20/12/2001",
       age: 24,
       shirtNumber: 4,
@@ -143,11 +168,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "adam-arous",
-      firstName: "Adam",
-      lastName: "AROUS",
-      nameOnShirt: "AROUS",
+      firstName: "Адам",
+      lastName: "Арус",
+      nameOnShirt: "Арус",
+      originalFirstName: "Adam",
+      originalLastName: "AROUS",
+      originalNameOnShirt: "AROUS",
+
       dateOfBirth: "17/07/2004",
       age: 21,
       shirtNumber: 5,
@@ -164,11 +193,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 330_000,
       isInjured: false,
     },
-    {
+        {
       id: "dylan-daniel-mahmoud-bronn",
-      firstName: "Dylan Daniel Mahmoud",
-      lastName: "BRONN",
-      nameOnShirt: "BRONN",
+      firstName: "Дйлан",
+      lastName: "Бронн",
+      nameOnShirt: "Бронн",
+      originalFirstName: "Dylan Daniel Mahmoud",
+      originalLastName: "BRONN",
+      originalNameOnShirt: "BRONN",
+
       dateOfBirth: "19/06/1995",
       age: 30,
       shirtNumber: 6,
@@ -185,11 +218,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "ahmed-mortadha-ben-ouanes",
-      firstName: "Ahmed Mortadha",
-      lastName: "BEN OUANES",
-      nameOnShirt: "BEN OUANES",
+      firstName: "Ахмед",
+      lastName: "Бен Уанес",
+      nameOnShirt: "Бен Уанес",
+      originalFirstName: "Ahmed Mortadha",
+      originalLastName: "BEN OUANES",
+      originalNameOnShirt: "BEN OUANES",
+
       dateOfBirth: "02/07/1994",
       age: 31,
       shirtNumber: 12,
@@ -206,11 +243,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "yan-valery",
-      firstName: "Yan",
-      lastName: "VALERY",
-      nameOnShirt: "VALERY",
+      firstName: "Йан",
+      lastName: "Валерй",
+      nameOnShirt: "Валерй",
+      originalFirstName: "Yan",
+      originalLastName: "VALERY",
+      originalNameOnShirt: "VALERY",
+
       dateOfBirth: "22/02/1999",
       age: 27,
       shirtNumber: 20,
@@ -227,11 +268,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-amine-ben-hmida",
-      firstName: "Mohamed Amine",
-      lastName: "BEN HMIDA",
-      nameOnShirt: "BEN HMIDA",
+      firstName: "Мохамед",
+      lastName: "Бен Хмида",
+      nameOnShirt: "Бен Хмида",
+      originalFirstName: "Mohamed Amine",
+      originalLastName: "BEN HMIDA",
+      originalNameOnShirt: "BEN HMIDA",
+
       dateOfBirth: "15/12/1995",
       age: 30,
       shirtNumber: 21,
@@ -248,11 +293,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "moutaz-neffati",
-      firstName: "Moutaz",
-      lastName: "NEFFATI",
-      nameOnShirt: "NEFFATI",
+      firstName: "Мутаз",
+      lastName: "Неффати",
+      nameOnShirt: "Неффати",
+      originalFirstName: "Moutaz",
+      originalLastName: "NEFFATI",
+      originalNameOnShirt: "NEFFATI",
+
       dateOfBirth: "04/09/2004",
       age: 21,
       shirtNumber: 23,
@@ -269,11 +318,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "raed-chikhaoui",
-      firstName: "Raed",
-      lastName: "CHIKHAOUI",
-      nameOnShirt: "CHIKHAOUI",
+      firstName: "Раед",
+      lastName: "Чихауи",
+      nameOnShirt: "Чихауи",
+      originalFirstName: "Raed",
+      originalLastName: "CHIKHAOUI",
+      originalNameOnShirt: "CHIKHAOUI",
+
       dateOfBirth: "09/06/2004",
       age: 22,
       shirtNumber: 24,
@@ -292,11 +345,15 @@ export const tunisiaProfile: NationalTeamProfile = {
     },
 
     // Midfielders
-    {
+        {
       id: "hannibal-mejbri",
-      firstName: "Hannibal",
-      lastName: "MEJBRI",
-      nameOnShirt: "HANNIBAL",
+      firstName: "Ханнибал",
+      lastName: "Меджбри",
+      nameOnShirt: "Ханнибал",
+      originalFirstName: "Hannibal",
+      originalLastName: "MEJBRI",
+      originalNameOnShirt: "HANNIBAL",
+
       dateOfBirth: "21/01/2003",
       age: 23,
       shirtNumber: 10,
@@ -313,11 +370,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 565_000,
       isInjured: false,
     },
-    {
+        {
       id: "ismael-seifallah-gharbi",
-      firstName: "Ismael Seifallah",
-      lastName: "GHARBI",
-      nameOnShirt: "GHARBI",
+      firstName: "Исмаел",
+      lastName: "Гарби",
+      nameOnShirt: "Гарби",
+      originalFirstName: "Ismael Seifallah",
+      originalLastName: "GHARBI",
+      originalNameOnShirt: "GHARBI",
+
       dateOfBirth: "10/04/2004",
       age: 22,
       shirtNumber: 11,
@@ -334,11 +395,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 515_000,
       isInjured: false,
     },
-    {
+        {
       id: "rani-khedira",
-      firstName: "Rani",
-      lastName: "KHEDIRA",
-      nameOnShirt: "KHEDIRA",
+      firstName: "Рани",
+      lastName: "Хедира",
+      nameOnShirt: "Хедира",
+      originalFirstName: "Rani",
+      originalLastName: "KHEDIRA",
+      originalNameOnShirt: "KHEDIRA",
+
       dateOfBirth: "27/01/1994",
       age: 32,
       shirtNumber: 13,
@@ -355,11 +420,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 365_000,
       isInjured: false,
     },
-    {
+        {
       id: "khalil-ayari",
-      firstName: "Khalil",
-      lastName: "AYARI",
-      nameOnShirt: "AYARI",
+      firstName: "Халил",
+      lastName: "Айари",
+      nameOnShirt: "Айари",
+      originalFirstName: "Khalil",
+      originalLastName: "AYARI",
+      originalNameOnShirt: "AYARI",
+
       dateOfBirth: "02/02/2005",
       age: 21,
       shirtNumber: 14,
@@ -376,11 +445,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 410_000,
       isInjured: false,
     },
-    {
+        {
       id: "mohamed-belhadj-mahmoud",
-      firstName: "Mohamed",
-      lastName: "BELHADJ MAHMOUD",
-      nameOnShirt: "HADJ MAHMOUD",
+      firstName: "Мохамед",
+      lastName: "Белхадж Махмуд",
+      nameOnShirt: "Хадж Махмуд",
+      originalFirstName: "Mohamed",
+      originalLastName: "BELHADJ MAHMOUD",
+      originalNameOnShirt: "HADJ MAHMOUD",
+
       dateOfBirth: "24/04/2000",
       age: 26,
       shirtNumber: 15,
@@ -397,11 +470,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 450_000,
       isInjured: false,
     },
-    {
+        {
       id: "ellyes-joris-skhiri",
-      firstName: "Ellyes Joris",
-      lastName: "SKHIRI",
-      nameOnShirt: "SKHIRI",
+      firstName: "Еллйес",
+      lastName: "Схири",
+      nameOnShirt: "Схири",
+      originalFirstName: "Ellyes Joris",
+      originalLastName: "SKHIRI",
+      originalNameOnShirt: "SKHIRI",
+
       dateOfBirth: "10/05/1995",
       age: 31,
       shirtNumber: 17,
@@ -418,11 +495,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "anis-ben-slimane",
-      firstName: "Anis",
-      lastName: "BEN SLIMANE",
-      nameOnShirt: "SLIMANE",
+      firstName: "Анис",
+      lastName: "Бен Слимане",
+      nameOnShirt: "Слимане",
+      originalFirstName: "Anis",
+      originalLastName: "BEN SLIMANE",
+      originalNameOnShirt: "SLIMANE",
+
       dateOfBirth: "16/03/2001",
       age: 25,
       shirtNumber: 25,
@@ -439,11 +520,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 675_000,
       isInjured: false,
     },
-    {
+        {
       id: "sebastian-tounekti",
-      firstName: "Sebastian",
-      lastName: "TOUNEKTI",
-      nameOnShirt: "TOUNEKTI",
+      firstName: "Себастиан",
+      lastName: "Тунекти",
+      nameOnShirt: "Тунекти",
+      originalFirstName: "Sebastian",
+      originalLastName: "TOUNEKTI",
+      originalNameOnShirt: "TOUNEKTI",
+
       dateOfBirth: "13/07/2002",
       age: 23,
       shirtNumber: 26,
@@ -462,11 +547,15 @@ export const tunisiaProfile: NationalTeamProfile = {
     },
 
     // Forwards
-    {
+        {
       id: "mohamed-elyes-achouri",
-      firstName: "Mohamed Elyes",
-      lastName: "ACHOURI",
-      nameOnShirt: "ACHOURI",
+      firstName: "Мохамед",
+      lastName: "Ачури",
+      nameOnShirt: "Ачури",
+      originalFirstName: "Mohamed Elyes",
+      originalLastName: "ACHOURI",
+      originalNameOnShirt: "ACHOURI",
+
       dateOfBirth: "10/02/1999",
       age: 27,
       shirtNumber: 7,
@@ -483,11 +572,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 615_000,
       isInjured: false,
     },
-    {
+        {
       id: "elias-saad",
-      firstName: "Elias",
-      lastName: "SAAD",
-      nameOnShirt: "SAAD",
+      firstName: "Елиас",
+      lastName: "Сад",
+      nameOnShirt: "Сад",
+      originalFirstName: "Elias",
+      originalLastName: "SAAD",
+      originalNameOnShirt: "SAAD",
+
       dateOfBirth: "27/12/1999",
       age: 26,
       shirtNumber: 8,
@@ -504,11 +597,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 555_000,
       isInjured: false,
     },
-    {
+        {
       id: "hazem-mastouri",
-      firstName: "Hazem",
-      lastName: "MASTOURI",
-      nameOnShirt: "MASTOURI",
+      firstName: "Хазем",
+      lastName: "Мастури",
+      nameOnShirt: "Мастури",
+      originalFirstName: "Hazem",
+      originalLastName: "MASTOURI",
+      originalNameOnShirt: "MASTOURI",
+
       dateOfBirth: "18/06/1997",
       age: 28,
       shirtNumber: 9,
@@ -525,11 +622,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 505_000,
       isInjured: false,
     },
-    {
+        {
       id: "rayan-elloumi",
-      firstName: "Rayan",
-      lastName: "ELLOUMI",
-      nameOnShirt: "ELLOUMI",
+      firstName: "Райан",
+      lastName: "Еллуми",
+      nameOnShirt: "Еллуми",
+      originalFirstName: "Rayan",
+      originalLastName: "ELLOUMI",
+      originalNameOnShirt: "ELLOUMI",
+
       dateOfBirth: "17/09/2007",
       age: 18,
       shirtNumber: 18,
@@ -546,11 +647,15 @@ export const tunisiaProfile: NationalTeamProfile = {
       salary: 370_000,
       isInjured: false,
     },
-    {
+        {
       id: "firas-chaouat",
-      firstName: "Firas",
-      lastName: "CHAOUAT",
-      nameOnShirt: "CHAOUAT",
+      firstName: "Фирас",
+      lastName: "Чауат",
+      nameOnShirt: "Чауат",
+      originalFirstName: "Firas",
+      originalLastName: "CHAOUAT",
+      originalNameOnShirt: "CHAOUAT",
+
       dateOfBirth: "08/05/1996",
       age: 30,
       shirtNumber: 19,
