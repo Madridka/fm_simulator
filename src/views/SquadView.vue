@@ -68,6 +68,9 @@ let suppressNextSlotClick = false
 const playerDisplayName = (player?: Player): string =>
   player ? formatPlayerName(player.firstName, player.lastName) : ''
 
+const lineupPlayerDisplayName = (player?: Player): string =>
+  player?.lastName.toLocaleUpperCase('ru-RU') ?? ''
+
 // СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
   const club = squadStore.club
@@ -731,7 +734,7 @@ onBeforeRouteLeave(() => {
               <span
                 class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.55rem] font-black sm:text-[0.68rem] xl:text-[0.78rem]"
               >
-                {{ playerDisplayName(slotPlayer(slot.id)) }}
+                {{ lineupPlayerDisplayName(slotPlayer(slot.id)) }}
               </span>
               <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
