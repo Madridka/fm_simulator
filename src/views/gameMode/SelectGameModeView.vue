@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import bgImage from '@/assets/images/game-mode-selection-bg.webp'
+import bgImage from '@/assets/images/game-mode-selection-bg.png'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -50,7 +50,9 @@ const goToWorldCup = (): void => {
           <div
             class="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(34,211,238,0.2),transparent_55%)] transition duration-500 group-hover:scale-105"
           ></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+          ></div>
 
           <div class="relative flex h-full flex-col justify-end p-7 sm:p-8">
             <h2 class="text-2xl font-black uppercase text-white sm:text-3xl">
@@ -78,7 +80,9 @@ const goToWorldCup = (): void => {
           <div
             class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.22),transparent_55%)] transition duration-500 group-hover:scale-105"
           ></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+          ></div>
 
           <div class="relative flex h-full flex-col justify-end p-7 sm:p-8">
             <h2 class="text-2xl font-black uppercase text-white sm:text-3xl">

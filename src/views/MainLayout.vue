@@ -96,7 +96,7 @@ const resetGame = (): void => {
 
     worldCupStore.resetTournament()
 
-    void router.push({ name: 'select-mode' })
+    void router.push({ name: 'select-club' })
 
     return
 

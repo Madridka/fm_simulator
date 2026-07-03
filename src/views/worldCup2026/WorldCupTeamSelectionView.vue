@@ -31,7 +31,7 @@ const selectTeam = (teamId: string): void => {
 }
 
 const goBack = (): void => {
-  void router.push({ name: 'select-mode' })
+  void router.push({ name: 'select-club' })
 }
 
 const startTournament = (): void => {

@@ -26,23 +26,13 @@ const routes: RouteRecordRaw[] = [
 
       const gameStore = useGameStore()
 
-      const worldCupStore = useWorldCup2026Store()
-
-
-
       if (gameStore.game) {
 
         return { name: 'dashboard' }
 
       }
 
-      if (worldCupStore.state) {
-
-        return { name: 'world-cup-dashboard' }
-
-      }
-
-      return { name: 'select-mode' }
+      return { name: 'select-club' }
 
     },
 
@@ -64,7 +54,7 @@ const routes: RouteRecordRaw[] = [
 
         path: 'game-mode',
 
-        redirect: { name: 'select-mode' },
+        redirect: { name: 'select-club' },
 
       },
 
@@ -368,13 +358,7 @@ router.beforeEach((to) => {
 
   if (!gameStore.game && !preGameRoutes.has(String(to.name))) {
 
-    if (worldCupStore.state) {
-
-      return { name: 'world-cup-dashboard' }
-
-    }
-
-    return { name: 'select-mode' }
+    return { name: 'select-club' }
 
   }
 
