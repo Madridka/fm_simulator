@@ -43,7 +43,7 @@ const openNextMatch = (): void => {
 const resetGame = (): void => {
   appStore.closeNavigation()
   gameStore.resetGame()
-  void router.push('/select-club')
+  void router.push('/select-mode')
 }
 </script>
 
@@ -119,7 +119,10 @@ const resetGame = (): void => {
     </template>
 
     <!-- ЭКРАН ДО НАЧАЛА ИГРЫ -->
-    <main v-else class="h-screen xl:overflow-hidden p-4 sm:p-6">
+    <main
+      v-else
+      class="h-screen overflow-auto bg-[#0a0e14] p-4 sm:p-6 xl:overflow-hidden"
+    >
       <RouterView />
     </main>
   </div>

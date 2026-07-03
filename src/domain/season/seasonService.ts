@@ -426,6 +426,7 @@ export const createInitialGameState = (
 
   return {
     configVersion: 3,
+    gameMode: 'club-career',
     careerSeed,
     championshipId,
     selectedClubId,

@@ -1,0 +1,54 @@
+{
+  "title": "Чемпионат мира 2026",
+  "subtitle": "Выберите сборную для старта турнира",
+  "group": "Группа {letter}",
+  "selected": "Выбрана сборная: {team}",
+  "rating": "Рейтинг: {rating}",
+  "startTournament": "Начать турнир",
+  "back": "Назад к выбору режима",
+  "overview": {
+    "title": "Чемпионат мира 2026",
+    "yourTeam": "Ваша сборная",
+    "stage": "Текущая стадия",
+    "nextMatch": "Следующий матч",
+    "groupPosition": "Положение в группе",
+    "simulate": "Симулировать следующий игровой день",
+    "recentResults": "Последние результаты",
+    "notStarted": "Турнир начинается",
+    "firstOpponent": "Ваш первый соперник: {team}",
+    "groupStage": "Групповой этап",
+    "matchday": "Тур {current} из {total}",
+    "qualified": "Вы вышли в {round}",
+    "nextOpponent": "Следующий соперник: {team}",
+    "eliminated": "Турнир завершён",
+    "eliminatedAt": "Сборная выбыла на стадии {stage}",
+    "simulateRest": "Досимулировать турнир",
+    "champion": "Чемпионы мира 2026",
+    "newTournament": "Начать новый турнир",
+    "mainMenu": "Главное меню"
+  },
+  "nav": {
+    "overview": "Обзор",
+    "groups": "Группы",
+    "fixtures": "Матчи",
+    "bracket": "Сетка"
+  },
+  "stages": {
+    "group-stage-1": "Групповой этап — тур 1",
+    "group-stage-2": "Групповой этап — тур 2",
+    "group-stage-3": "Групповой этап — тур 3",
+    "round-of-32": "1/16 финала",
+    "round-of-16": "1/8 финала",
+    "quarter-final": "Четвертьфинал",
+    "semi-final": "Полуфинал",
+    "third-place": "Матч за 3-е место",
+    "final": "Финал"
+  },
+  "status": {
+    "selected": "Выбрана",
+    "qualified-directly": "Вышла напрямую",
+    "qualified-third-place": "Вышла с 3-го места",
+    "eliminated": "Выбыла",
+    "champion": "Чемпион"
+  }
+}

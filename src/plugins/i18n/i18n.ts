@@ -10,7 +10,9 @@ import leagueTable from '@/lang/leagueTable.json'
 import match from '@/lang/match.json'
 import nav from '@/lang/nav.json'
 import router from '@/lang/router.json'
+import gameMode from '@/lang/gameMode.json'
 import selectClub from '@/lang/selectClub.json'
+import worldCup2026 from '@/lang/worldCup2026.json'
 import squad from '@/lang/squad.json'
 import transfers from '@/lang/transfers.json'
 import academy from '@/lang/academy.json'
@@ -29,7 +31,9 @@ const messages = {
     match,
     nav,
     router,
+    gameMode,
     selectClub,
+    worldCup2026,
     squad,
     transfers,
     academy,
