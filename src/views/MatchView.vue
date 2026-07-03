@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
 import {
   autoSelectLineup,
@@ -11,6 +11,7 @@ import {
 import { isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
+import { useWorldCup2026Store } from '@/stores/worldCup2026/worldCup2026'
 import type {
   Club,
   ClubLineup,
@@ -27,9 +28,12 @@ type MatchSnapshot = MatchTimeline['minutes'][number]
 
 // ЗАВИСИМОСТИ ЭКРАНА И ИСТОЧНИКИ ДАННЫХ АКТИВНОГО МАТЧА
 const router = useRouter()
+const route = useRoute()
 const gameStore = useGameStore()
+const worldCupStore = useWorldCup2026Store()
 const clubStore = useClubStore()
 const { t } = useI18n()
+const isWorldCupMode = computed(() => route.name === 'world-cup-match')
 // ИЗМЕНЯЕМОЕ СОСТОЯНИЕ ПОМИНУТНОЙ СИМУЛЯЦИИ И ФОНОВОГО ЗАВЕРШЕНИЯ
 const timeline = ref<MatchTimeline | null>(null)
 const currentMinute = ref(0)
@@ -39,13 +43,57 @@ const calculationError = ref('')
 let matchCompletionPromise: Promise<void> | null = null
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
-const match = computed((): Match | undefined => gameStore.activeMatch)
+const match = computed((): Match | undefined => {
+  if (isWorldCupMode.value) {
+    const wcMatch = worldCupStore.activeMatch
+    if (!wcMatch) {
+      return undefined
+    }
+    const adapted: Match = {
+      id: wcMatch.id,
+      competitionType: 'world-cup-2026',
+      competitionId: wcMatch.competitionId,
+      season: 2026,
+      type: wcMatch.isKnockout ? 'cup' : 'league',
+      date: wcMatch.date,
+      order: wcMatch.order,
+      round: wcMatch.matchday,
+      homeClubId: wcMatch.homeTeamId,
+      awayClubId: wcMatch.awayTeamId,
+      neutralVenue: wcMatch.neutralVenue,
+      status: wcMatch.status,
+    }
+    if (wcMatch.result) {
+      adapted.result = {
+        homeGoals: wcMatch.result.homeScore,
+        awayGoals: wcMatch.result.awayScore,
+        winnerClubId: wcMatch.result.winnerTeamId,
+        goals: timeline.value?.finalResult.goals ?? [],
+        stats: timeline.value?.finalResult.stats ?? {
+          home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+          away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+        },
+        bestPlayerId: timeline.value?.finalResult.bestPlayerId ?? '',
+        cards: timeline.value?.finalResult.cards,
+        injuries: timeline.value?.finalResult.injuries,
+        substitutions: timeline.value?.finalResult.substitutions,
+        commentary: timeline.value?.finalResult.commentary,
+      }
+    }
+    return adapted
+  }
+  return gameStore.activeMatch
+})
 
-const preparedContext = computed(() =>
-  gameStore.preparedMatchContext?.matchId === match.value?.id
+const preparedContext = computed(() => {
+  if (isWorldCupMode.value) {
+    const context = worldCupStore.preparedMatchContext
+    return context?.matchId === match.value?.id ? context : undefined
+  }
+  return gameStore.preparedMatchContext?.matchId === match.value?.id
     ? gameStore.preparedMatchContext
-    : undefined,
-)
+    : undefined
+})
 
 // ВОЗВРАЩАЕТ ДОМАШНИЙ КЛУБ
 const homeClub = computed((): Club | undefined =>
@@ -96,7 +144,7 @@ const preparedLineups = computed((): MatchLineups | undefined => {
   const home = homeClub.value
   const away = awayClub.value
 
-  if (!game || !currentMatch || !home || !away) {
+  if (!currentMatch || !home || !away) {
     return undefined
   }
 
@@ -106,6 +154,10 @@ const preparedLineups = computed((): MatchLineups | undefined => {
 
   if (currentMatch.lineups) {
     return currentMatch.lineups
+  }
+
+  if (!game) {
+    return undefined
   }
 
   const homeLineup =
@@ -137,6 +189,10 @@ const preparedLineups = computed((): MatchLineups | undefined => {
 
 // ПРОВЕРЯЕТ КОРРЕКТНОСТЬ СОСТАВА ИГРОКА
 const userValidation = computed(() => {
+  if (isWorldCupMode.value) {
+    return { valid: true, errors: [] as string[] }
+  }
+
   const game = gameStore.game
   const currentMatch = match.value
   if (!game || !currentMatch) {
@@ -154,6 +210,17 @@ const userValidation = computed(() => {
 
 // ПРОВЕРЯЕТ УЧАСТИЕ КЛУБА ИГРОКА В МАТЧЕ
 const isUserMatch = computed((): boolean => {
+  if (isWorldCupMode.value) {
+    const wcState = worldCupStore.state
+    const currentMatch = match.value
+    return Boolean(
+      wcState &&
+      currentMatch &&
+      (currentMatch.homeClubId === wcState.selectedTeamId ||
+        currentMatch.awayClubId === wcState.selectedTeamId),
+    )
+  }
+
   const game = gameStore.game
   const currentMatch = match.value
   return Boolean(
@@ -165,9 +232,15 @@ const isUserMatch = computed((): boolean => {
 })
 
 // ПРОВЕРЯЕТ ДОСТУПНОСТЬ МАТЧА ДЛЯ ИГРЫ
-const isPlayableMatch = computed(
-  (): boolean => match.value?.status === 'scheduled' && gameStore.nextMatch?.id === match.value.id,
-)
+const isPlayableMatch = computed((): boolean => {
+  if (!match.value || match.value.status !== 'scheduled') {
+    return false
+  }
+  if (isWorldCupMode.value) {
+    return worldCupStore.nextMatch?.id === match.value.id
+  }
+  return gameStore.nextMatch?.id === match.value.id
+})
 
 // ПРОВЕРЯЕТ ВОЗМОЖНОСТЬ ЗАПУСКА СИМУЛЯЦИИ
 const canSimulate = computed((): boolean =>
@@ -371,17 +444,19 @@ const ensureTimeline = (): MatchTimeline | undefined => {
   const lineups = preparedLineups.value
   const game = gameStore.game
 
-  if (!currentMatch || !home || !away || !lineups || !game) {
+  if (!currentMatch || !home || !away || !lineups) {
     return undefined
   }
 
   if (!timeline.value) {
-    const playoffTie = currentMatch.playoffId
-      ? game.playoffs
-          ?.find((playoff) => playoff.id === currentMatch.playoffId)
-          ?.stages.flatMap((stage) => stage.ties)
-          .find((tie) => tie.id === currentMatch.playoffTieId)
-      : undefined
+    const playoffTie =
+      !isWorldCupMode.value && currentMatch.playoffId && game
+        ? game.playoffs
+            ?.find((playoff) => playoff.id === currentMatch.playoffId)
+            ?.stages.flatMap((stage) => stage.ties)
+            .find((tie) => tie.id === currentMatch.playoffTieId)
+        : undefined
+    const wcMatch = isWorldCupMode.value ? worldCupStore.activeMatch : undefined
     timeline.value = createMatchTimeline({
       matchId: currentMatch.id,
       homeClub: home,
@@ -390,8 +465,12 @@ const ensureTimeline = (): MatchTimeline | undefined => {
       awayLineup: lineups.away,
       neutralVenue: currentMatch.neutralVenue,
       allowPenaltyShootout:
-        currentMatch.type === 'cup' || playoffTie?.matchIds.at(-1) === currentMatch.id,
-      seed: hashString(currentMatch.id) + game.season * 10_000,
+        wcMatch?.isKnockout ||
+        currentMatch.type === 'cup' ||
+        playoffTie?.matchIds.at(-1) === currentMatch.id,
+      seed: isWorldCupMode.value
+        ? (worldCupStore.state?.tournamentSeed ?? 1) + currentMatch.order * 10_000
+        : hashString(currentMatch.id) + (game?.season ?? 0) * 10_000,
     })
   }
 
@@ -421,6 +500,19 @@ const finish = async (result: MatchResult): Promise<void> => {
 
   isCalculating.value = true
   calculationError.value = ''
+
+  if (isWorldCupMode.value) {
+    try {
+      worldCupStore.completeUserMatch(currentMatch.id, result)
+    } catch (error) {
+      calculationError.value =
+        error instanceof Error ? error.message : t('match.errors.calculateDay')
+    } finally {
+      isCalculating.value = false
+    }
+    return
+  }
+
   const completion = gameStore.completeMatchAsync(currentMatch.id, result)
   matchCompletionPromise = completion
   try {
@@ -475,6 +567,12 @@ const instantResult = (): void => {
 
 // ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА ГЛАВНУЮ СТРАНИЦУ
 const goBack = async (): Promise<void> => {
+  if (isWorldCupMode.value) {
+    worldCupStore.clearActiveMatch()
+    await router.push({ name: 'world-cup-overview' })
+    return
+  }
+
   try {
     await matchCompletionPromise
   } catch {
@@ -495,6 +593,9 @@ watch(
     calculationError.value = ''
     matchCompletionPromise = null
     const currentMatch = match.value
+    if (isWorldCupMode.value) {
+      return
+    }
     if (currentMatch?.status === 'scheduled') {
       void gameStore.prepareMatchDay(currentMatch.id).catch((error: unknown) => {
         calculationError.value =

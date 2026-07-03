@@ -34,9 +34,11 @@ const resetToMenu = (): void => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#07101f] text-white">
+  <div class="min-h-screen bg-[#0a0e14] text-white">
     <header class="border-b border-white/10 bg-[#0a1628]/95 backdrop-blur-md">
-      <div class="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
+      <div
+        class="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6"
+      >
         <div class="flex items-center gap-3">
           <span v-if="selectedTeam" class="text-3xl">{{ flagEmoji(selectedTeam.flagCode) }}</span>
           <div>

@@ -13,6 +13,7 @@
     "nextMatch": "Следующий матч",
     "groupPosition": "Положение в группе",
     "simulate": "Симулировать следующий игровой день",
+    "playNextMatch": "Играть следующий матч",
     "recentResults": "Последние результаты",
     "notStarted": "Турнир начинается",
     "firstOpponent": "Ваш первый соперник: {team}",

@@ -8,7 +8,7 @@ import {
 import { createInitialKnockoutBracket, assignKnockoutTeams } from '@/services/worldCup2026/generateKnockoutBracket'
 import { createInitialWorldCup2026State, refreshAllStandings } from '@/services/worldCup2026/initializeTournament'
 import { simulateWorldCupMatch } from '@/services/worldCup2026/simulateWorldCupMatch'
-import { simulateWorldCupMatchDay } from '@/services/worldCup2026/simulateWorldCupRound'
+import { simulateWorldCupMatchDay, prepareUntilUserMatch, getUserNextMatch } from '@/services/worldCup2026/simulateWorldCupRound'
 import { buildNationalTeam } from '@/data/nationalTeams/worldCup2026/rosters/generator'
 import { worldCup2026ProfilesById } from '@/data/nationalTeams/worldCup2026/ratings'
 import { worldCup2026SaveRepository } from '@/repositories/worldCup2026SaveRepository'
@@ -106,6 +106,27 @@ describe('calculateGroupStandings', () => {
       playedMatch('t3', 't4', 2, 2),
     ])
     expect(standings[0]?.teamId).toBe('t3')
+  })
+})
+
+describe('user match preparation', () => {
+  it('fast-simulates preceding matches before the user team plays', () => {
+    const state = createInitialWorldCup2026State('croatia', 42)
+    const userMatch = getUserNextMatch(state)
+    expect(userMatch).toBeDefined()
+
+    const prepared = prepareUntilUserMatch(state)
+    const stillScheduled = prepared.matches.filter((match) => match.status === 'scheduled')
+    const userStillScheduled = stillScheduled.find(
+      (match) =>
+        match.homeTeamId === 'croatia' || match.awayTeamId === 'croatia',
+    )
+
+    expect(userStillScheduled?.id).toBe(userMatch?.id)
+    expect(stillScheduled.every((match) => match.order >= (userMatch?.order ?? 0))).toBe(true)
+    expect(prepared.matches.filter((match) => match.status === 'played').length).toBe(
+      (userMatch?.order ?? 1) - 1,
+    )
   })
 })
 

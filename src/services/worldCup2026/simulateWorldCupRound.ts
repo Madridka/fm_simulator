@@ -89,6 +89,104 @@ const simulateSingleMatch = (
   }
 }
 
+const advanceTournamentState = (state: WorldCup2026State): WorldCup2026State => {
+  let nextState = state
+
+  if (!nextState.groupStageComplete) {
+    const pendingGroup = nextState.matches.some(
+      (match) => !match.isKnockout && match.status === 'scheduled',
+    )
+    if (!pendingGroup) {
+      nextState = initializeKnockoutStage(nextState)
+    } else {
+      const nextMatchday = getNextGroupMatchday(nextState)
+      if (nextMatchday) {
+        nextState = {
+          ...nextState,
+          currentMatchday: nextMatchday,
+          currentRound: roundForMatchday(nextMatchday),
+        }
+      }
+    }
+  } else {
+    nextState = advanceKnockoutWinners(nextState)
+    nextState = checkTournamentFinished(nextState)
+  }
+
+  return nextState
+}
+
+export const getUserNextMatch = (state: WorldCup2026State): WorldCupMatch | undefined =>
+  state.matches.find(
+    (match) =>
+      match.status === 'scheduled' &&
+      (match.homeTeamId === state.selectedTeamId || match.awayTeamId === state.selectedTeamId),
+  )
+
+// БЫСТРО СИМУЛИРУЕТ ВСЕ МАТЧИ ДО СЛЕДУЮЩЕГО МАТЧА ПОЛЬЗОВАТЕЛЯ
+export const prepareUntilUserMatch = (state: WorldCup2026State): WorldCup2026State => {
+  const userMatch = getUserNextMatch(state)
+  if (!userMatch) {
+    return state
+  }
+
+  let current = state
+  const pendingBefore = current.matches
+    .filter((match) => match.status === 'scheduled' && match.order < userMatch.order)
+    .sort((left, right) => left.order - right.order)
+
+  for (const match of pendingBefore) {
+    const random = createSeededRandom(current.tournamentSeed + match.order)
+    current = {
+      ...current,
+      matches: current.matches.map((candidate) =>
+        candidate.id === match.id ? simulateSingleMatch(current, candidate, random) : candidate,
+      ),
+    }
+  }
+
+  return refreshAllStandings(current)
+}
+
+// ЗАВЕРШАЕТ МАТЧ ПОЛЬЗОВАТЕЛЯ И ДОСИМУЛИРУЕТ ОСТАЛЬНЫЕ МАТЧИ ТУРА
+export const completeUserMatchAndRound = (
+  state: WorldCup2026State,
+  matchId: string,
+  userResult: WorldCupMatch['result'] & object,
+): WorldCup2026State => {
+  const userMatch = state.matches.find((match) => match.id === matchId)
+  if (!userMatch || userMatch.status === 'played') {
+    return state
+  }
+
+  let nextState: WorldCup2026State = {
+    ...state,
+    matches: state.matches.map((match) =>
+      match.id === matchId ? { ...match, status: 'played', result: userResult } : match,
+    ),
+    lastSimulatedOrder: userMatch.order,
+  }
+
+  const round = userMatch.round
+  const remainingInRound = nextState.matches
+    .filter((match) => match.status === 'scheduled' && match.round === round)
+    .sort((left, right) => left.order - right.order)
+
+  for (const match of remainingInRound) {
+    const random = createSeededRandom(nextState.tournamentSeed + match.order)
+    nextState = {
+      ...nextState,
+      matches: nextState.matches.map((candidate) =>
+        candidate.id === match.id ? simulateSingleMatch(nextState, candidate, random) : candidate,
+      ),
+    }
+  }
+
+  nextState = applyFitnessRecovery(refreshAllStandings(nextState))
+  return advanceTournamentState(nextState)
+}
+
+// БЫСТРАЯ ДОСИМУЛЯЦИЯ ТУРНИРА ПОСЛЕ ВЫБЫТИЯ ПОЛЬЗОВАТЕЛЯ
 export const simulateWorldCupMatchDay = (
   state: WorldCup2026State,
   userDetail: 'fast' | 'medium' = 'fast',
@@ -118,26 +216,16 @@ export const simulateWorldCupMatchDay = (
   }
 
   nextState = applyFitnessRecovery(refreshAllStandings(nextState))
+  return advanceTournamentState(nextState)
+}
 
-  if (!nextState.groupStageComplete) {
-    const pendingGroup = nextState.matches.some(
-      (match) => !match.isKnockout && match.status === 'scheduled',
-    )
-    if (!pendingGroup) {
-      nextState = initializeKnockoutStage(nextState)
-    } else {
-      const nextMatchday = getNextGroupMatchday(nextState)
-      if (nextMatchday) {
-        nextState.currentMatchday = nextMatchday
-        nextState.currentRound = roundForMatchday(nextMatchday)
-      }
-    }
-  } else {
-    nextState = advanceKnockoutWinners(nextState)
-    nextState = checkTournamentFinished(nextState)
+// СИМУЛИРУЕТ ВСЕ ОСТАВШИЕСЯ МАТЧИ (ПОСЛЕ ВЫБЫТИЯ)
+export const simulateAllRemainingMatches = (state: WorldCup2026State): WorldCup2026State => {
+  let current = state
+  while (getNextScheduledOrder(current) !== null) {
+    current = simulateWorldCupMatchDay(current)
   }
-
-  return nextState
+  return current
 }
 
 export const initializeKnockoutStage = (state: WorldCup2026State): WorldCup2026State => {
@@ -387,12 +475,8 @@ const checkTournamentFinished = (state: WorldCup2026State): WorldCup2026State =>
   }
 }
 
-export const getUserNextMatch = (state: WorldCup2026State): WorldCupMatch | undefined =>
-  state.matches.find(
-    (match) =>
-      match.status === 'scheduled' &&
-      (match.homeTeamId === state.selectedTeamId || match.awayTeamId === state.selectedTeamId),
-  )
+export const canPlayUserMatch = (state: WorldCup2026State): boolean =>
+  getUserNextMatch(state) !== undefined
 
 export const canSimulateMatchDay = (state: WorldCup2026State): boolean =>
-  getNextScheduledOrder(state) !== null
+  canPlayUserMatch(state) || getNextScheduledOrder(state) !== null

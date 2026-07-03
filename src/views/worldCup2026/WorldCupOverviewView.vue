@@ -64,13 +64,13 @@ const formatResult = (match: WorldCupMatch): string => {
 }
 
 const simulate = (): void => {
-  worldCupStore.simulateNextMatchDay()
+  if (worldCupStore.prepareUserMatch()) {
+    void router.push({ name: 'world-cup-match' })
+  }
 }
 
 const simulateRest = (): void => {
-  while (worldCupStore.canSimulate) {
-    worldCupStore.simulateNextMatchDay()
-  }
+  worldCupStore.simulateRest()
 }
 
 const newTournament = (): void => {
@@ -160,9 +160,9 @@ const userGroupRows = computed(() => {
           }}
         </p>
         <Button
-          v-if="worldCupStore.canSimulate"
+          v-if="worldCupStore.canPlay"
           class="mt-5 !font-black"
-          :label="t('worldCup2026.overview.simulate')"
+          :label="t('worldCup2026.overview.playNextMatch')"
           @click="simulate"
         />
       </article>

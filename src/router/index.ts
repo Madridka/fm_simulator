@@ -6,7 +6,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    beforeEnter: () => {
+    beforeEnter: (to) => {
+      if (to.name !== 'home') {
+        return true
+      }
+
       const gameStore = useGameStore()
       const worldCupStore = useWorldCup2026Store()
 
@@ -116,6 +120,11 @@ const routes: RouteRecordRaw[] = [
         name: 'world-cup-bracket',
         component: () => import('@/views/worldCup2026/WorldCupBracketView.vue'),
       },
+      {
+        path: 'match',
+        name: 'world-cup-match',
+        component: () => import('@/views/MatchView.vue'),
+      },
     ],
   },
   {
@@ -147,6 +156,7 @@ const worldCupRoutes = new Set([
   'world-cup-groups',
   'world-cup-fixtures',
   'world-cup-bracket',
+  'world-cup-match',
 ])
 
 router.beforeEach((to) => {
@@ -154,7 +164,13 @@ router.beforeEach((to) => {
   const worldCupStore = useWorldCup2026Store()
 
   if (worldCupRoutes.has(String(to.name))) {
-    return worldCupStore.state ? true : { name: 'world-cup-select-team' }
+    if (!worldCupStore.state) {
+      return { name: 'world-cup-select-team' }
+    }
+    if (to.name === 'world-cup-match' && !worldCupStore.preparedMatchContext) {
+      return { name: 'world-cup-overview' }
+    }
+    return true
   }
 
   if (!gameStore.game && !preGameRoutes.has(String(to.name))) {
