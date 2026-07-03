@@ -6,11 +6,15 @@ import type { Club, Match } from '@/types/football'
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
 
-defineProps<{
+const props = defineProps<{
   nextMatch?: Match
   nextOpponent?: Club
   season?: number
   selectedClub?: Club
+  teamFlag?: string
+  teamFlagUrl?: string
+  isWorldCupMode?: boolean
+  dashboardPath?: string
 }>()
 
 const emit = defineEmits<{
@@ -21,12 +25,23 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ТУРНИРА СЛЕДУЮЩЕГО МАТЧА
-const matchCompetition = (match: Match): string =>
-  match.type === 'league'
+const matchCompetition = (match: Match): string => {
+  if (props.isWorldCupMode) {
+    if (match.type === 'playoff') {
+      return t('match.playoff')
+    }
+    return t('worldCup2026.overview.matchday', {
+      current: match.roundNumber ?? match.round,
+      total: 3,
+    })
+  }
+
+  return match.type === 'league'
     ? t('match.round', { round: match.roundNumber ?? match.round })
     : match.type === 'playoff'
       ? t('match.playoff')
       : t('match.cup')
+}
 </script>
 
 <template>
@@ -44,11 +59,27 @@ const matchCompetition = (match: Match): string =>
           <IconSymbol name="menu" class="h-5 w-5" />
         </button>
 
-        <RouterLink to="/dashboard" class="flex min-w-0 items-center gap-3 md:gap-4">
-          <ClubBadge v-if="selectedClub" :club="selectedClub" class="md:hidden" />
+        <RouterLink :to="props.dashboardPath ?? '/dashboard'" class="flex min-w-0 items-center gap-3 md:gap-4">
+          <img
+            v-if="props.teamFlagUrl"
+            :src="props.teamFlagUrl"
+            :alt="selectedClub?.name ?? ''"
+            class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white object-cover md:hidden"
+          />
+          <span
+            v-else-if="props.teamFlag"
+            class="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-slate-200 bg-white text-xl md:hidden"
+          >
+            {{ props.teamFlag }}
+          </span>
+          <ClubBadge v-else-if="selectedClub" :club="selectedClub" class="md:hidden" />
           <div class="min-w-0">
             <div class="text-[10px] font-black uppercase tracking-[0.16em] text-emerald-700">
-              {{ t('app.season', { season: season ?? '' }) }}
+              {{
+                props.isWorldCupMode
+                  ? t('worldCup2026.overview.title')
+                  : t('app.season', { season: season ?? '' })
+              }}
             </div>
             <div class="truncate text-lg font-black tracking-tight text-slate-950 sm:text-xl">
               {{ selectedClub?.name }}

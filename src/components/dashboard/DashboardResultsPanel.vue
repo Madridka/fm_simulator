@@ -10,7 +10,10 @@ import IconSymbol from '@/components/ui/IconSymbol.vue'
 
 const props = defineProps<{
   matches: Match[]
+  matchPath?: string
 }>()
+
+const matchLink = props.matchPath ?? '/match'
 
 const { t } = useI18n()
 const matchStore = useMatchStore()
@@ -46,7 +49,7 @@ const openMatch = (match: Match): void => {
       <RouterLink
         v-for="match in props.matches"
         :key="match.id"
-        to="/match"
+        :to="matchLink"
         class="group flex items-center gap-3 px-1 py-3.5"
         @click="openMatch(match)"
       >

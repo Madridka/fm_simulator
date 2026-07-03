@@ -291,11 +291,23 @@ const startGame = (): void => {
   gameStore.startNewGame(selectedChampionship.value, selectedClub.value.id)
   void router.push('/dashboard')
 }
+
+// ВОЗВРАЩАЕТ К ВЫБОРУ РЕЖИМА ИГРЫ
+const goBack = (): void => {
+  void router.push({ name: 'select-mode' })
+}
 </script>
 
 <template>
   <!-- СТРАНИЦА ВЫБОРА КЛУБА -->
-  <section class="mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto pb-4">
+  <section class="mx-auto flex h-full w-full max-w-[1500px] flex-col items-start overflow-auto pb-4">
+    <button
+      type="button"
+      class="mb-4 text-sm font-bold text-slate-400 transition hover:text-white"
+      @click="goBack"
+    >
+      ← {{ t('gameMode.back') }}
+    </button>
     <!-- ОСНОВНАЯ СЕТКА ВЫБОРА И ИНФОРМАЦИИ -->
     <div
       class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]"

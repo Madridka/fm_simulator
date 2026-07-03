@@ -10,7 +10,12 @@ import IconSymbol from '@/components/ui/IconSymbol.vue'
 
 const props = defineProps<{
   matches: Match[]
+  calendarPath?: string
+  matchPath?: string
 }>()
+
+const calendarLink = props.calendarPath ?? '/calendar'
+const matchLink = props.matchPath ?? '/match'
 
 const { t } = useI18n()
 const matchStore = useMatchStore()
@@ -35,7 +40,7 @@ const openMatch = (match: Match): void => {
         </h2>
       </div>
       <RouterLink
-        to="/calendar"
+        :to="calendarLink"
         class="rounded-lg bg-slate-100 px-3 py-2 text-xs font-black text-slate-600 transition hover:bg-amber-100 hover:text-amber-800"
       >
         {{ t('dashboard.calendar') }}
@@ -47,7 +52,7 @@ const openMatch = (match: Match): void => {
         :is="index === 0 ? RouterLink : 'div'"
         v-for="(match, index) in props.matches"
         :key="match.id"
-        :to="index === 0 ? '/match' : undefined"
+        :to="index === 0 ? matchLink : undefined"
         class="group flex items-center gap-3 px-1 py-3.5"
         @click="index === 0 && openMatch(match)"
       >

@@ -3,7 +3,10 @@ import { ensureWorldCompetitions } from '@/domain/season/seasonService'
 import { t } from '@/plugins/i18n/i18n'
 import { migrateSaveToAcademiesV3 } from '@/repositories/saveMigration'
 
-const SAVE_KEY = 'football-manager-mvp-save'
+import { CLUB_CAREER_SAVE_KEY, migrateLegacyClubSaveKey } from '@/repositories/worldCup2026SaveRepository'
+
+const SAVE_KEY = CLUB_CAREER_SAVE_KEY
+const LEGACY_SAVE_KEY = 'football-manager-mvp-save'
 
 export interface GameSaveResult {
   saved: boolean
@@ -273,7 +276,8 @@ const errorMessage = (error: unknown): string =>
 export const gameSaveRepository = {
   // ЗАГРУЖАЕТ СОХРАНЕНИЕ, МИГРИРУЕТ СТАРЫЙ ФОРМАТ И ВОССТАНАВЛИВАЕТ МИР
   load(storage: StorageLike = getStorage()): GameState | null {
-    const raw = storage.getItem(SAVE_KEY)
+    migrateLegacyClubSaveKey(storage)
+    const raw = storage.getItem(SAVE_KEY) ?? storage.getItem(LEGACY_SAVE_KEY)
     if (!raw) {
       return null
     }

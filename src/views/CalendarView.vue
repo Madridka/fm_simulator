@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { getSeasonMatchDate } from '@/domain/season/scheduleGenerator'
-import { useClubStore } from '@/stores/clubs/clubsStore'
-import { useGameStore } from '@/stores/game/gameStore'
+import { useCareerContext } from '@/composables/useCareerContext'
+import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Club, Match } from '@/types/football'
 import { formatDate } from '@/utils/format'
 
@@ -25,8 +25,8 @@ interface CalendarMonth {
 }
 
 // ИСТОЧНИКИ МАТЧЕЙ И ДАННЫХ КЛУБОВ ДЛЯ КАЛЕНДАРЯ
-const gameStore = useGameStore()
-const clubStore = useClubStore()
+const matchStore = useMatchStore()
+const { isWorldCupMode, isActiveSession, selectedTeamId, paths } = useCareerContext()
 const { t } = useI18n()
 // ТЕКУЩИЙ МЕСЯЦ, ОТКРЫТЫЙ В СЕЗОННОМ КАЛЕНДАРЕ
 const activeMonthIndex = ref(0)
@@ -36,21 +36,12 @@ const weekDays = Array.from({ length: 7 }, (_, index) => t(`calendar.weekDays.${
 const monthNames = Array.from({ length: 12 }, (_, index) => t(`calendar.months.${index}`))
 
 // ФОРМИРУЕТ СПИСОК МАТЧЕЙ ВЫБРАННОГО КЛУБА
-const userMatches = computed<Match[]>(() => {
-  const game = gameStore.game
-  if (!game) {
-    return []
-  }
-  return game.matches
-    .filter(
-      (match) =>
-        match.homeClubId === game.selectedClubId || match.awayClubId === game.selectedClubId,
-    )
-    .sort(
-      (left, right) =>
-        matchDate(left).localeCompare(matchDate(right)) || left.id.localeCompare(right.id),
-    )
-})
+const userMatches = computed<Match[]>(() =>
+  [...matchStore.userMatches].sort(
+    (left, right) =>
+      matchDate(left).localeCompare(matchDate(right)) || left.id.localeCompare(right.id),
+  ),
+)
 
 // ДОБАВЛЯЕТ ВЕДУЩИЙ НОЛЬ К ЧИСЛУ
 const pad = (value: number): string => String(value).padStart(2, '0')
@@ -69,7 +60,7 @@ const matchDate = (match: Match): string =>
 
 // ОПРЕДЕЛЯЕТ ТЕКУЩУЮ ДАТУ ДЛЯ КАЛЕНДАРЯ
 const currentCalendarDate = computed<string | undefined>(() => {
-  const nextMatch = gameStore.nextMatch
+  const nextMatch = matchStore.nextMatch
   if (nextMatch) {
     return matchDate(nextMatch)
   }
@@ -187,17 +178,8 @@ const moveMonth = (direction: -1 | 1): void => {
 }
 
 // ОПРЕДЕЛЯЕТ ИДЕНТИФИКАТОР СОПЕРНИКА В МАТЧЕ
-const opponentId = (match: Match): string => {
-  const game = gameStore.game
-  if (!game) {
-    return match.awayClubId
-  }
-  return match.homeClubId === game.selectedClubId ? match.awayClubId : match.homeClubId
-}
-
-// ВОЗВРАЩАЕТ КЛУБ СОПЕРНИКА
 const opponentClub = (match: Match): Club => {
-  const club = clubStore.getClubById(opponentId(match))
+  const club = matchStore.getOpponent(match)
   if (!club) {
     throw new Error(t('calendar.opponentNotFound', { match: match.id }))
   }
@@ -213,25 +195,22 @@ const score = (match: Match): string => {
 }
 
 // ПРОВЕРЯЕТ, ЯВЛЯЕТСЯ ЛИ МАТЧ СЛЕДУЮЩИМ
-const isNextMatch = (match: Match): boolean => gameStore.nextMatch?.id === match.id
+const isNextMatch = (match: Match): boolean => matchStore.nextMatch?.id === match.id
 
-// ПРОВЕРЯЕТ, МОЖНО ЛИ ОТКРЫТЬ МАТЧ
 const canOpenMatch = (match: Match): boolean => match.status === 'played' || isNextMatch(match)
 
-// ОТКРЫВАЕТ ДОСТУПНЫЙ МАТЧ
 const openMatch = (match: Match): void => {
   if (canOpenMatch(match)) {
-    gameStore.openMatch(match.id)
+    matchStore.openMatch(match)
   }
 }
 
-// ПРОВЕРЯЕТ, ОТНОСИТСЯ ЛИ ДЕНЬ К ПРОШЕДШЕМУ ПЕРИОДУ
 const isPastDay = (cell: CalendarCell): boolean => {
   if (!cell.isoDate || !currentCalendarDate.value) {
     return false
   }
 
-  return gameStore.nextMatch
+  return matchStore.nextMatch
     ? cell.isoDate < currentCalendarDate.value
     : cell.isoDate <= currentCalendarDate.value
 }
@@ -245,26 +224,38 @@ const calendarCellClasses = (cell: CalendarCell): Record<string, boolean> => ({
 })
 
 // ВОЗВРАЩАЕТ НАЗВАНИЕ ТИПА МАТЧА
-const matchTypeLabel = (match: Match): string =>
-  match.type === 'league'
+const matchTypeLabel = (match: Match): string => {
+  if (isWorldCupMode.value) {
+    if (match.type === 'playoff') {
+      return t('calendar.playoff')
+    }
+    return t('worldCup2026.overview.matchday', {
+      current: match.roundNumber ?? match.round,
+      total: 3,
+    })
+  }
+
+  return match.type === 'league'
     ? t('calendar.round', { round: match.roundNumber ?? match.round })
     : match.type === 'playoff'
       ? t('calendar.playoff')
       : t('calendar.cup')
+}
 
-// ВОЗВРАЩАЕТ ПРИЗНАК ДОМАШНЕГО ИЛИ ВЫЕЗДНОГО МАТЧА
 const homeAwayLabel = (match: Match): string => {
-  const game = gameStore.game
-  if (!game) {
+  const teamId = selectedTeamId.value
+  if (!teamId) {
     return ''
   }
-  return match.homeClubId === game.selectedClubId ? t('calendar.home') : t('calendar.away')
+  return match.homeClubId === teamId ? t('calendar.home') : t('calendar.away')
 }
+
+const matchPath = computed(() => paths.value.match)
 </script>
 
 <template>
   <!-- СТРАНИЦА КАЛЕНДАРЯ МАТЧЕЙ -->
-  <section v-if="gameStore.game" class="flex flex-col gap-5 xl:h-full xl:overflow-hidden">
+  <section v-if="isActiveSession" class="flex flex-col gap-5 xl:h-full xl:overflow-hidden">
     <!-- ЗАГОЛОВОК И НАВИГАЦИЯ ПО МЕСЯЦАМ -->
     <SectionHero :title="t('calendar.title')" :subtitle="t('calendar.description')">
       <template #actions>
@@ -316,7 +307,7 @@ const homeAwayLabel = (match: Match): string => {
               :is="canOpenMatch(match) ? RouterLink : 'div'"
               v-for="match in cell.matches"
               :key="match.id"
-              :to="canOpenMatch(match) ? '/match' : undefined"
+              :to="canOpenMatch(match) ? matchPath : undefined"
               class="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 p-3 text-[#18312b] transition [&+&]:border-t [&+&]:border-[#e2ebe5]"
               :class="{
                 'bg-slate-50 text-slate-600': match.status === 'played',
@@ -371,7 +362,7 @@ const homeAwayLabel = (match: Match): string => {
               <div v-for="match in cell.matches" :key="match.id" class="min-w-0 [&+&]:mt-1.5">
                 <component
                   :is="canOpenMatch(match) ? RouterLink : 'div'"
-                  :to="canOpenMatch(match) ? '/match' : undefined"
+                  :to="canOpenMatch(match) ? matchPath : undefined"
                   class="flex min-w-0 items-center gap-2 rounded-lg border border-[#dce8dd] bg-white p-[7px] text-[#18312b] transition hover:-translate-y-px hover:border-emerald-300 hover:shadow-[0_10px_22px_rgba(22,101,52,0.12)]"
                   :class="{
                     'bg-slate-50 text-slate-600': match.status === 'played',

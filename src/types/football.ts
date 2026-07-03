@@ -116,6 +116,10 @@ export interface PreparedMatchContext {
 // ТИПЫ МАТЧЕЙ И СОБЫТИЙ СИМУЛЯЦИИ
 export type MatchType = 'league' | 'cup' | 'playoff'
 
+export type CompetitionType = 'league' | 'cup' | 'world-cup-2026'
+
+export type TeamType = 'club' | 'national-team'
+
 export type MatchStatus = 'scheduled' | 'played'
 
 export interface GoalEvent {
@@ -191,6 +195,7 @@ export interface MatchResult {
 export interface Match {
   id: string
   championshipId?: ChampionshipId
+  competitionType?: CompetitionType
   season: number
   type: MatchType
   date: string
@@ -294,6 +299,7 @@ export interface CompetitionPlayerLeaderboards {
 // КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
 export interface GameState {
   configVersion: number
+  gameMode?: import('@/types/gameMode').GameMode
   careerSeed: number
   championshipId: ChampionshipId
   selectedClubId: string

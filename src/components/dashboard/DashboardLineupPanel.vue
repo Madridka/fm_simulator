@@ -17,8 +17,14 @@ interface StarterView {
   mobileLineSize: number
 }
 
+const props = defineProps<{
+  squadPath?: string
+}>()
+
 const squadStore = useSquadStore()
 const { t } = useI18n()
+
+const squadLink = computed(() => props.squadPath ?? '/squad')
 
 const mobileLineY = [15, 32, 50, 70, 92]
 
@@ -120,7 +126,7 @@ const availabilityLabel = (player?: Player): string => {
 <template>
   <!-- КАРТОЧКА СТАРТОВОГО СОСТАВА -->
   <RouterLink
-    to="/squad"
+    :to="squadLink"
     class="group flex h-[560px] min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_18px_50px_rgba(24,51,43,0.12)] xl:h-auto"
   >
     <!-- ЗАГОЛОВОК ПАНЕЛИ СОСТАВА -->
@@ -182,9 +188,13 @@ const availabilityLabel = (player?: Player): string => {
           {{ starter.player?.rating ?? '?' }}
         </span>
         <span
-          class="max-w-full truncate text-[8px] font-black uppercase leading-none sm:text-[0.68rem] sm:leading-normal"
+          class="max-w-full truncate text-[8px] font-black leading-none sm:text-[0.68rem] sm:leading-normal"
         >
-          {{ starter.player?.lastName ?? starter.label }}
+          {{
+            starter.player
+              ? starter.player.lastName.toLocaleUpperCase('ru-RU')
+              : starter.label
+          }}
         </span>
       </div>
     </div>
