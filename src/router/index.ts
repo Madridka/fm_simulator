@@ -20,7 +20,8 @@ const routes: RouteRecordRaw[] = [
       if (worldCupStore.state) {
         return { name: 'world-cup-overview' }
       }
-      return { name: 'select-mode' }
+      //по сути роут для wc-26 скрыт, т.к. пока ничего не готово
+      return { name: 'select-club' }
     },
     component: () => import('@/views/MainLayout.vue'),
     children: [

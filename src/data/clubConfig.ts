@@ -1,6 +1,6 @@
 import { buildSquad } from '@/data/players'
 import { clubProfilesById } from '@/data/clubDatabase'
-import type { ClubConfig, ClubProfile } from '@/data/clubs/types'
+import type { ClubConfig, ClubProfile } from '@/data/clubsCareer/types'
 import type { Club, Player } from '@/types/football'
 import { resolveLegacyCompetitionId } from '@/domain/competition/competitionIdentity'
 import { reserveParentByClubId } from '@/data/reserveClubRelations'

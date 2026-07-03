@@ -9,13 +9,22 @@ import { createInitialKnockoutBracket, assignKnockoutTeams } from '@/services/wo
 import { createInitialWorldCup2026State, refreshAllStandings } from '@/services/worldCup2026/initializeTournament'
 import { simulateWorldCupMatch } from '@/services/worldCup2026/simulateWorldCupMatch'
 import { simulateWorldCupMatchDay, prepareUntilUserMatch, getUserNextMatch } from '@/services/worldCup2026/simulateWorldCupRound'
-import { buildNationalTeam } from '@/data/nationalTeams/worldCup2026/rosters/generator'
-import { worldCup2026ProfilesById } from '@/data/nationalTeams/worldCup2026/ratings'
+import { buildNationalTeam } from '@/data/wc26/rosters'
+import { worldCup2026ProfilesById } from '@/data/wc26/teams/index'
 import { worldCup2026SaveRepository } from '@/repositories/worldCup2026SaveRepository'
 import { createMemoryStorage } from '@/repositories/gameSaveRepository'
 import type { WorldCupMatch } from '@/stores/worldCup2026/types'
 import { createSeededRandom } from '@/utils/random'
 import { WORLD_CUP_GROUP_IDS } from '@/stores/worldCup2026/enums'
+
+describe('buildNationalTeam', () => {
+  it('loads real squad players when profile includes squad data', () => {
+    const team = buildNationalTeam(worldCup2026ProfilesById.argentina!)
+    expect(team.players.length).toBeGreaterThan(0)
+    expect(team.players.some((player) => player.firstName.includes('Lionel'))).toBe(true)
+    expect(team.players.every((player) => player.id.startsWith('argentina:'))).toBe(true)
+  })
+})
 
 describe('generateGroupFixtures', () => {
   it('generates six matches for a group of four teams', () => {

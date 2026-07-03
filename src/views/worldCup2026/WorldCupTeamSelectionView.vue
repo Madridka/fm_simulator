@@ -2,9 +2,9 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { worldCup2026Groups } from '@/data/nationalTeams/worldCup2026/groups'
-import { worldCup2026ProfilesById } from '@/data/nationalTeams/worldCup2026/ratings'
-import { flagEmoji } from '@/data/nationalTeams/worldCup2026/teams'
+import { worldCup2026Groups } from '@/data/wc26/groups'
+import { worldCup2026ProfilesById } from '@/data/wc26/teams/index'
+import { flagEmoji } from '@/data/wc26/nationalTeam'
 import { useWorldCup2026Store } from '@/stores/worldCup2026/worldCup2026'
 
 const router = useRouter()

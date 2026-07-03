@@ -14,8 +14,8 @@ import {
 } from '@/services/worldCup2026/simulateWorldCupRound'
 import { worldCup2026SaveRepository } from '@/repositories/worldCup2026SaveRepository'
 import type { WorldCup2026State } from '@/stores/worldCup2026/types'
-import type { NationalTeam } from '@/data/nationalTeams/worldCup2026/teams'
-import { flagEmoji } from '@/data/nationalTeams/worldCup2026/teams'
+import type { NationalTeam } from '@/data/wc26/nationalTeam'
+import { flagEmoji } from '@/data/wc26/nationalTeam'
 import type { ClubLineup, MatchResult, PlayedLineup, PreparedMatchContext } from '@/types/football'
 import { matchTeamToClub, nationalTeamToMatchTeam } from '@/types/matchTeam'
 
