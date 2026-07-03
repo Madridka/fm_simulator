@@ -276,11 +276,15 @@ export const autoSelectLineup = (
     usedPlayerIds.add(player.id)
   }
 
-  lineup.substitutes = [...club.squad]
+  const benchCandidates = [...club.squad]
     .filter((player) => !usedPlayerIds.has(player.id) && !isPlayerUnavailable(player))
     .sort((left, right) => right.rating - left.rating)
-    .slice(0, 7)
-    .map((player) => player.id)
+  const selectedBench = benchCandidates.slice(0, 7)
+  const backupGoalkeeper = benchCandidates.find((player) => player.position === 'GK')
+  if (backupGoalkeeper && !selectedBench.some((player) => player.position === 'GK')) {
+    selectedBench.splice(selectedBench.length - 1, 1, backupGoalkeeper)
+  }
+  lineup.substitutes = selectedBench.map((player) => player.id)
 
   return lineup
 }

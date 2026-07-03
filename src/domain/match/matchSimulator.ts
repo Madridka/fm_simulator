@@ -572,10 +572,15 @@ const createSubstitutions = (
   random: RandomGenerator,
 ): SubstitutionEvent[] => {
   const config = matchSimulationConfig.substitutions
-  const substitutes = club.squad.filter(
-    (player) => !lineup.starters.includes(player.id) && !isPlayerUnavailable(player),
-  )
   const playersById = new Map(club.squad.map((player) => [player.id, player]))
+  const substitutes = lineup.substitutes
+    .map((playerId) => playersById.get(playerId))
+    .filter(
+      (player): player is Player =>
+        player !== undefined &&
+        !lineup.starters.includes(player.id) &&
+        !isPlayerUnavailable(player),
+    )
   const starters = lineup.starters.filter(
     (playerId) => playersById.get(playerId)?.position !== 'GK',
   )
@@ -753,6 +758,14 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
     ...createSubstitutions(input.awayClub, input.awayLineup, random),
   ]
   const substitutions: SubstitutionEvent[] = []
+  const usedSubstitutes = new Map<string, Set<string>>([
+    [input.homeClub.id, new Set<string>()],
+    [input.awayClub.id, new Set<string>()],
+  ])
+  const substitutionCounts = new Map<string, number>([
+    [input.homeClub.id, 0],
+    [input.awayClub.id, 0],
+  ])
   const directRedSchedules = [
     ...(random.chance(matchSimulationConfig.redCard.chancePerTeam)
       ? [{ minute: random.int(35, 89), clubId: input.homeClub.id }]
@@ -765,11 +778,78 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
     clubId === input.homeClub.id ? home : away
   const clubFor = (clubId: string): Club =>
     clubId === input.homeClub.id ? input.homeClub : input.awayClub
+  const lineupFor = (clubId: string): PlayedLineup =>
+    clubId === input.homeClub.id ? input.homeLineup : input.awayLineup
   const removeActivePlayer = (team: TeamMetrics, playerId: string): boolean => {
     const index = team.players.findIndex((player) => player.id === playerId)
     if (index < 0) return false
     team.players.splice(index, 1)
     return true
+  }
+  const addSubstitution = (event: SubstitutionEvent, playerIn: Player): void => {
+    const team = teamFor(event.clubId)
+    team.players.push(playerIn)
+    usedSubstitutes.get(event.clubId)?.add(playerIn.id)
+    substitutionCounts.set(event.clubId, (substitutionCounts.get(event.clubId) ?? 0) + 1)
+    state.playerScores.set(playerIn.id, playerEffectiveRating(playerIn) + random.int(-5, 5))
+    substitutions.push(event)
+  }
+  const availableBench = (clubId: string): Player[] => {
+    const club = clubFor(clubId)
+    const team = teamFor(clubId)
+    const used = usedSubstitutes.get(clubId) ?? new Set<string>()
+    const playersById = new Map(club.squad.map((player) => [player.id, player]))
+    return lineupFor(clubId).substitutes
+      .map((playerId) => playersById.get(playerId))
+      .filter(
+        (player): player is Player =>
+          player !== undefined &&
+          !isPlayerUnavailable(player) &&
+          !used.has(player.id) &&
+          !team.players.some((active) => active.id === player.id),
+      )
+  }
+  const replaceInjuredPlayer = (injury: InjuryEvent): void => {
+    if ((substitutionCounts.get(injury.clubId) ?? 0) >= matchSimulationConfig.substitutions.maxCount) {
+      return
+    }
+    const injured = clubFor(injury.clubId).squad.find((player) => player.id === injury.playerId)
+    if (!injured) return
+    const candidates = availableBench(injury.clubId).filter((player) =>
+      injured.position === 'GK'
+        ? player.position === 'GK'
+        : player.position !== 'GK' && getPositionFit(injured.position, player.position) <= 2,
+    )
+    if (!candidates.length) return
+    const bestFit = Math.min(
+      ...candidates.map((player) => getPositionFit(injured.position, player.position)),
+    )
+    const playerIn = random.pick(
+      candidates.filter((player) => getPositionFit(injured.position, player.position) === bestFit),
+    )
+    addSubstitution(
+      { minute: injury.minute ?? 1, clubId: injury.clubId, playerOutId: injured.id, playerInId: playerIn.id },
+      playerIn,
+    )
+  }
+  const restoreGoalkeeperAfterDismissal = (clubId: string, minute: number): void => {
+    const team = teamFor(clubId)
+    if (
+      team.players.some((player) => player.position === 'GK') ||
+      (substitutionCounts.get(clubId) ?? 0) >= matchSimulationConfig.substitutions.maxCount
+    ) {
+      return
+    }
+    const goalkeeper = availableBench(clubId).find((player) => player.position === 'GK')
+    if (!goalkeeper) return
+    const playerOut = [...team.players]
+      .filter((player) => player.position !== 'GK')
+      .sort((left, right) => playerEffectiveRating(left) - playerEffectiveRating(right))[0]
+    if (!playerOut || !removeActivePlayer(team, playerOut.id)) return
+    addSubstitution(
+      { minute, clubId, playerOutId: playerOut.id, playerInId: goalkeeper.id },
+      goalkeeper,
+    )
   }
 
   for (let minute = 1; minute <= 90; minute += 1) {
@@ -778,7 +858,9 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       if (!team.players.some((player) => player.id === injury.playerId) && team.players.length) {
         injury.playerId = random.pick(team.players).id
       }
-      removeActivePlayer(team, injury.playerId)
+      if (removeActivePlayer(team, injury.playerId)) {
+        replaceInjuredPlayer(injury)
+      }
     }
 
     for (const schedule of directRedSchedules.filter((event) => event.minute === minute)) {
@@ -796,18 +878,20 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       stats.redCards = (stats.redCards ?? 0) + 1
       addPlayerScore(state.playerScores, dismissedPlayer.id, -18)
       removeActivePlayer(team, dismissedPlayer.id)
+      if (dismissedPlayer.position === 'GK') {
+        restoreGoalkeeperAfterDismissal(schedule.clubId, minute)
+      }
     }
 
     for (const substitution of plannedSubstitutions.filter((event) => event.minute === minute)) {
       const team = teamFor(substitution.clubId)
-      if (!removeActivePlayer(team, substitution.playerOutId)) continue
+      if ((substitutionCounts.get(substitution.clubId) ?? 0) >= matchSimulationConfig.substitutions.maxCount) continue
       const playerIn = clubFor(substitution.clubId).squad.find(
         (player) => player.id === substitution.playerInId,
       )
-      if (!playerIn || team.players.some((player) => player.id === playerIn.id)) continue
-      team.players.push(playerIn)
-      state.playerScores.set(playerIn.id, playerEffectiveRating(playerIn) + random.int(-5, 5))
-      substitutions.push(substitution)
+      if (!playerIn || !availableBench(substitution.clubId).some((player) => player.id === playerIn.id)) continue
+      if (!removeActivePlayer(team, substitution.playerOutId)) continue
+      addSubstitution(substitution, playerIn)
     }
 
     processAttack(
@@ -847,6 +931,7 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       rawCards,
       random,
     )
+    restoreGoalkeeperAfterDismissal(input.homeClub.id, minute)
     processDiscipline(
       minute,
       input.awayClub.id,
@@ -856,6 +941,7 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       rawCards,
       random,
     )
+    restoreGoalkeeperAfterDismissal(input.awayClub.id, minute)
 
     minutes.push({
       minute,
@@ -1089,7 +1175,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
 
   if (random.chance(matchSimulationConfig.injury.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
-    const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
+    const availablePlayers = club.id === input.homeClub.id ? homePlayers : awayPlayers
     if (availablePlayers.length) {
       injuries.push({
         minute: random.int(
@@ -1107,7 +1193,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   }
   if (random.chance(matchSimulationConfig.redCard.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
-    const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
+    const availablePlayers = club.id === input.homeClub.id ? homePlayers : awayPlayers
     if (availablePlayers.length) {
       cards.push({
         minute: random.int(35, 89),

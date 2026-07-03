@@ -98,6 +98,7 @@ export interface PlayedLineup {
   formation: Formation
   tacticalStyle: TacticalStyle
   starters: string[]
+  substitutes: string[]
 }
 
 export interface MatchLineups {

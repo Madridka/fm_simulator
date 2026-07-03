@@ -75,6 +75,7 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
     starters,
+    substitutes: [...lineup.substitutes],
   }
 }
 
@@ -298,8 +299,12 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
 }
 
 // ВОЗВРАЩАЕТ ДОСТУПНЫХ ЗАПАСНЫХ, НЕ ВХОДЯЩИХ В СТАРТОВЫЙ СОСТАВ
-const benchPlayers = (club: Club, starters: readonly string[] = []): Player[] =>
-  club.squad.filter((player) => !starters.includes(player.id) && !isPlayerUnavailable(player))
+const benchPlayers = (club: Club, substitutes: readonly string[] = []): Player[] => {
+  const playersById = new Map(club.squad.map((player) => [player.id, player]))
+  return substitutes
+    .map((playerId) => playersById.get(playerId))
+    .filter((player): player is Player => player !== undefined && !isPlayerUnavailable(player))
+}
 
 // ОБЪЕДИНЯЕТ ИГРОКОВ ОБЕИХ КОМАНД
 const allPlayers = computed<Player[]>(() => {
@@ -648,7 +653,7 @@ onBeforeUnmount(clearTimer)
             </div>
             <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ХОЗЯЕВ -->
             <div
-              v-if="benchPlayers(homeClub, preparedLineups?.home.starters).length"
+              v-if="benchPlayers(homeClub, preparedLineups?.home.substitutes).length"
               class="mt-3 border-t border-slate-200 pt-2"
             >
               <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
@@ -656,7 +661,7 @@ onBeforeUnmount(clearTimer)
               </div>
               <div class="space-y-1 text-xs text-slate-700">
                 <div
-                  v-for="player in benchPlayers(homeClub, preparedLineups?.home.starters)"
+                  v-for="player in benchPlayers(homeClub, preparedLineups?.home.substitutes)"
                   :key="player.id"
                   class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
                 >
@@ -706,7 +711,7 @@ onBeforeUnmount(clearTimer)
             </div>
             <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ГОСТЕЙ -->
             <div
-              v-if="benchPlayers(awayClub, preparedLineups?.away.starters).length"
+              v-if="benchPlayers(awayClub, preparedLineups?.away.substitutes).length"
               class="mt-3 border-t border-slate-200 pt-2"
             >
               <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
@@ -714,7 +719,7 @@ onBeforeUnmount(clearTimer)
               </div>
               <div class="space-y-1 text-xs text-slate-700">
                 <div
-                  v-for="player in benchPlayers(awayClub, preparedLineups?.away.starters)"
+                  v-for="player in benchPlayers(awayClub, preparedLineups?.away.substitutes)"
                   :key="player.id"
                   class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
                 >

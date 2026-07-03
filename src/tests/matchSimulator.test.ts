@@ -22,6 +22,7 @@ const playedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => ({
   starters: getFormationSlots(lineup.formation)
     .map((slot) => lineup.starters[slot.id])
     .filter((playerId): playerId is string => typeof playerId === 'string'),
+  substitutes: [...lineup.substitutes],
 })
 
 describe('matchSimulator', () => {
@@ -199,7 +200,84 @@ describe('matchSimulator', () => {
       expect(playerOut?.position).not.toBe('GK')
       expect(playerIn?.position).not.toBe('GK')
       expect(getPositionFit(playerOut!.position, playerIn!.position)).toBeLessThanOrEqual(1)
+      const lineup = substitution.clubId === home.id
+        ? playedLineup(home, autoSelectLineup(home))
+        : playedLineup(away, autoSelectLineup(away))
+      expect(lineup.substitutes).toContain(substitution.playerInId)
     }
+  })
+
+  it('immediately replaces an injured player when a suitable substitute is available', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const homeLineup = playedLineup(home, autoSelectLineup(home))
+    const awayLineup = playedLineup(away, autoSelectLineup(away))
+    const timeline = Array.from({ length: 800 }, (_, index) =>
+      createMatchTimeline({
+        matchId: `forced-injury-substitution-${index}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup,
+        awayLineup,
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        seed: index + 1,
+      }),
+    ).find((candidate) =>
+      candidate.finalResult.injuries?.some((injury) => (injury.minute ?? 90) < 55),
+    )
+    const injury = timeline?.finalResult.injuries?.find(
+      (candidate) => (candidate.minute ?? 90) < 55,
+    )
+    const replacement = timeline?.finalResult.substitutions?.find(
+      (substitution) =>
+        substitution.clubId === injury?.clubId &&
+        substitution.playerOutId === injury.playerId &&
+        substitution.minute === injury.minute,
+    )
+
+    expect(injury).toBeDefined()
+    expect(replacement).toBeDefined()
+    const matchLineup = injury?.clubId === home.id ? homeLineup : awayLineup
+    expect(matchLineup.substitutes).toContain(replacement?.playerInId)
+  })
+
+  it('brings on the reserve goalkeeper for an outfield player after a goalkeeper dismissal', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const homeLineup = playedLineup(home, autoSelectLineup(home))
+    const awayLineup = playedLineup(away, autoSelectLineup(away))
+    const timeline = Array.from({ length: 2500 }, (_, index) =>
+      createMatchTimeline({
+        matchId: `dismissed-goalkeeper-${index}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup,
+        awayLineup,
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        seed: index + 1,
+      }),
+    ).find((candidate) =>
+      candidate.finalResult.cards?.some((card) => {
+        const club = card.clubId === home.id ? home : away
+        return card.card === 'red' && club.squad.find((player) => player.id === card.playerId)?.position === 'GK'
+      }),
+    )
+    const dismissal = timeline?.finalResult.cards?.find((card) => {
+      const club = card.clubId === home.id ? home : away
+      return card.card === 'red' && club.squad.find((player) => player.id === card.playerId)?.position === 'GK'
+    })
+    const replacement = timeline?.finalResult.substitutions?.find(
+      (substitution) =>
+        substitution.clubId === dismissal?.clubId && substitution.minute === dismissal.minute,
+    )
+    const club = dismissal?.clubId === home.id ? home : away
+
+    expect(dismissal).toBeDefined()
+    expect(replacement).toBeDefined()
+    expect(club.squad.find((player) => player.id === replacement?.playerOutId)?.position).not.toBe('GK')
+    expect(club.squad.find((player) => player.id === replacement?.playerInId)?.position).toBe('GK')
   })
 
   it('adds an injury with a recovery duration to the commentary', () => {

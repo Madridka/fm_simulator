@@ -237,11 +237,13 @@ const cloneMatch = (match: Match): Match => ({
           formation: match.lineups.home.formation,
           tacticalStyle: match.lineups.home.tacticalStyle,
           starters: [...match.lineups.home.starters],
+          substitutes: [...match.lineups.home.substitutes],
         },
         away: {
           formation: match.lineups.away.formation,
           tacticalStyle: match.lineups.away.tacticalStyle,
           starters: [...match.lineups.away.starters],
+          substitutes: [...match.lineups.away.substitutes],
         },
       }
     : undefined,
@@ -562,6 +564,10 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
     starters,
+    substitutes: lineup.substitutes.filter((playerId) => {
+      const player = playersById.get(playerId)
+      return Boolean(player && !isPlayerUnavailable(player) && !starters.includes(playerId))
+    }),
   }
 }
 
