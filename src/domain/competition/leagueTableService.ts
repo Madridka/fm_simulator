@@ -19,24 +19,45 @@ const createEmptyRow = (
   goalDifference: 0,
   points: 0,
   position: 0,
+  xGFor: 0,
+  xGAgainst: 0,
+  shotsFor: 0,
+  shotsAgainst: 0,
+  recentForm: [],
 })
 
 // ДОБАВЛЯЕТ РЕЗУЛЬТАТ ОДНОГО МАТЧА К ПОКАЗАТЕЛЯМ КЛУБА
-const applyResultToRow = (row: LeagueTableRow, goalsFor: number, goalsAgainst: number): void => {
+const applyResultToRow = (
+  row: LeagueTableRow,
+  goalsFor: number,
+  goalsAgainst: number,
+  xGFor: number,
+  xGAgainst: number,
+  shotsFor: number,
+  shotsAgainst: number,
+): void => {
   row.played += 1
   row.goalsFor += goalsFor
   row.goalsAgainst += goalsAgainst
   row.goalDifference = row.goalsFor - row.goalsAgainst
+  row.xGFor = Number(((row.xGFor ?? 0) + xGFor).toFixed(2))
+  row.xGAgainst = Number(((row.xGAgainst ?? 0) + xGAgainst).toFixed(2))
+  row.shotsFor = (row.shotsFor ?? 0) + shotsFor
+  row.shotsAgainst = (row.shotsAgainst ?? 0) + shotsAgainst
 
   if (goalsFor > goalsAgainst) {
     row.wins += 1
     row.points += 3
+    ;(row.recentForm ??= []).push('W')
   } else if (goalsFor === goalsAgainst) {
     row.draws += 1
     row.points += 1
+    ;(row.recentForm ??= []).push('D')
   } else {
     row.losses += 1
+    ;(row.recentForm ??= []).push('L')
   }
+  row.recentForm = (row.recentForm ?? []).slice(-5)
 }
 
 // СОРТИРУЕТ ТАБЛИЦУ ПО ОЧКАМ, РАЗНИЦЕ МЯЧЕЙ И ДОПОЛНИТЕЛЬНЫМ КРИТЕРИЯМ
@@ -103,8 +124,24 @@ export const calculateLeagueTables = (
           return
         }
 
-        applyResultToRow(homeRow, match.result.homeGoals, match.result.awayGoals)
-        applyResultToRow(awayRow, match.result.awayGoals, match.result.homeGoals)
+        applyResultToRow(
+          homeRow,
+          match.result.homeGoals,
+          match.result.awayGoals,
+          match.result.stats.home.xG ?? match.result.homeGoals,
+          match.result.stats.away.xG ?? match.result.awayGoals,
+          match.result.stats.home.shots,
+          match.result.stats.away.shots,
+        )
+        applyResultToRow(
+          awayRow,
+          match.result.awayGoals,
+          match.result.homeGoals,
+          match.result.stats.away.xG ?? match.result.awayGoals,
+          match.result.stats.home.xG ?? match.result.homeGoals,
+          match.result.stats.away.shots,
+          match.result.stats.home.shots,
+        )
       })
 
     tables[competitionId] = sortLeagueRows([...rows.values()])

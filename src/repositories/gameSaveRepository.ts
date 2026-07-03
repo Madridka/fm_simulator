@@ -1,4 +1,4 @@
-import type { ChampionshipId, GameState, MatchResult } from '@/types/football'
+import type { ChampionshipId, GameState, MatchResult, PlayerStats } from '@/types/football'
 import { ensureWorldCompetitions } from '@/domain/season/seasonService'
 import { t } from '@/plugins/i18n/i18n'
 import { migrateSaveToAcademiesV3 } from '@/repositories/saveMigration'
@@ -11,14 +11,37 @@ export interface GameSaveResult {
   error?: string
 }
 
-type PersistedWorldResult = [matchId: string, homeGoals: number, awayGoals: number]
+type PersistedWorldResult = [
+  matchId: string,
+  homeGoals: number,
+  awayGoals: number,
+  homeXG?: number,
+  awayXG?: number,
+  homeShots?: number,
+  awayShots?: number,
+]
 type PersistedWorldResults = Partial<Record<ChampionshipId, PersistedWorldResult[]>>
+type PersistedPlayerStats = [
+  playerId: string,
+  appearances: number,
+  goals: number,
+  assists: number,
+  yellowCards: number,
+  redCards: number,
+  cleanSheets: number,
+  averageRating: number,
+  matchesRated: number,
+]
+type PersistedWorldPlayerStats = Partial<
+  Record<ChampionshipId, PersistedPlayerStats[] | Record<string, PlayerStats>>
+>
 type PersistedGameState = Omit<
   GameState,
-  'leagueTables' | 'worldClubs' | 'worldMatches' | 'worldLeagueTables'
+  'leagueTables' | 'worldClubs' | 'worldMatches' | 'worldLeagueTables' | 'worldPlayerStats'
 > & {
   leagueTables?: GameState['leagueTables']
   worldResults?: PersistedWorldResults
+  worldPlayerStats?: PersistedWorldPlayerStats
 }
 
 export interface StorageLike {
@@ -64,6 +87,7 @@ const compactResult = (
   homeClubId: string,
   awayClubId: string,
   penaltyWinnerClubId?: string,
+  aggregateStats?: MatchResult['stats'],
 ): MatchResult => ({
   detail: 'fast',
   homeGoals,
@@ -77,8 +101,8 @@ const compactResult = (
   penaltyWinnerClubId,
   goals: [],
   stats: {
-    home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
-    away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+    home: aggregateStats?.home ?? { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+    away: aggregateStats?.away ?? { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
   },
   bestPlayerId: '',
 })
@@ -97,6 +121,7 @@ const compactMatch = (match: GameState['matches'][number]): GameState['matches']
       match.homeClubId,
       match.awayClubId,
       match.result.penaltyWinnerClubId,
+      match.result.stats,
     ),
     lineups: undefined,
   }
@@ -121,9 +146,35 @@ const createPersistedState = (state: GameState): PersistedGameState => {
                   match.id,
                   match.result!.homeGoals,
                   match.result!.awayGoals,
+                  match.result!.stats.home.xG,
+                  match.result!.stats.away.xG,
+                  match.result!.stats.home.shots,
+                  match.result!.stats.away.shots,
                 ],
               ),
           ]),
+      )
+    : undefined
+  const worldPlayerStats = state.worldPlayerStats
+    ? Object.fromEntries(
+        Object.entries(state.worldPlayerStats).map(([championshipId, stats]) => [
+          championshipId,
+          Object.entries(stats ?? {})
+            .filter(([, value]) => value.appearances > 0)
+            .map(
+              ([playerId, value]): PersistedPlayerStats => [
+                playerId,
+                value.appearances,
+                value.goals,
+                value.assists,
+                value.yellowCards,
+                value.redCards,
+                value.cleanSheets,
+                value.averageRating,
+                value.matchesRated,
+              ],
+            ),
+        ]),
       )
     : undefined
 
@@ -132,6 +183,7 @@ const createPersistedState = (state: GameState): PersistedGameState => {
     worldClubs: _worldClubs,
     worldMatches: _worldMatches,
     worldLeagueTables: _worldLeagueTables,
+    worldPlayerStats: _worldPlayerStats,
     ...coreState
   } = state
 
@@ -139,13 +191,38 @@ const createPersistedState = (state: GameState): PersistedGameState => {
     ...coreState,
     matches: state.matches.map((match) => (isUserMatch(match) ? match : compactMatch(match))),
     worldResults,
+    worldPlayerStats,
   }
 }
 
 // ВОССТАНАВЛИВАЕТ ДЕТЕРМИНИРОВАННЫЕ РАСПИСАНИЯ МИРОВЫХ ЛИГ И НАКЛАДЫВАЕТ СЧЕТА
 const restorePersistedState = (persisted: PersistedGameState): GameState => {
-  const { worldResults, ...coreState } = persisted
-  const hydrated = ensureWorldCompetitions(coreState as GameState)
+  const { worldResults, worldPlayerStats: compactPlayerStats, ...coreState } = persisted
+  const worldPlayerStats = compactPlayerStats
+    ? Object.fromEntries(
+        Object.entries(compactPlayerStats).map(([championshipId, rows]) => [
+          championshipId,
+          Array.isArray(rows)
+            ? Object.fromEntries(
+                rows.map((row) => [
+                  row[0],
+                  {
+                    appearances: row[1],
+                    goals: row[2],
+                    assists: row[3],
+                    yellowCards: row[4],
+                    redCards: row[5],
+                    cleanSheets: row[6],
+                    averageRating: row[7],
+                    matchesRated: row[8],
+                  } satisfies PlayerStats,
+                ]),
+              )
+            : (rows ?? {}),
+        ]),
+      )
+    : undefined
+  const hydrated = ensureWorldCompetitions({ ...coreState, worldPlayerStats } as GameState)
   if (!worldResults) {
     return hydrated
   }
@@ -165,7 +242,22 @@ const restorePersistedState = (persisted: PersistedGameState): GameState => {
       return {
         ...match,
         status: 'played' as const,
-        result: compactResult(score[1], score[2], match.homeClubId, match.awayClubId),
+        result: compactResult(score[1], score[2], match.homeClubId, match.awayClubId, undefined, {
+          home: {
+            possession: 50,
+            shots: score[5] ?? 0,
+            shotsOnTarget: 0,
+            yellowCards: 0,
+            xG: score[3],
+          },
+          away: {
+            possession: 50,
+            shots: score[6] ?? 0,
+            shotsOnTarget: 0,
+            yellowCards: 0,
+            xG: score[4],
+          },
+        }),
       }
     })
   }

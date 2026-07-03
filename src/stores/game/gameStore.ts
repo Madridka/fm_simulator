@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
-import { careerConfig } from '@/data/gameConfig/career'
+import { careerConfig, willPlayerRetireAfterSeason } from '@/data/gameConfig/career'
 import { getChampionship } from '@/data/clubs'
 import {
   completeUserMatchDay,
@@ -301,7 +301,20 @@ export const useGameStore = defineStore('game', () => {
     if (!game.value || !seasonCanFinish.value) {
       return
     }
-    updateGame(finishSeason(game.value))
+    const retiringPlayers =
+      selectedClub.value?.squad.filter((player) => willPlayerRetireAfterSeason(player.age)) ?? []
+    const nextState = finishSeason(game.value)
+    updateGame(nextState)
+    if (retiringPlayers.length) {
+      const visibleNames = retiringPlayers
+        .slice(0, 3)
+        .map((player) => `${player.firstName} ${player.lastName}`)
+      const hiddenCount = retiringPlayers.length - visibleNames.length
+      const players = hiddenCount > 0
+        ? `${visibleNames.join(', ')} и ещё ${hiddenCount}`
+        : visibleNames.join(', ')
+      toastStore.show(t('squad.retirementNotice', { players }), 'info')
+    }
   }
 
   return {

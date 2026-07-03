@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
-import type { Formation, Player, PlayerPosition, TacticalStyle } from '@/types/football'
+import type { Formation, Player, PlayerPosition, PlayerStats, TacticalStyle } from '@/types/football'
 import { formatMoney } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import SectionHero from '@/components/ui/SectionHero.vue'
+import { seasonsUntilPlayerRetirement } from '@/data/gameConfig/career'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 
 type DragSource = 'starter' | 'substitute' | 'reserve'
 
@@ -25,6 +28,28 @@ interface PointerDragState {
   startY: number
 }
 
+interface PlayerStatisticsRow {
+  id: string
+  name: string
+  position: string
+  appearances: number
+  goals: number
+  assists: number
+  cleanSheets: number
+  yellowCards: number
+  redCards: number
+  averageRating: number
+  matchesRated: number
+}
+
+interface PlayerContractRow {
+  id: string
+  name: string
+  position: string
+  age: number
+  retirementSeasons: number
+}
+
 // ХРАНИЛИЩА СОСТАВА И ПОЛЬЗОВАТЕЛЬСКИХ УВЕДОМЛЕНИЙ
 const squadStore = useSquadStore()
 const toastStore = useToastStore()
@@ -34,6 +59,7 @@ const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)
 const selectedTouchPayload = ref<DragPayload | null>(null)
+const activeSection = ref<'lineup' | 'stats' | 'contracts'>('lineup')
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
 
@@ -101,6 +127,53 @@ const reservePlayers = computed(() => {
 const totalValue = computed(
   () => squadStore.club?.squad.reduce((sum, player) => sum + player.value, 0) ?? 0,
 )
+
+const playerStats = (playerId: string): PlayerStats =>
+  squadStore.gameStats[playerId] ?? {
+    appearances: 0,
+    goals: 0,
+    assists: 0,
+    yellowCards: 0,
+    redCards: 0,
+    cleanSheets: 0,
+    averageRating: 0,
+    matchesRated: 0,
+  }
+
+const statisticsRows = computed<PlayerStatisticsRow[]>(() =>
+  (squadStore.club?.squad ?? []).map((player) => {
+    const stats = playerStats(player.id)
+    return {
+      id: player.id,
+      name: `${player.firstName} ${player.lastName}`,
+      position: positionLabels[player.position],
+      appearances: stats.appearances,
+      goals: stats.goals,
+      assists: stats.assists,
+      cleanSheets: stats.cleanSheets,
+      yellowCards: stats.yellowCards,
+      redCards: stats.redCards,
+      averageRating: stats.averageRating,
+      matchesRated: stats.matchesRated,
+    }
+  }),
+)
+
+const contractRows = computed<PlayerContractRow[]>(() =>
+  (squadStore.club?.squad ?? []).map((player) => ({
+    id: player.id,
+    name: `${player.firstName} ${player.lastName}`,
+    position: positionLabels[player.position],
+    age: player.age,
+    retirementSeasons: seasonsUntilPlayerRetirement(player.age),
+  })),
+)
+
+const retirementLabel = (seasons: number): string => {
+  return seasons === 1
+    ? t('squad.retirement.currentSeason')
+    : t('squad.retirement.inSeasons', { count: seasons })
+}
 
 // ВОЗВРАЩАЕТ ПЕРВОЕ СООБЩЕНИЕ ОБ ОШИБКЕ СОСТАВА
 const validationMessage = computed(() => squadStore.validation.errors[0] ?? '')
@@ -485,6 +558,26 @@ onBeforeRouteLeave(() => {
     >
       <template #actions>
         <div class="flex flex-wrap items-end gap-2">
+          <div class="flex h-9 rounded-lg bg-emerald-950/60 p-1 text-xs font-black">
+            <button
+              type="button"
+              class="rounded-md px-3"
+              :class="activeSection === 'lineup' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              @click="activeSection = 'lineup'"
+            >Состав</button>
+            <button
+              type="button"
+              class="rounded-md px-3"
+              :class="activeSection === 'stats' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              @click="activeSection = 'stats'"
+            >Статистика</button>
+            <button
+              type="button"
+              class="rounded-md px-3"
+              :class="activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              @click="activeSection = 'contracts'"
+            >{{ t('squad.contracts') }}</button>
+          </div>
           <div
             class="flex h-9 items-center gap-1 self-end rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm font-black text-white"
           >
@@ -534,7 +627,7 @@ onBeforeRouteLeave(() => {
     </SectionHero>
 
     <!-- ТАКТИЧЕСКАЯ СХЕМА И СПИСОК КОМАНДЫ -->
-    <div class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
+    <div v-if="activeSection === 'lineup'" class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
       <!-- СТАРТОВЫЙ СОСТАВ И ЗАПАСНЫЕ -->
       <div
         class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
@@ -858,5 +951,85 @@ onBeforeRouteLeave(() => {
         </div>
       </aside>
     </div>
+    <article
+      v-else-if="activeSection === 'stats'"
+      class="min-h-0 flex-1 overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
+    >
+      <DataTable
+        :value="statisticsRows"
+        data-key="id"
+        sort-field="appearances"
+        :sort-order="-1"
+        removable-sort
+        striped-rows
+        size="small"
+        scrollable
+        scroll-height="flex"
+        class="h-full text-sm"
+        table-style="min-width: 760px"
+      >
+        <Column field="name" header="Игрок" sortable frozen>
+          <template #body="{ data }">
+            <span class="whitespace-nowrap font-bold text-slate-900">{{ data.name }}</span>
+          </template>
+        </Column>
+        <Column field="position" header="Поз." sortable />
+        <Column field="appearances" header="Матчи" sortable class="text-right" />
+        <Column field="goals" header="Голы" sortable class="text-right font-semibold" />
+        <Column field="assists" header="ГП" sortable class="text-right" />
+        <Column field="cleanSheets" header="Сух." sortable class="text-right" />
+        <Column field="yellowCards" header="ЖК" sortable class="text-right" />
+        <Column field="redCards" header="КК" sortable class="text-right" />
+        <Column field="averageRating" header="Оценка" sortable class="text-right">
+          <template #body="{ data }">
+            <span class="font-black text-emerald-700">
+              {{ data.matchesRated ? data.averageRating.toFixed(2) : '—' }}
+            </span>
+          </template>
+        </Column>
+      </DataTable>
+    </article>
+    <article
+      v-else
+      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
+    >
+      <div class="mb-4">
+        <h2 class="text-lg font-black text-slate-950">{{ t('squad.contracts') }}</h2>
+        <p class="mt-1 text-sm text-slate-500">{{ t('squad.retirement.description') }}</p>
+      </div>
+      <DataTable
+        :value="contractRows"
+        data-key="id"
+        sort-field="retirementSeasons"
+        :sort-order="1"
+        removable-sort
+        striped-rows
+        size="small"
+        scrollable
+        scroll-height="flex"
+        class="min-h-0 flex-1 text-sm"
+        table-style="min-width: 640px"
+      >
+        <Column field="name" :header="t('squad.retirement.player')" sortable frozen>
+          <template #body="{ data }">
+            <span class="whitespace-nowrap font-bold text-slate-900">{{ data.name }}</span>
+          </template>
+        </Column>
+        <Column field="position" :header="t('squad.retirement.position')" sortable />
+        <Column field="age" :header="t('squad.retirement.age')" sortable class="text-right" />
+        <Column
+          field="retirementSeasons"
+          :header="t('squad.retirement.departure')"
+          sortable
+        >
+          <template #body="{ data }">
+            <span
+              class="inline-flex rounded-full px-2.5 py-1 text-xs font-bold"
+              :class="data.retirementSeasons === 1 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'"
+            >{{ retirementLabel(data.retirementSeasons) }}</span>
+          </template>
+        </Column>
+      </DataTable>
+    </article>
   </section>
 </template>

@@ -11,9 +11,17 @@ import {
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
 import { useCompetitionStore } from '@/stores/competitions/competitionStore'
 import { useGameStore } from '@/stores/game/gameStore'
-import type { Club, LeagueTableRow } from '@/types/football'
+import type {
+  Club,
+  CompetitionPlayerLeaderboards,
+  LeagueTableRow,
+  Player,
+  PlayerStats,
+} from '@/types/football'
 
 import LeagueTable from '@/components/ui/LeagueTable.vue'
+import LeagueAnalyticsTable from '@/components/ui/LeagueAnalyticsTable.vue'
+import PlayerLeaderboards from '@/components/ui/PlayerLeaderboards.vue'
 import SectionHero from '@/components/ui/SectionHero.vue'
 
 interface LeagueOption {
@@ -46,6 +54,7 @@ const playerLeagueKey = computed((): string =>
 
 // КЛЮЧ ЛИГИ, КОТОРУЮ ПОЛЬЗОВАТЕЛЬ ПРОСМАТРИВАЕТ СЕЙЧАС
 const selectedLeagueKey = ref(playerLeagueKey.value)
+const activeTab = ref<'table' | 'analytics' | 'players'>('table')
 
 // СИНХРОНИЗИРУЕТ ВЫБРАННУЮ ЛИГУ С КЛУБОМ ИГРОКА
 watch(
@@ -134,6 +143,49 @@ const selectedRows = computed((): LeagueTableRow[] => {
 const selectedClubId = computed((): string | undefined =>
   isCurrentChampionship.value ? gameStore.game?.selectedClubId : undefined,
 )
+
+const selectedCompetitionClubs = computed(() =>
+  selectedClubs.value.filter(
+    (club) => getClubCompetitionId(club) === selectedLeague.value.competitionId,
+  ),
+)
+
+const selectedPlayerStats = computed<Record<string, PlayerStats>>(
+  () => gameStore.game?.worldPlayerStats?.[selectedLeague.value.championshipId] ?? {},
+)
+
+const playerLeaderboards = computed((): CompetitionPlayerLeaderboards => {
+  const entries = selectedCompetitionClubs.value.flatMap((club) =>
+    club.squad.map((player) => ({ club, player, stats: selectedPlayerStats.value[player.id] })),
+  )
+  const top = (
+    field: 'goals' | 'assists' | 'cleanSheets' | 'yellowCards' | 'redCards',
+    predicate: (player: Player) => boolean = () => true,
+  ) =>
+    entries
+      .filter(({ player, stats }) => predicate(player) && (stats?.[field] ?? 0) > 0)
+      .sort(
+        (left, right) =>
+          (right.stats?.[field] ?? 0) - (left.stats?.[field] ?? 0) ||
+          (right.stats?.appearances ?? 0) - (left.stats?.appearances ?? 0) ||
+          left.player.lastName.localeCompare(right.player.lastName),
+      )
+      .slice(0, 10)
+      .map(({ club, player, stats }) => ({
+        playerId: player.id,
+        clubId: club.id,
+        playerName: `${player.firstName} ${player.lastName}`,
+        value: stats?.[field] ?? 0,
+      }))
+
+  return {
+    goals: top('goals'),
+    assists: top('assists'),
+    cleanSheets: top('cleanSheets', (player) => player.position === 'GK'),
+    yellowCards: top('yellowCards'),
+    redCards: top('redCards'),
+  }
+})
 </script>
 
 <template>
@@ -192,15 +244,39 @@ const selectedClubId = computed((): string | undefined =>
             }}
           </p>
         </div>
+        <div class="flex rounded-lg bg-slate-100 p-1 text-xs font-black text-slate-500">
+          <button
+            v-for="tab in ([['table', 'Таблица'], ['analytics', 'Аналитика'], ['players', 'Игроки']] as const)"
+            :key="tab[0]"
+            type="button"
+            class="rounded-md px-3 py-2 transition"
+            :class="activeTab === tab[0] ? 'bg-white text-emerald-800 shadow-sm' : 'hover:text-slate-800'"
+            @click="activeTab = tab[0]"
+          >{{ tab[1] }}</button>
+        </div>
       </div>
 
       <LeagueTable
+        v-if="activeTab === 'table'"
         class="min-h-0 flex-1 overflow-auto p-3 sm:p-5"
         :rows="selectedRows"
         :clubs="selectedClubs"
         :selected-club-id="selectedClubId"
         :country-id="selectedLeague.championshipId"
         :competition-id="selectedLeague.competitionId"
+      />
+      <LeagueAnalyticsTable
+        v-else-if="activeTab === 'analytics'"
+        class="min-h-0 flex-1"
+        :rows="selectedRows"
+        :clubs="selectedClubs"
+        :selected-club-id="selectedClubId"
+      />
+      <PlayerLeaderboards
+        v-else
+        class="min-h-0 flex-1"
+        :leaderboards="playerLeaderboards"
+        :clubs="selectedClubs"
       />
     </article>
   </section>

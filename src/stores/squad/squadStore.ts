@@ -10,7 +10,7 @@ import {
 } from '@/domain/season/squadSelectionService'
 import { useGameStore } from '@/stores/game/gameStore'
 import { t } from '@/plugins/i18n/i18n'
-import type { Club, ClubLineup, Formation, FormationSlot, TacticalStyle } from '@/types/football'
+import type { Club, ClubLineup, Formation, FormationSlot, PlayerStats, TacticalStyle } from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 import { calculateClubRating } from '@/domain/club/teamRating'
 
@@ -20,6 +20,7 @@ export const useSquadStore = defineStore('squad', () => {
 
   // ВОЗВРАЩАЕТ УПРАВЛЯЕМЫЙ КЛУБ
   const club = computed((): Club | undefined => gameStore.selectedClub)
+  const gameStats = computed<Record<string, PlayerStats>>(() => gameStore.game?.playerStats ?? {})
 
   // ВОЗВРАЩАЕТ СОХРАНЁННЫЙ СОСТАВ УПРАВЛЯЕМОГО КЛУБА
   const lineup = computed<ClubLineup | undefined>(() => {
@@ -250,6 +251,7 @@ export const useSquadStore = defineStore('squad', () => {
 
   return {
     club,
+    gameStats,
     lineup,
     teamRating,
     slots,

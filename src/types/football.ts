@@ -115,6 +115,8 @@ export interface GoalEvent {
   clubId: string
   playerId: string
   playerName: string
+  assistPlayerId?: string
+  assistPlayerName?: string
 }
 
 export type MatchSimulationDetail = 'full' | 'medium' | 'fast'
@@ -217,6 +219,11 @@ export interface LeagueTableRow {
   goalDifference: number
   points: number
   position: number
+  xGFor?: number
+  xGAgainst?: number
+  shotsFor?: number
+  shotsAgainst?: number
+  recentForm?: Array<'W' | 'D' | 'L'>
 }
 
 // КУБКОВАЯ СЕТКА, РАУНДЫ И ПАРЫ
@@ -253,9 +260,27 @@ export interface CupState {
 export interface PlayerStats {
   appearances: number
   goals: number
+  assists: number
   yellowCards: number
+  redCards: number
+  cleanSheets: number
   averageRating: number
   matchesRated: number
+}
+
+export interface PlayerLeaderboardEntry {
+  playerId: string
+  clubId: string
+  playerName: string
+  value: number
+}
+
+export interface CompetitionPlayerLeaderboards {
+  goals: PlayerLeaderboardEntry[]
+  assists: PlayerLeaderboardEntry[]
+  cleanSheets: PlayerLeaderboardEntry[]
+  yellowCards: PlayerLeaderboardEntry[]
+  redCards: PlayerLeaderboardEntry[]
 }
 
 // КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
@@ -277,6 +302,7 @@ export interface GameState {
   scheduleConflictResolutions?: import('@/data/gameConfig/types').ScheduleConflictResolution[]
   lineups: Record<string, ClubLineup>
   playerStats: Record<string, PlayerStats>
+  worldPlayerStats?: Partial<Record<ChampionshipId, Record<string, PlayerStats>>>
   academies: Record<string, AcademyState>
   lastCompletedOrder: number
 }

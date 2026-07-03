@@ -366,7 +366,14 @@ export const promoteToFirstTeam = (state: GameState, playerId: string): AcademyM
       playerStats: {
         ...state.playerStats,
         [player.id]: state.playerStats[player.id] ?? {
-          appearances: 0, goals: 0, yellowCards: 0, averageRating: 0, matchesRated: 0,
+          appearances: 0,
+          goals: 0,
+          assists: 0,
+          yellowCards: 0,
+          redCards: 0,
+          cleanSheets: 0,
+          averageRating: 0,
+          matchesRated: 0,
         },
       },
     },

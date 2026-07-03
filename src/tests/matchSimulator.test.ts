@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { createMatchTimeline, simulateMatch } from '@/domain/match/matchSimulator'
+import {
+  createMatchTimeline,
+  removeGoalsAfterPlayerExit,
+  simulateMatch,
+} from '@/domain/match/matchSimulator'
 import { normalizeCardEvents } from '@/domain/match/disciplineService'
 import { applySuspensionsAfterMatch } from '@/domain/season/playerAvailability'
 import {
@@ -21,6 +25,67 @@ const playedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => ({
 })
 
 describe('matchSimulator', () => {
+  it('removes goals and assists recorded after a player left the pitch', () => {
+    const goals = removeGoalsAfterPlayerExit(
+      [
+        { minute: 40, clubId: 'club', playerId: 'sent-off', playerName: 'Player' },
+        { minute: 80, clubId: 'club', playerId: 'sent-off', playerName: 'Player' },
+        {
+          minute: 75,
+          clubId: 'club',
+          playerId: 'active',
+          playerName: 'Active',
+          assistPlayerId: 'injured',
+          assistPlayerName: 'Injured',
+        },
+      ],
+      [{ minute: 50, clubId: 'club', playerId: 'sent-off', card: 'red' }],
+      [{ minute: 60, clubId: 'club', playerId: 'injured' }],
+    )
+
+    expect(goals).toHaveLength(2)
+    expect(goals.some((goal) => goal.minute === 80)).toBe(false)
+    expect(goals.find((goal) => goal.minute === 75)?.assistPlayerId).toBeUndefined()
+  })
+
+  it('never lets an injured or dismissed player score later in a full match', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    for (let seed = 1; seed <= 120; seed += 1) {
+      const result = createMatchTimeline({
+        matchId: `departure-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup: playedLineup(home, autoSelectLineup(home)),
+        awayLineup: playedLineup(away, autoSelectLineup(away)),
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        seed,
+      }).finalResult
+      const departures = [
+        ...(result.cards ?? [])
+          .filter((card) => card.card === 'red')
+          .map((card) => ({ playerId: card.playerId, minute: card.minute ?? 90 })),
+        ...(result.injuries ?? []).map((injury) => ({
+          playerId: injury.playerId,
+          minute: injury.minute ?? 90,
+        })),
+      ]
+      for (const departure of departures) {
+        expect(
+          result.goals.some(
+            (goal) => goal.playerId === departure.playerId && goal.minute > departure.minute,
+          ),
+        ).toBe(false)
+        expect(
+          result.goals.some(
+            (goal) => goal.assistPlayerId === departure.playerId && goal.minute > departure.minute,
+          ),
+        ).toBe(false)
+      }
+    }
+  })
+
   it('turns a second yellow card for the same player into a dismissal', () => {
     const cards = normalizeCardEvents([
       { minute: 24, clubId: 'club', playerId: 'player', card: 'yellow' },

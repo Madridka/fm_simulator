@@ -4,6 +4,18 @@ import { useI18n } from 'vue-i18n'
 import { useAcademyStore } from '@/stores/academy/academyStore'
 import { formatMoney } from '@/utils/format'
 import type { PlayerPosition } from '@/types/football'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+
+interface AcademyPlayerRow {
+  id: string
+  name: string
+  age: number
+  position: string
+  rating: number
+  potential: number
+  value: number
+}
 
 const academyStore = useAcademyStore()
 const { t } = useI18n()
@@ -15,6 +27,18 @@ const averagePotential = computed(() => {
 })
 
 const positionLabel = (position: PlayerPosition): string => t(`common.positionShort.${position}`)
+
+const reservePlayerRows = computed<AcademyPlayerRow[]>(() =>
+  academyStore.reservePlayers.map((player) => ({
+    id: player.id,
+    name: `${player.firstName} ${player.lastName}`,
+    age: player.age,
+    position: positionLabel(player.position),
+    rating: player.rating,
+    potential: player.potential,
+    value: player.value,
+  })),
+)
 </script>
 
 <template>
@@ -85,59 +109,61 @@ const positionLabel = (position: PlayerPosition): string => t(`common.positionSh
         class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-white/70 bg-white/90 p-5 shadow-sm"
       >
         <h2 class="text-lg font-bold text-slate-950">{{ t('academy.players') }}</h2>
-        <div class="mt-4 min-h-0 flex-1 overflow-auto">
-          <table v-if="academyStore.reservePlayers.length" class="w-full min-w-[720px] text-sm">
-            <thead class="sticky top-0 z-10 bg-white text-left text-xs uppercase text-slate-500">
-              <tr>
-                <th class="pb-3">{{ t('academy.players') }}</th>
-                <th class="pb-3">{{ t('transfers.position') }}</th>
-                <th class="pb-3">{{ t('selectClub.rating') }}</th>
-                <th class="pb-3">{{ t('academy.potential') }}</th>
-                <th class="pb-3">{{ t('academy.value') }}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="player in academyStore.reservePlayers"
-                :key="player.id"
-                class="border-t border-slate-100"
-              >
-                <td class="py-3">
-                  <div class="font-bold text-slate-950">
-                    {{ player.firstName }} {{ player.lastName }}
-                  </div>
-                  <div class="text-xs text-slate-500">
-                    {{ t('common.age', { age: player.age }) }}
-                  </div>
-                </td>
-                <td>{{ positionLabel(player.position) }}</td>
-                <td class="font-black">{{ player.rating }}</td>
-                <td class="font-black text-emerald-700">{{ player.potential }}</td>
-                <td>{{ formatMoney(player.value) }}</td>
-                <td class="py-2 text-right">
-                  <div class="flex justify-end gap-2">
-                    <Button
-                      size="small"
-                      :label="t('academy.promote')"
-                      @click="academyStore.promote(player.id)"
-                    /><Button
-                      size="small"
-                      severity="secondary"
-                      :label="t('transfers.sell')"
-                      @click="academyStore.sell(player.id)"
-                    /><Button
-                      size="small"
-                      severity="secondary"
-                      :label="t('academy.release')"
-                      @click="academyStore.release(player.id)"
-                    />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p v-else class="py-8 text-center text-sm text-slate-500">{{ t('academy.noPlayers') }}</p>
+        <div class="mt-4 min-h-0 flex-1 overflow-hidden">
+          <DataTable
+            :value="reservePlayerRows"
+            data-key="id"
+            sort-field="rating"
+            :sort-order="-1"
+            removable-sort
+            striped-rows
+            size="small"
+            scrollable
+            scroll-height="flex"
+            class="h-full text-sm"
+            table-style="min-width: 720px"
+          >
+            <template #empty>{{ t('academy.noPlayers') }}</template>
+            <Column field="name" :header="t('academy.players')" sortable frozen>
+              <template #body="{ data }">
+                <div class="whitespace-nowrap font-bold text-slate-950">{{ data.name }}</div>
+                <div class="text-xs text-slate-500">{{ t('common.age', { age: data.age }) }}</div>
+              </template>
+            </Column>
+            <Column field="position" :header="t('transfers.position')" sortable />
+            <Column field="rating" :header="t('selectClub.rating')" sortable class="font-black" />
+            <Column field="potential" :header="t('academy.potential')" sortable>
+              <template #body="{ data }">
+                <span class="font-black text-emerald-700">{{ data.potential }}</span>
+              </template>
+            </Column>
+            <Column field="value" :header="t('academy.value')" sortable>
+              <template #body="{ data }">{{ formatMoney(data.value) }}</template>
+            </Column>
+            <Column header="">
+              <template #body="{ data }">
+                <div class="flex justify-end gap-2">
+                  <Button
+                    size="small"
+                    :label="t('academy.promote')"
+                    @click="academyStore.promote(data.id)"
+                  />
+                  <Button
+                    size="small"
+                    severity="secondary"
+                    :label="t('transfers.sell')"
+                    @click="academyStore.sell(data.id)"
+                  />
+                  <Button
+                    size="small"
+                    severity="secondary"
+                    :label="t('academy.release')"
+                    @click="academyStore.release(data.id)"
+                  />
+                </div>
+              </template>
+            </Column>
+          </DataTable>
         </div>
       </article>
 

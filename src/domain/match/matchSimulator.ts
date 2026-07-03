@@ -264,6 +264,31 @@ const pickGoalScorer = (players: readonly Player[], random: RandomGenerator): Pl
   return fallback
 }
 
+const pickGoalAssister = (
+  players: readonly Player[],
+  scorerId: string,
+  random: RandomGenerator,
+): Player | undefined => {
+  if (!random.chance(0.78)) return undefined
+  const candidates = players.filter((player) => player.id !== scorerId)
+  if (!candidates.length) return undefined
+  const weight = (player: Player): number => {
+    if (player.position === 'CAM') return 5
+    if (player.position === 'LW' || player.position === 'RW') return 4
+    if (player.position === 'CM') return 3.2
+    if (player.position === 'ST') return 2.4
+    if (player.position === 'CDM') return 1.6
+    return 0.8
+  }
+  const total = candidates.reduce((sum, player) => sum + weight(player), 0)
+  let roll = random.next() * total
+  for (const player of candidates) {
+    roll -= weight(player)
+    if (roll <= 0) return player
+  }
+  return candidates[0]
+}
+
 // ИЗМЕНЯЕТ ВНУТРЕННЮЮ ОЦЕНКУ ИГРОКА ДЛЯ ВЫБОРА ЛУЧШЕГО
 const addPlayerScore = (scores: Map<string, number>, playerId: string, delta: number): void => {
   scores.set(playerId, (scores.get(playerId) ?? 0) + delta)
@@ -331,20 +356,29 @@ const processAttack = (
   }
 
   const scorer = pickGoalScorer(attacking.players, random)
+  const assister = pickGoalAssister(attacking.players, scorer.id, random)
   addPlayerScore(state.playerScores, scorer.id, 24)
+  if (assister) addPlayerScore(state.playerScores, assister.id, 10)
   addGoal({
     minute,
     clubId: attackingClub.id,
     playerId: scorer.id,
     playerName: formatPlayerName(scorer.firstName, scorer.lastName),
+    assistPlayerId: assister?.id,
+    assistPlayerName: assister
+      ? formatPlayerName(assister.firstName, assister.lastName)
+      : undefined,
   })
 }
 
 // РАССЧИТЫВАЕТ ВЕРОЯТНОСТЬ НАРУШЕНИЯ И КАРТОЧКИ НА МИНУТЕ
 const processDiscipline = (
+  minute: number,
+  clubId: string,
   team: TeamMetrics,
   stats: MatchTeamStats,
   state: RunningState,
+  cards: CardEvent[],
   random: RandomGenerator,
 ): void => {
   const config = matchSimulationConfig.yellowCard
@@ -357,13 +391,59 @@ const processDiscipline = (
     config.minChancePerMinute,
     config.maxChancePerMinute,
   )
-  if (!random.chance(chance)) {
+  if (!team.players.length || !random.chance(chance)) {
     return
   }
 
   stats.yellowCards += 1
   const bookedPlayer = random.pick(team.players)
+  cards.push({ minute, clubId, playerId: bookedPlayer.id, card: 'yellow' })
   addPlayerScore(state.playerScores, bookedPlayer.id, -6)
+  const previousYellow = cards.some(
+    (card, index) =>
+      index < cards.length - 1 &&
+      card.clubId === clubId &&
+      card.playerId === bookedPlayer.id &&
+      card.card === 'yellow',
+  )
+  if (previousYellow) {
+    stats.redCards = (stats.redCards ?? 0) + 1
+    team.players.splice(
+      team.players.findIndex((player) => player.id === bookedPlayer.id),
+      1,
+    )
+  }
+}
+
+export const removeGoalsAfterPlayerExit = (
+  goals: readonly GoalEvent[],
+  cards: readonly CardEvent[],
+  injuries: readonly InjuryEvent[],
+): GoalEvent[] => {
+  const exitMinuteByPlayer = new Map<string, number>()
+  const playerKey = (clubId: string, playerId: string): string => `${clubId}:${playerId}`
+  const registerExit = (clubId: string, playerId: string, minute: number | undefined): void => {
+    if (minute === undefined) return
+    const key = playerKey(clubId, playerId)
+    exitMinuteByPlayer.set(key, Math.min(exitMinuteByPlayer.get(key) ?? 91, minute))
+  }
+  cards
+    .filter((card) => card.card === 'red')
+    .forEach((card) => registerExit(card.clubId, card.playerId, card.minute))
+  injuries.forEach((injury) => registerExit(injury.clubId, injury.playerId, injury.minute))
+
+  return goals.flatMap((goal) => {
+    const scorerExit = exitMinuteByPlayer.get(playerKey(goal.clubId, goal.playerId))
+    if (scorerExit !== undefined && goal.minute >= scorerExit) return []
+    const assisterExit = goal.assistPlayerId
+      ? exitMinuteByPlayer.get(playerKey(goal.clubId, goal.assistPlayerId))
+      : undefined
+    return [
+      assisterExit !== undefined && goal.minute >= assisterExit
+        ? { ...goal, assistPlayerId: undefined, assistPlayerName: undefined }
+        : { ...goal },
+    ]
+  })
 }
 
 // ВЫБИРАЕТ ЛУЧШЕГО ИГРОКА ПО НАКОПЛЕННЫМ БАЛЛАМ СОБЫТИЙ
@@ -404,11 +484,16 @@ const createGoalEvents = (
 ): GoalEvent[] =>
   Array.from({ length: count }, () => {
     const scorer = pickGoalScorer(players, random)
+    const assister = pickGoalAssister(players, scorer.id, random)
     return {
       minute: random.int(3, 90),
       clubId: club.id,
       playerId: scorer.id,
       playerName: formatPlayerName(scorer.firstName, scorer.lastName),
+      assistPlayerId: assister?.id,
+      assistPlayerName: assister
+        ? formatPlayerName(assister.firstName, assister.lastName)
+        : undefined,
     }
   })
 
@@ -654,8 +739,77 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
   const away = createTeamMetrics(input.awayClub, input.awayLineup, false, input.neutralVenue)
   const state = initializeRunningState(home, away, random)
   const minutes: MinuteSnapshot[] = []
+  const rawCards: CardEvent[] = []
+  const injuries = createInjuryEvents(
+    home,
+    away,
+    input.homeClub.id,
+    input.awayClub.id,
+    random,
+    true,
+  )
+  const plannedSubstitutions = [
+    ...createSubstitutions(input.homeClub, input.homeLineup, random),
+    ...createSubstitutions(input.awayClub, input.awayLineup, random),
+  ]
+  const substitutions: SubstitutionEvent[] = []
+  const directRedSchedules = [
+    ...(random.chance(matchSimulationConfig.redCard.chancePerTeam)
+      ? [{ minute: random.int(35, 89), clubId: input.homeClub.id }]
+      : []),
+    ...(random.chance(matchSimulationConfig.redCard.chancePerTeam)
+      ? [{ minute: random.int(35, 89), clubId: input.awayClub.id }]
+      : []),
+  ]
+  const teamFor = (clubId: string): TeamMetrics =>
+    clubId === input.homeClub.id ? home : away
+  const clubFor = (clubId: string): Club =>
+    clubId === input.homeClub.id ? input.homeClub : input.awayClub
+  const removeActivePlayer = (team: TeamMetrics, playerId: string): boolean => {
+    const index = team.players.findIndex((player) => player.id === playerId)
+    if (index < 0) return false
+    team.players.splice(index, 1)
+    return true
+  }
 
   for (let minute = 1; minute <= 90; minute += 1) {
+    for (const injury of injuries.filter((event) => event.minute === minute)) {
+      const team = teamFor(injury.clubId)
+      if (!team.players.some((player) => player.id === injury.playerId) && team.players.length) {
+        injury.playerId = random.pick(team.players).id
+      }
+      removeActivePlayer(team, injury.playerId)
+    }
+
+    for (const schedule of directRedSchedules.filter((event) => event.minute === minute)) {
+      const team = teamFor(schedule.clubId)
+      if (!team.players.length) continue
+      const dismissedPlayer = random.pick(team.players)
+      rawCards.push({
+        minute,
+        clubId: schedule.clubId,
+        playerId: dismissedPlayer.id,
+        card: 'red',
+        dismissalReason: 'direct-red',
+      })
+      const stats = schedule.clubId === input.homeClub.id ? state.homeStats : state.awayStats
+      stats.redCards = (stats.redCards ?? 0) + 1
+      addPlayerScore(state.playerScores, dismissedPlayer.id, -18)
+      removeActivePlayer(team, dismissedPlayer.id)
+    }
+
+    for (const substitution of plannedSubstitutions.filter((event) => event.minute === minute)) {
+      const team = teamFor(substitution.clubId)
+      if (!removeActivePlayer(team, substitution.playerOutId)) continue
+      const playerIn = clubFor(substitution.clubId).squad.find(
+        (player) => player.id === substitution.playerInId,
+      )
+      if (!playerIn || team.players.some((player) => player.id === playerIn.id)) continue
+      team.players.push(playerIn)
+      state.playerScores.set(playerIn.id, playerEffectiveRating(playerIn) + random.int(-5, 5))
+      substitutions.push(substitution)
+    }
+
     processAttack(
       minute,
       input.homeClub,
@@ -684,8 +838,24 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       random,
     )
 
-    processDiscipline(home, state.homeStats, state, random)
-    processDiscipline(away, state.awayStats, state, random)
+    processDiscipline(
+      minute,
+      input.homeClub.id,
+      home,
+      state.homeStats,
+      state,
+      rawCards,
+      random,
+    )
+    processDiscipline(
+      minute,
+      input.awayClub.id,
+      away,
+      state.awayStats,
+      state,
+      rawCards,
+      random,
+    )
 
     minutes.push({
       minute,
@@ -715,34 +885,7 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
     }
   }
 
-  const cards = createCardEvents(
-    home,
-    away,
-    input.homeClub.id,
-    input.awayClub.id,
-    state.homeStats.yellowCards,
-    state.awayStats.yellowCards,
-    random,
-    true,
-  )
-  const injuries = createInjuryEvents(
-    home,
-    away,
-    input.homeClub.id,
-    input.awayClub.id,
-    random,
-    true,
-  )
-  const substitutions = [
-    ...createSubstitutions(input.homeClub, input.homeLineup, random),
-    ...createSubstitutions(input.awayClub, input.awayLineup, random),
-  ]
-  state.homeStats.redCards = cards.filter(
-    (card) => card.clubId === input.homeClub.id && card.card === 'red',
-  ).length
-  state.awayStats.redCards = cards.filter(
-    (card) => card.clubId === input.awayClub.id && card.card === 'red',
-  ).length
+  const cards = normalizeCardEvents(rawCards)
   const result: MatchResult = {
     detail: 'full',
     homeGoals: state.homeGoals,
@@ -806,14 +949,14 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
     mediumConfig.minXG,
     mediumConfig.maxXG,
   )
-  const homeGoals = sampleGoals(homeXG, random)
-  const awayGoals = sampleGoals(awayXG, random)
-  const goals = [
-    ...createGoalEvents(homeGoals, input.homeClub, home.players, random),
-    ...createGoalEvents(awayGoals, input.awayClub, away.players, random),
+  const sampledHomeGoals = sampleGoals(homeXG, random)
+  const sampledAwayGoals = sampleGoals(awayXG, random)
+  const generatedGoals = [
+    ...createGoalEvents(sampledHomeGoals, input.homeClub, home.players, random),
+    ...createGoalEvents(sampledAwayGoals, input.awayClub, away.players, random),
   ].sort((left, right) => left.minute - right.minute)
-  const homeShots = Math.max(homeGoals, Math.round(homeXG * 3.5) + random.int(3, 7))
-  const awayShots = Math.max(awayGoals, Math.round(awayXG * 3.5) + random.int(3, 7))
+  const homeShots = Math.max(sampledHomeGoals, Math.round(homeXG * 3.5) + random.int(3, 7))
+  const awayShots = Math.max(sampledAwayGoals, Math.round(awayXG * 3.5) + random.int(3, 7))
   const homeYellowCards = random.int(
     matchSimulationConfig.yellowCard.mediumMatchMin,
     matchSimulationConfig.yellowCard.mediumMatchMax,
@@ -840,6 +983,9 @@ const simulateMediumMatch = (input: MatchSimulationInput): MatchResult => {
     random,
     true,
   )
+  const goals = removeGoalsAfterPlayerExit(generatedGoals, cards, injuries)
+  const homeGoals = goals.filter((goal) => goal.clubId === input.homeClub.id).length
+  const awayGoals = goals.filter((goal) => goal.clubId === input.awayClub.id).length
 
   const result: MatchResult = {
     detail: 'medium',
@@ -906,16 +1052,50 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
     config.minXG,
     config.maxXG,
   )
-  const homeGoals = sampleGoals(homeXG, random)
-  const awayGoals = sampleGoals(awayXG, random)
+  const sampledHomeGoals = sampleGoals(homeXG, random)
+  const sampledAwayGoals = sampleGoals(awayXG, random)
+  const fastPlayers = (club: Club, lineup?: PlayedLineup): Player[] => {
+    if (lineup) return getLineupPlayers(club, lineup)
+    const available = club.squad.filter((player) => !isPlayerUnavailable(player))
+    return [...(available.length >= 11 ? available : club.squad)]
+      .sort((left, right) => playerEffectiveRating(right) - playerEffectiveRating(left))
+      .slice(0, 11)
+  }
+  const homePlayers = fastPlayers(input.homeClub, input.homeLineup)
+  const awayPlayers = fastPlayers(input.awayClub, input.awayLineup)
+  const generatedGoals = [
+    ...createGoalEvents(sampledHomeGoals, input.homeClub, homePlayers, random),
+    ...createGoalEvents(sampledAwayGoals, input.awayClub, awayPlayers, random),
+  ].sort((left, right) => left.minute - right.minute)
+  const homeShots = Math.max(sampledHomeGoals, Math.round(homeXG * 4) + random.int(3, 8))
+  const awayShots = Math.max(sampledAwayGoals, Math.round(awayXG * 4) + random.int(3, 8))
+  const homeYellowCards = random.int(0, 4)
+  const awayYellowCards = random.int(0, 4)
   const injuries: InjuryEvent[] = []
-  const cards: CardEvent[] = []
+  const cards: CardEvent[] = [
+    ...Array.from({ length: homeYellowCards }, () => ({
+      minute: random.int(8, 89),
+      clubId: input.homeClub.id,
+      playerId: random.pick(homePlayers).id,
+      card: 'yellow' as const,
+    })),
+    ...Array.from({ length: awayYellowCards }, () => ({
+      minute: random.int(8, 89),
+      clubId: input.awayClub.id,
+      playerId: random.pick(awayPlayers).id,
+      card: 'yellow' as const,
+    })),
+  ]
 
   if (random.chance(matchSimulationConfig.injury.fastMatchChance)) {
     const club = random.chance(0.5) ? input.homeClub : input.awayClub
     const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
     if (availablePlayers.length) {
       injuries.push({
+        minute: random.int(
+          matchSimulationConfig.injury.minMinute,
+          matchSimulationConfig.injury.maxMinute,
+        ),
         clubId: club.id,
         playerId: random.pick(availablePlayers).id,
         durationMatchdays: random.int(
@@ -930,6 +1110,7 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
     const availablePlayers = club.squad.filter((player) => !isPlayerUnavailable(player))
     if (availablePlayers.length) {
       cards.push({
+        minute: random.int(35, 89),
         clubId: club.id,
         playerId: random.pick(availablePlayers).id,
         card: 'red',
@@ -939,6 +1120,9 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
   }
 
   const normalizedCards = normalizeCardEvents(cards)
+  const goals = removeGoalsAfterPlayerExit(generatedGoals, normalizedCards, injuries)
+  const homeGoals = goals.filter((goal) => goal.clubId === input.homeClub.id).length
+  const awayGoals = goals.filter((goal) => goal.clubId === input.awayClub.id).length
 
   return {
     detail: 'fast',
@@ -950,28 +1134,30 @@ export const simulateFastMatch = (input: FastMatchSimulationInput): MatchResult 
         : awayGoals > homeGoals
           ? input.awayClub.id
           : undefined,
-    goals: [],
+    goals,
     stats: {
       home: {
         possession: 50,
-        shots: 0,
-        shotsOnTarget: 0,
-        yellowCards: 0,
+        shots: homeShots,
+        shotsOnTarget: Math.max(homeGoals, Math.round(homeShots * 0.4)),
+        yellowCards: homeYellowCards,
         redCards: normalizedCards.filter(
           (card) => card.clubId === input.homeClub.id && card.card === 'red',
         ).length,
+        xG: Number(homeXG.toFixed(2)),
       },
       away: {
         possession: 50,
-        shots: 0,
-        shotsOnTarget: 0,
-        yellowCards: 0,
+        shots: awayShots,
+        shotsOnTarget: Math.max(awayGoals, Math.round(awayShots * 0.4)),
+        yellowCards: awayYellowCards,
         redCards: normalizedCards.filter(
           (card) => card.clubId === input.awayClub.id && card.card === 'red',
         ).length,
+        xG: Number(awayXG.toFixed(2)),
       },
     },
-    bestPlayerId: '',
+    bestPlayerId: goals[0]?.playerId ?? random.pick([...homePlayers, ...awayPlayers]).id,
     cards: normalizedCards.length ? normalizedCards : undefined,
     injuries: injuries.length ? injuries : undefined,
   }

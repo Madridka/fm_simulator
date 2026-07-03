@@ -1,4 +1,4 @@
-import { careerConfig } from '@/data/gameConfig/career'
+import { careerConfig, playerRetirementAge } from '@/data/gameConfig/career'
 import {
   createAcademies,
   ensureAcademies,
@@ -108,9 +108,80 @@ export const recoverInjuredPlayersBeforeOrder = (clubs: readonly Club[], order: 
   }))
 
 // ВОССТАНАВЛИВАЕТ ИГРОКОВ ПЕРЕД НАЧАЛОМ ИГРОВОГО ДНЯ
+const millisecondsPerDay = 24 * 60 * 60 * 1_000
+
+const restDaysBetween = (previousDate: string, currentDate: string): number => {
+  const previousTime = Date.parse(previousDate)
+  const currentTime = Date.parse(currentDate)
+  if (!Number.isFinite(previousTime) || !Number.isFinite(currentTime)) return 0
+  return Math.max(0, Math.round((currentTime - previousTime) / millisecondsPerDay) - 1)
+}
+
+// ВОССТАНАВЛИВАЕТ ФИЗИЧЕСКУЮ ФОРМУ ЗА КАЖДЫЙ КАЛЕНДАРНЫЙ ДЕНЬ БЕЗ МАТЧА
+export const recoverFitnessBeforeOrder = (
+  clubs: readonly Club[],
+  matches: readonly Match[],
+  order: number,
+): Club[] => {
+  const currentMatchByClub = new Map<string, Match>()
+  for (const match of matches.filter(
+    (candidate) => candidate.order === order && candidate.status === 'scheduled',
+  )) {
+    currentMatchByClub.set(match.homeClubId, match)
+    currentMatchByClub.set(match.awayClubId, match)
+  }
+  const previousMatchByClub = new Map<string, Match>()
+  for (const match of matches) {
+    if (match.order >= order || match.status !== 'played') continue
+    for (const clubId of [match.homeClubId, match.awayClubId]) {
+      const previous = previousMatchByClub.get(clubId)
+      if (
+        !previous ||
+        Date.parse(match.date) > Date.parse(previous.date) ||
+        (match.date === previous.date && match.order > previous.order)
+      ) {
+        previousMatchByClub.set(clubId, match)
+      }
+    }
+  }
+
+  return clubs.map((club) => {
+    const currentMatch = currentMatchByClub.get(club.id)
+    if (!currentMatch) return cloneClub(club)
+
+    const previousMatch = previousMatchByClub.get(club.id)
+    const restDays = previousMatch ? restDaysBetween(previousMatch.date, currentMatch.date) : 0
+    if (restDays === 0) return cloneClub(club)
+
+    return {
+      ...club,
+      squad: club.squad.map((player) => {
+        const random = createSeededRandom(
+          hashString(`${currentMatch.id}:${player.id}:fitness-recovery`),
+        )
+        let recoveredFitness = player.fitness
+        for (let day = 0; day < restDays; day += 1) {
+          recoveredFitness += random.int(
+            matchSimulationConfig.fitnessRecovery.minPerRestDay,
+            matchSimulationConfig.fitnessRecovery.maxPerRestDay,
+          )
+        }
+        return { ...player, fitness: clamp(recoveredFitness, 1, 100) }
+      }),
+    }
+  })
+}
+
 const recoverStateBeforeOrder = (state: GameState, order: number): GameState =>
   order > state.lastCompletedOrder
-    ? { ...state, clubs: recoverInjuredPlayersBeforeOrder(state.clubs, order) }
+    ? {
+        ...state,
+        clubs: recoverFitnessBeforeOrder(
+          recoverInjuredPlayersBeforeOrder(state.clubs, order),
+          state.matches,
+          order,
+        ),
+      }
     : state
 
 // СИНХРОНИЗИРУЕТ ВОССТАНОВЛЕНИЕ ПОСЛЕ ЗАВЕРШЁННОГО ИГРОВОГО ДНЯ
@@ -252,12 +323,29 @@ const hashString = (value: string): number => {
 }
 
 // СОЗДАЁТ НУЛЕВУЮ СЕЗОННУЮ СТАТИСТИКУ ИГРОКА
-const createEmptyPlayerStats = (): PlayerStats => ({
+export const createEmptyPlayerStats = (): PlayerStats => ({
   appearances: 0,
   goals: 0,
+  assists: 0,
   yellowCards: 0,
+  redCards: 0,
+  cleanSheets: 0,
   averageRating: 0,
   matchesRated: 0,
+})
+
+const compactBackgroundResult = (result: MatchResult): MatchResult => ({
+  detail: 'fast',
+  homeGoals: result.homeGoals,
+  awayGoals: result.awayGoals,
+  winnerClubId: result.winnerClubId,
+  penaltyWinnerClubId: result.penaltyWinnerClubId,
+  goals: [],
+  stats: {
+    home: { ...result.stats.home },
+    away: { ...result.stats.away },
+  },
+  bestPlayerId: '',
 })
 
 // ИНИЦИАЛИЗИРУЕТ СТАТИСТИКУ ДЛЯ ВСЕХ ИГРОКОВ
@@ -269,6 +357,25 @@ export const createInitialPlayerStats = (clubs: readonly Club[]): Record<string,
     return result
   }, {})
 }
+
+const createInitialWorldPlayerStats = (
+  worldClubs: Record<ChampionshipId, Club[]>,
+): Record<ChampionshipId, Record<string, PlayerStats>> =>
+  championshipIds.reduce<Record<ChampionshipId, Record<string, PlayerStats>>>(
+    (result, id) => {
+      result[id] = createInitialPlayerStats(worldClubs[id])
+      return result
+    },
+    {} as Record<ChampionshipId, Record<string, PlayerStats>>,
+  )
+
+const normalizePlayerStats = (stats: PlayerStats | undefined): PlayerStats => ({
+  ...createEmptyPlayerStats(),
+  ...stats,
+  assists: stats?.assists ?? 0,
+  redCards: stats?.redCards ?? 0,
+  cleanSheets: stats?.cleanSheets ?? 0,
+})
 
 // СОЗДАЁТ АВТОСОСТАВЫ И ПО ВОЗМОЖНОСТИ СОХРАНЯЕТ ТАКТИКУ
 export const createDefaultLineups = (
@@ -332,6 +439,7 @@ export const createInitialGameState = (
     scheduleConflictResolutions: scheduled.resolutions,
     lineups: createDefaultLineups(clubs),
     playerStats: createInitialPlayerStats(clubs),
+    worldPlayerStats: createInitialWorldPlayerStats(worldClubs),
     academies: createAcademies(clubs, 1, selectedClubId),
     externalClubOverrides: {},
     lastCompletedOrder: 0,
@@ -340,16 +448,12 @@ export const createInitialGameState = (
 
 // ДОПОЛНЯЕТ НЕПОЛНОЕ СОХРАНЕНИЕ ДАННЫМИ МИРОВЫХ ЛИГ
 export const ensureWorldCompetitions = (state: GameState): GameState => {
-  const careerSeed = state.careerSeed ?? hashString(`${state.championshipId}:${state.selectedClubId}`)
+  const careerSeed =
+    state.careerSeed ?? hashString(`${state.championshipId}:${state.selectedClubId}`)
   const clubs = normalizeGeneratedAcademyPlayers(
     recoverInjuredPlayersBeforeOrder(state.clubs, state.lastCompletedOrder + 1),
   )
-  const academies = ensureAcademies(
-    clubs,
-    state.academies,
-    state.season,
-    state.selectedClubId,
-  )
+  const academies = ensureAcademies(clubs, state.academies, state.season, state.selectedClubId)
   const existingWorldClubs = state.worldClubs ?? {}
   const worldClubs = championshipIds.reduce<Record<ChampionshipId, Club[]>>(
     (result, championshipId) => {
@@ -387,6 +491,25 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
     {} as Record<ChampionshipId, Match[]>,
   )
   const worldLeagueTables = createWorldLeagueTables(worldClubs, worldMatches)
+  const existingWorldPlayerStats = state.worldPlayerStats ?? {}
+  const worldPlayerStats = championshipIds.reduce<
+    Record<ChampionshipId, Record<string, PlayerStats>>
+  >(
+    (result, championshipId) => {
+      const stored = existingWorldPlayerStats[championshipId]
+      const fallback = championshipId === state.championshipId ? state.playerStats : undefined
+      result[championshipId] = Object.fromEntries(
+        worldClubs[championshipId].flatMap((club) =>
+          club.squad.map((player) => [
+            player.id,
+            normalizePlayerStats(stored?.[player.id] ?? fallback?.[player.id]),
+          ]),
+        ),
+      )
+      return result
+    },
+    {} as Record<ChampionshipId, Record<string, PlayerStats>>,
+  )
 
   return {
     ...state,
@@ -398,6 +521,13 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
     worldClubs,
     worldMatches,
     worldLeagueTables,
+    playerStats: Object.fromEntries(
+      Object.entries(state.playerStats).map(([playerId, stats]) => [
+        playerId,
+        normalizePlayerStats(stats),
+      ]),
+    ),
+    worldPlayerStats,
   }
 }
 
@@ -485,7 +615,10 @@ const updatePlayerStats = (
   stats: Record<string, PlayerStats>,
   playerId: string,
   goals: number,
+  assists: number,
   yellowCards: number,
+  redCards: number,
+  cleanSheet: boolean,
   rating: number,
 ): void => {
   const current = stats[playerId] ?? createEmptyPlayerStats()
@@ -493,12 +626,85 @@ const updatePlayerStats = (
   stats[playerId] = {
     appearances: current.appearances + 1,
     goals: current.goals + goals,
+    assists: (current.assists ?? 0) + assists,
     yellowCards: current.yellowCards + yellowCards,
+    redCards: (current.redCards ?? 0) + redCards,
+    cleanSheets: (current.cleanSheets ?? 0) + (cleanSheet ? 1 : 0),
     matchesRated: ratedMatches,
     averageRating: Number(
       ((current.averageRating * current.matchesRated + rating) / ratedMatches).toFixed(2),
     ),
   }
+}
+
+const accumulateMatchPlayerStats = (
+  source: Record<string, PlayerStats>,
+  clubs: readonly Club[],
+  match: Match,
+  result: MatchResult,
+  lineups: MatchLineups,
+): Record<string, PlayerStats> => {
+  const stats = { ...source }
+  const homeIds = new Set([
+    ...lineups.home.starters,
+    ...(result.substitutions
+      ?.filter((event) => event.clubId === match.homeClubId)
+      .map((event) => event.playerInId) ?? []),
+  ])
+  const awayIds = new Set([
+    ...lineups.away.starters,
+    ...(result.substitutions
+      ?.filter((event) => event.clubId === match.awayClubId)
+      .map((event) => event.playerInId) ?? []),
+  ])
+  const goals = new Map<string, number>()
+  const assists = new Map<string, number>()
+  for (const goal of result.goals) {
+    goals.set(goal.playerId, (goals.get(goal.playerId) ?? 0) + 1)
+    if (goal.assistPlayerId)
+      assists.set(goal.assistPlayerId, (assists.get(goal.assistPlayerId) ?? 0) + 1)
+  }
+  const yellows = new Map<string, number>()
+  const reds = new Map<string, number>()
+  for (const card of result.cards ?? []) {
+    if (card.card === 'yellow' || card.dismissalReason === 'second-yellow') {
+      yellows.set(card.playerId, (yellows.get(card.playerId) ?? 0) + 1)
+    }
+    if (card.card === 'red') reds.set(card.playerId, (reds.get(card.playerId) ?? 0) + 1)
+  }
+  const players = new Map(
+    clubs.flatMap((club) => club.squad.map((player) => [player.id, player] as const)),
+  )
+  for (const playerId of new Set([...homeIds, ...awayIds])) {
+    const isHome = homeIds.has(playerId)
+    const player = players.get(playerId)
+    const playerGoals = goals.get(playerId) ?? 0
+    const playerAssists = assists.get(playerId) ?? 0
+    const playerYellows = yellows.get(playerId) ?? 0
+    const won = isHome ? result.homeGoals > result.awayGoals : result.awayGoals > result.homeGoals
+    const lost = isHome ? result.homeGoals < result.awayGoals : result.awayGoals < result.homeGoals
+    const rating = clamp(
+      6 +
+        playerGoals * 0.8 +
+        playerAssists * 0.35 +
+        (won ? 0.5 : 0) -
+        (lost ? 0.35 : 0) -
+        playerYellows * 0.25,
+      3,
+      10,
+    )
+    updatePlayerStats(
+      stats,
+      playerId,
+      playerGoals,
+      playerAssists,
+      playerYellows,
+      reds.get(playerId) ?? 0,
+      player?.position === 'GK' && (isHome ? result.awayGoals === 0 : result.homeGoals === 0),
+      rating,
+    )
+  }
+  return stats
 }
 
 // ПРИМЕНЯЕТ К ИГРОКАМ ВСЕ ПОСЛЕДСТВИЯ ЗАВЕРШЁННОГО МАТЧА
@@ -526,6 +732,14 @@ const applyMatchEffects = (
   const allPlayedIds = [...new Set([...homePlayedIds, ...awayPlayedIds])]
   const goalCounts = result.goals.reduce<Record<string, number>>((counts, goal) => {
     counts[goal.playerId] = (counts[goal.playerId] ?? 0) + 1
+    return counts
+  }, {})
+  const assistCounts = result.goals.reduce<Record<string, number>>((counts, goal) => {
+    if (goal.assistPlayerId) counts[goal.assistPlayerId] = (counts[goal.assistPlayerId] ?? 0) + 1
+    return counts
+  }, {})
+  const redCardCounts = (result.cards ?? []).reduce<Record<string, number>>((counts, card) => {
+    if (card.card === 'red') counts[card.playerId] = (counts[card.playerId] ?? 0) + 1
     return counts
   }, {})
   const bookingCounts: Record<string, number> = {}
@@ -568,10 +782,18 @@ const applyMatchEffects = (
       ? awayWon && result.homeGoals !== result.awayGoals
       : homeWon && result.homeGoals !== result.awayGoals
     const goals = goalCounts[playerId] ?? 0
+    const assists = assistCounts[playerId] ?? 0
     const yellowCards = bookingCounts[playerId] ?? 0
+    const redCards = redCardCounts[playerId] ?? 0
+    const player = clubs
+      .flatMap((club) => club.squad)
+      .find((candidate) => candidate.id === playerId)
+    const cleanSheet =
+      player?.position === 'GK' && (isHomePlayer ? result.awayGoals === 0 : result.homeGoals === 0)
     const matchRating = clamp(
       6 +
         goals * 0.8 +
+        assists * 0.35 +
         (teamWon ? 0.5 : 0) -
         (teamLost ? 0.35 : 0) -
         yellowCards * 0.25 +
@@ -605,7 +827,16 @@ const applyMatchEffects = (
       }
     })
 
-    updatePlayerStats(playerStats, playerId, goals, yellowCards, matchRating)
+    updatePlayerStats(
+      playerStats,
+      playerId,
+      goals,
+      assists,
+      yellowCards,
+      redCards,
+      cleanSheet,
+      matchRating,
+    )
   }
 
   const playedPlayerIds = new Set(allPlayedIds)
@@ -621,7 +852,7 @@ const applyMatchEffects = (
         ? player
         : {
             ...player,
-            fitness: clamp(player.fitness + random.int(25, 45), 1, 100),
+            fitness: clamp(player.fitness + random.int(35, 55), 1, 100),
           },
     )
   }
@@ -630,6 +861,20 @@ const applyMatchEffects = (
     ...state,
     clubs: applySuspensionsAfterMatch(clubs, match, result.cards),
     playerStats,
+    worldPlayerStats:
+      match.type === 'league'
+        ? {
+            ...state.worldPlayerStats,
+            [state.championshipId]: accumulateMatchPlayerStats(
+              state.worldPlayerStats?.[state.championshipId] ??
+                createInitialPlayerStats(state.clubs),
+              state.clubs,
+              match,
+              result,
+              lineups,
+            ),
+          }
+        : state.worldPlayerStats,
   }
 }
 
@@ -716,21 +961,29 @@ const isFastLocalMatch = (state: GameState, match: Match): boolean => {
 }
 
 // БЫСТРО РАССЧИТЫВАЕТ МАТЧ ДРУГОГО ДИВИЗИОНА
-const simulateFastScheduledMatch = (state: GameState, match: Match): MatchResult =>
-  simulateFastMatch({
+const simulateFastScheduledMatch = (state: GameState, match: Match): MatchResult => {
+  const lineups = getLineupsForMatch(state, match)
+  return simulateFastMatch({
     matchId: match.id,
     homeClub: getClub(state.clubs, match.homeClubId),
     awayClub: getClub(state.clubs, match.awayClubId),
+    homeLineup: lineups.home,
+    awayLineup: lineups.away,
     neutralVenue: match.neutralVenue,
     allowPenaltyShootout: false,
     seed: hashString(match.id) + state.season * 10_000,
   })
+}
 
 // РАССЧИТЫВАЕТ ИГРОВОЙ ДЕНЬ ВО ВСЕХ ФОНОВЫХ ЛИГАХ
 const simulateWorldLeagueOrder = (state: GameState, order: number): GameState => {
   const hydrated = ensureWorldCompetitions(state)
   const worldClubs = { ...hydrated.worldClubs } as Record<ChampionshipId, Club[]>
   const worldMatches = { ...hydrated.worldMatches } as Record<ChampionshipId, Match[]>
+  const worldPlayerStats = { ...hydrated.worldPlayerStats } as Record<
+    ChampionshipId,
+    Record<string, PlayerStats>
+  >
 
   for (const championshipId of championshipIds) {
     if (championshipId === hydrated.championshipId) {
@@ -753,10 +1006,16 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
 
       const homeClub = getClub(clubs, match.homeClubId)
       const awayClub = getClub(clubs, match.awayClubId)
+      const lineups: MatchLineups = {
+        home: getPlayedLineup(homeClub, autoSelectLineup(homeClub)),
+        away: getPlayedLineup(awayClub, autoSelectLineup(awayClub)),
+      }
       const result = simulateFastMatch({
         matchId: match.id,
         homeClub,
         awayClub,
+        homeLineup: lineups.home,
+        awayLineup: lineups.away,
         neutralVenue: match.neutralVenue,
         allowPenaltyShootout: false,
         seed: hashString(match.id) + hydrated.season * 10_000,
@@ -766,11 +1025,18 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
         match,
         result.cards,
       )
+      worldPlayerStats[championshipId] = accumulateMatchPlayerStats(
+        worldPlayerStats[championshipId],
+        clubs,
+        match,
+        result,
+        lineups,
+      )
 
       return {
         ...match,
         status: 'played' as const,
-        result,
+        result: compactBackgroundResult(result),
       }
     })
   }
@@ -779,6 +1045,7 @@ const simulateWorldLeagueOrder = (state: GameState, order: number): GameState =>
     ...hydrated,
     worldClubs,
     worldMatches,
+    worldPlayerStats,
     worldLeagueTables: createWorldLeagueTables(worldClubs, worldMatches),
   }
 }
@@ -1017,6 +1284,14 @@ const completeFastMatch = (state: GameState, match: Match, result: MatchResult):
     match.homeClubId,
     match.awayClubId,
   )
+  const lineups = getLineupsForMatch(state, match)
+  const leagueStats = accumulateMatchPlayerStats(
+    state.worldPlayerStats?.[state.championshipId] ?? createInitialPlayerStats(state.clubs),
+    state.clubs,
+    match,
+    normalizedResult,
+    lineups,
+  )
   return {
     ...state,
     clubs: applySuspensionsAfterMatch(
@@ -1026,9 +1301,25 @@ const completeFastMatch = (state: GameState, match: Match, result: MatchResult):
     ),
     matches: state.matches.map((candidate) =>
       candidate.id === match.id
-        ? { ...candidate, status: 'played' as const, result: normalizedResult, lineups: undefined }
+        ? {
+            ...candidate,
+            status: 'played' as const,
+            result: compactBackgroundResult(normalizedResult),
+            lineups: undefined,
+          }
         : candidate,
     ),
+    playerStats: accumulateMatchPlayerStats(
+      state.playerStats,
+      state.clubs,
+      match,
+      normalizedResult,
+      lineups,
+    ),
+    worldPlayerStats: {
+      ...state.worldPlayerStats,
+      [state.championshipId]: leagueStats,
+    },
     lastCompletedOrder: Math.max(state.lastCompletedOrder, match.order),
   }
 }
@@ -1064,26 +1355,28 @@ const progressPlayersForNewSeason = (club: Club, season: number): Club => {
 
   return {
     ...club,
-    squad: club.squad.map((player) => {
-      let rating = player.rating
-      if (player.age < 24) {
-        rating = clamp(rating + random.int(0, 2), 1, player.potential)
-      } else if (player.age > 31) {
-        rating = clamp(rating - random.int(0, 2), 1, player.potential)
-      }
+    squad: club.squad
+      .map((player) => {
+        let rating = player.rating
+        if (player.age < 24) {
+          rating = clamp(rating + random.int(0, 2), 1, player.potential)
+        } else if (player.age > 31) {
+          rating = clamp(rating - random.int(0, 2), 1, player.potential)
+        }
 
-      return {
-        ...player,
-        age: player.age + 1,
-        rating,
-        fitness: clamp(player.fitness + 55, 1, 100),
-        form: clamp(player.form + random.int(-6, 8), 1, 100),
-        isInjured: false,
-        injuryUntilOrder: undefined,
-        suspensionMatchesRemaining: undefined,
-        suspensionReason: undefined,
-      }
-    }).filter((player) => player.age <= 38),
+        return {
+          ...player,
+          age: player.age + 1,
+          rating,
+          fitness: clamp(player.fitness + 55, 1, 100),
+          form: clamp(player.form + random.int(-6, 8), 1, 100),
+          isInjured: false,
+          injuryUntilOrder: undefined,
+          suspensionMatchesRemaining: undefined,
+          suspensionReason: undefined,
+        }
+      })
+      .filter((player) => player.age <= playerRetirementAge),
   }
 }
 
@@ -1140,7 +1433,9 @@ export const finishSeason = (state: GameState): GameState => {
   for (const [championshipId, overrides] of Object.entries(externalClubOverrides)) {
     if (!overrides) continue
     const id = championshipId as ChampionshipId
-    worldClubs[id] = worldClubs[id].map((club) => overrides[club.id] ? cloneClub(overrides[club.id]!) : club)
+    worldClubs[id] = worldClubs[id].map((club) =>
+      overrides[club.id] ? cloneClub(overrides[club.id]!) : club,
+    )
   }
   worldClubs[state.championshipId] = progressedClubs.map(cloneClub)
   const worldMatches = createWorldMatches(worldClubs, nextSeason, state.careerSeed)
@@ -1179,6 +1474,7 @@ export const finishSeason = (state: GameState): GameState => {
     worldMatches: syncedWorldMatches,
     worldLeagueTables,
     playerStats: createInitialPlayerStats(progressedClubs),
+    worldPlayerStats: createInitialWorldPlayerStats(worldClubs),
     academies: academyProgress.academies,
     externalClubOverrides,
     lastCompletedOrder: 0,

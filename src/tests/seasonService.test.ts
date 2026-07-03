@@ -6,6 +6,7 @@ import {
   getNextUserMatch,
   getUserStarterIds,
   prepareUserMatchDay,
+  recoverFitnessBeforeOrder,
   recoverInjuredPlayersBeforeOrder,
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
@@ -170,6 +171,53 @@ describe('seasonService', () => {
     expect(reserveFitness).toBeLessThanOrEqual(75)
     expect(starterFitness).toBeGreaterThanOrEqual(36)
     expect(starterFitness).toBeLessThanOrEqual(44)
+  })
+
+  it('recovers every player for each calendar day without a match', () => {
+    const initial = createInitialGameState('spain', 'barcelona', 777)
+    const club = {
+      ...initial.clubs.find((candidate) => candidate.id === initial.selectedClubId)!,
+      squad: initial.clubs
+        .find((candidate) => candidate.id === initial.selectedClubId)!
+        .squad.map((player) => ({ ...player, fitness: 10 })),
+    }
+    const opponent = initial.clubs.find((candidate) => candidate.id !== club.id)!
+    const template = initial.matches.find((match) => match.type === 'league')!
+    const previousMatch = {
+      ...template,
+      id: 'fitness-previous',
+      date: '2026-01-03',
+      order: 1,
+      homeClubId: club.id,
+      awayClubId: opponent.id,
+      status: 'played' as const,
+    }
+    const currentMatch = {
+      ...template,
+      id: 'fitness-current',
+      date: '2026-01-10',
+      order: 2,
+      homeClubId: club.id,
+      awayClubId: opponent.id,
+      status: 'scheduled' as const,
+      result: undefined,
+    }
+
+    const recovered = recoverFitnessBeforeOrder(
+      [club, opponent],
+      [previousMatch, currentMatch],
+      currentMatch.order,
+    )
+    const recoveredAgain = recoverFitnessBeforeOrder(
+      [club, opponent],
+      [previousMatch, currentMatch],
+      currentMatch.order,
+    )
+    const fitness = recovered.find((candidate) => candidate.id === club.id)!.squad
+      .map((player) => player.fitness)
+
+    expect(fitness.every((value) => value >= 40 && value <= 100)).toBe(true)
+    expect(recoveredAgain).toEqual(recovered)
   })
 
   it('suspends a player for the next match after a second yellow card', () => {
