@@ -1222,7 +1222,17 @@ export const prepareUserMatchDay = (state: GameState, matchId: string): GameStat
     }
   }
 
-  return nextState
+  const preparedMatch = nextState.matches.find((match) => match.id === matchId)
+  if (!preparedMatch) {
+    throw new Error(`Match not found after preparing matchday: ${matchId}`)
+  }
+  const lineups = getLineupsForMatch(nextState, preparedMatch)
+  return {
+    ...nextState,
+    matches: nextState.matches.map((match) =>
+      match.id === matchId ? { ...match, lineups } : match,
+    ),
+  }
 }
 
 // ДОБАВЛЯЕТ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЯ В ГОТОВЫЙ ИГРОВОЙ ДЕНЬ
@@ -1236,7 +1246,7 @@ export const completePreparedUserMatchDay = (
     throw new Error(`Match not found: ${matchId}`)
   }
 
-  const lineups = getLineupsForMatch(state, match)
+  const lineups = match.lineups ?? getLineupsForMatch(state, match)
   const completed = completeMatch(state, match, result, lineups)
   return recoverStateAfterCompletedOrder(
     simulateWorldLeagueOrder(advanceCupAndRefreshTables(completed), match.order),

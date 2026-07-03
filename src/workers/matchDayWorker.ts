@@ -4,14 +4,14 @@ import {
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import { t } from '@/plugins/i18n/i18n'
-import type { GameState, MatchResult } from '@/types/football'
+import type { GameState, MatchResult, PreparedMatchContext } from '@/types/football'
 
 type MatchDayRequest =
   | { type: 'prepare'; state: GameState; matchId: string }
   | { type: 'complete'; result: MatchResult }
 
 type MatchDayResponse =
-  | { type: 'ready' }
+  | { type: 'ready'; context: PreparedMatchContext }
   | { type: 'complete'; state: GameState }
   | { type: 'error'; error: string }
 
@@ -31,7 +31,21 @@ workerScope.onmessage = ({ data }): void => {
     if (data.type === 'prepare') {
       preparedMatchId = data.matchId
       preparedState = prepareUserMatchDay(data.state, data.matchId)
-      workerScope.postMessage({ type: 'ready' })
+      const match = preparedState.matches.find((candidate) => candidate.id === data.matchId)
+      const homeClub = preparedState.clubs.find((club) => club.id === match?.homeClubId)
+      const awayClub = preparedState.clubs.find((club) => club.id === match?.awayClubId)
+      if (!match?.lineups || !homeClub || !awayClub) {
+        throw new Error(t('match.errors.dayNotPrepared'))
+      }
+      workerScope.postMessage({
+        type: 'ready',
+        context: {
+          matchId: match.id,
+          homeClub,
+          awayClub,
+          lineups: match.lineups,
+        },
+      })
       return
     }
 

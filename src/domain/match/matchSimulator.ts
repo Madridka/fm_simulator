@@ -804,6 +804,7 @@ export const createMatchTimeline = (input: MatchSimulationInput): MatchTimeline 
       .filter(
         (player): player is Player =>
           player !== undefined &&
+          !lineupFor(clubId).starters.includes(player.id) &&
           !isPlayerUnavailable(player) &&
           !used.has(player.id) &&
           !team.players.some((active) => active.id === player.id),

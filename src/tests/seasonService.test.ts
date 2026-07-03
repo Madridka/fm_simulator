@@ -173,6 +173,30 @@ describe('seasonService', () => {
     expect(starterFitness).toBeLessThanOrEqual(44)
   })
 
+  it('keeps the exact prepared lineups when the user match is completed', () => {
+    const initial = createInitialGameState('russia', 'zenit')
+    const match = getNextUserMatch(initial)!
+    const prepared = prepareUserMatchDay(initial, match.id)
+    const preparedLineups = prepared.matches.find((candidate) => candidate.id === match.id)?.lineups
+    expect(preparedLineups).toBeDefined()
+
+    const completed = completePreparedUserMatchDay(prepared, match.id, {
+      detail: 'full',
+      homeGoals: 0,
+      awayGoals: 0,
+      goals: [],
+      stats: {
+        home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+        away: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
+      },
+      bestPlayerId: preparedLineups!.home.starters[0]!,
+    })
+
+    expect(completed.matches.find((candidate) => candidate.id === match.id)?.lineups).toEqual(
+      preparedLineups,
+    )
+  })
+
   it('recovers every player for each calendar day without a match', () => {
     const initial = createInitialGameState('spain', 'barcelona', 777)
     const club = {

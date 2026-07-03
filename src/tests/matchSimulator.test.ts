@@ -207,6 +207,40 @@ describe('matchSimulator', () => {
     }
   })
 
+  it('never brings an initial starter back from a malformed substitutes list', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const editableHomeLineup = autoSelectLineup(home)
+    const homeLineup = playedLineup(home, editableHomeLineup)
+    homeLineup.substitutes = [homeLineup.starters[0]!, ...homeLineup.substitutes]
+
+    expect(
+      validateLineup(home, {
+        ...editableHomeLineup,
+        substitutes: [homeLineup.starters[0]!, ...editableHomeLineup.substitutes],
+      }).valid,
+    ).toBe(false)
+
+    for (let seed = 1; seed <= 300; seed += 1) {
+      const result = createMatchTimeline({
+        matchId: `no-starter-reentry-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup,
+        awayLineup: playedLineup(away, autoSelectLineup(away)),
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        seed,
+      }).finalResult
+
+      expect(
+        result.substitutions
+          ?.filter((substitution) => substitution.clubId === home.id)
+          .some((substitution) => homeLineup.starters.includes(substitution.playerInId)),
+      ).not.toBe(true)
+    }
+  })
+
   it('immediately replaces an injured player when a suitable substitute is available', () => {
     const home = clubs[0] as Club
     const away = clubs[1] as Club

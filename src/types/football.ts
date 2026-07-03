@@ -106,6 +106,13 @@ export interface MatchLineups {
   away: PlayedLineup
 }
 
+export interface PreparedMatchContext {
+  matchId: string
+  homeClub: Club
+  awayClub: Club
+  lineups: MatchLineups
+}
+
 // ТИПЫ МАТЧЕЙ И СОБЫТИЙ СИМУЛЯЦИИ
 export type MatchType = 'league' | 'cup' | 'playoff'
 

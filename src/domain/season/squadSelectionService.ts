@@ -164,6 +164,7 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   const errors: string[] = []
   const ids = starterIds(lineup)
   const uniqueIds = new Set(ids)
+  const selectedIds = [...ids, ...lineup.substitutes]
   const players = getPlayersByIds(club, ids)
   const selectedPlayers = [
     ...players,
@@ -174,7 +175,7 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
     errors.push(t('squad.validation.startersCount'))
   }
 
-  if (uniqueIds.size !== ids.length) {
+  if (uniqueIds.size !== ids.length || new Set(selectedIds).size !== selectedIds.length) {
     errors.push(t('squad.validation.duplicatePlayer'))
   }
 

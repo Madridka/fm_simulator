@@ -16,10 +16,18 @@ import {
 import { gameSaveRepository } from '@/repositories/gameSaveRepository'
 import { t } from '@/plugins/i18n/i18n'
 import { useToastStore } from '@/stores/ui/toastStore'
-import type { ChampionshipId, Club, ClubLineup, GameState, Match, MatchResult } from '@/types/football'
+import type {
+  ChampionshipId,
+  Club,
+  ClubLineup,
+  GameState,
+  Match,
+  MatchResult,
+  PreparedMatchContext,
+} from '@/types/football'
 
 type MatchDayWorkerResponse =
-  | { type: 'ready' }
+  | { type: 'ready'; context: PreparedMatchContext }
   | { type: 'complete'; state: GameState }
   | { type: 'error'; error: string }
 
@@ -31,6 +39,7 @@ export const useGameStore = defineStore('game', () => {
     savedGame ? settleAiOnlyDaysUntilNextUserMatch(savedGame) : null,
   )
   const activeMatchId = ref<string | null>(null)
+  const preparedMatchContext = ref<PreparedMatchContext | null>(null)
   let matchDayWorker: Worker | null = null
   let preparedMatchId: string | null = null
   let preparationPromise: Promise<void> | null = null
@@ -213,6 +222,7 @@ export const useGameStore = defineStore('game', () => {
     preparationReject = null
     completionResolve = null
     completionReject = null
+    preparedMatchContext.value = null
   }
 
   // ЗАВЕРШАЕТ ФОНОВЫЙ РАСЧЁТ С ОШИБКОЙ
@@ -255,6 +265,7 @@ export const useGameStore = defineStore('game', () => {
       }
 
       if (event.data.type === 'ready') {
+        preparedMatchContext.value = event.data.context
         preparationResolve?.()
         preparationResolve = null
         preparationReject = null
@@ -323,6 +334,7 @@ export const useGameStore = defineStore('game', () => {
     selectedClub,
     nextMatch,
     activeMatch,
+    preparedMatchContext,
     seasonCanFinish,
     isFinalSeason,
     startNewGame,

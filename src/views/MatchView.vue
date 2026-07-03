@@ -41,14 +41,22 @@ let matchCompletionPromise: Promise<void> | null = null
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
 
+const preparedContext = computed(() =>
+  gameStore.preparedMatchContext?.matchId === match.value?.id
+    ? gameStore.preparedMatchContext
+    : undefined,
+)
+
 // ВОЗВРАЩАЕТ ДОМАШНИЙ КЛУБ
 const homeClub = computed((): Club | undefined =>
-  match.value ? clubStore.getClubById(match.value.homeClubId) : undefined,
+  preparedContext.value?.homeClub ??
+  (match.value ? clubStore.getClubById(match.value.homeClubId) : undefined),
 )
 
 // ВОЗВРАЩАЕТ ГОСТЕВОЙ КЛУБ
 const awayClub = computed((): Club | undefined =>
-  match.value ? clubStore.getClubById(match.value.awayClubId) : undefined,
+  preparedContext.value?.awayClub ??
+  (match.value ? clubStore.getClubById(match.value.awayClubId) : undefined),
 )
 
 // СОЗДАЁТ ЧИСЛОВОЙ ХЕШ ИЗ СТРОКИ
@@ -75,7 +83,9 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
     starters,
-    substitutes: [...lineup.substitutes],
+    substitutes: [...new Set(lineup.substitutes)].filter(
+      (playerId) => !starters.includes(playerId),
+    ),
   }
 }
 
@@ -88,6 +98,10 @@ const preparedLineups = computed((): MatchLineups | undefined => {
 
   if (!game || !currentMatch || !home || !away) {
     return undefined
+  }
+
+  if (preparedContext.value) {
+    return preparedContext.value.lineups
   }
 
   if (currentMatch.lineups) {
@@ -157,7 +171,12 @@ const isPlayableMatch = computed(
 
 // ПРОВЕРЯЕТ ВОЗМОЖНОСТЬ ЗАПУСКА СИМУЛЯЦИИ
 const canSimulate = computed((): boolean =>
-  Boolean(isUserMatch.value && isPlayableMatch.value && userValidation.value.valid),
+  Boolean(
+    isUserMatch.value &&
+    isPlayableMatch.value &&
+    userValidation.value.valid &&
+    preparedContext.value,
+  ),
 )
 
 // ВОЗВРАЩАЕТ ТЕКУЩИЙ ИЛИ ИТОГОВЫЙ РЕЗУЛЬТАТ
@@ -219,7 +238,7 @@ const isMatchEventVisible = (minute?: number): boolean =>
   match.value?.status === 'played' || (minute ?? 0) <= currentMinute.value
 
 // СОБИРАЕТ ВИДИМЫЕ ГОЛЫ, КАРТОЧКИ, ТРАВМЫ И ЗАМЕНЫ ОДНОГО ИГРОКА
-const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
+const playerEventMarkers = (clubId: string, playerId: string): PlayerEventMarker[] => {
   const result = detailedResult.value
   if (!result) {
     return []
@@ -228,7 +247,12 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
   const markers: PlayerEventMarker[] = []
 
   result.goals
-    .filter((goal) => goal.playerId === playerId && isMatchEventVisible(goal.minute))
+    .filter(
+      (goal) =>
+        goal.clubId === clubId &&
+        goal.playerId === playerId &&
+        isMatchEventVisible(goal.minute),
+    )
     .forEach((goal, index) =>
       markers.push({
         key: `goal-${goal.minute}-${index}`,
@@ -238,7 +262,12 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
       }),
     )
   ;(result.cards ?? [])
-    .filter((card) => card.playerId === playerId && isMatchEventVisible(card.minute))
+    .filter(
+      (card) =>
+        card.clubId === clubId &&
+        card.playerId === playerId &&
+        isMatchEventVisible(card.minute),
+    )
     .forEach((card, index) =>
       markers.push({
         key: `${card.card}-${card.minute ?? 0}-${index}`,
@@ -263,7 +292,12 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
       }),
     )
   ;(result.injuries ?? [])
-    .filter((injury) => injury.playerId === playerId && isMatchEventVisible(injury.minute))
+    .filter(
+      (injury) =>
+        injury.clubId === clubId &&
+        injury.playerId === playerId &&
+        isMatchEventVisible(injury.minute),
+    )
     .forEach((injury, index) =>
       markers.push({
         key: `injury-${injury.minute ?? 0}-${index}`,
@@ -275,7 +309,10 @@ const playerEventMarkers = (playerId: string): PlayerEventMarker[] => {
       }),
     )
   ;(result.substitutions ?? [])
-    .filter((substitution) => isMatchEventVisible(substitution.minute))
+    .filter(
+      (substitution) =>
+        substitution.clubId === clubId && isMatchEventVisible(substitution.minute),
+    )
     .forEach((substitution, index) => {
       if (substitution.playerOutId === playerId) {
         markers.push({
@@ -640,7 +677,7 @@ onBeforeUnmount(clearTimer)
                 </span>
                 <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
                 <span
-                  v-for="marker in playerEventMarkers(playerId)"
+                  v-for="marker in playerEventMarkers(homeClub.id, playerId)"
                   :key="marker.key"
                   :title="marker.title"
                   :aria-label="marker.title"
@@ -670,7 +707,7 @@ onBeforeUnmount(clearTimer)
                   </span>
                   <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
                   <span
-                    v-for="marker in playerEventMarkers(player.id)"
+                    v-for="marker in playerEventMarkers(homeClub.id, player.id)"
                     :key="marker.key"
                     :title="marker.title"
                     :aria-label="marker.title"
@@ -698,7 +735,7 @@ onBeforeUnmount(clearTimer)
                 </span>
                 <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
                 <span
-                  v-for="marker in playerEventMarkers(playerId)"
+                  v-for="marker in playerEventMarkers(awayClub.id, playerId)"
                   :key="marker.key"
                   :title="marker.title"
                   :aria-label="marker.title"
@@ -728,7 +765,7 @@ onBeforeUnmount(clearTimer)
                   </span>
                   <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
                   <span
-                    v-for="marker in playerEventMarkers(player.id)"
+                    v-for="marker in playerEventMarkers(awayClub.id, player.id)"
                     :key="marker.key"
                     :title="marker.title"
                     :aria-label="marker.title"
