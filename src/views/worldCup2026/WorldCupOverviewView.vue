@@ -91,9 +91,9 @@ const userGroupRows = computed(() => {
     <div class="space-y-5">
       <article
         v-if="state.status === 'finished' && worldCupStore.isChampion"
-        class="rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 to-yellow-600/10 p-6 text-center"
+        class="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 p-6 text-center shadow-sm"
       >
-        <p class="text-sm font-black uppercase tracking-[0.3em] text-amber-200">
+        <p class="text-sm font-black uppercase tracking-[0.3em] text-amber-700">
           {{ t('worldCup2026.overview.champion') }}
         </p>
         <div class="mt-4 text-5xl">{{ flagEmoji(selectedTeam.flagCode) }}</div>
@@ -103,10 +103,10 @@ const userGroupRows = computed(() => {
 
       <article
         v-else-if="worldCupStore.isUserEliminated"
-        class="rounded-2xl border border-red-400/30 bg-red-950/30 p-6"
+        class="rounded-2xl border border-red-200 bg-red-50 p-6 shadow-sm"
       >
         <h2 class="text-xl font-black uppercase">{{ t('worldCup2026.overview.eliminated') }}</h2>
-        <p class="mt-2 text-slate-300">
+        <p class="mt-2 text-slate-600">
           {{
             t('worldCup2026.overview.eliminatedAt', {
               stage: t(`worldCup2026.stages.${state.userEliminatedAt}`),
@@ -127,8 +127,8 @@ const userGroupRows = computed(() => {
         </div>
       </article>
 
-      <article v-else class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-        <p class="text-xs font-black uppercase tracking-[0.2em] text-amber-300/80">
+      <article v-else class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">
           {{ stageLabel }}
         </p>
         <h2 class="mt-2 text-2xl font-black uppercase">
@@ -147,7 +147,7 @@ const userGroupRows = computed(() => {
             {{ t('worldCup2026.overview.qualified', { round: stageLabel }) }}
           </template>
         </h2>
-        <p v-if="nextOpponent" class="mt-3 text-slate-300">
+        <p v-if="nextOpponent" class="mt-3 text-slate-600">
           {{
             t(
               state.lastSimulatedOrder
@@ -167,7 +167,7 @@ const userGroupRows = computed(() => {
         />
       </article>
 
-      <article class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h3 class="text-sm font-black uppercase tracking-[0.15em] text-slate-400">
           {{ t('worldCup2026.overview.recentResults') }}
         </h3>
@@ -175,7 +175,7 @@ const userGroupRows = computed(() => {
           <li
             v-for="match in recentResults"
             :key="match.id"
-            class="rounded-lg bg-black/20 px-3 py-2 text-sm text-slate-200"
+            class="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700"
           >
             {{ formatResult(match) }}
           </li>
@@ -185,7 +185,7 @@ const userGroupRows = computed(() => {
     </div>
 
     <aside class="space-y-5">
-      <article class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <h3 class="text-sm font-black uppercase tracking-[0.15em] text-slate-400">
           {{ t('worldCup2026.overview.yourTeam') }}
         </h3>
@@ -193,10 +193,10 @@ const userGroupRows = computed(() => {
           <span class="text-4xl">{{ flagEmoji(selectedTeam.flagCode) }}</span>
           <div>
             <div class="text-xl font-black">{{ selectedTeam.name }}</div>
-            <div class="text-sm text-amber-200">{{ selectedTeam.rating }}</div>
+            <div class="text-sm text-emerald-700">{{ selectedTeam.rating }}</div>
           </div>
         </div>
-        <p v-if="userGroupStanding" class="mt-4 text-sm text-slate-300">
+        <p v-if="userGroupStanding" class="mt-4 text-sm text-slate-600">
           {{ t('worldCup2026.overview.groupPosition') }}:
           <strong>{{ userGroupStanding.position }}</strong> · {{ userGroupStanding.points }} оч.
         </p>

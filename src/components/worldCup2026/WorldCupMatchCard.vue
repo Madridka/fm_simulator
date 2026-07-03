@@ -24,7 +24,7 @@ const resultText = (match: WorldCupMatch): string => {
 
 <template>
   <article
-    class="rounded-xl border border-white/10 bg-[#0d1524]/80 p-4"
+    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
     :class="match.status === 'played' ? 'opacity-90' : ''"
   >
     <div class="mb-2 text-[10px] font-black uppercase tracking-wider text-slate-500">
@@ -34,7 +34,7 @@ const resultText = (match: WorldCupMatch): string => {
       <span class="font-semibold">
         {{ getTeamFlag(match.homeTeamId) }} {{ getTeamName(match.homeTeamId) }}
       </span>
-      <span class="font-black text-amber-200">{{ resultText(match) }}</span>
+      <span class="font-black text-emerald-700">{{ resultText(match) }}</span>
       <span class="text-right font-semibold">
         {{ getTeamName(match.awayTeamId) }} {{ getTeamFlag(match.awayTeamId) }}
       </span>

@@ -39,16 +39,16 @@ const sections = computed(() => {
     <section
       v-for="section in sections"
       :key="section.title"
-      class="rounded-2xl border border-white/10 bg-white/5 p-5"
+      class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
     >
-      <h2 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-amber-300">
+      <h2 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-emerald-700">
         {{ section.title }}
       </h2>
       <ul class="space-y-2">
         <li
           v-for="tie in section.ties"
           :key="tie.id"
-          class="rounded-lg bg-black/20 px-3 py-2 text-sm text-slate-200"
+          class="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700"
         >
           {{ formatTie(tie) }}
         </li>

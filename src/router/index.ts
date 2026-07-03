@@ -44,6 +44,31 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/worldCup2026/WorldCupTeamSelectionView.vue'),
       },
       {
+        path: 'world-cup-2026',
+        name: 'world-cup-overview',
+        component: () => import('@/views/worldCup2026/WorldCupOverviewView.vue'),
+      },
+      {
+        path: 'world-cup-2026/groups',
+        name: 'world-cup-groups',
+        component: () => import('@/views/worldCup2026/WorldCupGroupsView.vue'),
+      },
+      {
+        path: 'world-cup-2026/fixtures',
+        name: 'world-cup-fixtures',
+        component: () => import('@/views/worldCup2026/WorldCupFixturesView.vue'),
+      },
+      {
+        path: 'world-cup-2026/bracket',
+        name: 'world-cup-bracket',
+        component: () => import('@/views/worldCup2026/WorldCupBracketView.vue'),
+      },
+      {
+        path: 'world-cup-2026/match',
+        name: 'world-cup-match',
+        component: () => import('@/views/MatchView.vue'),
+      },
+      {
         path: 'dashboard',
         name: 'dashboard',
         component: () => import('@/views/DashboardView.vue'),
@@ -86,44 +111,6 @@ const routes: RouteRecordRaw[] = [
         path: 'transfers',
         name: 'transfers',
         component: () => import('@/views/TransfersView.vue'),
-      },
-    ],
-  },
-  {
-    path: '/world-cup-2026',
-    component: () => import('@/views/worldCup2026/WorldCupLayout.vue'),
-    beforeEnter: () => {
-      const worldCupStore = useWorldCup2026Store()
-      if (!worldCupStore.state) {
-        return { name: 'world-cup-select-team' }
-      }
-      return true
-    },
-    children: [
-      {
-        path: '',
-        name: 'world-cup-overview',
-        component: () => import('@/views/worldCup2026/WorldCupOverviewView.vue'),
-      },
-      {
-        path: 'groups',
-        name: 'world-cup-groups',
-        component: () => import('@/views/worldCup2026/WorldCupGroupsView.vue'),
-      },
-      {
-        path: 'fixtures',
-        name: 'world-cup-fixtures',
-        component: () => import('@/views/worldCup2026/WorldCupFixturesView.vue'),
-      },
-      {
-        path: 'bracket',
-        name: 'world-cup-bracket',
-        component: () => import('@/views/worldCup2026/WorldCupBracketView.vue'),
-      },
-      {
-        path: 'match',
-        name: 'world-cup-match',
-        component: () => import('@/views/MatchView.vue'),
       },
     ],
   },
