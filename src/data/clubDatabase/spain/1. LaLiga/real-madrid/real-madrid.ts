@@ -339,7 +339,7 @@ export const realMadridProfile: ClubProfile = {
       potential: 95,
       fitness: 97,
       form: 94,
-      value: 180_000_000,
+      value: 190_000_000,
       salary: 2_600_000,
       isInjured: false,
     },
