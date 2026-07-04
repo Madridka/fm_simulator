@@ -13,6 +13,8 @@ const adaptResult = (result: WorldCupMatchResult, homeTeamId: string): MatchResu
   awayGoals: result.awayScore,
   winnerClubId: result.winnerTeamId,
   penaltyWinnerClubId: result.decidedBy === 'penalties' ? result.winnerTeamId : undefined,
+  penaltyHomeGoals: result.penaltyHomeScore,
+  penaltyAwayGoals: result.penaltyAwayScore,
   goals: [],
   stats: {
     home: { ...emptyStats },
@@ -30,6 +32,7 @@ export const adaptWorldCupMatch = (match: WorldCupMatch): Match => ({
   order: match.order,
   round: match.matchday,
   roundNumber: match.matchday,
+  playoffStageId: match.isKnockout ? match.round : undefined,
   homeClubId: match.homeTeamId,
   awayClubId: match.awayTeamId,
   neutralVenue: match.neutralVenue,

@@ -3,11 +3,13 @@ import { generateGroupFixtures } from '@/services/worldCup2026/generateGroupFixt
 import { calculateGroupStandings } from '@/services/worldCup2026/calculateGroupStandings'
 import {
   calculateBestThirdPlacedTeams,
+  calculateThirdPlaceStandings,
   getThirdPlacedGroupLetters,
 } from '@/services/worldCup2026/calculateBestThirdPlacedTeams'
 import { createInitialKnockoutBracket, assignKnockoutTeams } from '@/services/worldCup2026/generateKnockoutBracket'
 import { createInitialWorldCup2026State, refreshAllStandings } from '@/services/worldCup2026/initializeTournament'
 import { simulateWorldCupMatch } from '@/services/worldCup2026/simulateWorldCupMatch'
+import { worldCupResultToMatchResult } from '@/services/worldCup2026/matchResultAdapter'
 import { simulateWorldCupMatchDay, prepareUntilUserMatch, getUserNextMatch } from '@/services/worldCup2026/simulateWorldCupRound'
 import { buildNationalTeam } from '@/data/wc26/rosters'
 import { worldCup2026ProfilesById } from '@/data/wc26/teams/index'
@@ -21,7 +23,7 @@ describe('buildNationalTeam', () => {
   it('loads real squad players when profile includes squad data', () => {
     const team = buildNationalTeam(worldCup2026ProfilesById.argentina!)
     expect(team.players.length).toBeGreaterThan(0)
-    expect(team.players.some((player) => player.firstName.includes('Lionel'))).toBe(true)
+    expect(team.players.some((player) => player.id.includes('lionel-andres-messi'))).toBe(true)
     expect(team.players.every((player) => player.id.startsWith('argentina:'))).toBe(true)
   })
 })
@@ -151,6 +153,19 @@ describe('knockout and tournament flow', () => {
     expect(current.groupStageComplete).toBe(true)
     expect(current.qualifiedThirdPlacedTeamIds).toHaveLength(8)
     expect(current.knockoutBracket?.roundOf32).toHaveLength(16)
+    expect(calculateThirdPlaceStandings(current.standings)).toHaveLength(12)
+    expect(
+      calculateThirdPlaceStandings(current.standings).filter(
+        (row) => row.qualificationStatus === 'qualified-third-place',
+      ),
+    ).toHaveLength(8)
+
+    const knockoutTeamIds = current.knockoutBracket!.roundOf32.flatMap((tie) => [
+      tie.homeTeamId,
+      tie.awayTeamId,
+    ])
+    expect(knockoutTeamIds).toHaveLength(32)
+    expect(new Set(knockoutTeamIds).size).toBe(32)
   })
 
   it('resolves knockout winner progression', () => {
@@ -176,6 +191,29 @@ describe('knockout and tournament flow', () => {
     expect(assigned.roundOf32.every((tie) => tie.homeTeamId && tie.awayTeamId)).toBe(true)
     expect(assigned.roundOf32).toHaveLength(16)
   })
+
+  it('finishes every knockout stage and declares the podium', () => {
+    let current = createInitialWorldCup2026State('argentina', 31415)
+    let guard = 0
+    while (current.status !== 'finished' && guard < 200) {
+      current = simulateWorldCupMatchDay(current)
+      guard += 1
+    }
+
+    expect(current.status).toBe('finished')
+    expect(current.championTeamId).toBeTruthy()
+    expect(current.runnerUpTeamId).toBeTruthy()
+    expect(current.thirdPlaceTeamId).toBeTruthy()
+    expect(current.matches.filter((match) => match.round === 'round-of-32')).toHaveLength(16)
+    expect(current.matches.filter((match) => match.round === 'round-of-16')).toHaveLength(8)
+    expect(current.matches.filter((match) => match.round === 'quarter-final')).toHaveLength(4)
+    expect(current.matches.filter((match) => match.round === 'semi-final')).toHaveLength(2)
+    expect(
+      current.matches
+        .filter((match) => match.isKnockout)
+        .every((match) => Boolean(match.result?.winnerTeamId)),
+    ).toBe(true)
+  })
 })
 
 describe('simulateWorldCupMatch', () => {
@@ -195,6 +233,23 @@ describe('simulateWorldCupMatch', () => {
     }
 
     expect(penaltiesCount).toBeGreaterThan(0)
+  })
+
+  it('keeps the penalty winner and shootout score for the match screen', () => {
+    const result = worldCupResultToMatchResult({
+      homeScore: 1,
+      awayScore: 1,
+      extraTimeHomeScore: 1,
+      extraTimeAwayScore: 1,
+      penaltyHomeScore: 5,
+      penaltyAwayScore: 4,
+      winnerTeamId: 'home',
+      decidedBy: 'penalties',
+    })
+
+    expect(result.penaltyWinnerClubId).toBe('home')
+    expect(result.penaltyHomeGoals).toBe(5)
+    expect(result.penaltyAwayGoals).toBe(4)
   })
 })
 

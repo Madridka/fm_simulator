@@ -10,6 +10,7 @@ import { useMatchStore } from '@/stores/matches/matchStore'
 import { getClubCompetitionId } from '@/domain/competition/competitionIdentity'
 import { calculateClubRating } from '@/domain/club/teamRating'
 import type { Club, LeagueTableRow } from '@/types/football'
+import { getWorldCupStageLabel } from '@/data/worldCup2026/stageLabels'
 
 import DashboardHero from '@/components/dashboard/DashboardHero.vue'
 import DashboardLeaguePanel from '@/components/dashboard/DashboardLeaguePanel.vue'
@@ -49,6 +50,15 @@ const divisionName = computed((): string => {
   return club.value ? clubStore.getClubCompetitionName(club.value) : ''
 })
 
+const tournamentStageName = computed((): string => {
+  if (isWorldCupMode.value && worldCupStore.state) {
+    return worldCupStore.state.status === 'finished'
+      ? 'Турнир завершен'
+      : getWorldCupStageLabel(worldCupStore.state.currentRound)
+  }
+  return divisionName.value
+})
+
 const leagueRows = computed((): LeagueTableRow[] =>
   club.value ? (competitionStore.leagueTables[getClubCompetitionId(club.value)] ?? []) : [],
 )
@@ -85,7 +95,7 @@ const playNextMatch = (): void => {
       :club="club"
       :team-flag="worldCupStore.getTeamFlag(worldCupStore.selectedTeam.id)"
       :team-rating="teamRating"
-      :division-name="divisionName"
+      :division-name="tournamentStageName"
       :position="userGroupStanding?.position"
       :group-size="userGroupRows.length"
       :can-play="worldCupStore.canPlay"
@@ -96,8 +106,20 @@ const playNextMatch = (): void => {
       @simulate-rest="worldCupStore.simulateRest()"
     />
 
+    <div v-if="isWorldCupMode && !worldCupStore.isFinished" class="flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+      <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white hover:bg-emerald-500" @click="worldCupStore.simulateNextMatch()">
+        Симулировать следующий матч
+      </button>
+      <button v-if="!worldCupStore.groupStageCompleted" type="button" class="rounded-lg bg-slate-800 px-4 py-2 text-xs font-black text-white hover:bg-slate-700" @click="worldCupStore.simulateNextGroupRound()">
+        Симулировать тур
+      </button>
+      <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-700 hover:bg-slate-50" @click="worldCupStore.simulateUntilNextStage()">
+        Симулировать до следующей стадии
+      </button>
+    </div>
+
     <DashboardHero
-      v-else-if="gameStore.game"
+      v-if="!isWorldCupMode && gameStore.game"
       :club="club"
       :team-rating="teamRating"
       :cup-progress="competitionStore.cupProgress"

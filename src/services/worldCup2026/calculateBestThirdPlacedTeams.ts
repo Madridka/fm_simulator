@@ -1,7 +1,7 @@
 import { worldCup2026Config } from '@/data/nationalTeams/worldCup2026/config'
 import { worldCup2026RatingByTeamId } from '@/data/nationalTeams/worldCup2026/ratings'
 import type { WorldCupGroupId } from '@/stores/worldCup2026/enums'
-import type { WorldCupStanding } from '@/stores/worldCup2026/types'
+import type { WorldCupStanding, WorldCupThirdPlaceStanding } from '@/stores/worldCup2026/types'
 
 const fairPlayScore = (standing: WorldCupStanding): number =>
   standing.yellowCards + standing.indirectRedCards * 2 + standing.directRedCards * 3
@@ -35,16 +35,31 @@ const compareThirdPlace = (left: WorldCupStanding, right: WorldCupStanding): num
 export const calculateBestThirdPlacedTeams = (
   standings: Record<WorldCupGroupId, WorldCupStanding[]>,
 ): WorldCupStanding[] => {
-  const thirdPlaced = Object.values(standings)
-    .map((groupStandings) => groupStandings.find((row) => row.position === 3))
-    .filter((row): row is WorldCupStanding => Boolean(row))
+  return calculateThirdPlaceStandings(standings)
+    .filter((row) => row.qualificationStatus === 'qualified-third-place')
+}
 
-  const ranked = [...thirdPlaced].sort(compareThirdPlace)
-  const qualified = ranked.slice(0, worldCup2026Config.bestThirdPlacedQualifiersCount)
+export const calculateThirdPlaceStandings = (
+  standings: Record<WorldCupGroupId, WorldCupStanding[]>,
+): WorldCupThirdPlaceStanding[] => {
+  const thirdPlaced = (Object.entries(standings) as Array<[WorldCupGroupId, WorldCupStanding[]]>)
+    .map(([groupId, rows]) => {
+      const row = rows.find((candidate) => candidate.position === 3)
+      return row ? { ...row, groupId } : undefined
+    })
+    .filter((row): row is WorldCupStanding & { groupId: WorldCupGroupId } => Boolean(row))
+    .sort(compareThirdPlace)
 
-  return qualified.map((row) => ({
+  const groupStageComplete = thirdPlaced.length === 12 && thirdPlaced.every((row) => row.played === 3)
+  return thirdPlaced.map((row, index) => ({
     ...row,
-    qualificationStatus: 'qualified-third-place' as const,
+    originalGroupPosition: 3,
+    thirdPlaceRank: index + 1,
+    qualificationStatus: groupStageComplete
+      ? index < worldCup2026Config.bestThirdPlacedQualifiersCount
+        ? 'qualified-third-place'
+        : 'eliminated'
+      : 'pending',
   }))
 }
 

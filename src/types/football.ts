@@ -180,6 +180,8 @@ export interface MatchResult {
   awayGoals: number
   winnerClubId?: string
   penaltyWinnerClubId?: string
+  penaltyHomeGoals?: number
+  penaltyAwayGoals?: number
   goals: GoalEvent[]
   stats: {
     home: MatchTeamStats

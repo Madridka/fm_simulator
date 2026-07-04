@@ -29,6 +29,7 @@
   "goals": "Голы",
   "noGoals": "Голов пока нет.",
   "penaltyWinner": "Победитель серии пенальти:",
+  "penaltyWinnerWithScore": "Победитель серии пенальти: {team} — {score}",
   "commentaryTitle": "Текстовая трансляция",
   "noEvents": "Событий пока нет.",
   "notFound": "Матч не найден.",

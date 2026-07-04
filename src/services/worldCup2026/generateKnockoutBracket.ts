@@ -123,7 +123,7 @@ export const assignKnockoutTeams = (
       awayTeamId: tie.sourceAway ? resolveSource(tie.sourceAway) : tie.awayTeamId,
     }))
 
-  return {
+  const assigned = {
     ...bracket,
     roundOf32: fillTies(bracket.roundOf32),
     roundOf16: bracket.roundOf16,
@@ -132,6 +132,19 @@ export const assignKnockoutTeams = (
     thirdPlaceMatch: bracket.thirdPlaceMatch,
     final: bracket.final,
   }
+
+  const qualifiedTeamIds = assigned.roundOf32.flatMap((tie) => [tie.homeTeamId, tie.awayTeamId])
+  if (qualifiedTeamIds.length !== 32 || qualifiedTeamIds.some((teamId) => !teamId)) {
+    throw new Error(`World Cup knockout requires 32 teams, received ${qualifiedTeamIds.filter(Boolean).length}`)
+  }
+  if (new Set(qualifiedTeamIds).size !== 32) {
+    throw new Error('World Cup knockout has duplicated teams')
+  }
+  if (assigned.roundOf32.some((tie) => tie.homeTeamId === tie.awayTeamId)) {
+    throw new Error('World Cup knockout has a team playing itself')
+  }
+
+  return assigned
 }
 
 export { THIRD_PLACE_ELIGIBLE }

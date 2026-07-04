@@ -30,8 +30,8 @@
   },
   "nav": {
     "overview": "Обзор",
-    "groups": "Группа",
-    "fixtures": "Расписание",
+    "groups": "Группы",
+    "fixtures": "Матчи",
     "bracket": "Сетка",
     "squadRegistration": "Дозаявка"
   },
@@ -46,8 +46,8 @@
     "group-stage-3": "Групповой этап — тур 3",
     "round-of-32": "1/16 финала",
     "round-of-16": "1/8 финала",
-    "quarter-final": "Четвертьфинал",
-    "semi-final": "Полуфинал",
+    "quarter-final": "1/4 финала",
+    "semi-final": "1/2 финала",
     "third-place": "Матч за 3-е место",
     "final": "Финал"
   },

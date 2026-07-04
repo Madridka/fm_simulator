@@ -7,6 +7,8 @@ export const worldCupResultToMatchResult = (result: WorldCupMatchResult): MatchR
   winnerClubId: result.winnerTeamId,
   penaltyWinnerClubId:
     result.decidedBy === 'penalties' ? result.winnerTeamId : undefined,
+  penaltyHomeGoals: result.penaltyHomeScore,
+  penaltyAwayGoals: result.penaltyAwayScore,
   goals: [],
   stats: {
     home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },

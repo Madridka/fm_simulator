@@ -15,6 +15,16 @@ export type WorldCupRound =
   | 'third-place'
   | 'final'
 
+export type WorldCupStage =
+  | 'group-stage'
+  | 'round-of-32'
+  | 'round-of-16'
+  | 'quarter-finals'
+  | 'semi-finals'
+  | 'third-place'
+  | 'final'
+  | 'completed'
+
 export type WorldCupTournamentStatus =
   | 'not-started'
   | 'group-stage'
@@ -26,3 +36,5 @@ export type QualificationStatus =
   | 'qualified-third-place'
   | 'pending'
   | 'eliminated'
+
+export type WorldCupQualificationStatus = QualificationStatus

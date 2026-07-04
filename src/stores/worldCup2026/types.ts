@@ -25,6 +25,12 @@ export interface WorldCupStanding {
   qualificationStatus: QualificationStatus
 }
 
+export interface WorldCupThirdPlaceStanding extends WorldCupStanding {
+  groupId: WorldCupGroupId
+  originalGroupPosition: 3
+  thirdPlaceRank: number
+}
+
 export interface WorldCupGroup {
   id: WorldCupGroupId
   teamIds: string[]

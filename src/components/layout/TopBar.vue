@@ -2,6 +2,8 @@
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { Club, Match } from '@/types/football'
+import { getWorldCupStageLabel } from '@/data/worldCup2026/stageLabels'
+import type { WorldCupRound } from '@/stores/worldCup2026/enums'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 import IconSymbol from '@/components/ui/IconSymbol.vue'
@@ -28,7 +30,7 @@ const { t } = useI18n()
 const matchCompetition = (match: Match): string => {
   if (props.isWorldCupMode) {
     if (match.type === 'playoff') {
-      return t('match.playoff')
+      return getWorldCupStageLabel(match.playoffStageId as WorldCupRound)
     }
     return t('worldCup2026.overview.matchday', {
       current: match.roundNumber ?? match.round,

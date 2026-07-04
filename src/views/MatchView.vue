@@ -68,6 +68,10 @@ const match = computed((): Match | undefined => {
         homeGoals: wcMatch.result.homeScore,
         awayGoals: wcMatch.result.awayScore,
         winnerClubId: wcMatch.result.winnerTeamId,
+        penaltyWinnerClubId:
+          wcMatch.result.decidedBy === 'penalties' ? wcMatch.result.winnerTeamId : undefined,
+        penaltyHomeGoals: wcMatch.result.penaltyHomeScore,
+        penaltyAwayGoals: wcMatch.result.penaltyAwayScore,
         goals: timeline.value?.finalResult.goals ?? [],
         stats: timeline.value?.finalResult.stats ?? {
           home: { possession: 50, shots: 0, shotsOnTarget: 0, yellowCards: 0 },
@@ -258,6 +262,22 @@ const currentResult = computed<MatchResult | undefined>(() => {
     return match.value.result
   }
   return currentMinute.value >= 90 ? timeline.value?.finalResult : undefined
+})
+
+const penaltyWinnerName = computed((): string => {
+  const winnerId = match.value?.result?.penaltyWinnerClubId
+  if (!winnerId) return ''
+  if (winnerId === homeClub.value?.id) return homeClub.value.name
+  if (winnerId === awayClub.value?.id) return awayClub.value.name
+  return isWorldCupMode.value
+    ? worldCupStore.getTeamName(winnerId)
+    : clubStore.getClubById(winnerId)?.name ?? winnerId
+})
+
+const penaltyScore = computed((): string => {
+  const result = match.value?.result
+  if (result?.penaltyHomeGoals === undefined || result.penaltyAwayGoals === undefined) return ''
+  return `${result.penaltyHomeGoals}:${result.penaltyAwayGoals}`
 })
 
 // СОЗДАЁТ ПУСТОЙ СНИМОК СОСТОЯНИЯ МАТЧА
@@ -997,8 +1017,11 @@ onBeforeUnmount(clearTimer)
           v-if="match.result?.penaltyWinnerClubId"
           class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
         >
-          {{ t('match.penaltyWinner') }}
-          {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+          {{
+            penaltyScore
+              ? t('match.penaltyWinnerWithScore', { team: penaltyWinnerName, score: penaltyScore })
+              : `${t('match.penaltyWinner')} ${penaltyWinnerName}`
+          }}
         </div>
       </div>
 

@@ -83,6 +83,9 @@ const compareStandings = (
   if (right.goalsFor !== left.goalsFor) {
     return right.goalsFor - left.goalsFor
   }
+  if (right.wins !== left.wins) {
+    return right.wins - left.wins
+  }
 
   const leftH2H = headToHead.get(left.teamId)
   const rightH2H = headToHead.get(right.teamId)
@@ -172,11 +175,14 @@ export const calculateGroupStandings = (
     compareStandings(left, right, headToHead),
   )
 
+  const groupComplete = sorted.every((row) => row.played === 3)
+
   return sorted.map((row, index) => ({
     ...row,
     position: index + 1,
-    qualificationStatus:
-      index === 0 || index === 1
+    qualificationStatus: !groupComplete
+      ? 'pending'
+      : index === 0 || index === 1
         ? 'qualified-directly'
         : index === 2
           ? 'pending'

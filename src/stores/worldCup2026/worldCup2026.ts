@@ -16,6 +16,8 @@ import { worldCup2026SaveRepository } from '@/repositories/worldCup2026SaveRepos
 import type { WorldCup2026State } from '@/stores/worldCup2026/types'
 import type { NationalTeam } from '@/data/wc26/nationalTeam'
 import { resolveTeamFlagEmoji } from '@/data/wc26/nationalTeam'
+import { calculateThirdPlaceStandings } from '@/services/worldCup2026/calculateBestThirdPlacedTeams'
+import type { QualificationStatus } from '@/stores/worldCup2026/enums'
 import type { ClubLineup, MatchResult, PlayedLineup, PreparedMatchContext } from '@/types/football'
 import { matchTeamToClub, nationalTeamToMatchTeam } from '@/types/matchTeam'
 
@@ -78,6 +80,46 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
   const isChampion = computed(
     () => state.value?.championTeamId === state.value?.selectedTeamId,
   )
+
+  const selectedTeamMatches = computed(() => {
+    if (!state.value) return []
+    return state.value.matches.filter(
+      (match) =>
+        match.homeTeamId === state.value?.selectedTeamId ||
+        match.awayTeamId === state.value?.selectedTeamId,
+    )
+  })
+
+  const currentStageMatches = computed(() =>
+    state.value?.matches.filter((match) => match.round === state.value?.currentRound) ?? [],
+  )
+
+  const thirdPlaceStandings = computed(() =>
+    state.value ? calculateThirdPlaceStandings(state.value.standings) : [],
+  )
+
+  const bestThirdPlacedTeams = computed(() =>
+    thirdPlaceStandings.value.filter((row) => row.qualificationStatus === 'qualified-third-place'),
+  )
+
+  const qualifiedTeams = computed(() => {
+    if (!state.value?.groupStageComplete) return []
+    const directIds = Object.values(state.value.standings)
+      .flatMap((rows) => rows.filter((row) => row.position <= 2).map((row) => row.teamId))
+    const ids = new Set([...directIds, ...state.value.qualifiedThirdPlacedTeamIds])
+    return state.value.teams.filter((team) => ids.has(team.id))
+  })
+
+  const selectedTeamStatus = computed<QualificationStatus | 'champion'>(() => {
+    if (isChampion.value) return 'champion'
+    if (!state.value || !selectedTeam.value) return 'pending'
+    if (state.value.userEliminatedAt) return 'eliminated'
+    if (!state.value.groupStageComplete) return 'pending'
+    if (state.value.qualifiedThirdPlacedTeamIds.includes(state.value.selectedTeamId)) {
+      return 'qualified-third-place'
+    }
+    return 'qualified-directly'
+  })
 
   const save = (): void => {
     if (state.value) {
@@ -202,6 +244,45 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
     save()
   }
 
+  const simulateNextMatch = simulateNextMatchDay
+
+  const simulateNextGroupRound = (): void => {
+    if (!state.value || state.value.groupStageComplete) return
+    const matchday = state.value.currentMatchday
+    let guard = 0
+    while (
+      state.value &&
+      !state.value.groupStageComplete &&
+      state.value.matches.some(
+        (match) => !match.isKnockout && match.matchday === matchday && match.status === 'scheduled',
+      ) &&
+      guard < 100
+    ) {
+      state.value = simulateWorldCupMatchDay(state.value)
+      guard += 1
+    }
+    save()
+  }
+
+  const simulateUntilNextStage = (): void => {
+    if (!state.value || state.value.status === 'finished') return
+    const startingRound = state.value.currentRound
+    let guard = 0
+    while (
+      state.value &&
+      state.value.status !== 'finished' &&
+      state.value.currentRound === startingRound &&
+      guard < 200
+    ) {
+      const previousPlayed = state.value.matches.filter((match) => match.status === 'played').length
+      state.value = simulateWorldCupMatchDay(state.value)
+      const played = state.value.matches.filter((match) => match.status === 'played').length
+      if (played === previousPlayed) break
+      guard += 1
+    }
+    save()
+  }
+
   const simulateRest = (): void => {
     if (!state.value) {
       return
@@ -231,12 +312,24 @@ export const useWorldCup2026Store = defineStore('worldCup2026', () => {
     isFinished,
     isUserEliminated,
     isChampion,
+    selectedTeamMatches,
+    selectedTeamStatus,
+    currentStageMatches,
+    thirdPlaceStandings,
+    bestThirdPlacedTeams,
+    qualifiedTeams,
+    groupStageCompleted: computed(() => state.value?.groupStageComplete ?? false),
+    knockoutStarted: computed(() => state.value?.knockoutInitialized ?? false),
+    tournamentCompleted: computed(() => state.value?.status === 'finished'),
     startTournament,
     resetTournament,
     prepareUserMatch,
     completeUserMatch,
     clearActiveMatch,
     simulateNextMatchDay,
+    simulateNextMatch,
+    simulateNextGroupRound,
+    simulateUntilNextStage,
     simulateRest,
     getTeamFlag,
     getTeamName,

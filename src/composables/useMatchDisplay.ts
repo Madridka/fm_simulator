@@ -3,6 +3,8 @@ import { useCareerContext } from '@/composables/useCareerContext'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import type { Club, Match } from '@/types/football'
 import { formatDate } from '@/utils/format'
+import { getWorldCupStageLabel } from '@/data/worldCup2026/stageLabels'
+import type { WorldCupRound } from '@/stores/worldCup2026/enums'
 
 export const useMatchDisplay = () => {
   const matchStore = useMatchStore()
@@ -16,7 +18,7 @@ export const useMatchDisplay = () => {
   const matchCompetition = (match: Match): string => {
     if (isWorldCupMode.value) {
       if (match.type === 'playoff') {
-        return t('match.playoff')
+        return getWorldCupStageLabel(match.playoffStageId as WorldCupRound)
       }
       return t('worldCup2026.overview.matchday', {
         current: match.roundNumber ?? match.round,

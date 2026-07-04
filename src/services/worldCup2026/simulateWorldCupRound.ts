@@ -237,6 +237,20 @@ export const initializeKnockoutStage = (state: WorldCup2026State): WorldCup2026S
   const bestThird = calculateBestThirdPlacedTeams(refreshed.standings)
   const qualifiedThirdIds = bestThird.map((row) => row.teamId)
   const qualifyingGroups = getThirdPlacedGroupLetters(refreshed.standings, qualifiedThirdIds)
+  const qualifiedStandings = Object.fromEntries(
+    Object.entries(refreshed.standings).map(([groupId, rows]) => [
+      groupId,
+      rows.map((row) => ({
+        ...row,
+        qualificationStatus:
+          row.position <= 2
+            ? 'qualified-directly' as const
+            : row.position === 3 && qualifiedThirdIds.includes(row.teamId)
+              ? 'qualified-third-place' as const
+              : 'eliminated' as const,
+      })),
+    ]),
+  ) as WorldCup2026State['standings']
 
   const groupWinners = Object.fromEntries(
     Object.entries(refreshed.standings).map(([groupId, rows]) => [
@@ -287,6 +301,7 @@ export const initializeKnockoutStage = (state: WorldCup2026State): WorldCup2026S
 
   return {
     ...refreshed,
+    standings: qualifiedStandings,
     status: 'knockout-stage',
     currentRound: 'round-of-32',
     qualifiedThirdPlacedTeamIds: qualifiedThirdIds,
