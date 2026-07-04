@@ -6,6 +6,11 @@
     <title>Футбольный менеджер</title>
     <script>
       ;(() => {
+        window.VUE_DEVTOOLS_CONFIG = {
+          ...window.VUE_DEVTOOLS_CONFIG,
+          openInEditorHost: '/fm_simulator/',
+        }
+
         const redirectKey = 'fm-simulator:404-path'
 
         try {

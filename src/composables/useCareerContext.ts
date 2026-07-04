@@ -39,6 +39,14 @@ const worldCupPaths: CareerPaths = {
   match: '/world-cup-2026/match',
 }
 
+const preGameRouteNames = new Set([
+  'home',
+  'select-mode',
+  'select-club',
+  'world-cup-select-team',
+  'not-found',
+])
+
 export const useCareerContext = () => {
   const route = useRoute()
   const gameStore = useGameStore()
@@ -46,10 +54,22 @@ export const useCareerContext = () => {
 
   const isWorldCupMode = computed(() => {
     const routeName = String(route.name ?? '')
-    return routeName.startsWith('world-cup-') && Boolean(worldCupStore.state)
+    return (
+      !preGameRouteNames.has(routeName) &&
+      routeName.startsWith('world-cup-') &&
+      Boolean(worldCupStore.state)
+    )
   })
 
-  const isActiveSession = computed(() => Boolean(gameStore.game || worldCupStore.state))
+  const isActiveSession = computed(() => {
+    const routeName = String(route.name ?? '')
+    if (preGameRouteNames.has(routeName)) {
+      return false
+    }
+    return routeName.startsWith('world-cup-')
+      ? Boolean(worldCupStore.state)
+      : Boolean(gameStore.game)
+  })
 
   const paths = computed(() => (isWorldCupMode.value ? worldCupPaths : clubPaths))
 
