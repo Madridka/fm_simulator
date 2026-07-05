@@ -319,7 +319,7 @@ export const realMadridProfile: ClubProfile = {
       id: 'vinicius-junior',
       firstName: 'Vinícius',
       lastName: 'Júnior',
-      age: 25,
+      age: 26,
       position: 'LW',
       rating: 91,
       potential: 94,
