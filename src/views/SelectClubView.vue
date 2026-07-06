@@ -304,25 +304,6 @@ const startGame = (): void => {
       <aside
         class="overflow-hidden rounded-xl border border-cyan-300/25 bg-[#121820] text-white shadow-[0_24px_70px_rgba(8,19,29,0.22)] sm:rounded-2xl"
       >
-        <div class="border-b border-white/10 p-4 sm:p-5">
-          <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
-            {{ t('selectClub.country') }}
-          </label>
-          <select
-            v-model="selectedChampionship"
-            class="mt-2 h-12 w-full rounded-lg border border-white/10 bg-white/[0.08] px-3 text-sm font-black text-white outline-none transition focus:border-cyan-300"
-          >
-            <option
-              v-for="option in championshipOptions"
-              :key="option.value"
-              class="bg-slate-950"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-
         <div class="p-4 sm:p-5">
           <div
             class="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200/70"
@@ -371,24 +352,28 @@ const startGame = (): void => {
               </div>
             </div>
           </div>
+        </div>
 
+        <div class="border-t border-white/10 p-4 sm:p-5">
+          <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
+            {{ t('selectClub.country') }}
+          </label>
           <select
-            :value="selectedClub.id"
-            class="mt-4 h-11 w-full rounded-lg border border-white/10 bg-white/[0.08] px-3 text-sm font-bold text-white outline-none transition focus:border-cyan-300"
-            @change="selectClub(($event.target as HTMLSelectElement).value)"
+            v-model="selectedChampionship"
+            class="mt-2 h-12 w-full rounded-lg border border-white/10 bg-white/[0.08] px-3 text-sm font-black text-white outline-none transition focus:border-cyan-300"
           >
             <option
-              v-for="club in divisionClubs"
-              :key="club.id"
+              v-for="option in championshipOptions"
+              :key="option.value"
               class="bg-slate-950"
-              :value="club.id"
+              :value="option.value"
             >
-              {{ club.name }}
+              {{ option.label }}
             </option>
           </select>
         </div>
 
-        <div class="border-t border-white/10 p-4 sm:p-5">
+        <div class="border-t border-white/10 py-4 sm:px-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
             {{ t('selectClub.division') }}
           </label>
@@ -403,6 +388,26 @@ const startGame = (): void => {
               :value="division.value"
             >
               {{ division.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="border-t border-white/10 py-4 sm:px-5">
+          <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
+            {{ t('selectClub.club') }}
+          </label>
+          <select
+            :value="selectedClub.id"
+            class="mt-4 h-11 w-full rounded-lg border border-white/10 bg-white/[0.08] px-3 text-sm font-bold text-white outline-none transition focus:border-cyan-300"
+            @change="selectClub(($event.target as HTMLSelectElement).value)"
+          >
+            <option
+              v-for="club in divisionClubs"
+              :key="club.id"
+              class="bg-slate-950"
+              :value="club.id"
+            >
+              {{ club.name }}
             </option>
           </select>
         </div>
