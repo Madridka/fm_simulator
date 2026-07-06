@@ -318,6 +318,11 @@ const visibleCommentary = computed(() =>
   ),
 )
 
+// РЕВЕРС КОММЕНТАРИЕВ
+const reversedVisibleCommentary = computed(() => {
+  return [...visibleCommentary.value].reverse()
+})
+
 interface PlayerEventMarker {
   key: string
   label: string
@@ -601,9 +606,8 @@ const updateTactic = <K extends keyof MatchTactics>(key: K, value: MatchTactics[
   controller.changeTactics(userTeamId.value, { [key]: value })
   revision.value += 1
 }
-const onTacticChange = (key: keyof MatchTactics, event: Event): void => {
-  const value = (event.target as HTMLSelectElement).value
-  updateTactic(key, value as MatchTactics[typeof key])
+const onTacticChange = <K extends keyof MatchTactics>(key: K, value: MatchTactics[K]): void => {
+  updateTactic(key, value)
 }
 const makeSubstitution = (): void => {
   const controller = ensureLiveMatch()
@@ -780,124 +784,123 @@ onBeforeUnmount(stopSimulationTimer)
           </div>
 
           <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
-            <FloatLabel variant="on">
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-mentality"
                 :model-value="userTactics.mentality"
                 :options="mentalityOptions"
                 option-label="label"
                 option-value="value"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 @update:model-value="onTacticChange('mentality', $event)"
               />
-              <label class="match-control-label">Менталитет</label>
+              <label for="match-mentality">Менталитет</label>
             </FloatLabel>
 
-            <label class="match-control-label">
-              Прессинг
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-pressing"
                 :model-value="userTactics.pressing"
                 :options="pressingOptions"
                 option-label="label"
                 option-value="value"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 @update:model-value="onTacticChange('pressing', $event)"
               />
-            </label>
+              <label for="match-pressing">Прессинг</label>
+            </FloatLabel>
 
-            <label class="match-control-label">
-              Темп
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-tempo"
                 :model-value="userTactics.tempo"
                 :options="tempoOptions"
                 option-label="label"
                 option-value="value"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 @update:model-value="onTacticChange('tempo', $event)"
               />
-            </label>
+              <label for="match-tempo">Темп</label>
+            </FloatLabel>
 
-            <label class="match-control-label">
-              Ширина
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-width"
                 :model-value="userTactics.width"
                 :options="widthOptions"
                 option-label="label"
                 option-value="value"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 @update:model-value="onTacticChange('width', $event)"
               />
-            </label>
+              <label for="match-width">Ширина</label>
+            </FloatLabel>
 
-            <label class="match-control-label">
-              Линия
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-defensive-line"
                 :model-value="userTactics.defensiveLine"
                 :options="defensiveLineOptions"
                 option-label="label"
                 option-value="value"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 @update:model-value="onTacticChange('defensiveLine', $event)"
               />
-            </label>
+              <label for="match-defensive-line">Линия</label>
+            </FloatLabel>
           </div>
         </div>
 
         <div>
-          <div class="mb-2 text-xs font-black uppercase tracking-wide text-slate-600">
+          <div class="mb-4 text-xs font-black uppercase tracking-wide text-slate-600">
             Замены: {{ substitutionsRemaining }} осталось
           </div>
 
           <div class="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
-            <label class="match-control-label">
-              С поля
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-player-out"
                 v-model="selectedPlayerOutId"
                 :options="playerOutOptions"
                 option-label="label"
                 option-value="value"
-                placeholder="Выбрать…"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 aria-label="Игрок с поля"
               />
-            </label>
+              <label for="match-player-out">С поля</label>
+            </FloatLabel>
 
-            <label class="match-control-label">
-              На поле
-
+            <FloatLabel variant="on" class="w-full">
               <Select
+                input-id="match-player-in"
                 v-model="selectedPlayerInId"
                 :options="playerInOptions"
                 option-label="label"
                 option-value="value"
-                placeholder="Выбрать…"
                 size="small"
                 fluid
-                class="mt-1 match-control-select"
+                class="h-9 match-control-select"
                 aria-label="Игрок со скамейки"
               />
-            </label>
+              <label for="match-player-in">На поле</label>
+            </FloatLabel>
 
             <Button
               size="small"
               label="Заменить"
-              class="match-control-button"
+              class="h-9 match-control-button"
               :disabled="!selectedPlayerOutId || !selectedPlayerInId || substitutionsRemaining <= 0"
               @click="makeSubstitution"
             />
@@ -1209,7 +1212,7 @@ onBeforeUnmount(stopSimulationTimer)
           class="mt-4 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-3"
         >
           <div
-            v-for="(event, index) in visibleCommentary"
+            v-for="(event, index) in reversedVisibleCommentary"
             :key="`${event.minute}-${event.text}-${index}`"
             class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
           >

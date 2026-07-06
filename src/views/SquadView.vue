@@ -4,7 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
-import type { Formation, Player, PlayerPosition, PlayerStats, TacticalStyle } from '@/types/football'
+import type {
+  Formation,
+  Player,
+  PlayerPosition,
+  PlayerStats,
+  TacticalStyle,
+} from '@/types/football'
 import { formatMoney } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import SectionHero from '@/components/ui/SectionHero.vue'
@@ -235,7 +241,7 @@ const availabilityLabel = (player: Player | undefined): string => {
 
 // ФОРМИРУЕТ ПОДПИСЬ ТЕКУЩЕЙ ФОРМЫ И ГОТОВНОСТИ ИГРОКА
 const conditionLabel = (player: Player): string =>
-  t('squad.formFitness', { form: player.form, fitness: player.fitness })
+  t('squad.formFitness', { form: player.form, fitness: player.fitness.toFixed(0) })
 
 // ДОБАВЛЯЕТ ВОЗРАСТ К ПОДПИСИ СОСТОЯНИЯ ИГРОКА
 const conditionWithAgeLabel = (player: Player): string =>
@@ -564,19 +570,27 @@ onBeforeRouteLeave(() => {
               class="rounded-md px-3"
               :class="activeSection === 'lineup' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
               @click="activeSection = 'lineup'"
-            >Состав</button>
+            >
+              Состав
+            </button>
             <button
               type="button"
               class="rounded-md px-3"
               :class="activeSection === 'stats' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
               @click="activeSection = 'stats'"
-            >Статистика</button>
+            >
+              Статистика
+            </button>
             <button
               type="button"
               class="rounded-md px-3"
-              :class="activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              :class="
+                activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'
+              "
               @click="activeSection = 'contracts'"
-            >{{ t('squad.contracts') }}</button>
+            >
+              {{ t('squad.contracts') }}
+            </button>
           </div>
           <div
             class="flex h-9 items-center gap-1 self-end rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm font-black text-white"
@@ -611,7 +625,12 @@ onBeforeRouteLeave(() => {
               :value="squadStore.lineup.tacticalStyle"
               @change="setTactic"
             >
-              <option v-for="style in squadStore.tacticalStyles" :key="style" :value="style" class="bg-emerald-950 text-white">
+              <option
+                v-for="style in squadStore.tacticalStyles"
+                :key="style"
+                :value="style"
+                class="bg-emerald-950 text-white"
+              >
                 {{ tacticLabels[style] }}
               </option>
             </select>
@@ -627,7 +646,10 @@ onBeforeRouteLeave(() => {
     </SectionHero>
 
     <!-- ТАКТИЧЕСКАЯ СХЕМА И СПИСОК КОМАНДЫ -->
-    <div v-if="activeSection === 'lineup'" class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]">
+    <div
+      v-if="activeSection === 'lineup'"
+      class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]"
+    >
       <!-- СТАРТОВЫЙ СОСТАВ И ЗАПАСНЫЕ -->
       <div
         class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
@@ -1017,16 +1039,17 @@ onBeforeRouteLeave(() => {
         </Column>
         <Column field="position" :header="t('squad.retirement.position')" sortable />
         <Column field="age" :header="t('squad.retirement.age')" sortable class="text-right" />
-        <Column
-          field="retirementSeasons"
-          :header="t('squad.retirement.departure')"
-          sortable
-        >
+        <Column field="retirementSeasons" :header="t('squad.retirement.departure')" sortable>
           <template #body="{ data }">
             <span
               class="inline-flex rounded-full px-2.5 py-1 text-xs font-bold"
-              :class="data.retirementSeasons === 1 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'"
-            >{{ retirementLabel(data.retirementSeasons) }}</span>
+              :class="
+                data.retirementSeasons === 1
+                  ? 'bg-amber-100 text-amber-800'
+                  : 'bg-slate-100 text-slate-600'
+              "
+              >{{ retirementLabel(data.retirementSeasons) }}</span
+            >
           </template>
         </Column>
       </DataTable>
