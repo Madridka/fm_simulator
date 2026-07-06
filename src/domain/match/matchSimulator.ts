@@ -1,5 +1,6 @@
 import { matchEngineConfig } from '@/data/gameConfig/matchEngine'
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
+import { getSimulationSettings } from '@/domain/admin/simulationSettings'
 import { t } from '@/plugins/i18n/i18n'
 import type {
   CardEvent,
@@ -243,7 +244,12 @@ const goalScorerWeight = (position: PlayerPosition): number => {
 
 // ВЫБИРАЕТ АВТОРА ГОЛА ПО ВЗВЕШЕННОЙ ВЕРОЯТНОСТИ
 const pickGoalScorer = (players: readonly Player[], random: RandomGenerator): Player => {
-  const weighted = players.map((player) => ({
+  const goalkeeper = players.find((player) => player.position === 'GK')
+  const goalkeeperChance = getSimulationSettings().goalkeeperGoalChancePercent / 100
+  if (goalkeeper && random.chance(goalkeeperChance)) return goalkeeper
+  const outfieldPlayers = players.filter((player) => player.position !== 'GK')
+  const scorerCandidates = outfieldPlayers.length ? outfieldPlayers : players
+  const weighted = scorerCandidates.map((player) => ({
     player,
     weight: goalScorerWeight(player.position) + player.rating / 35,
   }))

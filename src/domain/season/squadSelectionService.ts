@@ -44,6 +44,7 @@ const formationSlots: Record<Formation, FormationSlot[]> = {
     createSlot('st1', 'ST', 'ST', 42, 20),
     createSlot('st2', 'ST', 'ST', 58, 20),
   ],
+
   '4-3-3': [
     createSlot('gk', 'GK', 'GK', 50, 92),
     createSlot('lb', 'LB', 'LB', 18, 73),
@@ -57,6 +58,7 @@ const formationSlots: Record<Formation, FormationSlot[]> = {
     createSlot('st', 'ST', 'ST', 50, 16),
     createSlot('rw', 'RW', 'RW', 78, 22),
   ],
+
   '4-2-3-1': [
     createSlot('gk', 'GK', 'GK', 50, 92),
     createSlot('lb', 'LB', 'LB', 18, 73),
@@ -70,6 +72,91 @@ const formationSlots: Record<Formation, FormationSlot[]> = {
     createSlot('rw', 'RW', 'RW', 77, 36),
     createSlot('st', 'ST', 'ST', 50, 16),
   ],
+
+  '4-5-1': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cdm', 'CDM', 'CDM', 50, 59),
+    createSlot('cm1', 'CM', 'CM', 35, 47),
+    createSlot('cm2', 'CM', 'CM', 65, 47),
+    createSlot('lw', 'LW', 'LW', 22, 31),
+    createSlot('rw', 'RW', 'RW', 78, 31),
+    createSlot('st', 'ST', 'ST', 50, 15),
+  ],
+
+  '4-1-4-1': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cdm', 'CDM', 'CDM', 50, 59),
+    createSlot('lw', 'LW', 'LW', 20, 43),
+    createSlot('cm1', 'CM', 'CM', 40, 45),
+    createSlot('cm2', 'CM', 'CM', 60, 45),
+    createSlot('rw', 'RW', 'RW', 80, 43),
+    createSlot('st', 'ST', 'ST', 50, 16),
+  ],
+
+  '4-1-2-1-2': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cdm', 'CDM', 'CDM', 50, 59),
+    createSlot('cm1', 'CM', 'CM', 36, 47),
+    createSlot('cm2', 'CM', 'CM', 64, 47),
+    createSlot('cam', 'CAM', 'CAM', 50, 34),
+    createSlot('st1', 'ST', 'ST', 42, 18),
+    createSlot('st2', 'ST', 'ST', 58, 18),
+  ],
+
+  '4-3-1-2': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cm1', 'CM', 'CM', 32, 52),
+    createSlot('cm2', 'CM', 'CM', 50, 56),
+    createSlot('cm3', 'CM', 'CM', 68, 52),
+    createSlot('cam', 'CAM', 'CAM', 50, 35),
+    createSlot('st1', 'ST', 'ST', 42, 18),
+    createSlot('st2', 'ST', 'ST', 58, 18),
+  ],
+
+  '4-2-2-2': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cdm1', 'CDM', 'CDM', 40, 58),
+    createSlot('cdm2', 'CDM', 'CDM', 60, 58),
+    createSlot('cam1', 'CAM', 'CAM', 35, 36),
+    createSlot('cam2', 'CAM', 'CAM', 65, 36),
+    createSlot('st1', 'ST', 'ST', 42, 18),
+    createSlot('st2', 'ST', 'ST', 58, 18),
+  ],
+
+  '4-3-2-1': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cm1', 'CM', 'CM', 32, 54),
+    createSlot('cdm', 'CDM', 'CDM', 50, 58),
+    createSlot('cm2', 'CM', 'CM', 68, 54),
+    createSlot('cam1', 'CAM', 'CAM', 40, 35),
+    createSlot('cam2', 'CAM', 'CAM', 60, 35),
+    createSlot('st', 'ST', 'ST', 50, 16),
+  ],
+
   '3-5-2': [
     createSlot('gk', 'GK', 'GK', 50, 92),
     createSlot('cb1', 'CB', 'CB', 30, 75),
@@ -83,18 +170,152 @@ const formationSlots: Record<Formation, FormationSlot[]> = {
     createSlot('st1', 'ST', 'ST', 42, 20),
     createSlot('st2', 'ST', 'ST', 58, 20),
   ],
-  '4-5-1': [
+
+  '3-4-3': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('cb1', 'CB', 'CB', 30, 75),
+    createSlot('cb2', 'CB', 'CB', 50, 78),
+    createSlot('cb3', 'CB', 'CB', 70, 75),
+    createSlot('lwb', 'LB', 'LB', 16, 51),
+    createSlot('cm1', 'CM', 'CM', 41, 52),
+    createSlot('cm2', 'CM', 'CM', 59, 52),
+    createSlot('rwb', 'RB', 'RB', 84, 51),
+    createSlot('lw', 'LW', 'LW', 23, 23),
+    createSlot('st', 'ST', 'ST', 50, 16),
+    createSlot('rw', 'RW', 'RW', 77, 23),
+  ],
+
+  '3-4-2-1': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('cb1', 'CB', 'CB', 30, 75),
+    createSlot('cb2', 'CB', 'CB', 50, 78),
+    createSlot('cb3', 'CB', 'CB', 70, 75),
+    createSlot('lwb', 'LB', 'LB', 16, 51),
+    createSlot('cm1', 'CM', 'CM', 41, 53),
+    createSlot('cm2', 'CM', 'CM', 59, 53),
+    createSlot('rwb', 'RB', 'RB', 84, 51),
+    createSlot('cam1', 'CAM', 'CAM', 40, 35),
+    createSlot('cam2', 'CAM', 'CAM', 60, 35),
+    createSlot('st', 'ST', 'ST', 50, 16),
+  ],
+
+  '3-4-1-2': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('cb1', 'CB', 'CB', 30, 75),
+    createSlot('cb2', 'CB', 'CB', 50, 78),
+    createSlot('cb3', 'CB', 'CB', 70, 75),
+    createSlot('lwb', 'LB', 'LB', 16, 51),
+    createSlot('cm1', 'CM', 'CM', 41, 53),
+    createSlot('cm2', 'CM', 'CM', 59, 53),
+    createSlot('rwb', 'RB', 'RB', 84, 51),
+    createSlot('cam', 'CAM', 'CAM', 50, 35),
+    createSlot('st1', 'ST', 'ST', 42, 18),
+    createSlot('st2', 'ST', 'ST', 58, 18),
+  ],
+
+  '4-4-1-1': [
     createSlot('gk', 'GK', 'GK', 50, 92),
     createSlot('lb', 'LB', 'LB', 18, 73),
     createSlot('cb1', 'CB', 'CB', 39, 76),
     createSlot('cb2', 'CB', 'CB', 61, 76),
     createSlot('rb', 'RB', 'RB', 82, 73),
-    createSlot('cdm', 'CDM', 'CDM', 50, 59),
-    createSlot('cm1', 'CM', 'CM', 35, 47),
-    createSlot('cm2', 'CM', 'CM', 65, 47),
-    createSlot('lw', 'LW', 'LW', 22, 31),
-    createSlot('rw', 'RW', 'RW', 78, 31),
-    createSlot('st', 'ST', 'ST', 50, 15),
+    createSlot('lw', 'LW', 'LW', 18, 47),
+    createSlot('cm1', 'CM', 'CM', 39, 51),
+    createSlot('cm2', 'CM', 'CM', 61, 51),
+    createSlot('rw', 'RW', 'RW', 82, 47),
+    createSlot('cam', 'CAM', 'CAM', 50, 32),
+    createSlot('st', 'ST', 'ST', 50, 16),
+  ],
+
+  '5-3-2': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 14, 68),
+    createSlot('cb1', 'CB', 'CB', 32, 76),
+    createSlot('cb2', 'CB', 'CB', 50, 79),
+    createSlot('cb3', 'CB', 'CB', 68, 76),
+    createSlot('rb', 'RB', 'RB', 86, 68),
+    createSlot('cm1', 'CM', 'CM', 35, 51),
+    createSlot('cdm', 'CDM', 'CDM', 50, 58),
+    createSlot('cm2', 'CM', 'CM', 65, 51),
+    createSlot('st1', 'ST', 'ST', 42, 19),
+    createSlot('st2', 'ST', 'ST', 58, 19),
+  ],
+
+  '5-4-1': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 14, 68),
+    createSlot('cb1', 'CB', 'CB', 32, 76),
+    createSlot('cb2', 'CB', 'CB', 50, 79),
+    createSlot('cb3', 'CB', 'CB', 68, 76),
+    createSlot('rb', 'RB', 'RB', 86, 68),
+    createSlot('lw', 'LW', 'LW', 20, 45),
+    createSlot('cm1', 'CM', 'CM', 41, 51),
+    createSlot('cm2', 'CM', 'CM', 59, 51),
+    createSlot('rw', 'RW', 'RW', 80, 45),
+    createSlot('st', 'ST', 'ST', 50, 16),
+  ],
+
+  '5-2-3': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 14, 68),
+    createSlot('cb1', 'CB', 'CB', 32, 76),
+    createSlot('cb2', 'CB', 'CB', 50, 79),
+    createSlot('cb3', 'CB', 'CB', 68, 76),
+    createSlot('rb', 'RB', 'RB', 86, 68),
+    createSlot('cm1', 'CM', 'CM', 41, 52),
+    createSlot('cm2', 'CM', 'CM', 59, 52),
+    createSlot('lw', 'LW', 'LW', 23, 23),
+    createSlot('st', 'ST', 'ST', 50, 16),
+    createSlot('rw', 'RW', 'RW', 77, 23),
+  ],
+
+  '4-2-4': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+    createSlot('cm1', 'CM', 'CM', 42, 52),
+    createSlot('cm2', 'CM', 'CM', 58, 52),
+    createSlot('lw', 'LW', 'LW', 20, 25),
+    createSlot('st1', 'ST', 'ST', 42, 16),
+    createSlot('st2', 'ST', 'ST', 58, 16),
+    createSlot('rw', 'RW', 'RW', 80, 25),
+  ],
+
+  '2-3-5': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+
+    createSlot('cb1', 'CB', 'CB', 42, 76),
+    createSlot('cb2', 'CB', 'CB', 58, 76),
+
+    createSlot('lwb', 'LB', 'LB', 24, 58),
+    createSlot('cdm', 'CDM', 'CDM', 50, 61),
+    createSlot('rwb', 'RB', 'RB', 76, 58),
+
+    createSlot('lw', 'LW', 'LW', 15, 25),
+    createSlot('st1', 'ST', 'ST', 34, 18),
+    createSlot('st2', 'ST', 'ST', 50, 13),
+    createSlot('st3', 'ST', 'ST', 66, 18),
+    createSlot('rw', 'RW', 'RW', 85, 25),
+  ],
+
+  '4-6-0': [
+    createSlot('gk', 'GK', 'GK', 50, 92),
+
+    createSlot('lb', 'LB', 'LB', 18, 73),
+    createSlot('cb1', 'CB', 'CB', 39, 76),
+    createSlot('cb2', 'CB', 'CB', 61, 76),
+    createSlot('rb', 'RB', 'RB', 82, 73),
+
+    createSlot('cdm1', 'CDM', 'CDM', 40, 59),
+    createSlot('cdm2', 'CDM', 'CDM', 60, 59),
+
+    createSlot('lw', 'LW', 'LW', 22, 40),
+    createSlot('cm', 'CM', 'CM', 50, 45),
+    createSlot('rw', 'RW', 'RW', 78, 40),
+
+    createSlot('falseNine', 'CAM', 'CAM', 50, 27),
   ],
 }
 
@@ -166,10 +387,7 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   const uniqueIds = new Set(ids)
   const selectedIds = [...ids, ...lineup.substitutes]
   const players = getPlayersByIds(club, ids)
-  const selectedPlayers = [
-    ...players,
-    ...getPlayersByIds(club, lineup.substitutes),
-  ]
+  const selectedPlayers = [...players, ...getPlayersByIds(club, lineup.substitutes)]
 
   if (ids.length !== 11) {
     errors.push(t('squad.validation.startersCount'))
@@ -187,7 +405,8 @@ export const validateLineup = (club: Club, lineup: ClubLineup): LineupValidation
   const slots = getFormationSlots(lineup.formation)
   const goalkeeper = playersById.get(lineup.starters.gk ?? '')
   const goalkeeperInOutfield = slots.some(
-    (slot) => slot.position !== 'GK' && playersById.get(lineup.starters[slot.id] ?? '')?.position === 'GK',
+    (slot) =>
+      slot.position !== 'GK' && playersById.get(lineup.starters[slot.id] ?? '')?.position === 'GK',
   )
 
   if (goalkeeper?.position !== 'GK') {
@@ -237,15 +456,13 @@ const pickBestPlayerForSlot = (
   )
   // ОСТАВЛЯЕТ КАНДИДАТОВ С НАИЛУЧШИМ ДОСТУПНЫМ СООТВЕТСТВИЕМ ПОЗИЦИИ
   const selectBestPositionPool = (players: readonly Player[]): Player[] => {
-    const eligible = players.filter(
-      (player) => Number.isFinite(getPositionFit(slotPosition, player.position)),
+    const eligible = players.filter((player) =>
+      Number.isFinite(getPositionFit(slotPosition, player.position)),
     )
     const bestFit = Math.min(
       ...eligible.map((player) => getPositionFit(slotPosition, player.position)),
     )
-    return eligible.filter(
-      (player) => getPositionFit(slotPosition, player.position) === bestFit,
-    )
+    return eligible.filter((player) => getPositionFit(slotPosition, player.position) === bestFit)
   }
   const candidates = selectBestPositionPool(available)
 

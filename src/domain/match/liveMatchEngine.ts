@@ -1,9 +1,11 @@
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
+import { getSimulationSettings } from '@/domain/admin/simulationSettings'
 import { calculateClubRating } from '@/domain/club/teamRating'
 import { getPositionFit } from '@/domain/season/squadSelectionService'
 import type {
   CardEvent,
   Club,
+  Formation,
   GoalEvent,
   InjuryEvent,
   LiveMatchState,
@@ -16,6 +18,7 @@ import type {
   PlayerPosition,
   SubstitutionEvent,
   TacticalChangeEvent,
+  TacticalStyle,
 } from '@/types/football'
 import { formatPlayerName } from '@/utils/format'
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
@@ -54,8 +57,9 @@ interface Runtime {
   aiLastChangeMinute: number
 }
 
-const balancedTactics = (): MatchTactics => ({
-  mentality: 'balanced',
+const initialTactics = (formation: Formation, tacticalStyle: TacticalStyle): MatchTactics => ({
+  formation,
+  mentality: tacticalStyle,
   pressing: 'balanced',
   tempo: 'balanced',
   width: 'balanced',
@@ -76,10 +80,10 @@ const emptyStats = (): MatchTeamStats => ({
 const average = (values: readonly number[], fallback = 60): number =>
   values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : fallback
 
-const mentalityAttack = { defensive: 0.72, balanced: 1, attacking: 1.24, allOutAttack: 1.52 } as const
+const mentalityAttack = { defensive: 0.82, balanced: 1, attacking: 1.14, allOutAttack: 1.32 } as const
 const mentalityRisk = { defensive: 0.78, balanced: 1, attacking: 1.2, allOutAttack: 1.5 } as const
-const tempoVolume = { slow: 0.78, balanced: 1, fast: 1.25 } as const
-const pressingEffect = { low: 0.9, balanced: 1, high: 1.13 } as const
+const tempoVolume = { slow: 0.88, balanced: 1, fast: 1.12 } as const
+const pressingEffect = { low: 0.95, balanced: 1, high: 1.06 } as const
 const fitnessCost = { low: 0.72, balanced: 1, high: 1.42 } as const
 const tempoCost = { slow: 0.76, balanced: 1, fast: 1.35 } as const
 
@@ -111,8 +115,8 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     awayTeamId: input.awayClub.id,
     homeScore: 0,
     awayScore: 0,
-    homeTactics: balancedTactics(),
-    awayTactics: balancedTactics(),
+    homeTactics: initialTactics(input.homeLineup.formation, input.homeLineup.tacticalStyle),
+    awayTactics: initialTactics(input.awayLineup.formation, input.awayLineup.tacticalStyle),
     homeLineupPlayerIds: [...input.homeLineup.starters],
     awayLineupPlayerIds: [...input.awayLineup.starters],
     homeBenchPlayerIds: [...input.homeLineup.substitutes],
@@ -162,18 +166,25 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
 
   const pickWeightedAttacker = (teamId: string): Player => {
     const candidates = activePlayers(teamId)
+    const goalkeeper = candidates.find((player) => player.position === 'GK')
+    const goalkeeperChance = getSimulationSettings().goalkeeperGoalChancePercent / 100
+    if (goalkeeper && random.chance(goalkeeperChance)) return goalkeeper
+    const outfieldCandidates = candidates.filter((player) => player.position !== 'GK')
     const weight = (player: Player): number =>
       player.position === 'ST' ? 5 : player.position === 'LW' || player.position === 'RW' ? 3.5 :
-        player.position === 'CAM' ? 3 : player.position === 'CM' ? 1.5 : player.position === 'GK' ? 0.02 : 0.5
-    let roll = random.next() * candidates.reduce((sum, player) => sum + weight(player), 0)
-    for (const player of candidates) {
+        player.position === 'CAM' ? 3 : player.position === 'CM' ? 1.5 : 0.5
+    const scorerCandidates = outfieldCandidates.length ? outfieldCandidates : candidates
+    let roll = random.next() * scorerCandidates.reduce((sum, player) => sum + weight(player), 0)
+    for (const player of scorerCandidates) {
       roll -= weight(player)
       if (roll <= 0) return player
     }
-    return candidates[0]!
+    return scorerCandidates[0]!
   }
 
   const processAttack = (teamId: string, opponentId: string): void => {
+    const liveConfig = matchSimulationConfig.liveMatch
+    const adminSettings = getSimulationSettings()
     const tactics = tacticsFor(teamId)
     const opponentTactics = tacticsFor(opponentId)
     const attack = teamStrength(teamId, 'attack')
@@ -186,7 +197,13 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     const press = pressingEffect[tactics.pressing]
     const opponentPressRisk = opponentTactics.pressing === 'high' && attack > defense ? 1.08 : 1
     const volume = mentalityAttack[tactics.mentality] * tempoVolume[tactics.tempo] * press
-    const shotChance = clamp((0.068 + (attack + midfield - defense * 1.7) * 0.001) * volume, 0.025, 0.27)
+    const homeBonus = isHome(teamId) && !input.neutralVenue ? liveConfig.homeShotChanceBonus : 0
+    const shotChance = clamp(
+      (adminSettings.liveBaseShotChancePercent / 100 + homeBonus +
+        (attack + midfield - defense * 1.7) * liveConfig.strengthShotChanceFactor) * volume,
+      liveConfig.minShotChance,
+      liveConfig.maxShotChance,
+    )
     if (!random.chance(shotChance)) return
 
     const teamStats = statsFor(teamId)
@@ -194,10 +211,13 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     const quality = clamp((0.08 + (attack - defense) * 0.0022) * widthMatchup * highLineRisk * opponentPressRisk, 0.04, 0.42)
     teamStats.xG = Number(((teamStats.xG ?? 0) + quality).toFixed(2))
     addEvent({ type: 'chance', teamId, text: eventText('chance', clubs.get(teamId)) })
-    if (!random.chance(clamp(0.34 + (attack - defense) * 0.003, 0.22, 0.67))) return
+    const shotOnTargetChance = clamp(0.34 + (attack - defense) * 0.003, 0.22, 0.67)
+    if (!random.chance(shotOnTargetChance)) return
     teamStats.shotsOnTarget += 1
     const scorer = pickWeightedAttacker(teamId)
-    const goalChance = clamp(quality * 1.45, 0.07, 0.48)
+    // `quality` is xG for this shot. Conditional conversion after the on-target
+    // check must preserve that probability instead of reducing live scoring twice.
+    const goalChance = clamp(quality / shotOnTargetChance, 0.07, 0.55)
     if (!random.chance(goalChance)) {
       addEvent({ type: 'save', teamId: opponentId, text: eventText('save', clubs.get(opponentId)) })
       return

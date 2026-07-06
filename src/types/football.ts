@@ -11,6 +11,8 @@ export interface Player {
   age: number
   position: PlayerPosition
   rating: number
+  shirtNumber?: number | null
+  preferredFoot?: string
   potential: number
   fitness: number
   form: number
@@ -23,7 +25,7 @@ export interface Player {
   academyClubId?: string
   intakeSeason?: number
   homegrown?: boolean
-  nationality?: ChampionshipId
+  nationality?: string
 }
 
 export type ClubTeamType = 'first' | 'reserve'
@@ -75,7 +77,27 @@ export interface AcademyState {
 }
 
 // ТАКТИЧЕСКИЕ СХЕМЫ, СЛОТЫ И СОСТАВЫ
-export type Formation = '4-4-2' | '4-3-3' | '4-2-3-1' | '3-5-2' | '4-5-1'
+export type Formation =
+  | '4-4-2'
+  | '4-3-3'
+  | '4-2-3-1'
+  | '4-5-1'
+  | '4-1-4-1'
+  | '4-1-2-1-2'
+  | '4-3-1-2'
+  | '4-2-2-2'
+  | '4-3-2-1'
+  | '3-5-2'
+  | '3-4-3'
+  | '3-4-2-1'
+  | '3-4-1-2'
+  | '4-4-1-1'
+  | '5-3-2'
+  | '5-4-1'
+  | '5-2-3'
+  | '4-2-4'
+  | '2-3-5'
+  | '4-6-0'
 
 export type TacticalStyle = 'defensive' | 'balanced' | 'attacking'
 
@@ -158,6 +180,7 @@ export type MatchWidth = 'narrow' | 'balanced' | 'wide'
 export type DefensiveLine = 'low' | 'medium' | 'high'
 
 export interface MatchTactics {
+  formation: Formation
   mentality: MatchMentality
   pressing: TacticalIntensity
   tempo: MatchTempo

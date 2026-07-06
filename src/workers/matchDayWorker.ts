@@ -3,11 +3,20 @@ import {
   prepareUserMatchDay,
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
+import {
+  setRuntimeSimulationSettings,
+  type SimulationSettings,
+} from '@/domain/admin/simulationSettings'
 import { t } from '@/plugins/i18n/i18n'
 import type { GameState, MatchResult, PreparedMatchContext } from '@/types/football'
 
 type MatchDayRequest =
-  | { type: 'prepare'; state: GameState; matchId: string }
+  | {
+      type: 'prepare'
+      state: GameState
+      matchId: string
+      simulationSettings: SimulationSettings
+    }
   | { type: 'complete'; result: MatchResult }
 
 type MatchDayResponse =
@@ -29,6 +38,7 @@ let preparedMatchId = ''
 workerScope.onmessage = ({ data }): void => {
   try {
     if (data.type === 'prepare') {
+      setRuntimeSimulationSettings(data.simulationSettings)
       preparedMatchId = data.matchId
       preparedState = prepareUserMatchDay(data.state, data.matchId)
       const match = preparedState.matches.find((candidate) => candidate.id === data.matchId)

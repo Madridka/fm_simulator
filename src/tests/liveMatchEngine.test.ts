@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createLiveMatch } from '@/domain/match/liveMatchEngine'
+import { simulateMatch } from '@/domain/match/matchSimulator'
 import { autoSelectLineup, getFormationSlots } from '@/domain/season/squadSelectionService'
 import { clubs } from '@/data/clubs'
 import type { Club, ClubLineup, PlayedLineup } from '@/types/football'
@@ -44,6 +45,107 @@ describe('liveMatchEngine', () => {
     ])
   })
 
+  it('starts with the tactical style selected in the squad screen', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const homeLineup = autoSelectLineup(home, '4-4-2', 'attacking')
+    const match = createLiveMatch({
+      matchId: 'selected-tactical-style',
+      homeClub: home,
+      awayClub: away,
+      homeLineup: playedLineup(home, homeLineup),
+      awayLineup: playedLineup(away, autoSelectLineup(away)),
+      neutralVenue: false,
+      allowPenaltyShootout: false,
+      controlledTeamId: home.id,
+      seed: 42,
+    })
+
+    expect(match.state.homeTactics.mentality).toBe('attacking')
+  })
+
+  it('keeps live scoring on the same scale as background simulation', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    let homeGoals = 0
+    let awayGoals = 0
+    let backgroundGoals = 0
+    const sampleSize = 500
+
+    for (let seed = 1; seed <= sampleSize; seed += 1) {
+      const simulationSeed = seed * 104_729
+      const homeLineup = playedLineup(home, autoSelectLineup(home))
+      const awayLineup = playedLineup(away, autoSelectLineup(away))
+      const match = createLiveMatch({
+        matchId: `live-balance-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup,
+        awayLineup,
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        controlledTeamId: home.id,
+        seed: simulationSeed,
+      })
+      match.advance(90)
+      homeGoals += match.result().homeGoals
+      awayGoals += match.result().awayGoals
+      const background = simulateMatch({
+        matchId: `background-balance-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup,
+        awayLineup,
+        neutralVenue: false,
+        allowPenaltyShootout: false,
+        seed: simulationSeed,
+      })
+      backgroundGoals += background.homeGoals + background.awayGoals
+    }
+
+    const liveAverage = (homeGoals + awayGoals) / sampleSize
+    const backgroundAverage = backgroundGoals / sampleSize
+    expect(liveAverage).toBeGreaterThan(backgroundAverage * 0.75)
+    expect(liveAverage).toBeLessThan(backgroundAverage * 1.25)
+  })
+
+  it('makes all-out tactics noticeable without multiplying attack excessively', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    let balancedShots = 0
+    let allOutShots = 0
+    const sampleSize = 300
+
+    for (let seed = 1; seed <= sampleSize; seed += 1) {
+      const simulationSeed = seed * 104_729
+      const createSample = () => createLiveMatch({
+        matchId: `tactics-balance-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup: playedLineup(home, autoSelectLineup(home)),
+        awayLineup: playedLineup(away, autoSelectLineup(away)),
+        neutralVenue: true,
+        allowPenaltyShootout: false,
+        controlledTeamId: home.id,
+        seed: simulationSeed,
+      })
+      const balanced = createSample()
+      const allOut = createSample()
+      allOut.changeTactics(home.id, {
+        mentality: 'allOutAttack',
+        pressing: 'high',
+        tempo: 'fast',
+      })
+      balanced.advance(90)
+      allOut.advance(90)
+      balancedShots += balanced.result().stats.home.shots
+      allOutShots += allOut.result().stats.home.shots
+    }
+
+    expect(allOutShots).toBeGreaterThan(balancedShots * 1.2)
+    expect(allOutShots).toBeLessThan(balancedShots * 1.75)
+  })
+
   it('updates the active lineup and enforces the substitution limit', () => {
     const match = setup(1)
     const playerOutId = match.state.homeLineupPlayerIds[0]!
@@ -53,6 +155,8 @@ describe('liveMatchEngine', () => {
 
     expect(match.state.homeLineupPlayerIds).toContain(playerInId)
     expect(match.state.homeLineupPlayerIds).not.toContain(playerOutId)
+    expect(match.state.homeBenchPlayerIds).not.toContain(playerInId)
+    expect(match.state.homeBenchPlayerIds).not.toContain(playerOutId)
     expect(match.result().substitutions).toEqual([
       { minute: 20, clubId: match.state.homeTeamId, playerOutId, playerInId },
     ])
@@ -63,6 +167,22 @@ describe('liveMatchEngine', () => {
         match.state.homeBenchPlayerIds[0]!,
       ),
     ).toThrow('Лимит замен исчерпан')
+  })
+
+  it('changes the formation without replacing the active players', () => {
+    const match = setup()
+    const activePlayers = [...match.state.homeLineupPlayerIds]
+
+    match.advance(15)
+    match.changeTactics(match.state.homeTeamId, { formation: '4-3-3' })
+
+    expect(match.state.homeTactics.formation).toBe('4-3-3')
+    expect(match.state.homeLineupPlayerIds).toEqual(activePlayers)
+    expect(match.result().tacticalChanges).toContainEqual({
+      minute: 15,
+      teamId: match.state.homeTeamId,
+      changes: { formation: '4-3-3' },
+    })
   })
 
   it('records player minutes across a substitution and finishes cleanly', () => {

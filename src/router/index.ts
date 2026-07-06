@@ -1,8 +1,33 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { isAdminAuthenticated } from '@/domain/admin/adminAuth'
 import { useGameStore } from '@/stores/game/gameStore'
 
 // ОПИСЫВАЕТ ОСНОВНОЙ МАКЕТ, ЭКРАНЫ КАРЬЕРЫ И СТРАНИЦУ 404
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: () => import('@/views/admin/AdminLoginView.vue'),
+    beforeEnter: () => isAdminAuthenticated() ? { name: 'admin-simulation' } : true,
+  },
+  {
+    path: '/admin',
+    component: () => import('@/views/admin/AdminLayout.vue'),
+    beforeEnter: (to) => isAdminAuthenticated()
+      ? true
+      : { name: 'admin-login', query: { redirect: to.fullPath } },
+    children: [
+      {
+        path: '',
+        redirect: { name: 'admin-simulation' },
+      },
+      {
+        path: 'simulation',
+        name: 'admin-simulation',
+        component: () => import('@/views/admin/AdminSimulationView.vue'),
+      },
+    ],
+  },
   {
     path: '/',
     name: 'home',
@@ -82,6 +107,8 @@ export const router = createRouter({
 
 // НЕ ДОПУСКАЕТ НА ЭКРАНЫ КАРЬЕРЫ ДО ВЫБОРА КЛУБА
 router.beforeEach((to) => {
+  if (to.path.startsWith('/admin')) return true
+
   const gameStore = useGameStore()
   if (
     !gameStore.game &&

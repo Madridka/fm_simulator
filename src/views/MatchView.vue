@@ -10,6 +10,7 @@ import {
 } from '@/config/matchSimulationConfig'
 import {
   autoSelectLineup,
+  formations,
   getFormationSlots,
   validateLineup,
 } from '@/domain/season/squadSelectionService'
@@ -19,6 +20,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type {
   Club,
   ClubLineup,
+  Formation,
   Match,
   MatchLineups,
   MatchResult,
@@ -57,6 +59,7 @@ const calculationError = ref('')
 const selectedPlayerOutId = ref('')
 const selectedPlayerInId = ref('')
 let matchCompletionPromise: Promise<void> | null = null
+const HALF_TIME_MINUTE = 45
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -121,25 +124,6 @@ const preparedLineups = computed((): MatchLineups | undefined => {
 
   if (!game || !currentMatch || !home || !away) {
     return undefined
-  }
-
-  if (liveMatch.value) {
-    const state = liveMatch.value.state
-    const original = preparedContext.value?.lineups ?? currentMatch.lineups
-    if (original) {
-      return {
-        home: {
-          ...original.home,
-          starters: [...state.homeLineupPlayerIds],
-          substitutes: [...state.homeBenchPlayerIds],
-        },
-        away: {
-          ...original.away,
-          starters: [...state.awayLineupPlayerIds],
-          substitutes: [...state.awayBenchPlayerIds],
-        },
-      }
-    }
   }
 
   if (preparedContext.value) {
@@ -247,6 +231,11 @@ const mentalityOptions = [
   { label: 'Атака', value: 'attacking' },
   { label: 'Навал', value: 'allOutAttack' },
 ]
+
+const formationOptions = formations.map((formation) => ({
+  label: formation,
+  value: formation,
+}))
 
 const pressingOptions = [
   { label: 'Низкий', value: 'low' },
@@ -531,6 +520,11 @@ const advanceOneMinute = (): void => {
   controller.advance(1)
   currentMinute.value = controller.state.minute
   revision.value += 1
+  if (currentMinute.value === HALF_TIME_MINUTE) {
+    isPaused.value = true
+    stopSimulationTimer()
+    return
+  }
   if (currentMinute.value >= 90) void finish(controller.result())
 }
 
@@ -568,6 +562,10 @@ const userTactics = computed<MatchTactics>(() => {
   const state = liveMatch.value?.state
   if (!state)
     return {
+      formation:
+        match.value?.homeClubId === userTeamId.value
+          ? (preparedLineups.value?.home.formation ?? '4-4-2')
+          : (preparedLineups.value?.away.formation ?? '4-4-2'),
       mentality: 'balanced',
       pressing: 'balanced',
       tempo: 'balanced',
@@ -591,15 +589,24 @@ const userLineupIds = computed(() => {
   const state = liveMatch.value?.state
   if (!state) return []
   return userTeamId.value === state.homeTeamId
-    ? state.homeLineupPlayerIds
-    : state.awayLineupPlayerIds
+    ? [...state.homeLineupPlayerIds]
+    : [...state.awayLineupPlayerIds]
 })
 const userBenchIds = computed(() => {
   void revision.value
   const state = liveMatch.value?.state
   if (!state) return []
-  return userTeamId.value === state.homeTeamId ? state.homeBenchPlayerIds : state.awayBenchPlayerIds
+  return userTeamId.value === state.homeTeamId
+    ? [...state.homeBenchPlayerIds]
+    : [...state.awayBenchPlayerIds]
 })
+
+const teamFormation = (teamId: string, fallback: Formation): Formation => {
+  void revision.value
+  const state = liveMatch.value?.state
+  if (!state) return fallback
+  return teamId === state.homeTeamId ? state.homeTactics.formation : state.awayTactics.formation
+}
 const updateTactic = <K extends keyof MatchTactics>(key: K, value: MatchTactics[K]): void => {
   const controller = ensureLiveMatch()
   if (!controller || currentMinute.value >= 90) return
@@ -866,7 +873,22 @@ onBeforeUnmount(stopSimulationTimer)
             Замены: {{ substitutionsRemaining }} осталось
           </div>
 
-          <div class="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
+          <div class="grid grid-cols-2 items-end gap-2 sm:grid-cols-[0.8fr_1fr_1fr_auto]">
+            <FloatLabel variant="on" class="w-full">
+              <Select
+                input-id="match-formation"
+                :model-value="userTactics.formation"
+                :options="formationOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="h-9 match-control-select"
+                @update:model-value="onTacticChange('formation', $event)"
+              />
+              <label for="match-formation">Схема</label>
+            </FloatLabel>
+
             <FloatLabel variant="on" class="w-full">
               <Select
                 input-id="match-player-out"
@@ -900,7 +922,7 @@ onBeforeUnmount(stopSimulationTimer)
             <Button
               size="small"
               label="Заменить"
-              class="h-9 match-control-button"
+              class="col-span-2 h-9 w-full sm:col-span-1 match-control-button"
               :disabled="!selectedPlayerOutId || !selectedPlayerInId || substitutionsRemaining <= 0"
               @click="makeSubstitution"
             />
@@ -962,7 +984,8 @@ onBeforeUnmount(stopSimulationTimer)
           <!-- СОСТАВ ХОЗЯЕВ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
           <div>
             <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
-              {{ homeClub.shortName }} · {{ preparedLineups?.home.formation }}
+              {{ homeClub.shortName }} ·
+              {{ teamFormation(homeClub.id, preparedLineups?.home.formation ?? '4-4-2') }}
             </div>
             <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
               <div
@@ -1020,7 +1043,8 @@ onBeforeUnmount(stopSimulationTimer)
           <!-- СОСТАВ ГОСТЕЙ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
           <div>
             <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
-              {{ awayClub.shortName }} · {{ preparedLineups?.away.formation }}
+              {{ awayClub.shortName }} ·
+              {{ teamFormation(awayClub.id, preparedLineups?.away.formation ?? '4-4-2') }}
             </div>
             <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
               <div

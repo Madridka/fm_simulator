@@ -90,6 +90,13 @@ export const matchSimulationConfig = {
   liveMatch: {
     maxSubstitutions: 5,
     baseFitnessDrain: 0.075,
+    // Live matches use shots as an intermediate step, so this baseline is calibrated
+    // to produce roughly the same xG scale as medium/background simulation.
+    baseShotChance: 0.125,
+    homeShotChanceBonus: 0.015,
+    strengthShotChanceFactor: 0.001,
+    minShotChance: 0.04,
+    maxShotChance: 0.27,
   },
 
   // СРЕДНЯЯ СИМУЛЯЦИЯ: РЕЗУЛЬТАТ СЧИТАЕТСЯ ЧЕРЕЗ ОЖИДАЕМЫЕ ГОЛЫ

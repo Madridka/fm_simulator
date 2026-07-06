@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { calculateLeagueTables } from '@/domain/competition/leagueTableService'
+import { getSimulationSettings } from '@/domain/admin/simulationSettings'
 import { careerConfig, willPlayerRetireAfterSeason } from '@/data/gameConfig/career'
 import { getChampionship } from '@/data/clubs'
 import {
@@ -288,7 +289,12 @@ export const useGameStore = defineStore('game', () => {
     }
 
     matchDayWorker.postMessage(
-      createWorkerData({ type: 'prepare', state: currentGame, matchId }),
+      createWorkerData({
+        type: 'prepare',
+        state: currentGame,
+        matchId,
+        simulationSettings: getSimulationSettings(),
+      }),
     )
     return pendingPreparation
   }
