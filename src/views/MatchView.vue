@@ -2,7 +2,12 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink, useRouter } from 'vue-router'
-import { createMatchTimeline, type MatchTimeline } from '@/domain/match/matchSimulator'
+import { createLiveMatch, type LiveMatchController } from '@/domain/match/liveMatchEngine'
+import {
+  LIVE_MATCH_REAL_MS_PER_GAME_MINUTE,
+  LIVE_MATCH_SPEED_MULTIPLIERS,
+  type LiveMatchSpeedMultiplier,
+} from '@/config/matchSimulationConfig'
 import {
   autoSelectLineup,
   getFormationSlots,
@@ -17,13 +22,23 @@ import type {
   Match,
   MatchLineups,
   MatchResult,
+  MatchTactics,
   PlayedLineup,
   Player,
 } from '@/types/football'
 
+import Select from 'primevue/select'
+import FloatLabel from 'primevue/floatlabel'
+
 import ClubBadge from '@/components/ui/ClubBadge.vue'
 
-type MatchSnapshot = MatchTimeline['minutes'][number]
+interface MatchSnapshot {
+  minute: number
+  homeGoals: number
+  awayGoals: number
+  goals: MatchResult['goals']
+  stats: MatchResult['stats']
+}
 
 // ЗАВИСИМОСТИ ЭКРАНА И ИСТОЧНИКИ ДАННЫХ АКТИВНОГО МАТЧА
 const router = useRouter()
@@ -31,11 +46,16 @@ const gameStore = useGameStore()
 const clubStore = useClubStore()
 const { t } = useI18n()
 // ИЗМЕНЯЕМОЕ СОСТОЯНИЕ ПОМИНУТНОЙ СИМУЛЯЦИИ И ФОНОВОГО ЗАВЕРШЕНИЯ
-const timeline = ref<MatchTimeline | null>(null)
+const liveMatch = ref<LiveMatchController | null>(null)
 const currentMinute = ref(0)
+const revision = ref(0)
 const timerId = ref<number | null>(null)
+const isPaused = ref(false)
+const simulationSpeed = ref<LiveMatchSpeedMultiplier>(1)
 const isCalculating = ref(false)
 const calculationError = ref('')
+const selectedPlayerOutId = ref('')
+const selectedPlayerInId = ref('')
 let matchCompletionPromise: Promise<void> | null = null
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
@@ -48,15 +68,17 @@ const preparedContext = computed(() =>
 )
 
 // ВОЗВРАЩАЕТ ДОМАШНИЙ КЛУБ
-const homeClub = computed((): Club | undefined =>
-  preparedContext.value?.homeClub ??
-  (match.value ? clubStore.getClubById(match.value.homeClubId) : undefined),
+const homeClub = computed(
+  (): Club | undefined =>
+    preparedContext.value?.homeClub ??
+    (match.value ? clubStore.getClubById(match.value.homeClubId) : undefined),
 )
 
 // ВОЗВРАЩАЕТ ГОСТЕВОЙ КЛУБ
-const awayClub = computed((): Club | undefined =>
-  preparedContext.value?.awayClub ??
-  (match.value ? clubStore.getClubById(match.value.awayClubId) : undefined),
+const awayClub = computed(
+  (): Club | undefined =>
+    preparedContext.value?.awayClub ??
+    (match.value ? clubStore.getClubById(match.value.awayClubId) : undefined),
 )
 
 // СОЗДАЁТ ЧИСЛОВОЙ ХЕШ ИЗ СТРОКИ
@@ -91,6 +113,7 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
 
 // ПОДГОТАВЛИВАЕТ СОСТАВЫ ОБЕИХ КОМАНД
 const preparedLineups = computed((): MatchLineups | undefined => {
+  void revision.value
   const game = gameStore.game
   const currentMatch = match.value
   const home = homeClub.value
@@ -98,6 +121,25 @@ const preparedLineups = computed((): MatchLineups | undefined => {
 
   if (!game || !currentMatch || !home || !away) {
     return undefined
+  }
+
+  if (liveMatch.value) {
+    const state = liveMatch.value.state
+    const original = preparedContext.value?.lineups ?? currentMatch.lineups
+    if (original) {
+      return {
+        home: {
+          ...original.home,
+          starters: [...state.homeLineupPlayerIds],
+          substitutes: [...state.homeBenchPlayerIds],
+        },
+        away: {
+          ...original.away,
+          starters: [...state.awayLineupPlayerIds],
+          substitutes: [...state.awayBenchPlayerIds],
+        },
+      }
+    }
   }
 
   if (preparedContext.value) {
@@ -184,7 +226,7 @@ const currentResult = computed<MatchResult | undefined>(() => {
   if (match.value?.result) {
     return match.value.result
   }
-  return currentMinute.value >= 90 ? timeline.value?.finalResult : undefined
+  return currentMinute.value >= 90 ? liveMatch.value?.result() : undefined
 })
 
 // СОЗДАЁТ ПУСТОЙ СНИМОК СОСТОЯНИЯ МАТЧА
@@ -199,25 +241,75 @@ const emptySnapshot = (): MatchSnapshot => ({
   },
 })
 
+const mentalityOptions = [
+  { label: 'Оборона', value: 'defensive' },
+  { label: 'Баланс', value: 'balanced' },
+  { label: 'Атака', value: 'attacking' },
+  { label: 'Навал', value: 'allOutAttack' },
+]
+
+const pressingOptions = [
+  { label: 'Низкий', value: 'low' },
+  { label: 'Баланс', value: 'balanced' },
+  { label: 'Высокий', value: 'high' },
+]
+
+const tempoOptions = [
+  { label: 'Медленный', value: 'slow' },
+  { label: 'Баланс', value: 'balanced' },
+  { label: 'Быстрый', value: 'fast' },
+]
+
+const widthOptions = [
+  { label: 'Узко', value: 'narrow' },
+  { label: 'Баланс', value: 'balanced' },
+  { label: 'Широко', value: 'wide' },
+]
+
+const defensiveLineOptions = [
+  { label: 'Низкая', value: 'low' },
+  { label: 'Средняя', value: 'medium' },
+  { label: 'Высокая', value: 'high' },
+]
+
+const playerOutOptions = computed(() =>
+  userLineupIds.value.map((id) => ({
+    label: `${playerPosition(id)} · ${playerName(id)}`,
+    value: id,
+  })),
+)
+
+const playerInOptions = computed(() =>
+  userBenchIds.value.map((id) => ({
+    label: `${playerPosition(id)} · ${playerName(id)}`,
+    value: id,
+  })),
+)
+
 // ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
 const visibleSnapshot = computed<MatchSnapshot>(() => {
-  if (!timeline.value || currentMinute.value === 0) {
+  void revision.value
+  if (!liveMatch.value) {
     return emptySnapshot()
   }
-  return (
-    timeline.value.minutes[currentMinute.value - 1] ??
-    timeline.value.minutes[timeline.value.minutes.length - 1] ??
-    emptySnapshot()
-  )
+  const result = liveMatch.value.result()
+  return {
+    minute: liveMatch.value.state.minute,
+    homeGoals: liveMatch.value.state.homeScore,
+    awayGoals: liveMatch.value.state.awayScore,
+    goals: result.goals,
+    stats: result.stats,
+  }
 })
 
 // ВОЗВРАЩАЕТ ВИДИМЫЕ СОБЫТИЯ С ГОЛАМИ
 const visibleGoals = computed(() => match.value?.result?.goals ?? visibleSnapshot.value.goals)
 
 // ВОЗВРАЩАЕТ ДЕТАЛИ ПОЛНОЙ СИМУЛЯЦИИ
-const detailedResult = computed<MatchResult | undefined>(
-  () => match.value?.result ?? timeline.value?.finalResult,
-)
+const detailedResult = computed<MatchResult | undefined>(() => {
+  void revision.value
+  return match.value?.result ?? liveMatch.value?.result()
+})
 
 // ВОЗВРАЩАЕТ ДОСТУПНУЮ ТЕКСТОВУЮ ТРАНСЛЯЦИЮ
 const visibleCommentary = computed(() =>
@@ -249,9 +341,7 @@ const playerEventMarkers = (clubId: string, playerId: string): PlayerEventMarker
   result.goals
     .filter(
       (goal) =>
-        goal.clubId === clubId &&
-        goal.playerId === playerId &&
-        isMatchEventVisible(goal.minute),
+        goal.clubId === clubId && goal.playerId === playerId && isMatchEventVisible(goal.minute),
     )
     .forEach((goal, index) =>
       markers.push({
@@ -264,19 +354,13 @@ const playerEventMarkers = (clubId: string, playerId: string): PlayerEventMarker
   ;(result.cards ?? [])
     .filter(
       (card) =>
-        card.clubId === clubId &&
-        card.playerId === playerId &&
-        isMatchEventVisible(card.minute),
+        card.clubId === clubId && card.playerId === playerId && isMatchEventVisible(card.minute),
     )
     .forEach((card, index) =>
       markers.push({
         key: `${card.card}-${card.minute ?? 0}-${index}`,
         label:
-          card.dismissalReason === 'second-yellow'
-            ? '🟨🟥'
-            : card.card === 'red'
-              ? '🟥'
-              : '🟨',
+          card.dismissalReason === 'second-yellow' ? '🟨🟥' : card.card === 'red' ? '🟥' : '🟨',
         title: t(
           card.dismissalReason === 'second-yellow'
             ? 'match.markers.secondYellow'
@@ -310,8 +394,7 @@ const playerEventMarkers = (clubId: string, playerId: string): PlayerEventMarker
     )
   ;(result.substitutions ?? [])
     .filter(
-      (substitution) =>
-        substitution.clubId === clubId && isMatchEventVisible(substitution.minute),
+      (substitution) => substitution.clubId === clubId && isMatchEventVisible(substitution.minute),
     )
     .forEach((substitution, index) => {
       if (substitution.playerOutId === playerId) {
@@ -363,8 +446,8 @@ const playerName = (playerId?: string): string => {
   return player ? `${player.firstName} ${player.lastName}` : playerId
 }
 
-// СОЗДАЁТ ИЛИ ВОЗВРАЩАЕТ ВРЕМЕННУЮ ШКАЛУ МАТЧА
-const ensureTimeline = (): MatchTimeline | undefined => {
+// СОЗДАЁТ ИЛИ ВОЗВРАЩАЕТ УПРАВЛЯЕМОЕ СОСТОЯНИЕ МАТЧА
+const ensureLiveMatch = (): LiveMatchController | undefined => {
   const currentMatch = match.value
   const home = homeClub.value
   const away = awayClub.value
@@ -375,14 +458,14 @@ const ensureTimeline = (): MatchTimeline | undefined => {
     return undefined
   }
 
-  if (!timeline.value) {
+  if (!liveMatch.value) {
     const playoffTie = currentMatch.playoffId
       ? game.playoffs
           ?.find((playoff) => playoff.id === currentMatch.playoffId)
           ?.stages.flatMap((stage) => stage.ties)
           .find((tie) => tie.id === currentMatch.playoffTieId)
       : undefined
-    timeline.value = createMatchTimeline({
+    liveMatch.value = createLiveMatch({
       matchId: currentMatch.id,
       homeClub: home,
       awayClub: away,
@@ -392,23 +475,16 @@ const ensureTimeline = (): MatchTimeline | undefined => {
       allowPenaltyShootout:
         currentMatch.type === 'cup' || playoffTie?.matchIds.at(-1) === currentMatch.id,
       seed: hashString(currentMatch.id) + game.season * 10_000,
+      controlledTeamId: game.selectedClubId,
     })
   }
 
-  return timeline.value
-}
-
-// ОСТАНАВЛИВАЕТ ТАЙМЕР СИМУЛЯЦИИ
-const clearTimer = (): void => {
-  if (timerId.value !== null) {
-    window.clearInterval(timerId.value)
-    timerId.value = null
-  }
+  return liveMatch.value
 }
 
 // ЗАВЕРШАЕТ МАТЧ И СОХРАНЯЕТ РЕЗУЛЬТАТ
 const finish = async (result: MatchResult): Promise<void> => {
-  clearTimer()
+  stopSimulationTimer()
   const currentMatch = match.value
   if (
     !currentMatch ||
@@ -435,42 +511,112 @@ const finish = async (result: MatchResult): Promise<void> => {
   }
 }
 
-// ПЕРЕВОДИТ СИМУЛЯЦИЮ НА СЛЕДУЮЩУЮ МИНУТУ
-const nextMinute = (): void => {
-  const currentTimeline = ensureTimeline()
-  if (!currentTimeline) {
-    return
-  }
+// ОСТАНАВЛИВАЕТ АВТОМАТИЧЕСКИЙ ХОД МАТЧА
+function stopSimulationTimer(): void {
+  if (timerId.value === null) return
+  window.clearInterval(timerId.value)
+  timerId.value = null
+}
 
-  currentMinute.value = Math.min(90, currentMinute.value + 1)
-  if (currentMinute.value >= 90) {
-    void finish(currentTimeline.finalResult)
+// ПРОСЧИТЫВАЕТ ОДНУ ИГРОВУЮ МИНУТУ
+const advanceOneMinute = (): void => {
+  if (!canSimulate.value || isCalculating.value) return
+  const controller = ensureLiveMatch()
+  if (!controller) return
+  controller.advance(1)
+  currentMinute.value = controller.state.minute
+  revision.value += 1
+  if (currentMinute.value >= 90) void finish(controller.result())
+}
+
+// ЗАПУСКАЕТ МАТЧ В БАЗОВОЙ СКОРОСТИ x1
+const startSimulationTimer = (): void => {
+  if (!canSimulate.value || isPaused.value || timerId.value !== null || currentMinute.value >= 90)
+    return
+  ensureLiveMatch()
+  timerId.value = window.setInterval(
+    advanceOneMinute,
+    LIVE_MATCH_REAL_MS_PER_GAME_MINUTE / simulationSpeed.value,
+  )
+}
+
+// МЕНЯЕТ МНОЖИТЕЛЬ СКОРОСТИ И СРАЗУ ПЕРЕЗАПУСКАЕТ ИДУЩИЙ МАТЧ
+const setSimulationSpeed = (speed: LiveMatchSpeedMultiplier): void => {
+  if (simulationSpeed.value === speed) return
+  simulationSpeed.value = speed
+  if (!isPaused.value) {
+    stopSimulationTimer()
+    startSimulationTimer()
   }
 }
 
-// ЗАПУСКАЕТ ПОМИНУТНУЮ СИМУЛЯЦИЮ
-const startSimulation = (): void => {
-  if (!canSimulate.value || timerId.value !== null || currentMinute.value >= 90) {
-    return
-  }
-
-  ensureTimeline()
-  timerId.value = window.setInterval(() => {
-    nextMinute()
-  }, 130)
+// СТАВИТ МАТЧ НА ПАУЗУ ИЛИ ПРОДОЛЖАЕТ ЕГО
+const togglePause = (): void => {
+  isPaused.value = !isPaused.value
+  if (isPaused.value) stopSimulationTimer()
+  else startSimulationTimer()
 }
 
-// МГНОВЕННО ЗАВЕРШАЕТ СИМУЛЯЦИЮ
-const instantResult = (): void => {
-  if (!canSimulate.value || isCalculating.value) {
-    return
+const userTeamId = computed(() => gameStore.game?.selectedClubId ?? '')
+const userTactics = computed<MatchTactics>(() => {
+  void revision.value
+  const state = liveMatch.value?.state
+  if (!state)
+    return {
+      mentality: 'balanced',
+      pressing: 'balanced',
+      tempo: 'balanced',
+      width: 'balanced',
+      defensiveLine: 'medium',
+    }
+  return userTeamId.value === state.homeTeamId ? state.homeTactics : state.awayTactics
+})
+const substitutionsRemaining = computed(() => {
+  void revision.value
+  const state = liveMatch.value?.state
+  if (!state) return 5
+  const used =
+    userTeamId.value === state.homeTeamId
+      ? state.homeSubstitutionsUsed
+      : state.awaySubstitutionsUsed
+  return state.maxSubstitutions - used
+})
+const userLineupIds = computed(() => {
+  void revision.value
+  const state = liveMatch.value?.state
+  if (!state) return []
+  return userTeamId.value === state.homeTeamId
+    ? state.homeLineupPlayerIds
+    : state.awayLineupPlayerIds
+})
+const userBenchIds = computed(() => {
+  void revision.value
+  const state = liveMatch.value?.state
+  if (!state) return []
+  return userTeamId.value === state.homeTeamId ? state.homeBenchPlayerIds : state.awayBenchPlayerIds
+})
+const updateTactic = <K extends keyof MatchTactics>(key: K, value: MatchTactics[K]): void => {
+  const controller = ensureLiveMatch()
+  if (!controller || currentMinute.value >= 90) return
+  controller.changeTactics(userTeamId.value, { [key]: value })
+  revision.value += 1
+}
+const onTacticChange = (key: keyof MatchTactics, event: Event): void => {
+  const value = (event.target as HTMLSelectElement).value
+  updateTactic(key, value as MatchTactics[typeof key])
+}
+const makeSubstitution = (): void => {
+  const controller = ensureLiveMatch()
+  if (!controller || !selectedPlayerOutId.value || !selectedPlayerInId.value) return
+  try {
+    controller.substitute(userTeamId.value, selectedPlayerOutId.value, selectedPlayerInId.value)
+    selectedPlayerOutId.value = ''
+    selectedPlayerInId.value = ''
+    calculationError.value = ''
+    revision.value += 1
+  } catch (error) {
+    calculationError.value = error instanceof Error ? error.message : 'Замена недоступна'
   }
-  const currentTimeline = ensureTimeline()
-  if (!currentTimeline) {
-    return
-  }
-  currentMinute.value = 90
-  void finish(currentTimeline.finalResult)
 }
 
 // ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА ГЛАВНУЮ СТРАНИЦУ
@@ -488,9 +634,12 @@ const goBack = async (): Promise<void> => {
 watch(
   () => match.value?.id,
   () => {
-    clearTimer()
-    timeline.value = null
+    stopSimulationTimer()
+    liveMatch.value = null
     currentMinute.value = 0
+    isPaused.value = false
+    simulationSpeed.value = 1
+    revision.value += 1
     isCalculating.value = false
     calculationError.value = ''
     matchCompletionPromise = null
@@ -505,21 +654,21 @@ watch(
   { immediate: true },
 )
 
-// АВТОМАТИЧЕСКИ ЗАПУСКАЕТ ИЛИ ОСТАНАВЛИВАЕТ СИМУЛЯЦИЮ
+// ИНИЦИАЛИЗИРУЕТ LIVE-СОСТОЯНИЕ ПОСЛЕ ПОДГОТОВКИ ИГРОВОГО ДНЯ
 watch(
   canSimulate,
   (ready) => {
     if (ready) {
-      startSimulation()
+      ensureLiveMatch()
+      startSimulationTimer()
     } else {
-      clearTimer()
+      stopSimulationTimer()
     }
   },
   { immediate: true },
 )
 
-// ОСТАНАВЛИВАЕТ ТАЙМЕР ПЕРЕД УДАЛЕНИЕМ КОМПОНЕНТА
-onBeforeUnmount(clearTimer)
+onBeforeUnmount(stopSimulationTimer)
 </script>
 
 <template>
@@ -580,19 +729,27 @@ onBeforeUnmount(clearTimer)
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
         <template v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90">
-          <div
-            v-if="canSimulate"
-            class="rounded-lg bg-emerald-50 px-2 py-1.5 text-xs font-extrabold text-emerald-800 sm:px-3 sm:py-2 sm:text-sm"
-          >
-            {{ t('match.simulationRunning') }}
+          <div v-if="canSimulate" class="grid w-full max-w-[220px] gap-2">
+            <div class="grid grid-cols-4 gap-1.5">
+              <Button
+                v-for="speed in LIVE_MATCH_SPEED_MULTIPLIERS"
+                :key="speed"
+                size="small"
+                class="w-full"
+                :severity="simulationSpeed === speed ? 'success' : 'secondary'"
+                :outlined="simulationSpeed !== speed"
+                :label="`x${speed}`"
+                @click="setSimulationSpeed(speed)"
+              />
+            </div>
+            <Button
+              class="w-full"
+              :severity="isPaused ? 'success' : 'secondary'"
+              :icon="isPaused ? 'pi pi-play' : 'pi pi-pause'"
+              :label="isPaused ? 'Продолжить матч' : 'Пауза'"
+              @click="togglePause"
+            />
           </div>
-          <Button
-            class="w-full max-w-[180px] sm:min-w-[220px]"
-            :disabled="!canSimulate || isCalculating"
-            severity="success"
-            :label="isCalculating ? t('match.calculating') : t('match.instantResult')"
-            @click="instantResult"
-          />
           <RouterLink v-if="!userValidation.valid" to="/squad" class="w-full text-center">
             <Button
               class="w-full max-w-[180px] sm:min-w-[220px]"
@@ -608,6 +765,144 @@ onBeforeUnmount(clearTimer)
             @click="goBack"
           />
         </template>
+      </div>
+
+      <!-- ТАКТИКА И ЗАМЕНЫ -->
+      <div
+        v-if="canSimulate && currentMinute < 90"
+        class="mt-3 grid gap-3 border-t border-emerald-100 pt-3 lg:grid-cols-[1.4fr_1fr]"
+      >
+        <div>
+          <div
+            class="mb-4 flex items-center justify-between text-xs font-black uppercase tracking-wide text-slate-600"
+          >
+            <span>Тактика команды</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
+            <FloatLabel variant="on">
+              <Select
+                :model-value="userTactics.mentality"
+                :options="mentalityOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                @update:model-value="onTacticChange('mentality', $event)"
+              />
+              <label class="match-control-label">Менталитет</label>
+            </FloatLabel>
+
+            <label class="match-control-label">
+              Прессинг
+
+              <Select
+                :model-value="userTactics.pressing"
+                :options="pressingOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                @update:model-value="onTacticChange('pressing', $event)"
+              />
+            </label>
+
+            <label class="match-control-label">
+              Темп
+
+              <Select
+                :model-value="userTactics.tempo"
+                :options="tempoOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                @update:model-value="onTacticChange('tempo', $event)"
+              />
+            </label>
+
+            <label class="match-control-label">
+              Ширина
+
+              <Select
+                :model-value="userTactics.width"
+                :options="widthOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                @update:model-value="onTacticChange('width', $event)"
+              />
+            </label>
+
+            <label class="match-control-label">
+              Линия
+
+              <Select
+                :model-value="userTactics.defensiveLine"
+                :options="defensiveLineOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                @update:model-value="onTacticChange('defensiveLine', $event)"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <div class="mb-2 text-xs font-black uppercase tracking-wide text-slate-600">
+            Замены: {{ substitutionsRemaining }} осталось
+          </div>
+
+          <div class="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
+            <label class="match-control-label">
+              С поля
+
+              <Select
+                v-model="selectedPlayerOutId"
+                :options="playerOutOptions"
+                option-label="label"
+                option-value="value"
+                placeholder="Выбрать…"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                aria-label="Игрок с поля"
+              />
+            </label>
+
+            <label class="match-control-label">
+              На поле
+
+              <Select
+                v-model="selectedPlayerInId"
+                :options="playerInOptions"
+                option-label="label"
+                option-value="value"
+                placeholder="Выбрать…"
+                size="small"
+                fluid
+                class="mt-1 match-control-select"
+                aria-label="Игрок со скамейки"
+              />
+            </label>
+
+            <Button
+              size="small"
+              label="Заменить"
+              class="match-control-button"
+              :disabled="!selectedPlayerOutId || !selectedPlayerInId || substitutionsRemaining <= 0"
+              @click="makeSubstitution"
+            />
+          </div>
+        </div>
       </div>
 
       <div
@@ -914,8 +1209,8 @@ onBeforeUnmount(clearTimer)
           class="mt-4 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-3"
         >
           <div
-            v-for="event in visibleCommentary"
-            :key="`${event.minute}-${event.text}`"
+            v-for="(event, index) in visibleCommentary"
+            :key="`${event.minute}-${event.text}-${index}`"
             class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
           >
             <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>

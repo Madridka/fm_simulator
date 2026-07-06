@@ -3,8 +3,13 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath } from 'node:url'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-export default defineConfig(({ mode }) => ({
-  plugins: [vue(), mode === 'test' ? undefined : vueDevTools()].filter(Boolean),
+export default defineConfig(({ command, mode }) => ({
+  plugins: [
+    vue(),
+    mode === 'test'
+      ? undefined
+      : vueDevTools({ launchEditor: 'code' }),
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -18,5 +23,5 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
   },
 
-  base: '/fm_simulator/',
+  base: command === 'build' ? '/fm_simulator/' : '/',
 }))

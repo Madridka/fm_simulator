@@ -151,6 +151,70 @@ export interface SubstitutionEvent {
   playerInId: string
 }
 
+export type MatchMentality = 'defensive' | 'balanced' | 'attacking' | 'allOutAttack'
+export type TacticalIntensity = 'low' | 'balanced' | 'high'
+export type MatchTempo = 'slow' | 'balanced' | 'fast'
+export type MatchWidth = 'narrow' | 'balanced' | 'wide'
+export type DefensiveLine = 'low' | 'medium' | 'high'
+
+export interface MatchTactics {
+  mentality: MatchMentality
+  pressing: TacticalIntensity
+  tempo: MatchTempo
+  width: MatchWidth
+  defensiveLine: DefensiveLine
+}
+
+export interface TacticalChangeEvent {
+  minute: number
+  teamId: string
+  changes: Partial<MatchTactics>
+}
+
+export type MatchEventType =
+  | 'goal'
+  | 'yellow-card'
+  | 'red-card'
+  | 'injury'
+  | 'substitution'
+  | 'tactical-change'
+  | 'chance'
+  | 'save'
+  | 'half-time'
+  | 'full-time'
+
+export interface MatchEvent {
+  id: string
+  minute: number
+  type: MatchEventType
+  teamId?: string
+  playerId?: string
+  playerOutId?: string
+  playerInId?: string
+  changes?: Partial<MatchTactics>
+  text: string
+}
+
+export interface LiveMatchState {
+  matchId: string
+  minute: number
+  homeTeamId: string
+  awayTeamId: string
+  homeScore: number
+  awayScore: number
+  homeTactics: MatchTactics
+  awayTactics: MatchTactics
+  homeLineupPlayerIds: string[]
+  awayLineupPlayerIds: string[]
+  homeBenchPlayerIds: string[]
+  awayBenchPlayerIds: string[]
+  homeSubstitutionsUsed: number
+  awaySubstitutionsUsed: number
+  maxSubstitutions: number
+  fitness: Record<string, number>
+  events: MatchEvent[]
+}
+
 export interface CommentaryEvent {
   minute: number
   text: string
@@ -186,6 +250,10 @@ export interface MatchResult {
   injuries?: InjuryEvent[]
   substitutions?: SubstitutionEvent[]
   commentary?: CommentaryEvent[]
+  matchEvents?: MatchEvent[]
+  tacticalChanges?: TacticalChangeEvent[]
+  playerMinutes?: Record<string, number>
+  playerFitness?: Record<string, number>
 }
 
 export interface Match {

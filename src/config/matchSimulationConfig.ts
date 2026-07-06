@@ -1,3 +1,8 @@
+// БАЗОВАЯ СКОРОСТЬ LIVE-МАТЧА: ПРИ x1 ОДНА ИГРОВАЯ МИНУТА ДЛИТСЯ 2 СЕКУНДЫ
+export const LIVE_MATCH_REAL_MS_PER_GAME_MINUTE = 2_000
+export const LIVE_MATCH_SPEED_MULTIPLIERS = [1, 2, 4, 8] as const
+export type LiveMatchSpeedMultiplier = (typeof LIVE_MATCH_SPEED_MULTIPLIERS)[number]
+
 // ЕДИНАЯ ТОЧКА НАСТРОЙКИ ЧАСТОТЫ И БАЛАНСА СОБЫТИЙ МАТЧА
 export const matchSimulationConfig = {
   // ЕЖЕДНЕВНОЕ ВОССТАНОВЛЕНИЕ ФИЗИЧЕСКОЙ ФОРМЫ МЕЖДУ МАТЧАМИ
@@ -79,6 +84,12 @@ export const matchSimulationConfig = {
     maxCount: 4, // Максимальное количество замен одной команды.
     minMinute: 55, // Самая ранняя минута замены.
     maxMinute: 85, // Самая поздняя минута замены.
+  },
+
+  // LIVE-МАТЧ: ЕДИНЫЙ ЛИМИТ И БАЛАНС ПОМИНУТНОЙ НАГРУЗКИ
+  liveMatch: {
+    maxSubstitutions: 5,
+    baseFitnessDrain: 0.075,
   },
 
   // СРЕДНЯЯ СИМУЛЯЦИЯ: РЕЗУЛЬТАТ СЧИТАЕТСЯ ЧЕРЕЗ ОЖИДАЕМЫЕ ГОЛЫ

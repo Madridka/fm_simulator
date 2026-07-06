@@ -821,7 +821,17 @@ const applyMatchEffects = (
         ...player,
         isInjured: player.isInjured || Boolean(injury),
         injuryUntilOrder,
-        fitness: clamp(player.fitness - random.int(6, 14), 1, 100),
+        fitness: result.playerFitness?.[player.id] ?? clamp(
+          player.fitness -
+            Math.max(
+              1,
+              Math.round(
+                random.int(6, 14) * ((result.playerMinutes?.[player.id] ?? 90) / 90),
+              ),
+            ),
+          1,
+          100,
+        ),
         form: clamp(
           player.form +
             goals * 3 -
