@@ -1,7 +1,7 @@
 // БАЗОВЫЕ СПРАВОЧНИКИ ПОЗИЦИЙ И ЧЕМПИОНАТОВ
 export type PlayerPosition = 'GK' | 'LB' | 'CB' | 'RB' | 'CDM' | 'CM' | 'CAM' | 'LW' | 'RW' | 'ST'
 
-export type ChampionshipId = 'russia' | 'spain' | 'england' | 'germany' | 'france' | 'italy'
+export type ChampionshipId = 'england' | 'germany' | 'spain' | 'italy' | 'russia' | 'france'
 
 // ОСНОВНЫЕ ДОМЕННЫЕ СУЩНОСТИ ИГРОКА И КЛУБА
 export interface Player {

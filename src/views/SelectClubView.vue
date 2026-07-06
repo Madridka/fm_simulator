@@ -40,7 +40,7 @@ const router = useRouter()
 const { locale, t } = useI18n()
 
 // ТЕКУЩИЙ ВЫБОР ЧЕМПИОНАТА, ДИВИЗИОНА И КЛУБА
-const selectedChampionship = ref<ChampionshipId>('russia')
+const selectedChampionship = ref<ChampionshipId>('england')
 const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
 

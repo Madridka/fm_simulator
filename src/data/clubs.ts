@@ -20,84 +20,152 @@ export interface ChampionshipConfig {
 }
 
 export const championships: Record<ChampionshipId, ChampionshipConfig> = {
+  england: {
+    id: 'england',
+    get name() {
+      return t('championships.england.name')
+    },
+    get description() {
+      return t('championships.england.description')
+    },
+    divisionNames: {
+      get 1() {
+        return t('championships.england.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.england.divisionNames.2')
+      },
+      get 3() {
+        return t('championships.england.divisionNames.3')
+      },
+      get 4() {
+        return t('championships.england.divisionNames.4')
+      },
+    },
+    clubProfiles: englandClubConfigs,
+  },
+  germany: {
+    id: 'germany',
+    get name() {
+      return t('championships.germany.name')
+    },
+    get description() {
+      return t('championships.germany.description')
+    },
+    divisionNames: {
+      get 1() {
+        return t('championships.germany.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.germany.divisionNames.2')
+      },
+    },
+    clubProfiles: germanyClubConfigs,
+  },
+  spain: {
+    id: 'spain',
+    get name() {
+      return t('championships.spain.name')
+    },
+    get description() {
+      return t('championships.spain.description')
+    },
+    divisionNames: {
+      get 1() {
+        return t('championships.spain.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.spain.divisionNames.2')
+      },
+    },
+    clubProfiles: spainClubConfigs,
+  },
+  italy: {
+    id: 'italy',
+    get name() {
+      return t('championships.italy.name')
+    },
+    get description() {
+      return t('championships.italy.description')
+    },
+    divisionNames: {
+      get 1() {
+        return t('championships.italy.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.italy.divisionNames.2')
+      },
+    },
+    clubProfiles: italyClubConfigs,
+  },
   russia: {
     id: 'russia',
-    get name() { return t('championships.russia.name') },
-    get description() { return t('championships.russia.description') },
+    get name() {
+      return t('championships.russia.name')
+    },
+    get description() {
+      return t('championships.russia.description')
+    },
     divisionNames: {
-      get 1() { return t('championships.russia.divisionNames.1') },
-      get 2() { return t('championships.russia.divisionNames.2') },
-      get 3() { return t('championships.russia.divisionNames.3') },
-      get 4() { return t('championships.russia.divisionNames.4') },
+      get 1() {
+        return t('championships.russia.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.russia.divisionNames.2')
+      },
+      get 3() {
+        return t('championships.russia.divisionNames.3')
+      },
+      get 4() {
+        return t('championships.russia.divisionNames.4')
+      },
     },
     competitionNames: {
-      get 1() { return t('championships.russia.competitionNames.1') },
-      get 2() { return t('championships.russia.competitionNames.2') },
-      get '3:gold'() { return t('championships.russia.competitionNames.3:gold') },
-      get '3:silver'() { return t('championships.russia.competitionNames.3:silver') },
-      get '4:group-1'() { return t('championships.russia.competitionNames.4:group-1') },
-      get '4:group-2'() { return t('championships.russia.competitionNames.4:group-2') },
-      get '4:group-3'() { return t('championships.russia.competitionNames.4:group-3') },
-      get '4:group-4'() { return t('championships.russia.competitionNames.4:group-4') },
+      get 1() {
+        return t('championships.russia.competitionNames.1')
+      },
+      get 2() {
+        return t('championships.russia.competitionNames.2')
+      },
+      get '3:gold'() {
+        return t('championships.russia.competitionNames.3:gold')
+      },
+      get '3:silver'() {
+        return t('championships.russia.competitionNames.3:silver')
+      },
+      get '4:group-1'() {
+        return t('championships.russia.competitionNames.4:group-1')
+      },
+      get '4:group-2'() {
+        return t('championships.russia.competitionNames.4:group-2')
+      },
+      get '4:group-3'() {
+        return t('championships.russia.competitionNames.4:group-3')
+      },
+      get '4:group-4'() {
+        return t('championships.russia.competitionNames.4:group-4')
+      },
     },
     clubProfiles: russiaClubConfigs,
   },
 
-  spain: {
-    id: 'spain',
-    get name() { return t('championships.spain.name') },
-    get description() { return t('championships.spain.description') },
-    divisionNames: {
-      get 1() { return t('championships.spain.divisionNames.1') },
-      get 2() { return t('championships.spain.divisionNames.2') },
-    },
-    clubProfiles: spainClubConfigs,
-  },
-
-  england: {
-    id: 'england',
-    get name() { return t('championships.england.name') },
-    get description() { return t('championships.england.description') },
-    divisionNames: {
-      get 1() { return t('championships.england.divisionNames.1') },
-      get 2() { return t('championships.england.divisionNames.2') },
-      get 3() { return t('championships.england.divisionNames.3') },
-      get 4() { return t('championships.england.divisionNames.4') },
-    },
-    clubProfiles: englandClubConfigs,
-  },
-
-  germany: {
-    id: 'germany',
-    get name() { return t('championships.germany.name') },
-    get description() { return t('championships.germany.description') },
-    divisionNames: {
-      get 1() { return t('championships.germany.divisionNames.1') },
-      get 2() { return t('championships.germany.divisionNames.2') },
-    },
-    clubProfiles: germanyClubConfigs,
-  },
-
   france: {
     id: 'france',
-    get name() { return t('championships.france.name') },
-    get description() { return t('championships.france.description') },
+    get name() {
+      return t('championships.france.name')
+    },
+    get description() {
+      return t('championships.france.description')
+    },
     divisionNames: {
-      get 1() { return t('championships.france.divisionNames.1') },
-      get 2() { return t('championships.france.divisionNames.2') },
+      get 1() {
+        return t('championships.france.divisionNames.1')
+      },
+      get 2() {
+        return t('championships.france.divisionNames.2')
+      },
     },
     clubProfiles: franceClubConfigs,
-  },
-
-  italy: {
-    id: 'italy',
-    get name() { return t('championships.italy.name') },
-    get description() { return t('championships.italy.description') },
-    divisionNames: {
-      get 1() { return t('championships.italy.divisionNames.1') },
-      get 2() { return t('championships.italy.divisionNames.2') },
-    },
-    clubProfiles: italyClubConfigs,
   },
 }
 
