@@ -10,7 +10,9 @@ import {
 } from '@/config/matchSimulationConfig'
 import {
   autoSelectLineup,
+  defaultTeamTactics,
   formations,
+  getPositionFit,
   getFormationSlots,
   validateLineup,
 } from '@/domain/season/squadSelectionService'
@@ -27,12 +29,15 @@ import type {
   MatchTactics,
   PlayedLineup,
   Player,
+  FormationSlot,
+  TeamTacticsSettings,
 } from '@/types/football'
 
 import Select from 'primevue/select'
 import FloatLabel from 'primevue/floatlabel'
 
 import ClubBadge from '@/components/ui/ClubBadge.vue'
+import TacticsPanel from '@/components/tactics/TacticsPanel.vue'
 
 interface MatchSnapshot {
   minute: number
@@ -56,10 +61,14 @@ const isPaused = ref(false)
 const simulationSpeed = ref<LiveMatchSpeedMultiplier>(1)
 const isCalculating = ref(false)
 const calculationError = ref('')
-const selectedPlayerOutId = ref('')
-const selectedPlayerInId = ref('')
+const selectedBenchPlayerId = ref('')
+const matchSlotPlayerIds = ref<Record<string, Record<string, string | null>>>({})
+const activeLineupView = ref<'user' | 'opponent'>('user')
+const lastCoachActionMinute = ref<number | null>(null)
+const coachActionResetMinute = ref<number | null>(null)
 let matchCompletionPromise: Promise<void> | null = null
 const HALF_TIME_MINUTE = 45
+const COACH_ACTION_COOLDOWN_MINUTES = 15
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -100,13 +109,14 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
     .filter((playerId): playerId is string => typeof playerId === 'string')
 
   if (starters.length !== 11) {
-    const fallback = autoSelectLineup(club, lineup.formation, lineup.tacticalStyle)
+    const fallback = autoSelectLineup(club, lineup.formation, lineup.tacticalStyle, lineup.tactics)
     return buildPlayedLineup(club, fallback)
   }
 
   return {
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
+    tactics: lineup.tactics,
     starters,
     substitutes: [...new Set(lineup.substitutes)].filter(
       (playerId) => !starters.includes(playerId),
@@ -141,6 +151,7 @@ const preparedLineups = computed((): MatchLineups | undefined => {
           home,
           game.lineups[currentMatch.homeClubId]?.formation ?? '4-4-2',
           game.lineups[currentMatch.homeClubId]?.tacticalStyle ?? 'balanced',
+          game.lineups[currentMatch.homeClubId]?.tactics,
         )
   const awayLineup =
     currentMatch.awayClubId === game.selectedClubId
@@ -149,6 +160,7 @@ const preparedLineups = computed((): MatchLineups | undefined => {
           away,
           game.lineups[currentMatch.awayClubId]?.formation ?? '4-4-2',
           game.lineups[currentMatch.awayClubId]?.tacticalStyle ?? 'balanced',
+          game.lineups[currentMatch.awayClubId]?.tactics,
         )
 
   if (!homeLineup || !awayLineup) {
@@ -225,55 +237,12 @@ const emptySnapshot = (): MatchSnapshot => ({
   },
 })
 
-const mentalityOptions = [
-  { label: 'Оборона', value: 'defensive' },
-  { label: 'Баланс', value: 'balanced' },
-  { label: 'Атака', value: 'attacking' },
-  { label: 'Навал', value: 'allOutAttack' },
-]
-
 const formationOptions = formations.map((formation) => ({
   label: formation,
   value: formation,
 }))
 
-const pressingOptions = [
-  { label: 'Низкий', value: 'low' },
-  { label: 'Баланс', value: 'balanced' },
-  { label: 'Высокий', value: 'high' },
-]
 
-const tempoOptions = [
-  { label: 'Медленный', value: 'slow' },
-  { label: 'Баланс', value: 'balanced' },
-  { label: 'Быстрый', value: 'fast' },
-]
-
-const widthOptions = [
-  { label: 'Узко', value: 'narrow' },
-  { label: 'Баланс', value: 'balanced' },
-  { label: 'Широко', value: 'wide' },
-]
-
-const defensiveLineOptions = [
-  { label: 'Низкая', value: 'low' },
-  { label: 'Средняя', value: 'medium' },
-  { label: 'Высокая', value: 'high' },
-]
-
-const playerOutOptions = computed(() =>
-  userLineupIds.value.map((id) => ({
-    label: `${playerPosition(id)} · ${playerName(id)}`,
-    value: id,
-  })),
-)
-
-const playerInOptions = computed(() =>
-  userBenchIds.value.map((id) => ({
-    label: `${playerPosition(id)} · ${playerName(id)}`,
-    value: id,
-  })),
-)
 
 // ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
 const visibleSnapshot = computed<MatchSnapshot>(() => {
@@ -293,6 +262,19 @@ const visibleSnapshot = computed<MatchSnapshot>(() => {
 
 // ВОЗВРАЩАЕТ ВИДИМЫЕ СОБЫТИЯ С ГОЛАМИ
 const visibleGoals = computed(() => match.value?.result?.goals ?? visibleSnapshot.value.goals)
+
+const homeVisibleGoals = computed(() =>
+  visibleGoals.value.filter((goal) => goal.clubId === homeClub.value?.id),
+)
+
+const awayVisibleGoals = computed(() =>
+  visibleGoals.value.filter((goal) => goal.clubId === awayClub.value?.id),
+)
+
+const penaltyWinnerClubName = computed(() => {
+  const winnerId = match.value?.result?.penaltyWinnerClubId
+  return winnerId ? clubStore.getClubById(winnerId)?.name : ''
+})
 
 // ВОЗВРАЩАЕТ ДЕТАЛИ ПОЛНОЙ СИМУЛЯЦИИ
 const detailedResult = computed<MatchResult | undefined>(() => {
@@ -519,6 +501,7 @@ const advanceOneMinute = (): void => {
   if (!controller) return
   controller.advance(1)
   currentMinute.value = controller.state.minute
+  resetExpiredCoachAction()
   revision.value += 1
   if (currentMinute.value === HALF_TIME_MINUTE) {
     isPaused.value = true
@@ -560,18 +543,23 @@ const userTeamId = computed(() => gameStore.game?.selectedClubId ?? '')
 const userTactics = computed<MatchTactics>(() => {
   void revision.value
   const state = liveMatch.value?.state
-  if (!state)
+  if (!state) {
+    const selectedLineup =
+      match.value?.homeClubId === userTeamId.value
+        ? preparedLineups.value?.home
+        : preparedLineups.value?.away
+    const fallbackTactics = {
+      ...defaultTeamTactics(selectedLineup?.tacticalStyle ?? 'balanced'),
+      ...selectedLineup?.tactics,
+    }
     return {
       formation:
         match.value?.homeClubId === userTeamId.value
           ? (preparedLineups.value?.home.formation ?? '4-4-2')
           : (preparedLineups.value?.away.formation ?? '4-4-2'),
-      mentality: 'balanced',
-      pressing: 'balanced',
-      tempo: 'balanced',
-      width: 'balanced',
-      defensiveLine: 'medium',
+      ...fallbackTactics,
     }
+  }
   return userTeamId.value === state.homeTeamId ? state.homeTactics : state.awayTactics
 })
 const substitutionsRemaining = computed(() => {
@@ -584,22 +572,208 @@ const substitutionsRemaining = computed(() => {
       : state.awaySubstitutionsUsed
   return state.maxSubstitutions - used
 })
-const userLineupIds = computed(() => {
+
+const viewedLineupClub = computed((): Club | undefined => {
+  const userId = userTeamId.value
+  const userClub = homeClub.value?.id === userId ? homeClub.value : awayClub.value
+  const opponentClub = homeClub.value?.id === userId ? awayClub.value : homeClub.value
+  return activeLineupView.value === 'user' ? userClub : opponentClub
+})
+
+const viewedLineupFallbackFormation = computed((): Formation => {
+  const club = viewedLineupClub.value
+  if (!club || !preparedLineups.value) return '4-4-2'
+  return club.id === homeClub.value?.id
+    ? preparedLineups.value.home.formation
+    : preparedLineups.value.away.formation
+})
+
+const coachActionCooldownRemaining = computed(() => {
+  const lastMinute = lastCoachActionMinute.value
+  if (lastMinute === null) return 0
+  return Math.max(0, COACH_ACTION_COOLDOWN_MINUTES - (currentMinute.value - lastMinute))
+})
+
+const canUseCoachAction = computed(
+  () =>
+    canSimulate.value &&
+    currentMinute.value < 90 &&
+    coachActionCooldownRemaining.value === 0,
+)
+
+const resetExpiredCoachAction = (): void => {
+  const controller = liveMatch.value
+  if (
+    controller &&
+    coachActionResetMinute.value !== null &&
+    currentMinute.value >= coachActionResetMinute.value
+  ) {
+    controller.changeTactics(userTeamId.value, { matchCommand: 'none', teamTalk: 'balanced' })
+    coachActionResetMinute.value = null
+    revision.value += 1
+  }
+}
+
+const useCoachAction = (
+  changes: Pick<Partial<TeamTacticsSettings>, 'matchCommand' | 'teamTalk'>,
+): void => {
+  if (!canUseCoachAction.value) return
+  const controller = ensureLiveMatch()
+  if (!controller) return
+  controller.changeTactics(userTeamId.value, changes)
+  lastCoachActionMinute.value = currentMinute.value
+  coachActionResetMinute.value = Math.min(90, currentMinute.value + 1)
+  calculationError.value = ''
+  revision.value += 1
+}
+
+interface MatchLineupSlot extends FormationSlot {
+  playerId: string | null
+}
+
+const activeLineupIds = (teamId: string): string[] => {
   void revision.value
   const state = liveMatch.value?.state
-  if (!state) return []
-  return userTeamId.value === state.homeTeamId
-    ? [...state.homeLineupPlayerIds]
-    : [...state.awayLineupPlayerIds]
-})
-const userBenchIds = computed(() => {
+  if (state) {
+    return teamId === state.homeTeamId
+      ? [...state.homeLineupPlayerIds]
+      : [...state.awayLineupPlayerIds]
+  }
+
+  if (teamId === homeClub.value?.id) {
+    return [...(preparedLineups.value?.home.starters ?? [])]
+  }
+  if (teamId === awayClub.value?.id) {
+    return [...(preparedLineups.value?.away.starters ?? [])]
+  }
+  return []
+}
+
+const activeBenchIds = (teamId: string): string[] => {
   void revision.value
   const state = liveMatch.value?.state
-  if (!state) return []
-  return userTeamId.value === state.homeTeamId
-    ? [...state.homeBenchPlayerIds]
-    : [...state.awayBenchPlayerIds]
-})
+  if (state) {
+    return teamId === state.homeTeamId ? [...state.homeBenchPlayerIds] : [...state.awayBenchPlayerIds]
+  }
+
+  if (teamId === homeClub.value?.id) {
+    return [...(preparedLineups.value?.home.substitutes ?? [])]
+  }
+  if (teamId === awayClub.value?.id) {
+    return [...(preparedLineups.value?.away.substitutes ?? [])]
+  }
+  return []
+}
+
+const playerById = (playerId: string): Player | undefined =>
+  allPlayers.value.find((player) => player.id === playerId)
+
+const ratingClass = (rating: number): string => {
+  if (rating >= 75) return 'bg-emerald-700'
+  if (rating >= 64) return 'bg-amber-600'
+  return 'bg-orange-700'
+}
+
+const hasSamePlayerSet = (left: readonly string[], right: readonly string[]): boolean =>
+  left.length === right.length && left.every((playerId) => right.includes(playerId))
+
+const assignPlayersToFormation = (
+  formation: Formation,
+  playerIds: readonly string[],
+): Record<string, string | null> =>
+  Object.fromEntries(
+    getFormationSlots(formation).map((slot, index) => [slot.id, playerIds[index] ?? null]),
+  )
+
+const normalizeSlotAssignments = (
+  teamId: string,
+  formation: Formation,
+  playerIds: readonly string[],
+): Record<string, string | null> => {
+  const slots = getFormationSlots(formation)
+  const existing = matchSlotPlayerIds.value[teamId]
+  const existingIds = existing
+    ? Object.values(existing).filter((playerId): playerId is string => Boolean(playerId))
+    : []
+
+  if (!existing || !hasSamePlayerSet(existingIds, playerIds)) {
+    const next = assignPlayersToFormation(formation, playerIds)
+    matchSlotPlayerIds.value = { ...matchSlotPlayerIds.value, [teamId]: next }
+    return next
+  }
+
+  const assignedIds = new Set<string>()
+  const next: Record<string, string | null> = {}
+
+  for (const slot of slots) {
+    const playerId = existing[slot.id]
+    if (playerId && playerIds.includes(playerId)) {
+      next[slot.id] = playerId
+      assignedIds.add(playerId)
+    } else {
+      next[slot.id] = null
+    }
+  }
+
+  const unassignedIds = playerIds.filter((playerId) => !assignedIds.has(playerId))
+  const emptySlots = slots.filter((slot) => !next[slot.id])
+  for (const playerId of unassignedIds) {
+    const player = playerById(playerId)
+    const targetSlot =
+      emptySlots
+        .map((slot) => ({
+          slot,
+          fit: player ? getPositionFit(slot.position, player.position) : Number.MAX_SAFE_INTEGER,
+        }))
+        .sort((left, right) => left.fit - right.fit)[0]?.slot ?? emptySlots[0]
+    if (!targetSlot) continue
+    next[targetSlot.id] = playerId
+    emptySlots.splice(emptySlots.indexOf(targetSlot), 1)
+  }
+
+  matchSlotPlayerIds.value = { ...matchSlotPlayerIds.value, [teamId]: next }
+  return next
+}
+
+const lineupSlots = (teamId: string, fallback: Formation): MatchLineupSlot[] => {
+  const formation = teamFormation(teamId, fallback)
+  const playerIds = activeLineupIds(teamId)
+  const assignments = normalizeSlotAssignments(teamId, formation, playerIds)
+  return getFormationSlots(formation).map((slot) => ({
+    ...slot,
+    playerId: assignments[slot.id] ?? null,
+  }))
+}
+
+const fieldSlotPlayer = (slot: MatchLineupSlot): Player | undefined =>
+  slot.playerId ? playerById(slot.playerId) : undefined
+
+const selectBenchPlayer = (playerId: string): void => {
+  selectedBenchPlayerId.value = selectedBenchPlayerId.value === playerId ? '' : playerId
+}
+
+const replaceSlotWithSelectedBenchPlayer = (slot: MatchLineupSlot): void => {
+  if (!slot.playerId || !selectedBenchPlayerId.value || substitutionsRemaining.value <= 0) return
+  const controller = ensureLiveMatch()
+  if (!controller || currentMinute.value >= 90) return
+
+  try {
+    controller.substitute(userTeamId.value, slot.playerId, selectedBenchPlayerId.value)
+    const current = matchSlotPlayerIds.value[userTeamId.value] ?? {}
+    matchSlotPlayerIds.value = {
+      ...matchSlotPlayerIds.value,
+      [userTeamId.value]: {
+        ...current,
+        [slot.id]: selectedBenchPlayerId.value,
+      },
+    }
+    selectedBenchPlayerId.value = ''
+    calculationError.value = ''
+    revision.value += 1
+  } catch (error) {
+    calculationError.value = error instanceof Error ? error.message : 'Замена недоступна'
+  }
+}
 
 const teamFormation = (teamId: string, fallback: Formation): Formation => {
   void revision.value
@@ -613,21 +787,14 @@ const updateTactic = <K extends keyof MatchTactics>(key: K, value: MatchTactics[
   controller.changeTactics(userTeamId.value, { [key]: value })
   revision.value += 1
 }
+const updateTactics = (changes: Partial<TeamTacticsSettings>): void => {
+  const controller = ensureLiveMatch()
+  if (!controller || currentMinute.value >= 90) return
+  controller.changeTactics(userTeamId.value, changes)
+  revision.value += 1
+}
 const onTacticChange = <K extends keyof MatchTactics>(key: K, value: MatchTactics[K]): void => {
   updateTactic(key, value)
-}
-const makeSubstitution = (): void => {
-  const controller = ensureLiveMatch()
-  if (!controller || !selectedPlayerOutId.value || !selectedPlayerInId.value) return
-  try {
-    controller.substitute(userTeamId.value, selectedPlayerOutId.value, selectedPlayerInId.value)
-    selectedPlayerOutId.value = ''
-    selectedPlayerInId.value = ''
-    calculationError.value = ''
-    revision.value += 1
-  } catch (error) {
-    calculationError.value = error instanceof Error ? error.message : 'Замена недоступна'
-  }
 }
 
 // ВОЗВРАЩАЕТ ПОЛЬЗОВАТЕЛЯ НА ГЛАВНУЮ СТРАНИЦУ
@@ -650,6 +817,9 @@ watch(
     currentMinute.value = 0
     isPaused.value = false
     simulationSpeed.value = 1
+    activeLineupView.value = 'user'
+    lastCoachActionMinute.value = null
+    coachActionResetMinute.value = null
     revision.value += 1
     isCalculating.value = false
     calculationError.value = ''
@@ -738,6 +908,37 @@ onBeforeUnmount(stopSimulationTimer)
       </div>
 
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
+      <div
+        class="mt-3 grid gap-2 border-t border-emerald-100 pt-3 text-xs text-slate-700 sm:grid-cols-[1fr_auto_1fr]"
+      >
+        <div class="min-w-0 space-y-1">
+          <div
+            v-for="goal in homeVisibleGoals"
+            :key="'top-home-' + goal.minute + '-' + goal.playerId"
+            class="truncate rounded bg-emerald-50 px-2 py-1 font-semibold text-emerald-900"
+          >
+            {{ goal.minute }}' {{ goal.playerName }}
+          </div>
+        </div>
+        <div
+          class="self-start rounded-full bg-white px-3 py-1 text-center text-[10px] font-black uppercase tracking-wide text-slate-500"
+        >
+          <template v-if="currentResult">
+            {{ t('match.bestPlayer') }}: {{ playerName(currentResult.bestPlayerId) }}
+          </template>
+          <template v-else>{{ t('match.goals') }}</template>
+        </div>
+        <div class="min-w-0 space-y-1">
+          <div
+            v-for="goal in awayVisibleGoals"
+            :key="'top-away-' + goal.minute + '-' + goal.playerId"
+            class="truncate rounded bg-emerald-50 px-2 py-1 text-right font-semibold text-emerald-900"
+          >
+            {{ goal.playerName }} {{ goal.minute }}'
+          </div>
+        </div>
+      </div>
+
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
         <template v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90">
           <div v-if="canSimulate" class="grid w-full max-w-[220px] gap-2">
@@ -749,7 +950,7 @@ onBeforeUnmount(stopSimulationTimer)
                 class="w-full"
                 :severity="simulationSpeed === speed ? 'success' : 'secondary'"
                 :outlined="simulationSpeed !== speed"
-                :label="`x${speed}`"
+                :label="'x' + speed"
                 @click="setSimulationSpeed(speed)"
               />
             </div>
@@ -776,158 +977,6 @@ onBeforeUnmount(stopSimulationTimer)
             @click="goBack"
           />
         </template>
-      </div>
-
-      <!-- ТАКТИКА И ЗАМЕНЫ -->
-      <div
-        v-if="canSimulate && currentMinute < 90"
-        class="mt-3 grid gap-3 border-t border-emerald-100 pt-3 lg:grid-cols-[1.4fr_1fr]"
-      >
-        <div>
-          <div
-            class="mb-4 flex items-center justify-between text-xs font-black uppercase tracking-wide text-slate-600"
-          >
-            <span>Тактика команды</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-mentality"
-                :model-value="userTactics.mentality"
-                :options="mentalityOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('mentality', $event)"
-              />
-              <label for="match-mentality">Менталитет</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-pressing"
-                :model-value="userTactics.pressing"
-                :options="pressingOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('pressing', $event)"
-              />
-              <label for="match-pressing">Прессинг</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-tempo"
-                :model-value="userTactics.tempo"
-                :options="tempoOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('tempo', $event)"
-              />
-              <label for="match-tempo">Темп</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-width"
-                :model-value="userTactics.width"
-                :options="widthOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('width', $event)"
-              />
-              <label for="match-width">Ширина</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-defensive-line"
-                :model-value="userTactics.defensiveLine"
-                :options="defensiveLineOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('defensiveLine', $event)"
-              />
-              <label for="match-defensive-line">Линия</label>
-            </FloatLabel>
-          </div>
-        </div>
-
-        <div>
-          <div class="mb-4 text-xs font-black uppercase tracking-wide text-slate-600">
-            Замены: {{ substitutionsRemaining }} осталось
-          </div>
-
-          <div class="grid grid-cols-2 items-end gap-2 sm:grid-cols-[0.8fr_1fr_1fr_auto]">
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-formation"
-                :model-value="userTactics.formation"
-                :options="formationOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                @update:model-value="onTacticChange('formation', $event)"
-              />
-              <label for="match-formation">Схема</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-player-out"
-                v-model="selectedPlayerOutId"
-                :options="playerOutOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                aria-label="Игрок с поля"
-              />
-              <label for="match-player-out">С поля</label>
-            </FloatLabel>
-
-            <FloatLabel variant="on" class="w-full">
-              <Select
-                input-id="match-player-in"
-                v-model="selectedPlayerInId"
-                :options="playerInOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                fluid
-                class="h-9 match-control-select"
-                aria-label="Игрок со скамейки"
-              />
-              <label for="match-player-in">На поле</label>
-            </FloatLabel>
-
-            <Button
-              size="small"
-              label="Заменить"
-              class="col-span-2 h-9 w-full sm:col-span-1 match-control-button"
-              :disabled="!selectedPlayerOutId || !selectedPlayerInId || substitutionsRemaining <= 0"
-              @click="makeSubstitution"
-            />
-          </div>
-        </div>
       </div>
 
       <div
@@ -958,315 +1007,280 @@ onBeforeUnmount(stopSimulationTimer)
       </div>
     </div>
 
-    <!-- СОСТАВЫ СТАТИСТИКА И ТРАНСЛЯЦИЯ -->
     <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[0.8fr_1.2fr_1fr] xl:gap-3">
-      <!-- СОСТАВЫ КОМАНД -->
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.lineups') }}
         </h2>
-        <!-- ЛЕГЕНДА СОБЫТИЙ, КОТОРЫЕ ПОЯВЛЯЮТСЯ У ИГРОКОВ ПО ХОДУ МАТЧА -->
+        <div class="mt-3 grid grid-cols-2 rounded-lg bg-slate-100 p-1 text-xs font-black">
+          <button
+            type="button"
+            class="rounded-md px-3 py-2"
+            :class="activeLineupView === 'user' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
+            @click="activeLineupView = 'user'"
+          >
+            Моя команда
+          </button>
+          <button
+            type="button"
+            class="rounded-md px-3 py-2"
+            :class="activeLineupView === 'opponent' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
+            @click="activeLineupView = 'opponent'"
+          >
+            Соперник
+          </button>
+        </div>
         <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
           <span>{{ t('match.legend.goal') }}</span>
           <span>{{ t('match.legend.yellowCard') }}</span>
           <span>{{ t('match.legend.redCard') }}</span>
           <span>{{ t('match.legend.secondYellow') }}</span>
           <span>{{ t('match.legend.injury') }}</span>
-          <span
-            ><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b>
-            {{ t('match.legend.substitution') }}</span
-          >
+          <span><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b> {{ t('match.legend.substitution') }}</span>
         </div>
-        <!-- ОСНОВА И СКАМЕЙКА ХОЗЯЕВ И ГОСТЕЙ -->
-        <div class="mt-4 grid gap-4 md:grid-cols-2 xl:mt-3 xl:gap-3">
-          <!-- СОСТАВ ХОЗЯЕВ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
-          <div>
-            <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
-              {{ homeClub.shortName }} ·
-              {{ teamFormation(homeClub.id, preparedLineups?.home.formation ?? '4-4-2') }}
+        <div v-if="viewedLineupClub" class="mt-4">
+          <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <div class="min-w-0 font-semibold text-slate-950 xl:text-sm">
+              {{ viewedLineupClub.shortName }} ·
+              {{ teamFormation(viewedLineupClub.id, viewedLineupFallbackFormation) }}
             </div>
-            <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
-              <div
-                v-for="playerId in preparedLineups?.home.starters"
-                :key="playerId"
-                class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
-              >
-                <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
-                  {{ playerPosition(playerId) }}
-                </span>
-                <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
-                <span
-                  v-for="marker in playerEventMarkers(homeClub.id, playerId)"
-                  :key="marker.key"
-                  :title="marker.title"
-                  :aria-label="marker.title"
-                  class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
-                  :class="marker.className"
-                >
-                  {{ marker.label }}
-                </span>
-              </div>
-            </div>
-            <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ХОЗЯЕВ -->
-            <div
-              v-if="benchPlayers(homeClub, preparedLineups?.home.substitutes).length"
-              class="mt-3 border-t border-slate-200 pt-2"
+            <FloatLabel
+              v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90"
+              variant="on"
+              class="w-32"
             >
-              <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
-                {{ t('match.substitutes') }}
-              </div>
-              <div class="space-y-1 text-xs text-slate-700">
-                <div
-                  v-for="player in benchPlayers(homeClub, preparedLineups?.home.substitutes)"
-                  :key="player.id"
-                  class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
-                >
-                  <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
-                    {{ player.position }}
-                  </span>
-                  <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
-                  <span
-                    v-for="marker in playerEventMarkers(homeClub.id, player.id)"
-                    :key="marker.key"
-                    :title="marker.title"
-                    :aria-label="marker.title"
-                    class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
-                    :class="marker.className"
-                    >{{ marker.label }}</span
-                  >
-                </div>
-              </div>
-            </div>
+              <Select
+                input-id="match-lineup-formation"
+                :model-value="userTactics.formation"
+                :options="formationOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                fluid
+                class="h-9 match-control-select"
+                @update:model-value="onTacticChange('formation', $event)"
+              />
+              <label for="match-lineup-formation">Схема</label>
+            </FloatLabel>
           </div>
-          <!-- СОСТАВ ГОСТЕЙ С СИНХРОНИЗИРОВАННЫМИ СОБЫТИЯМИ -->
-          <div>
-            <div class="mb-2 font-semibold text-slate-950 xl:mb-1.5 xl:text-sm">
-              {{ awayClub.shortName }} ·
-              {{ teamFormation(awayClub.id, preparedLineups?.away.formation ?? '4-4-2') }}
+
+          <div
+            class="relative h-[430px] overflow-hidden rounded-lg border border-emerald-950/20 bg-[linear-gradient(115deg,rgba(255,255,255,0.08)_0_18%,transparent_18%_100%),#166534] shadow-inner xl:h-[360px]"
+          >
+            <div class="pointer-events-none absolute inset-x-[28px] top-[18px] h-[64px] rounded-b-lg border-2 border-t-0 border-white/30"></div>
+            <div class="pointer-events-none absolute inset-x-[28px] bottom-[18px] h-[64px] rounded-t-lg border-2 border-b-0 border-white/30"></div>
+            <div class="pointer-events-none absolute inset-x-[18px] top-1/2 border-t-2 border-white/30"></div>
+            <div class="pointer-events-none absolute left-1/2 top-1/2 h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/30"></div>
+
+            <button
+              v-for="slot in lineupSlots(viewedLineupClub.id, viewedLineupFallbackFormation)"
+              :key="viewedLineupClub.id + '-' + slot.id"
+              type="button"
+              class="absolute grid min-h-[56px] w-[74px] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_auto_auto] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/85 p-1 text-left text-slate-50 shadow-[0_10px_22px_rgba(2,6,23,0.22)] transition sm:w-[92px] xl:min-h-[58px] xl:w-[86px]"
+              :class="{
+                'cursor-pointer hover:-translate-y-[52%] hover:border-lime-200':
+                  viewedLineupClub.id === userTeamId &&
+                  canSimulate &&
+                  currentMinute < 90 &&
+                  Boolean(selectedBenchPlayerId),
+                'border-lime-300 ring-2 ring-lime-300/40':
+                  viewedLineupClub.id === userTeamId && Boolean(selectedBenchPlayerId),
+                'border-rose-400/80 ring-1 ring-rose-500/40':
+                  Boolean(fieldSlotPlayer(slot)) && isPlayerUnavailable(fieldSlotPlayer(slot)!),
+              }"
+              :style="{ left: slot.x + '%', top: slot.y + '%' }"
+              :disabled="viewedLineupClub.id !== userTeamId || !canSimulate || currentMinute >= 90"
+              @click="replaceSlotWithSelectedBenchPlayer(slot)"
+            >
+              <template v-if="fieldSlotPlayer(slot)">
+                <span class="flex items-center gap-1">
+                  <span class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white">
+                    {{ slot.label }}
+                  </span>
+                  <span
+                    class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-white/80 text-[0.55rem] font-black leading-none text-white"
+                    :class="ratingClass(fieldSlotPlayer(slot)?.rating ?? 0)"
+                  >
+                    {{ fieldSlotPlayer(slot)?.rating }}
+                  </span>
+                </span>
+                <span class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.62rem] font-black uppercase">
+                  {{ fieldSlotPlayer(slot)?.lastName }}
+                </span>
+                <span class="flex min-w-0 flex-wrap gap-0.5">
+                  <span
+                    v-for="marker in playerEventMarkers(viewedLineupClub.id, slot.playerId ?? '')"
+                    :key="marker.key"
+                    :title="marker.title"
+                    :aria-label="marker.title"
+                    class="inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px] font-black leading-none"
+                    :class="marker.className"
+                  >
+                    {{ marker.label }}
+                  </span>
+                  <span class="text-[0.55rem] font-bold text-slate-200/75">
+                    {{ fieldSlotPlayer(slot)?.position }}
+                  </span>
+                </span>
+              </template>
+              <template v-else>
+                <span class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white">
+                  {{ slot.label }}
+                </span>
+                <span class="text-[0.62rem] font-black uppercase text-slate-200">Пусто</span>
+              </template>
+            </button>
+          </div>
+
+          <div v-if="activeBenchIds(viewedLineupClub.id).length" class="mt-3 border-t border-slate-200 pt-2">
+            <div class="mb-1.5 flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-wide text-slate-500">
+              <span>{{ t('match.substitutes') }}</span>
+              <span v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90">
+                Замен: {{ substitutionsRemaining }}
+              </span>
             </div>
-            <div class="space-y-1 text-sm text-slate-700 xl:space-y-0.5 xl:text-xs">
-              <div
-                v-for="playerId in preparedLineups?.away.starters"
+            <div class="grid grid-cols-2 gap-1.5 xl:grid-cols-1">
+              <button
+                v-for="playerId in activeBenchIds(viewedLineupClub.id)"
                 :key="playerId"
-                class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
+                type="button"
+                class="flex min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2 py-1 text-left text-xs text-slate-700"
+                :class="{
+                  'cursor-pointer hover:bg-emerald-50 hover:text-emerald-900':
+                    viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90,
+                  'ring-2 ring-lime-300':
+                    viewedLineupClub.id === userTeamId && selectedBenchPlayerId === playerId,
+                }"
+                :disabled="viewedLineupClub.id !== userTeamId || !canSimulate || currentMinute >= 90"
+                @click="selectBenchPlayer(playerId)"
               >
                 <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
                   {{ playerPosition(playerId) }}
                 </span>
                 <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
-                <span
-                  v-for="marker in playerEventMarkers(awayClub.id, playerId)"
-                  :key="marker.key"
-                  :title="marker.title"
-                  :aria-label="marker.title"
-                  class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
-                  :class="marker.className"
-                >
-                  {{ marker.label }}
-                </span>
-              </div>
-            </div>
-            <!-- ПОЛНЫЙ СПИСОК ДОСТУПНЫХ ЗАПАСНЫХ ГОСТЕЙ -->
-            <div
-              v-if="benchPlayers(awayClub, preparedLineups?.away.substitutes).length"
-              class="mt-3 border-t border-slate-200 pt-2"
-            >
-              <div class="mb-1.5 text-[10px] font-black uppercase tracking-wide text-slate-500">
-                {{ t('match.substitutes') }}
-              </div>
-              <div class="space-y-1 text-xs text-slate-700">
-                <div
-                  v-for="player in benchPlayers(awayClub, preparedLineups?.away.substitutes)"
-                  :key="player.id"
-                  class="flex h-7 min-w-0 items-center gap-1 overflow-hidden rounded bg-slate-50 px-2"
-                >
-                  <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
-                    {{ player.position }}
-                  </span>
-                  <span class="min-w-0 flex-1 truncate">{{ playerName(player.id) }}</span>
-                  <span
-                    v-for="marker in playerEventMarkers(awayClub.id, player.id)"
-                    :key="marker.key"
-                    :title="marker.title"
-                    :aria-label="marker.title"
-                    class="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded px-1 text-[11px] font-black leading-none"
-                    :class="marker.className"
-                    >{{ marker.label }}</span
-                  >
-                </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- СТАТИСТИКА И СОБЫТИЯ МАТЧА -->
       <div
         class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.statistics') }}
         </h2>
-        <!-- СРАВНЕНИЕ КЛЮЧЕВЫХ МАТЧЕВЫХ ПОКАЗАТЕЛЕЙ ОБЕИХ КОМАНД -->
         <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold"
-              >{{
-                match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
-              }}%</span
-            >
+            <span class="text-right font-semibold">{{ match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession }}%</span>
             <span class="text-slate-500">{{ t('match.possession') }}</span>
-            <span class="font-semibold"
-              >{{
-                match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
-              }}%</span
-            >
+            <span class="font-semibold">{{ match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession }}%</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">
-              {{ match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0 }}
-            </span>
+            <span class="text-right font-semibold">{{ match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0 }}</span>
             <span class="text-slate-500">{{ t('match.expectedGoals') }}</span>
-            <span class="font-semibold">
-              {{ match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0 }}
-            </span>
+            <span class="font-semibold">{{ match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0 }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
-            }}</span>
+            <span class="text-right font-semibold">{{ match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots }}</span>
             <span class="text-slate-500">{{ t('match.shots') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
-            }}</span>
+            <span class="font-semibold">{{ match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
-            }}</span>
+            <span class="text-right font-semibold">{{ match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget }}</span>
             <span class="text-slate-500">{{ t('match.shotsOnTarget') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
-            }}</span>
+            <span class="font-semibold">{{ match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
-            }}</span>
+            <span class="text-right font-semibold">{{ match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards }}</span>
             <span class="text-slate-500">{{ t('match.yellowCards') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
-            }}</span>
+            <span class="font-semibold">{{ match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
-            }}</span>
+            <span class="text-right font-semibold">{{ match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0 }}</span>
             <span class="text-slate-500">{{ t('match.redCards') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
-            }}</span>
+            <span class="font-semibold">{{ match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0 }}</span>
           </div>
-        </div>
-        <!-- ЛУЧШИЙ ИГРОК ПО ИТОГАМ НАКОПЛЕННЫХ МАТЧЕВЫХ ОЦЕНОК -->
-        <div
-          v-if="currentResult"
-          class="mt-5 rounded-md bg-slate-50 p-3 text-sm xl:mt-3 xl:p-2 xl:text-xs"
-        >
-          {{ t('match.bestPlayer') }}
-          <span class="font-semibold text-slate-950">{{
-            playerName(currentResult.bestPlayerId)
-          }}</span>
         </div>
 
-        <!-- ХРОНОЛОГИЯ ГОЛОВ С РАЗДЕЛЕНИЕМ ХОЗЯЕВ И ГОСТЕЙ ПО СТОРОНАМ -->
         <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
           <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
-            {{ t('match.goals') }}
+            {{ t('match.commentaryTitle') }}
           </h3>
-          <div v-if="visibleGoals.length" class="mt-3 xl:mt-2">
-            <div class="space-y-2 xl:space-y-1">
-              <div
-                v-for="goal in visibleGoals"
-                :key="`${goal.minute}-${goal.playerId}`"
-                class="grid grid-cols-2 gap-2"
+          <div
+            v-if="visibleCommentary.length"
+            class="mt-3 max-h-[360px] space-y-1.5 overflow-auto pr-1 xl:mt-2"
+          >
+            <div
+              v-for="(event, index) in reversedVisibleCommentary"
+              :key="'commentary-' + event.minute + '-' + index"
+              class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+            >
+              <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
+              <span
+                v-if="event.kind === 'substitution'"
+                class="flex min-w-0 flex-wrap items-center gap-1"
               >
-                <div
-                  v-if="goal.clubId === homeClub.id"
-                  class="flex min-w-0 items-center gap-1 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-                >
-                  <span class="shrink-0 font-black text-emerald-700">{{ goal.minute }}'</span>
-                  <span class="min-w-0 truncate">{{ goal.playerName }}</span>
-                </div>
-                <div
-                  v-else
-                  class="col-start-2 flex min-w-0 items-center justify-end gap-1 rounded-md bg-slate-50 px-3 py-2 text-right text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-                >
-                  <span class="min-w-0 truncate">{{ goal.playerName }}</span>
-                  <span class="shrink-0 font-black text-emerald-700">{{ goal.minute }}'</span>
-                </div>
-              </div>
+                <span class="font-semibold">
+                  {{ t('match.substitution', { club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '' }) }}
+                </span>
+                <span>{{ playerName(event.playerOutId) }}</span>
+                <span class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]">
+                  <span class="text-rose-600">→</span>
+                  <span class="text-emerald-600">←</span>
+                </span>
+                <span>{{ playerName(event.playerInId) }}</span>
+              </span>
+              <span v-else>{{ event.text }}</span>
             </div>
           </div>
-          <div v-else class="mt-3 text-sm text-slate-600">{{ t('match.noGoals') }}</div>
+          <div v-else class="mt-3 text-sm text-slate-500 xl:mt-2 xl:text-xs">
+            {{ t('match.noEvents') }}
+          </div>
         </div>
 
-        <!-- РЕЗУЛЬТАТ СЕРИИ ПЕНАЛЬТИ ДЛЯ КУБКОВОГО МАТЧА -->
         <div
-          v-if="match.result?.penaltyWinnerClubId"
+          v-if="penaltyWinnerClubName"
           class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
         >
-          {{ t('match.penaltyWinner') }}
-          {{ clubStore.getClubById(match.result.penaltyWinnerClubId)?.name }}
+          {{ t('match.penaltyWinner') }} {{ penaltyWinnerClubName }}
         </div>
       </div>
 
-      <!-- ТЕКСТОВАЯ ТРАНСЛЯЦИЯ -->
       <div
-        class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
+        class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
-          {{ t('match.commentaryTitle') }}
-        </h2>
-        <!-- ПОМИНУТНЫЙ ПОТОК УЖЕ НАСТУПИВШИХ СОБЫТИЙ МАТЧА -->
-        <div
-          v-if="visibleCommentary.length"
-          class="mt-4 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-3"
-        >
-          <div
-            v-for="(event, index) in reversedVisibleCommentary"
-            :key="`${event.minute}-${event.text}-${index}`"
-            class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-          >
-            <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
-            <span
-              v-if="event.kind === 'substitution'"
-              class="flex min-w-0 flex-wrap items-center gap-1"
-            >
-              <span class="font-semibold">
-                {{
-                  t('match.substitution', {
-                    club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '',
-                  })
-                }}
-              </span>
-              <span>{{ playerName(event.playerOutId) }}</span>
-              <span
-                class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
-                :aria-label="t('match.substitutedFor')"
-              >
-                <span class="text-rose-600">→</span>
-                <span class="text-emerald-600">←</span>
-              </span>
-              <span>{{ playerName(event.playerInId) }}</span>
-            </span>
-            <span v-else>{{ event.text }}</span>
-          </div>
+        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">Тактика</h2>
+        <div class="mt-4 xl:mt-3">
+          <TacticsPanel
+            :model-value="userTactics"
+            compact
+            :exclude-keys="['matchCommand', 'teamTalk']"
+            @change="updateTactics"
+          />
         </div>
-        <div v-else class="mt-4 text-sm text-slate-500 xl:mt-3 xl:text-xs">
-          {{ t('match.noEvents') }}
+        <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
+          <h3 class="text-xs font-black uppercase tracking-wide text-slate-600">
+            Тренерская реакция
+          </h3>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <Button size="small" label="Успокоить" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'calm' })" />
+            <Button size="small" label="Поднять темп" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'raiseTempo' })" />
+            <Button size="small" label="Удержать" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'holdLead' })" />
+            <Button size="small" label="Навал" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'loadBox' })" />
+            <Button size="small" label="Похвалить" :disabled="!canUseCoachAction" @click="useCoachAction({ teamTalk: 'praise' })" />
+            <Button size="small" label="Потребовать" :disabled="!canUseCoachAction" @click="useCoachAction({ teamTalk: 'demandMore' })" />
+          </div>
+          <div class="mt-2 text-xs font-semibold text-slate-500">
+            <template v-if="coachActionCooldownRemaining">
+              Доступно через {{ coachActionCooldownRemaining }} мин.
+            </template>
+            <template v-else>
+              Эффект короткий, повтор раз в 15 минут.
+            </template>
+          </div>
         </div>
       </div>
     </div>

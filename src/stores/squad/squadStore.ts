@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import {
   autoSelectLineup,
   createEmptyLineup,
+  defaultTeamTactics,
   formations,
   getFormationSlots,
   tacticalStyles,
@@ -10,13 +11,27 @@ import {
 } from '@/domain/season/squadSelectionService'
 import { useGameStore } from '@/stores/game/gameStore'
 import { t } from '@/plugins/i18n/i18n'
-import type { Club, ClubLineup, Formation, FormationSlot, PlayerStats, TacticalStyle } from '@/types/football'
+import type {
+  Club,
+  ClubLineup,
+  Formation,
+  FormationSlot,
+  PlayerStats,
+  TacticalStyle,
+  TeamTacticsSettings,
+} from '@/types/football'
 import type { PlayerMoveSource } from '@/stores/squad/types'
 import { calculateClubRating } from '@/domain/club/teamRating'
 
 // УПРАВЛЯЕТ СХЕМОЙ, ТАКТИКОЙ И ПЕРЕМЕЩЕНИЕМ ИГРОКОВ МЕЖДУ ГРУППАМИ СОСТАВА
 export const useSquadStore = defineStore('squad', () => {
   const gameStore = useGameStore()
+
+  const tacticalStyleFromTactics = (tactics: TeamTacticsSettings): TacticalStyle => {
+    if (tactics.mentality === 'parkTheBus') return 'defensive'
+    if (tactics.mentality === 'allOutAttack') return 'attacking'
+    return tactics.mentality
+  }
 
   // ВОЗВРАЩАЕТ УПРАВЛЯЕМЫЙ КЛУБ
   const club = computed((): Club | undefined => gameStore.selectedClub)
@@ -66,7 +81,14 @@ export const useSquadStore = defineStore('squad', () => {
     if (!club.value || !lineup.value) {
       return
     }
-    saveLineup(autoSelectLineup(club.value, formation, lineup.value.tacticalStyle))
+    saveLineup(
+      autoSelectLineup(
+        club.value,
+        formation,
+        lineup.value.tacticalStyle,
+        lineup.value.tactics ?? defaultTeamTactics(lineup.value.tacticalStyle),
+      ),
+    )
   }
 
   // МЕНЯЕТ ТАКТИЧЕСКИЙ СТИЛЬ БЕЗ ПЕРЕСТРОЕНИЯ СОСТАВА
@@ -77,6 +99,26 @@ export const useSquadStore = defineStore('squad', () => {
     saveLineup({
       ...lineup.value,
       tacticalStyle,
+      tactics: {
+        ...(lineup.value.tactics ?? defaultTeamTactics(tacticalStyle)),
+        mentality: tacticalStyle,
+      },
+    })
+  }
+
+  const setTactics = (changes: Partial<TeamTacticsSettings>): void => {
+    if (!lineup.value) {
+      return
+    }
+    const tactics = {
+      ...(lineup.value.tactics ?? defaultTeamTactics(lineup.value.tacticalStyle)),
+      ...changes,
+    }
+    const tacticalStyle = tacticalStyleFromTactics(tactics)
+    saveLineup({
+      ...lineup.value,
+      tacticalStyle,
+      tactics,
     })
   }
 
@@ -246,7 +288,14 @@ export const useSquadStore = defineStore('squad', () => {
       return
     }
     const current = lineup.value ?? createEmptyLineup()
-    saveLineup(autoSelectLineup(club.value, current.formation, current.tacticalStyle))
+    saveLineup(
+      autoSelectLineup(
+        club.value,
+        current.formation,
+        current.tacticalStyle,
+        current.tactics ?? defaultTeamTactics(current.tacticalStyle),
+      ),
+    )
   }
 
   return {
@@ -261,6 +310,7 @@ export const useSquadStore = defineStore('squad', () => {
 
     setFormation,
     setTacticalStyle,
+    setTactics,
     assignPlayerToSlot,
     movePlayerToSlot,
     toggleSubstitute,

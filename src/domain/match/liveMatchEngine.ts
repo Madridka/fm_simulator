@@ -19,6 +19,7 @@ import type {
   SubstitutionEvent,
   TacticalChangeEvent,
   TacticalStyle,
+  TeamTacticsSettings,
 } from '@/types/football'
 import { formatPlayerName } from '@/utils/format'
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
@@ -57,13 +58,23 @@ interface Runtime {
   aiLastChangeMinute: number
 }
 
-const initialTactics = (formation: Formation, tacticalStyle: TacticalStyle): MatchTactics => ({
+const initialTactics = (
+  formation: Formation,
+  tacticalStyle: TacticalStyle,
+  tactics?: TeamTacticsSettings,
+): MatchTactics => ({
   formation,
   mentality: tacticalStyle,
   pressing: 'balanced',
   tempo: 'balanced',
   width: 'balanced',
   defensiveLine: 'medium',
+  attackPlan: 'shortPassing',
+  defensiveShape: 'balanced',
+  tackling: 'normal',
+  matchCommand: 'none',
+  teamTalk: 'balanced',
+  ...tactics,
 })
 
 const lineByPosition: Record<PlayerPosition, 'attack' | 'midfield' | 'defense'> = {
@@ -80,12 +91,67 @@ const emptyStats = (): MatchTeamStats => ({
 const average = (values: readonly number[], fallback = 60): number =>
   values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : fallback
 
-const mentalityAttack = { defensive: 0.82, balanced: 1, attacking: 1.14, allOutAttack: 1.32 } as const
-const mentalityRisk = { defensive: 0.78, balanced: 1, attacking: 1.2, allOutAttack: 1.5 } as const
+const mentalityAttack = { parkTheBus: 0.55, defensive: 0.82, balanced: 1, attacking: 1.14, allOutAttack: 1.32 } as const
+const mentalityRisk = { parkTheBus: 0.6, defensive: 0.78, balanced: 1, attacking: 1.2, allOutAttack: 1.5 } as const
 const tempoVolume = { slow: 0.88, balanced: 1, fast: 1.12 } as const
 const pressingEffect = { low: 0.95, balanced: 1, high: 1.06 } as const
 const fitnessCost = { low: 0.72, balanced: 1, high: 1.42 } as const
 const tempoCost = { slow: 0.76, balanced: 1, fast: 1.35 } as const
+const attackPlanVolume = {
+  shortPassing: 0.96,
+  directPassing: 1.08,
+  widePlay: 1,
+  centralPlay: 0.98,
+  earlyCrosses: 1.12,
+  throughBalls: 1.04,
+} as const
+const attackPlanQuality = {
+  shortPassing: 1.04,
+  directPassing: 0.96,
+  widePlay: 1,
+  centralPlay: 1.03,
+  earlyCrosses: 0.94,
+  throughBalls: 1.08,
+} as const
+const commandVolume = {
+  none: 1,
+  calm: 0.92,
+  raiseTempo: 1.12,
+  holdLead: 0.82,
+  loadBox: 1.18,
+  timeWasting: 0.7,
+} as const
+const commandQuality = {
+  none: 1,
+  calm: 1.03,
+  raiseTempo: 0.98,
+  holdLead: 0.9,
+  loadBox: 0.96,
+  timeWasting: 0.78,
+} as const
+const teamTalkVolume = {
+  balanced: 1,
+  encourage: 1.04,
+  calm: 0.97,
+  demandMore: 1.06,
+  praise: 1.01,
+} as const
+const teamTalkQuality = {
+  balanced: 1,
+  encourage: 1.01,
+  calm: 1.03,
+  demandMore: 0.99,
+  praise: 1.02,
+} as const
+const tacklingDefense = { cautious: 1.04, normal: 1, hard: 0.94 } as const
+const commandFitnessCost = {
+  none: 1,
+  calm: 0.9,
+  raiseTempo: 1.18,
+  holdLead: 0.82,
+  loadBox: 1.14,
+  timeWasting: 0.7,
+} as const
 
 const eventText = (type: MatchEvent['type'], team: Club | undefined, player?: Player): string => {
   const who = player ? nameOf(player) : team?.shortName ?? ''
@@ -115,8 +181,16 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     awayTeamId: input.awayClub.id,
     homeScore: 0,
     awayScore: 0,
-    homeTactics: initialTactics(input.homeLineup.formation, input.homeLineup.tacticalStyle),
-    awayTactics: initialTactics(input.awayLineup.formation, input.awayLineup.tacticalStyle),
+    homeTactics: initialTactics(
+      input.homeLineup.formation,
+      input.homeLineup.tacticalStyle,
+      input.homeLineup.tactics,
+    ),
+    awayTactics: initialTactics(
+      input.awayLineup.formation,
+      input.awayLineup.tacticalStyle,
+      input.awayLineup.tactics,
+    ),
     homeLineupPlayerIds: [...input.homeLineup.starters],
     awayLineupPlayerIds: [...input.awayLineup.starters],
     homeBenchPlayerIds: [...input.homeLineup.substitutes],
@@ -155,6 +229,37 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
 
   const activePlayers = (teamId: string): Player[] =>
     lineupFor(teamId).map((id) => players.get(id)).filter((player): player is Player => Boolean(player))
+
+  const defensiveShapeAgainst = (
+    attackPlan: MatchTactics['attackPlan'],
+    defensiveShape: MatchTactics['defensiveShape'],
+  ): number => {
+    if (
+      defensiveShape === 'compact' &&
+      (attackPlan === 'centralPlay' || attackPlan === 'throughBalls')
+    ) {
+      return 0.88
+    }
+    if (
+      defensiveShape === 'wide' &&
+      (attackPlan === 'widePlay' || attackPlan === 'earlyCrosses')
+    ) {
+      return 0.9
+    }
+    if (
+      defensiveShape === 'compact' &&
+      (attackPlan === 'widePlay' || attackPlan === 'earlyCrosses')
+    ) {
+      return 1.08
+    }
+    if (
+      defensiveShape === 'wide' &&
+      (attackPlan === 'centralPlay' || attackPlan === 'throughBalls')
+    ) {
+      return 1.06
+    }
+    return 1
+  }
 
   const teamStrength = (teamId: string, line: 'attack' | 'midfield' | 'defense'): number => {
     const candidates = activePlayers(teamId).filter((player) => lineByPosition[player.position] === line)
@@ -196,7 +301,18 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     const highLineRisk = opponentTactics.defensiveLine === 'high' ? 1.12 : opponentTactics.defensiveLine === 'low' ? 0.9 : 1
     const press = pressingEffect[tactics.pressing]
     const opponentPressRisk = opponentTactics.pressing === 'high' && attack > defense ? 1.08 : 1
-    const volume = mentalityAttack[tactics.mentality] * tempoVolume[tactics.tempo] * press
+    const opponentShape = defensiveShapeAgainst(tactics.attackPlan, opponentTactics.defensiveShape)
+    const opponentTackling = tacklingDefense[opponentTactics.tackling]
+    const busBlock = opponentTactics.mentality === 'parkTheBus' ? 0.82 : 1
+    const volume =
+      mentalityAttack[tactics.mentality] *
+      tempoVolume[tactics.tempo] *
+      press *
+      attackPlanVolume[tactics.attackPlan] *
+      commandVolume[tactics.matchCommand] *
+      teamTalkVolume[tactics.teamTalk] *
+      opponentTackling *
+      busBlock
     const homeBonus = isHome(teamId) && !input.neutralVenue ? liveConfig.homeShotChanceBonus : 0
     const shotChance = clamp(
       (adminSettings.liveBaseShotChancePercent / 100 + homeBonus +
@@ -208,7 +324,20 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
 
     const teamStats = statsFor(teamId)
     teamStats.shots += 1
-    const quality = clamp((0.08 + (attack - defense) * 0.0022) * widthMatchup * highLineRisk * opponentPressRisk, 0.04, 0.42)
+    const quality = clamp(
+      (0.08 + (attack - defense) * 0.0022) *
+        widthMatchup *
+        highLineRisk *
+        opponentPressRisk *
+        attackPlanQuality[tactics.attackPlan] *
+        commandQuality[tactics.matchCommand] *
+        teamTalkQuality[tactics.teamTalk] *
+        opponentShape *
+        opponentTackling *
+        busBlock,
+      0.035,
+      0.45,
+    )
     teamStats.xG = Number(((teamStats.xG ?? 0) + quality).toFixed(2))
     addEvent({ type: 'chance', teamId, text: eventText('chance', clubs.get(teamId)) })
     const shotOnTargetChance = clamp(0.34 + (attack - defense) * 0.003, 0.22, 0.67)
@@ -236,8 +365,20 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
 
   const drainFitness = (teamId: string): void => {
     const tactics = tacticsFor(teamId)
-    const mentality = tactics.mentality === 'allOutAttack' ? 1.35 : tactics.mentality === 'attacking' ? 1.12 : 1
-    const drain = matchSimulationConfig.liveMatch.baseFitnessDrain * fitnessCost[tactics.pressing] * tempoCost[tactics.tempo] * mentality
+    const mentality =
+      tactics.mentality === 'parkTheBus' ? 0.78 :
+        tactics.mentality === 'allOutAttack' ? 1.35 :
+          tactics.mentality === 'attacking' ? 1.12 : 1
+    const tackling = tactics.tackling === 'hard' ? 1.12 : tactics.tackling === 'cautious' ? 0.92 : 1
+    const talk = tactics.teamTalk === 'demandMore' ? 1.08 : tactics.teamTalk === 'calm' ? 0.94 : 1
+    const drain =
+      matchSimulationConfig.liveMatch.baseFitnessDrain *
+      fitnessCost[tactics.pressing] *
+      tempoCost[tactics.tempo] *
+      mentality *
+      tackling *
+      talk *
+      commandFitnessCost[tactics.matchCommand]
     for (const player of activePlayers(teamId)) {
       state.fitness[player.id] = clamp((state.fitness[player.id] ?? player.fitness) - drain, 1, 100)
     }
@@ -245,7 +386,13 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
 
   const processCard = (teamId: string): void => {
     const tactics = tacticsFor(teamId)
-    const chance = 0.009 + (tactics.pressing === 'high' ? 0.007 : 0) + (tactics.mentality === 'allOutAttack' ? 0.003 : 0)
+    const chance =
+      0.009 +
+      (tactics.pressing === 'high' ? 0.007 : 0) +
+      (tactics.mentality === 'allOutAttack' ? 0.003 : 0) +
+      (tactics.tackling === 'hard' ? 0.008 : tactics.tackling === 'cautious' ? -0.004 : 0) +
+      (tactics.teamTalk === 'demandMore' ? 0.003 : tactics.teamTalk === 'calm' ? -0.002 : 0) +
+      (tactics.matchCommand === 'timeWasting' ? 0.002 : 0)
     if (!random.chance(chance) || !activePlayers(teamId).length) return
     const player = random.pick(activePlayers(teamId))
     const alreadyBooked = runtime.cards.some((card) => card.clubId === teamId && card.playerId === player.id && card.card === 'yellow')
@@ -263,7 +410,12 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
   }
 
   const processInjury = (teamId: string): void => {
-    if (!random.chance(0.00046) || !activePlayers(teamId).length) return
+    const tactics = tacticsFor(teamId)
+    const intensity =
+      (tactics.tackling === 'hard' ? 1.45 : tactics.tackling === 'cautious' ? 0.75 : 1) *
+      (tactics.pressing === 'high' ? 1.2 : 1) *
+      (tactics.matchCommand === 'raiseTempo' || tactics.matchCommand === 'loadBox' ? 1.15 : 1)
+    if (!random.chance(0.00046 * intensity) || !activePlayers(teamId).length) return
     const injured = random.pick(activePlayers(teamId))
     runtime.injuries.push({ minute: state.minute, clubId: teamId, playerId: injured.id, durationMatchdays: random.int(1, 5) })
     addEvent({ type: 'injury', teamId, playerId: injured.id, text: `Травма: ${nameOf(injured)}` })
@@ -346,15 +498,15 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     const rivalStrength = calculateClubRating(rivalClub, rivalLineup)
     const averageFitness = average(activePlayers(teamId).map((player) => state.fitness[player.id] ?? player.fitness))
     if (goalDiff < 0 && state.minute >= 80) {
-      doChangeTactics(teamId, { mentality: 'allOutAttack', pressing: 'high', tempo: 'fast', defensiveLine: 'high' })
+      doChangeTactics(teamId, { mentality: 'allOutAttack', pressing: 'high', tempo: 'fast', defensiveLine: 'high', matchCommand: 'loadBox' })
       aiSubstitution(teamId, 'attack')
       runtime.aiLastChangeMinute = state.minute
     } else if (goalDiff < 0 && state.minute >= 60) {
-      doChangeTactics(teamId, { mentality: 'attacking', pressing: 'high', tempo: 'fast' })
+      doChangeTactics(teamId, { mentality: 'attacking', pressing: 'high', tempo: 'fast', matchCommand: 'raiseTempo' })
       if (state.minute >= 65) aiSubstitution(teamId, 'attack')
       runtime.aiLastChangeMinute = state.minute
     } else if (goalDiff > 0 && state.minute >= 65) {
-      doChangeTactics(teamId, { mentality: 'defensive', tempo: 'slow', defensiveLine: 'low', pressing: 'low' })
+      doChangeTactics(teamId, { mentality: state.minute >= 80 ? 'parkTheBus' : 'defensive', tempo: 'slow', defensiveLine: 'low', pressing: 'low', matchCommand: 'holdLead' })
       if (averageFitness < 75 || state.minute >= 72) aiSubstitution(teamId, 'defend')
       runtime.aiLastChangeMinute = state.minute
     } else if (goalDiff === 0 && state.minute >= 70) {
@@ -366,6 +518,23 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
       aiSubstitution(teamId, 'fresh')
       runtime.aiLastChangeMinute = state.minute
     }
+  }
+
+  const possessionControl = (teamId: string): number => {
+    const tactics = tacticsFor(teamId)
+    const attackPlan =
+      tactics.attackPlan === 'shortPassing' ? 1.08 :
+        tactics.attackPlan === 'centralPlay' ? 1.04 :
+          tactics.attackPlan === 'directPassing' || tactics.attackPlan === 'earlyCrosses' ? 0.92 : 1
+    const command =
+      tactics.matchCommand === 'calm' ? 1.04 :
+        tactics.matchCommand === 'timeWasting' ? 0.93 :
+          tactics.matchCommand === 'loadBox' ? 0.94 :
+            tactics.matchCommand === 'raiseTempo' ? 0.98 : 1
+    const talk =
+      tactics.teamTalk === 'calm' ? 1.03 :
+        tactics.teamTalk === 'demandMore' ? 0.98 : 1
+    return teamStrength(teamId, 'midfield') * mentalityRisk[tactics.mentality] * attackPlan * command * talk
   }
 
   const simulateMinute = (): void => {
@@ -380,8 +549,8 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     processInjury(state.awayTeamId)
     drainFitness(state.homeTeamId)
     drainFitness(state.awayTeamId)
-    const homeControl = teamStrength(state.homeTeamId, 'midfield') * mentalityRisk[state.homeTactics.mentality]
-    const awayControl = teamStrength(state.awayTeamId, 'midfield') * mentalityRisk[state.awayTactics.mentality]
+    const homeControl = possessionControl(state.homeTeamId)
+    const awayControl = possessionControl(state.awayTeamId)
     runtime.stats.home.possession = Math.round(clamp(50 + (homeControl - awayControl) * 0.25, 32, 68))
     runtime.stats.away.possession = 100 - runtime.stats.home.possession
     if (state.minute === 45) addEvent({ type: 'half-time', text: eventText('half-time', undefined) })

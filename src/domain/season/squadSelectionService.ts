@@ -7,6 +7,7 @@ import type {
   Player,
   PlayerPosition,
   TacticalStyle,
+  TeamTacticsSettings,
 } from '@/types/football'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 
@@ -344,6 +345,21 @@ export const formations = Object.keys(formationSlots) as Formation[]
 
 export const tacticalStyles: TacticalStyle[] = ['defensive', 'balanced', 'attacking']
 
+export const defaultTeamTactics = (
+  tacticalStyle: TacticalStyle = 'balanced',
+): TeamTacticsSettings => ({
+  mentality: tacticalStyle,
+  pressing: 'balanced',
+  tempo: 'balanced',
+  width: 'balanced',
+  defensiveLine: 'medium',
+  attackPlan: 'shortPassing',
+  defensiveShape: 'balanced',
+  tackling: 'normal',
+  matchCommand: 'none',
+  teamTalk: 'balanced',
+})
+
 // ВОЗВРАЩАЕТ НАБОР ПОЗИЦИЙ ДЛЯ ВЫБРАННОЙ СХЕМЫ
 export const getFormationSlots = (formation: Formation): FormationSlot[] =>
   formationSlots[formation]
@@ -352,6 +368,7 @@ export const getFormationSlots = (formation: Formation): FormationSlot[] =>
 export const createEmptyLineup = (
   formation: Formation = '4-4-2',
   tacticalStyle: TacticalStyle = 'balanced',
+  tactics: TeamTacticsSettings = defaultTeamTactics(tacticalStyle),
 ): ClubLineup => {
   const starters = getFormationSlots(formation).reduce<Record<string, string | null>>(
     (result, slot) => {
@@ -364,6 +381,7 @@ export const createEmptyLineup = (
   return {
     formation,
     tacticalStyle,
+    tactics,
     starters,
     substitutes: [],
   }
@@ -484,8 +502,9 @@ export const autoSelectLineup = (
   club: Club,
   formation: Formation = '4-4-2',
   tacticalStyle: TacticalStyle = 'balanced',
+  tactics: TeamTacticsSettings = defaultTeamTactics(tacticalStyle),
 ): ClubLineup => {
-  const lineup = createEmptyLineup(formation, tacticalStyle)
+  const lineup = createEmptyLineup(formation, tacticalStyle, tactics)
   const usedPlayerIds = new Set<string>()
 
   for (const slot of getFormationSlots(formation)) {

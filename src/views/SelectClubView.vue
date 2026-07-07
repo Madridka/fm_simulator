@@ -373,7 +373,7 @@ const startGame = (): void => {
           </select>
         </div>
 
-        <div class="border-t border-white/10 py-4 sm:px-5">
+        <div class="border-t border-white/10 p-4 sm:px-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
             {{ t('selectClub.division') }}
           </label>
@@ -392,7 +392,7 @@ const startGame = (): void => {
           </select>
         </div>
 
-        <div class="border-t border-white/10 py-4 sm:px-5">
+        <div class="border-t border-white/10 p-4 sm:px-5">
           <label class="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-200/70">
             {{ t('selectClub.club') }}
           </label>

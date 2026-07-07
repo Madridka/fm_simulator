@@ -236,12 +236,14 @@ const cloneMatch = (match: Match): Match => ({
         home: {
           formation: match.lineups.home.formation,
           tacticalStyle: match.lineups.home.tacticalStyle,
+          tactics: match.lineups.home.tactics ? { ...match.lineups.home.tactics } : undefined,
           starters: [...match.lineups.home.starters],
           substitutes: [...match.lineups.home.substitutes],
         },
         away: {
           formation: match.lineups.away.formation,
           tacticalStyle: match.lineups.away.tacticalStyle,
+          tactics: match.lineups.away.tactics ? { ...match.lineups.away.tactics } : undefined,
           starters: [...match.lineups.away.starters],
           substitutes: [...match.lineups.away.substitutes],
         },
@@ -390,6 +392,7 @@ export const createDefaultLineups = (
       club,
       existing?.formation ?? '4-4-2',
       existing?.tacticalStyle ?? 'balanced',
+      existing?.tactics,
     )
     return result
   }, {})
@@ -556,13 +559,14 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
   })
 
   if (starters.length !== 11 || hasUnavailableStarter) {
-    const auto = autoSelectLineup(club, lineup.formation, lineup.tacticalStyle)
+    const auto = autoSelectLineup(club, lineup.formation, lineup.tacticalStyle, lineup.tactics)
     return getPlayedLineup(club, auto)
   }
 
   return {
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
+    tactics: lineup.tactics,
     starters,
     substitutes: lineup.substitutes.filter((playerId) => {
       const player = playersById.get(playerId)
@@ -582,6 +586,7 @@ const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
           homeClub,
           state.lineups[match.homeClubId]?.formation ?? '4-4-2',
           state.lineups[match.homeClubId]?.tacticalStyle ?? 'balanced',
+          state.lineups[match.homeClubId]?.tactics,
         )
   const awayLineup =
     match.awayClubId === state.selectedClubId
@@ -590,6 +595,7 @@ const getLineupsForMatch = (state: GameState, match: Match): MatchLineups => {
           awayClub,
           state.lineups[match.awayClubId]?.formation ?? '4-4-2',
           state.lineups[match.awayClubId]?.tacticalStyle ?? 'balanced',
+          state.lineups[match.awayClubId]?.tactics,
         )
 
   return {
@@ -1535,6 +1541,7 @@ export const refreshLineupsAfterSquadChange = (state: GameState): Record<string,
     result[club.id] = {
       formation: existing.formation,
       tacticalStyle: existing.tacticalStyle,
+      tactics: existing.tactics,
       starters,
       substitutes,
     }

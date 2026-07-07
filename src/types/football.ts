@@ -100,6 +100,41 @@ export type Formation =
   | '4-6-0'
 
 export type TacticalStyle = 'defensive' | 'balanced' | 'attacking'
+export type MatchMentality = 'parkTheBus' | 'defensive' | 'balanced' | 'attacking' | 'allOutAttack'
+export type TacticalIntensity = 'low' | 'balanced' | 'high'
+export type MatchTempo = 'slow' | 'balanced' | 'fast'
+export type MatchWidth = 'narrow' | 'balanced' | 'wide'
+export type DefensiveLine = 'low' | 'medium' | 'high'
+export type AttackPlan =
+  | 'shortPassing'
+  | 'directPassing'
+  | 'widePlay'
+  | 'centralPlay'
+  | 'earlyCrosses'
+  | 'throughBalls'
+export type DefensiveShape = 'compact' | 'balanced' | 'wide'
+export type TacklingStyle = 'cautious' | 'normal' | 'hard'
+export type MatchCommand =
+  | 'none'
+  | 'calm'
+  | 'raiseTempo'
+  | 'holdLead'
+  | 'loadBox'
+  | 'timeWasting'
+export type TeamTalk = 'balanced' | 'encourage' | 'calm' | 'demandMore' | 'praise'
+
+export interface TeamTacticsSettings {
+  mentality: MatchMentality
+  pressing: TacticalIntensity
+  tempo: MatchTempo
+  width: MatchWidth
+  defensiveLine: DefensiveLine
+  attackPlan: AttackPlan
+  defensiveShape: DefensiveShape
+  tackling: TacklingStyle
+  matchCommand: MatchCommand
+  teamTalk: TeamTalk
+}
 
 export interface FormationSlot {
   id: string
@@ -112,6 +147,7 @@ export interface FormationSlot {
 export interface ClubLineup {
   formation: Formation
   tacticalStyle: TacticalStyle
+  tactics?: TeamTacticsSettings
   starters: Record<string, string | null>
   substitutes: string[]
 }
@@ -119,6 +155,7 @@ export interface ClubLineup {
 export interface PlayedLineup {
   formation: Formation
   tacticalStyle: TacticalStyle
+  tactics?: TeamTacticsSettings
   starters: string[]
   substitutes: string[]
 }
@@ -173,19 +210,8 @@ export interface SubstitutionEvent {
   playerInId: string
 }
 
-export type MatchMentality = 'defensive' | 'balanced' | 'attacking' | 'allOutAttack'
-export type TacticalIntensity = 'low' | 'balanced' | 'high'
-export type MatchTempo = 'slow' | 'balanced' | 'fast'
-export type MatchWidth = 'narrow' | 'balanced' | 'wide'
-export type DefensiveLine = 'low' | 'medium' | 'high'
-
-export interface MatchTactics {
+export interface MatchTactics extends TeamTacticsSettings {
   formation: Formation
-  mentality: MatchMentality
-  pressing: TacticalIntensity
-  tempo: MatchTempo
-  width: MatchWidth
-  defensiveLine: DefensiveLine
 }
 
 export interface TacticalChangeEvent {

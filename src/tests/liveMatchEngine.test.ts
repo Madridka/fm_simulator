@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import { createLiveMatch } from '@/domain/match/liveMatchEngine'
 import { simulateMatch } from '@/domain/match/matchSimulator'
-import { autoSelectLineup, getFormationSlots } from '@/domain/season/squadSelectionService'
+import {
+  autoSelectLineup,
+  defaultTeamTactics,
+  getFormationSlots,
+} from '@/domain/season/squadSelectionService'
 import { clubs } from '@/data/clubs'
 import type { Club, ClubLineup, PlayedLineup } from '@/types/football'
 
 const playedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => ({
   formation: lineup.formation,
   tacticalStyle: lineup.tacticalStyle,
+  tactics: lineup.tactics,
   starters: getFormationSlots(lineup.formation)
     .map((slot) => lineup.starters[slot.id])
     .filter((id): id is string => Boolean(id)),
@@ -62,6 +67,49 @@ describe('liveMatchEngine', () => {
     })
 
     expect(match.state.homeTactics.mentality).toBe('attacking')
+  })
+
+  it('starts with the detailed tactics selected in the squad screen', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    const homeLineup = autoSelectLineup(home, '4-4-2', 'attacking', {
+      ...defaultTeamTactics('attacking'),
+      mentality: 'allOutAttack',
+      pressing: 'high',
+      tempo: 'fast',
+      width: 'wide',
+      defensiveLine: 'high',
+      attackPlan: 'throughBalls',
+      defensiveShape: 'wide',
+      tackling: 'hard',
+      matchCommand: 'loadBox',
+      teamTalk: 'demandMore',
+    })
+    const match = createLiveMatch({
+      matchId: 'selected-detailed-tactics',
+      homeClub: home,
+      awayClub: away,
+      homeLineup: playedLineup(home, homeLineup),
+      awayLineup: playedLineup(away, autoSelectLineup(away)),
+      neutralVenue: false,
+      allowPenaltyShootout: false,
+      controlledTeamId: home.id,
+      seed: 42,
+    })
+
+    expect(match.state.homeTactics).toMatchObject({
+      formation: '4-4-2',
+      mentality: 'allOutAttack',
+      pressing: 'high',
+      tempo: 'fast',
+      width: 'wide',
+      defensiveLine: 'high',
+      attackPlan: 'throughBalls',
+      defensiveShape: 'wide',
+      tackling: 'hard',
+      matchCommand: 'loadBox',
+      teamTalk: 'demandMore',
+    })
   })
 
   it('keeps live scoring on the same scale as background simulation', () => {
@@ -144,6 +192,47 @@ describe('liveMatchEngine', () => {
 
     expect(allOutShots).toBeGreaterThan(balancedShots * 1.2)
     expect(allOutShots).toBeLessThan(balancedShots * 1.75)
+  })
+
+  it('makes the park-the-bus mentality reduce opponent shot volume', () => {
+    const home = clubs[0] as Club
+    const away = clubs[1] as Club
+    let balancedAwayShots = 0
+    let busAwayShots = 0
+    const sampleSize = 220
+
+    for (let seed = 1; seed <= sampleSize; seed += 1) {
+      const simulationSeed = seed * 97_531
+      const createSample = () => createLiveMatch({
+        matchId: `bus-impact-${seed}`,
+        homeClub: home,
+        awayClub: away,
+        homeLineup: playedLineup(home, autoSelectLineup(home)),
+        awayLineup: playedLineup(away, autoSelectLineup(away)),
+        neutralVenue: true,
+        allowPenaltyShootout: false,
+        controlledTeamId: home.id,
+        seed: simulationSeed,
+      })
+      const balanced = createSample()
+      const bus = createSample()
+      bus.changeTactics(home.id, {
+        mentality: 'parkTheBus',
+        pressing: 'low',
+        tempo: 'slow',
+        defensiveLine: 'low',
+        defensiveShape: 'compact',
+        tackling: 'cautious',
+        matchCommand: 'holdLead',
+        teamTalk: 'calm',
+      })
+      balanced.advance(90)
+      bus.advance(90)
+      balancedAwayShots += balanced.result().stats.away.shots
+      busAwayShots += bus.result().stats.away.shots
+    }
+
+    expect(busAwayShots).toBeLessThan(balancedAwayShots * 0.9)
   })
 
   it('updates the active lineup and enforces the substitution limit', () => {

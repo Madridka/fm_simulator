@@ -9,11 +9,13 @@ import type {
   Player,
   PlayerPosition,
   PlayerStats,
-  TacticalStyle,
+  TeamTacticsSettings,
 } from '@/types/football'
+import { defaultTeamTactics } from '@/domain/season/squadSelectionService'
 import { formatMoney } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import SectionHero from '@/components/ui/SectionHero.vue'
+import TacticsPanel from '@/components/tactics/TacticsPanel.vue'
 import { seasonsUntilPlayerRetirement } from '@/data/gameConfig/career'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -65,7 +67,7 @@ const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)
 const selectedTouchPayload = ref<DragPayload | null>(null)
-const activeSection = ref<'lineup' | 'stats' | 'contracts'>('lineup')
+const activeSection = ref<'lineup' | 'tactics' | 'stats' | 'contracts'>('lineup')
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
 
@@ -197,11 +199,10 @@ const positionLabels: Record<PlayerPosition, string> = {
   ST: t('common.positionShort.ST'),
 }
 
-const tacticLabels: Record<TacticalStyle, string> = {
-  defensive: t('squad.styles.defensive'),
-  balanced: t('squad.styles.balanced'),
-  attacking: t('squad.styles.attacking'),
-}
+const currentTactics = computed<TeamTacticsSettings>(() => ({
+  ...defaultTeamTactics(squadStore.lineup?.tacticalStyle ?? 'balanced'),
+  ...squadStore.lineup?.tactics,
+}))
 
 // ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
 const ratingClass = (rating: number): string => {
@@ -254,11 +255,6 @@ const conditionWithAgeLabel = (player: Player): string =>
 // ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
 const setFormation = (event: Event): void => {
   squadStore.setFormation((event.target as HTMLSelectElement).value as Formation)
-}
-
-// ИЗМЕНЯЕТ ТАКТИЧЕСКИЙ СТИЛЬ
-const setTactic = (event: Event): void => {
-  squadStore.setTacticalStyle((event.target as HTMLSelectElement).value as TacticalStyle)
 }
 
 // ИЗВЛЕКАЕТ ДАННЫЕ ИГРОКА ИЗ СОБЫТИЯ ПЕРЕТАСКИВАНИЯ
@@ -585,6 +581,16 @@ onBeforeRouteLeave(() => {
               type="button"
               class="rounded-md px-3"
               :class="
+                activeSection === 'tactics' ? 'bg-white text-emerald-900' : 'text-emerald-100'
+              "
+              @click="activeSection = 'tactics'"
+            >
+              РўР°РєС‚РёРєР°
+            </button>
+            <button
+              type="button"
+              class="rounded-md px-3"
+              :class="
                 activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'
               "
               @click="activeSection = 'contracts'"
@@ -615,23 +621,6 @@ onBeforeRouteLeave(() => {
                 class="bg-emerald-950 text-white"
               >
                 {{ formation }}
-              </option>
-            </select>
-          </label>
-          <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
-            {{ t('squad.tactic') }}
-            <select
-              class="h-9 rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm text-white outline-none focus:border-emerald-400"
-              :value="squadStore.lineup.tacticalStyle"
-              @change="setTactic"
-            >
-              <option
-                v-for="style in squadStore.tacticalStyles"
-                :key="style"
-                :value="style"
-                class="bg-emerald-950 text-white"
-              >
-                {{ tacticLabels[style] }}
               </option>
             </select>
           </label>
@@ -973,6 +962,22 @@ onBeforeRouteLeave(() => {
         </div>
       </aside>
     </div>
+    <article
+      v-else-if="activeSection === 'tactics'"
+      class="min-h-0 flex-1 overflow-auto rounded-xl border border-slate-200 bg-white p-4 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
+    >
+      <div class="mb-4">
+        <h2 class="text-lg font-black text-slate-950">РўР°РєС‚РёРєР°</h2>
+        <p class="mt-1 text-sm text-slate-500">
+          РљРѕРјР°РЅРґС‹ Рё СЂР°Р·РіРѕРІРѕСЂС‹ РґРѕСЃС‚СѓРїРЅС‹ С‚РѕР»СЊРєРѕ РІРѕ РІСЂРµРјСЏ РјР°С‚С‡Р°.
+        </p>
+      </div>
+      <TacticsPanel
+        :model-value="currentTactics"
+        :exclude-keys="['matchCommand', 'teamTalk']"
+        @change="squadStore.setTactics"
+      />
+    </article>
     <article
       v-else-if="activeSection === 'stats'"
       class="min-h-0 flex-1 overflow-hidden rounded-xl border border-slate-200 bg-white p-3 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
