@@ -244,8 +244,6 @@ const formationOptions = formations.map((formation) => ({
   value: formation,
 }))
 
-
-
 // ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
 const visibleSnapshot = computed<MatchSnapshot>(() => {
   void revision.value
@@ -309,7 +307,7 @@ const reversedVisibleCommentary = computed<VisibleCommentaryEvent[]>(() => {
   }
   const fullTimeIndex = events.findIndex((event) => event.minute === 90)
   if (fullTimeIndex >= 0) {
-    events.splice(fullTimeIndex + 1, 0, bestPlayerEvent)
+    events.splice(fullTimeIndex, 0, bestPlayerEvent)
     return events
   }
   return [bestPlayerEvent, ...events]
@@ -626,10 +624,7 @@ const coachActionCooldownRemaining = computed(() => {
 })
 
 const canUseCoachAction = computed(
-  () =>
-    canSimulate.value &&
-    currentMinute.value < 90 &&
-    coachActionCooldownRemaining.value === 0,
+  () => canSimulate.value && currentMinute.value < 90 && coachActionCooldownRemaining.value === 0,
 )
 
 const resetExpiredCoachAction = (): void => {
@@ -684,7 +679,9 @@ const activeBenchIds = (teamId: string): string[] => {
   void revision.value
   const state = liveMatch.value?.state
   if (state) {
-    return teamId === state.homeTeamId ? [...state.homeBenchPlayerIds] : [...state.awayBenchPlayerIds]
+    return teamId === state.homeTeamId
+      ? [...state.homeBenchPlayerIds]
+      : [...state.awayBenchPlayerIds]
   }
 
   if (teamId === homeClub.value?.id) {
@@ -706,7 +703,8 @@ const substitutedOutEvents = (teamId: string) => {
 const playerById = (playerId: string): Player | undefined =>
   allPlayers.value.find((player) => player.id === playerId)
 
-const playerLastName = (playerId: string): string => playerById(playerId)?.lastName ?? playerName(playerId)
+const playerLastName = (playerId: string): string =>
+  playerById(playerId)?.lastName ?? playerName(playerId)
 
 const ratingClass = (rating: number): string => {
   if (rating >= 75) return 'bg-emerald-700'
@@ -1003,7 +1001,7 @@ onBeforeUnmount(stopSimulationTimer)
         </div>
       </div>
 
-      <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
+      <!-- ГОЛЫ
       <div
         class="mt-3 grid gap-2 border-t border-emerald-100 pt-3 text-xs text-slate-700 sm:grid-cols-[1fr_auto_1fr]"
       >
@@ -1030,8 +1028,9 @@ onBeforeUnmount(stopSimulationTimer)
             {{ goal.playerName }} {{ goal.minute }}'
           </div>
         </div>
-      </div>
+      </div> -->
 
+      <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
         <template v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90">
           <div v-if="canSimulate" class="grid w-full max-w-[220px] gap-2">
@@ -1111,7 +1110,9 @@ onBeforeUnmount(stopSimulationTimer)
           <button
             type="button"
             class="rounded-md px-3 py-2"
-            :class="activeLineupView === 'user' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
+            :class="
+              activeLineupView === 'user' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'
+            "
             @click="activeLineupView = 'user'"
           >
             {{ userLineupClub?.shortName ?? userLineupClub?.name }}
@@ -1119,7 +1120,11 @@ onBeforeUnmount(stopSimulationTimer)
           <button
             type="button"
             class="rounded-md px-3 py-2"
-            :class="activeLineupView === 'opponent' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
+            :class="
+              activeLineupView === 'opponent'
+                ? 'bg-white text-emerald-900 shadow-sm'
+                : 'text-slate-500'
+            "
             @click="activeLineupView = 'opponent'"
           >
             {{ opponentLineupClub?.shortName ?? opponentLineupClub?.name }}
@@ -1131,7 +1136,10 @@ onBeforeUnmount(stopSimulationTimer)
           <span>{{ t('match.legend.redCard') }}</span>
           <span>{{ t('match.legend.secondYellow') }}</span>
           <span>{{ t('match.legend.injury') }}</span>
-          <span><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b> {{ t('match.legend.substitution') }}</span>
+          <span
+            ><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b>
+            {{ t('match.legend.substitution') }}</span
+          >
         </div>
         <div v-if="viewedLineupClub" class="mt-4">
           <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
@@ -1162,20 +1170,31 @@ onBeforeUnmount(stopSimulationTimer)
           <div
             class="relative h-[520px] overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)] xl:h-[520px]"
           >
-            <div class="pointer-events-none absolute inset-[26px] rounded-lg border-2 border-white/30"></div>
-            <div class="pointer-events-none absolute inset-x-[26px] top-1/2 border-t-2 border-white/30"></div>
-            <div class="pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/30"></div>
-            <div class="pointer-events-none absolute left-1/2 top-[26px] h-[104px] w-[260px] -translate-x-1/2 rounded-b-lg border-2 border-t-0 border-white/30"></div>
-            <div class="pointer-events-none absolute bottom-[26px] left-1/2 h-[104px] w-[260px] -translate-x-1/2 rounded-t-lg border-2 border-b-0 border-white/30"></div>
+            <div
+              class="pointer-events-none absolute inset-[26px] rounded-lg border-2 border-white/30"
+            ></div>
+            <div
+              class="pointer-events-none absolute inset-x-[26px] top-1/2 border-t-2 border-white/30"
+            ></div>
+            <div
+              class="pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/30"
+            ></div>
+            <div
+              class="pointer-events-none absolute left-1/2 top-[26px] h-[104px] w-[260px] -translate-x-1/2 rounded-b-lg border-2 border-t-0 border-white/30"
+            ></div>
+            <div
+              class="pointer-events-none absolute bottom-[26px] left-1/2 h-[104px] w-[260px] -translate-x-1/2 rounded-t-lg border-2 border-b-0 border-white/30"
+            ></div>
 
             <button
               v-for="slot in lineupSlots(viewedLineupClub.id, viewedLineupFallbackFormation)"
               :key="viewedLineupClub.id + '-' + slot.id"
               type="button"
-              class="absolute grid min-h-[72px] w-[88px] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_auto_1fr] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/85 p-1 text-left text-slate-50 shadow-[0_10px_22px_rgba(2,6,23,0.22)] transition sm:w-[106px] xl:min-h-[74px] xl:w-[108px]"
+              class="absolute grid min-h-[72px] w-[88px] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_auto_1fr] justify-items-start gap-0.5 overflow-visible rounded-lg border border-slate-400/30 bg-slate-950/85 p-1 text-left text-slate-50 shadow-[0_10px_22px_rgba(2,6,23,0.22)] transition sm:w-[106px] xl:min-h-[74px] xl:w-[108px]"
               :class="{
-                'cursor-pointer hover:-translate-y-[52%] hover:border-lime-200':
-                  canEditLineup(viewedLineupClub.id),
+                'cursor-pointer hover:-translate-y-[52%] hover:border-lime-200': canEditLineup(
+                  viewedLineupClub.id,
+                ),
                 'border-lime-300 ring-2 ring-lime-300/40':
                   viewedLineupClub.id === userTeamId && Boolean(selectedBenchPlayerId),
                 'border-cyan-300 ring-2 ring-cyan-300/50':
@@ -1189,7 +1208,9 @@ onBeforeUnmount(stopSimulationTimer)
             >
               <template v-if="fieldSlotPlayer(slot)">
                 <span class="flex items-center gap-1">
-                  <span class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white">
+                  <span
+                    class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white"
+                  >
                     {{ slot.label }}
                   </span>
                   <span
@@ -1199,27 +1220,38 @@ onBeforeUnmount(stopSimulationTimer)
                     {{ fieldSlotPlayer(slot)?.rating }}
                   </span>
                 </span>
-                <span class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.62rem] font-black uppercase">
+                <span
+                  class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.62rem] font-black uppercase"
+                >
                   {{ fieldSlotPlayer(slot)?.lastName }}
                 </span>
-                <span class="flex max-h-9 min-w-0 flex-wrap gap-0.5 overflow-hidden">
+                <span class="text-[0.55rem] font-bold text-slate-200/75">
+                  {{ fieldSlotPlayer(slot)?.position }}
+                </span>
+                <span
+                  v-if="playerEventMarkers(viewedLineupClub.id, slot.playerId ?? '').length"
+                  class="pointer-events-none absolute -bottom-2 left-1.5 h-5"
+                >
                   <span
-                    v-for="marker in playerEventMarkers(viewedLineupClub.id, slot.playerId ?? '')"
+                    v-for="(marker, markerIndex) in playerEventMarkers(
+                      viewedLineupClub.id,
+                      slot.playerId ?? '',
+                    )"
                     :key="marker.key"
                     :title="marker.title"
                     :aria-label="marker.title"
-                    class="inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px] font-black leading-none"
+                    class="absolute inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-slate-950/70 px-1 text-[9px] font-black leading-none shadow-[0_2px_6px_rgba(2,6,23,0.35)]"
                     :class="marker.className"
+                    :style="{ left: `${markerIndex * 11}px`, zIndex: markerIndex + 1 }"
                   >
                     {{ marker.label }}
-                  </span>
-                  <span class="text-[0.55rem] font-bold text-slate-200/75">
-                    {{ fieldSlotPlayer(slot)?.position }}
                   </span>
                 </span>
               </template>
               <template v-else>
-                <span class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white">
+                <span
+                  class="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-slate-400/50 bg-slate-800 text-[0.55rem] font-black leading-none text-white"
+                >
                   {{ slot.label }}
                 </span>
                 <span class="text-[0.62rem] font-black uppercase text-slate-200">Пусто</span>
@@ -1228,10 +1260,15 @@ onBeforeUnmount(stopSimulationTimer)
           </div>
 
           <div
-            v-if="activeBenchIds(viewedLineupClub.id).length || substitutedOutEvents(viewedLineupClub.id).length"
+            v-if="
+              activeBenchIds(viewedLineupClub.id).length ||
+              substitutedOutEvents(viewedLineupClub.id).length
+            "
             class="mt-3 border-t border-slate-200 pt-2"
           >
-            <div class="mb-1.5 flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-wide text-slate-500">
+            <div
+              class="mb-1.5 flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-wide text-slate-500"
+            >
               <span>{{ t('match.substitutes') }}</span>
               <span v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90">
                 Замен: {{ substitutionsRemaining }}
@@ -1249,7 +1286,9 @@ onBeforeUnmount(stopSimulationTimer)
                   'ring-2 ring-lime-300':
                     viewedLineupClub.id === userTeamId && selectedBenchPlayerId === playerId,
                 }"
-                :disabled="viewedLineupClub.id !== userTeamId || !canSimulate || currentMinute >= 90"
+                :disabled="
+                  viewedLineupClub.id !== userTeamId || !canSimulate || currentMinute >= 90
+                "
                 @click="selectBenchPlayer(playerId)"
               >
                 <span class="w-7 shrink-0 text-[9px] font-black text-slate-400">
@@ -1262,7 +1301,9 @@ onBeforeUnmount(stopSimulationTimer)
                 :key="'out-' + substitution.minute + '-' + substitution.playerOutId"
                 class="flex min-w-0 items-center gap-1 overflow-hidden rounded bg-rose-50 px-2 py-1 text-left text-xs font-semibold text-slate-500"
               >
-                <span class="min-w-0 flex-1 truncate">{{ playerLastName(substitution.playerOutId) }}</span>
+                <span class="min-w-0 flex-1 truncate">{{
+                  playerLastName(substitution.playerOutId)
+                }}</span>
                 <span class="shrink-0 font-black text-rose-600">↓</span>
                 <span class="shrink-0 text-[10px] font-black text-rose-700">
                   {{ substitution.minute }}'
@@ -1281,38 +1322,68 @@ onBeforeUnmount(stopSimulationTimer)
         </h2>
         <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession }}%</span>
+            <span class="text-right font-semibold"
+              >{{
+                match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
+              }}%</span
+            >
             <span class="text-slate-500">{{ t('match.possession') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession }}%</span>
+            <span class="font-semibold"
+              >{{
+                match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
+              }}%</span
+            >
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0 }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0
+            }}</span>
             <span class="text-slate-500">{{ t('match.expectedGoals') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0 }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
+            }}</span>
             <span class="text-slate-500">{{ t('match.shots') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
+            }}</span>
             <span class="text-slate-500">{{ t('match.shotsOnTarget') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
+            }}</span>
             <span class="text-slate-500">{{ t('match.yellowCards') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
+            }}</span>
           </div>
           <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{ match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0 }}</span>
+            <span class="text-right font-semibold">{{
+              match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
+            }}</span>
             <span class="text-slate-500">{{ t('match.redCards') }}</span>
-            <span class="font-semibold">{{ match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0 }}</span>
+            <span class="font-semibold">{{
+              match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
+            }}</span>
           </div>
         </div>
 
-        <div class="mt-5 flex min-h-0 flex-1 flex-col border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
+        <div
+          class="mt-5 flex min-h-0 flex-1 flex-col border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3"
+        >
           <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
             {{ t('match.commentaryTitle') }}
           </h3>
@@ -1324,7 +1395,9 @@ onBeforeUnmount(stopSimulationTimer)
               v-for="(event, index) in reversedVisibleCommentary"
               :key="'commentary-' + event.minute + '-' + index"
               class="flex gap-2 rounded-md px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-              :class="event.isBestPlayer ? 'bg-amber-50 font-semibold text-amber-900' : 'bg-slate-50'"
+              :class="
+                event.isBestPlayer ? 'bg-amber-50 font-semibold text-amber-900' : 'bg-slate-50'
+              "
             >
               <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
               <span
@@ -1332,10 +1405,16 @@ onBeforeUnmount(stopSimulationTimer)
                 class="flex min-w-0 flex-wrap items-center gap-1"
               >
                 <span class="font-semibold">
-                  {{ t('match.substitution', { club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '' }) }}
+                  {{
+                    t('match.substitution', {
+                      club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '',
+                    })
+                  }}
                 </span>
                 <span>{{ playerName(event.playerOutId) }}</span>
-                <span class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]">
+                <span
+                  class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
+                >
                   <span class="text-rose-600">→</span>
                   <span class="text-emerald-600">←</span>
                 </span>
@@ -1374,20 +1453,48 @@ onBeforeUnmount(stopSimulationTimer)
             Тренерская реакция
           </h3>
           <div class="mt-2 grid grid-cols-2 gap-2">
-            <Button size="small" label="Успокоить" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'calm' })" />
-            <Button size="small" label="Поднять темп" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'raiseTempo' })" />
-            <Button size="small" label="Удержать" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'holdLead' })" />
-            <Button size="small" label="Навал" :disabled="!canUseCoachAction" @click="useCoachAction({ matchCommand: 'loadBox' })" />
-            <Button size="small" label="Похвалить" :disabled="!canUseCoachAction" @click="useCoachAction({ teamTalk: 'praise' })" />
-            <Button size="small" label="Потребовать" :disabled="!canUseCoachAction" @click="useCoachAction({ teamTalk: 'demandMore' })" />
+            <Button
+              size="small"
+              label="Успокоить"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ matchCommand: 'calm' })"
+            />
+            <Button
+              size="small"
+              label="Поднять темп"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ matchCommand: 'raiseTempo' })"
+            />
+            <Button
+              size="small"
+              label="Удержать"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ matchCommand: 'holdLead' })"
+            />
+            <Button
+              size="small"
+              label="Навал"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ matchCommand: 'loadBox' })"
+            />
+            <Button
+              size="small"
+              label="Похвалить"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ teamTalk: 'praise' })"
+            />
+            <Button
+              size="small"
+              label="Потребовать"
+              :disabled="!canUseCoachAction"
+              @click="useCoachAction({ teamTalk: 'demandMore' })"
+            />
           </div>
           <div class="mt-2 text-xs font-semibold text-slate-500">
             <template v-if="coachActionCooldownRemaining">
               Доступно через {{ coachActionCooldownRemaining }} мин.
             </template>
-            <template v-else>
-              Эффект короткий, повтор раз в 15 минут.
-            </template>
+            <template v-else> Эффект короткий, повтор раз в 15 минут. </template>
           </div>
         </div>
       </div>
