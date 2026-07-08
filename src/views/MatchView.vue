@@ -1249,7 +1249,7 @@ onBeforeUnmount(stopSimulationTimer)
                     :key="marker.key"
                     :title="marker.title"
                     :aria-label="marker.title"
-                    class="absolute inline-flex h-5 min-w-5 items-center justify-center rounded-full border border-slate-950/70 px-1 text-[9px] font-black leading-none shadow-[0_2px_6px_rgba(2,6,23,0.35)]"
+                    class="absolute inline-flex h-5 min-w-5 items-center justify-center whitespace-nowrap rounded-full border border-slate-950/70 px-1 text-[9px] font-black leading-none shadow-[0_2px_6px_rgba(2,6,23,0.35)]"
                     :class="marker.className"
                     :style="{ left: `${markerIndex * 11}px`, zIndex: markerIndex + 1 }"
                   >
