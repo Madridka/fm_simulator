@@ -142,10 +142,7 @@ const selectClass =
 </script>
 
 <template>
-  <div
-    class="grid gap-2"
-    :class="compact ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'"
-  >
+  <div class="grid grid-cols-2 gap-2">
     <label
       v-for="option in visibleOptions"
       :key="option.key"

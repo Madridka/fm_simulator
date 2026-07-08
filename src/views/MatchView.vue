@@ -271,6 +271,14 @@ const awayVisibleGoals = computed(() =>
   visibleGoals.value.filter((goal) => goal.clubId === awayClub.value?.id),
 )
 
+const homeGoalsSummary = computed(() =>
+  homeVisibleGoals.value.map((goal) => `${goal.minute}' ${goal.playerName}`).join(', '),
+)
+
+const awayGoalsSummary = computed(() =>
+  awayVisibleGoals.value.map((goal) => `${goal.playerName} ${goal.minute}'`).join(', '),
+)
+
 const penaltyWinnerClubName = computed(() => {
   const winnerId = match.value?.result?.penaltyWinnerClubId
   return winnerId ? clubStore.getClubById(winnerId)?.name : ''
@@ -1010,34 +1018,28 @@ onBeforeUnmount(stopSimulationTimer)
         </div>
       </div>
 
-      <!-- ГОЛЫ
+      <!-- ГОЛЫ -->
       <div
-        class="mt-3 grid gap-2 border-t border-emerald-100 pt-3 text-xs text-slate-700 sm:grid-cols-[1fr_auto_1fr]"
+        class="mt-3 grid items-center gap-2 border-t border-emerald-100 pt-3 text-xs text-slate-700 sm:grid-cols-[1fr_auto_1fr]"
       >
-        <div class="min-w-0 space-y-1">
-          <div
-            v-for="goal in homeVisibleGoals"
-            :key="'top-home-' + goal.minute + '-' + goal.playerId"
-            class="truncate rounded bg-slate-100 px-2 py-1 font-semibold text-slate-700"
-          >
-            {{ goal.minute }}' {{ goal.playerName }}
-          </div>
+        <div
+          class="min-w-0 truncate rounded px-2 py-1 font-semibold text-slate-700"
+          :title="homeGoalsSummary"
+        >
+          {{ homeGoalsSummary }}
         </div>
         <div
-          class="self-start rounded-full bg-white px-3 py-1 text-center text-[10px] font-black uppercase tracking-wide text-slate-500"
+          class="rounded-full bg-white px-3 py-1 text-center text-[10px] font-black uppercase tracking-wide text-slate-500"
         >
           {{ t('match.goals') }}
         </div>
-        <div class="min-w-0 space-y-1">
-          <div
-            v-for="goal in awayVisibleGoals"
-            :key="'top-away-' + goal.minute + '-' + goal.playerId"
-            class="truncate rounded bg-slate-100 px-2 py-1 text-right font-semibold text-slate-700"
-          >
-            {{ goal.playerName }} {{ goal.minute }}'
-          </div>
+        <div
+          class="min-w-0 truncate rounded px-2 py-1 text-right font-semibold text-slate-700"
+          :title="awayGoalsSummary"
+        >
+          {{ awayGoalsSummary }}
         </div>
-      </div> -->
+      </div>
 
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
@@ -1124,7 +1126,7 @@ onBeforeUnmount(stopSimulationTimer)
             "
             @click="activeLineupView = 'user'"
           >
-            {{ userLineupClub?.shortName ?? userLineupClub?.name }}
+            {{ userLineupClub?.name }}
           </button>
           <button
             type="button"
@@ -1136,10 +1138,12 @@ onBeforeUnmount(stopSimulationTimer)
             "
             @click="activeLineupView = 'opponent'"
           >
-            {{ opponentLineupClub?.shortName ?? opponentLineupClub?.name }}
+            {{ opponentLineupClub?.name }}
           </button>
         </div>
-        <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
+
+        <!-- ЛЕГЕНДА -->
+        <!-- <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
           <span>{{ t('match.legend.goal') }}</span>
           <span>{{ t('match.legend.yellowCard') }}</span>
           <span>{{ t('match.legend.redCard') }}</span>
@@ -1149,13 +1153,9 @@ onBeforeUnmount(stopSimulationTimer)
             ><b class="text-sky-700">↑</b>/<b class="text-rose-700">↓</b>
             {{ t('match.legend.substitution') }}</span
           >
-        </div>
+        </div> -->
         <div v-if="viewedLineupClub" class="mt-4">
-          <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-            <div class="min-w-0 font-semibold text-slate-950 xl:text-sm">
-              {{ viewedLineupClub.shortName }} ·
-              {{ teamFormation(viewedLineupClub.id, viewedLineupFallbackFormation) }}
-            </div>
+          <div class="mb-2 flex flex-wrap items-center justify-center gap-2">
             <FloatLabel
               v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90"
               variant="on"
