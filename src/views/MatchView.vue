@@ -735,9 +735,7 @@ const normalizeSlotAssignments = (
     : []
 
   if (!existing || !hasSamePlayerSet(existingIds, playerIds)) {
-    const next = assignPlayersToFormation(formation, playerIds)
-    matchSlotPlayerIds.value = { ...matchSlotPlayerIds.value, [teamId]: next }
-    return next
+    return assignPlayersToFormation(formation, playerIds)
   }
 
   const assignedIds = new Set<string>()
@@ -769,7 +767,6 @@ const normalizeSlotAssignments = (
     emptySlots.splice(emptySlots.indexOf(targetSlot), 1)
   }
 
-  matchSlotPlayerIds.value = { ...matchSlotPlayerIds.value, [teamId]: next }
   return next
 }
 
@@ -815,10 +812,16 @@ const replaceSlotWithBenchPlayer = (slot: MatchLineupSlot, benchPlayerId: string
   if (!slot.playerId || !benchPlayerId || substitutionsRemaining.value <= 0) return
   const controller = ensureLiveMatch()
   if (!controller || currentMinute.value >= 90) return
+  const current =
+    matchSlotPlayerIds.value[userTeamId.value] ??
+    normalizeSlotAssignments(
+      userTeamId.value,
+      teamFormation(userTeamId.value, viewedLineupFallbackFormation.value),
+      activeLineupIds(userTeamId.value),
+    )
 
   try {
     controller.substitute(userTeamId.value, slot.playerId, benchPlayerId)
-    const current = matchSlotPlayerIds.value[userTeamId.value] ?? {}
     matchSlotPlayerIds.value = {
       ...matchSlotPlayerIds.value,
       [userTeamId.value]: {
@@ -835,7 +838,13 @@ const replaceSlotWithBenchPlayer = (slot: MatchLineupSlot, benchPlayerId: string
 }
 
 const swapLineupSlots = (sourceSlotId: string, targetSlotId: string): void => {
-  const current = matchSlotPlayerIds.value[userTeamId.value] ?? {}
+  const current =
+    matchSlotPlayerIds.value[userTeamId.value] ??
+    normalizeSlotAssignments(
+      userTeamId.value,
+      teamFormation(userTeamId.value, viewedLineupFallbackFormation.value),
+      activeLineupIds(userTeamId.value),
+    )
   matchSlotPlayerIds.value = {
     ...matchSlotPlayerIds.value,
     [userTeamId.value]: {

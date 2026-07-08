@@ -146,7 +146,12 @@ export const useGameStore = defineStore('game', () => {
 
     activeMatchId.value = match.id
     if (match.status === 'scheduled') {
-      void prepareMatchDay(match.id).catch(() => undefined)
+      void prepareMatchDay(match.id).catch((error: unknown) => {
+        toastStore.show(
+          error instanceof Error ? error.message : t('match.errors.prepareDay'),
+          'warning',
+        )
+      })
     }
     return true
   }
@@ -286,6 +291,10 @@ export const useGameStore = defineStore('game', () => {
       rejectMatchDayWorker(
         new Error(event.message || t('match.errors.workerStart')),
       )
+    }
+
+    matchDayWorker.onmessageerror = () => {
+      rejectMatchDayWorker(new Error(t('match.errors.prepareDay')))
     }
 
     matchDayWorker.postMessage(
