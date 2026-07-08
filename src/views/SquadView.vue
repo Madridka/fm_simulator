@@ -585,7 +585,7 @@ onBeforeRouteLeave(() => {
               "
               @click="activeSection = 'tactics'"
             >
-              РўР°РєС‚РёРєР°
+              Тактика
             </button>
             <button
               type="button"
@@ -967,10 +967,8 @@ onBeforeRouteLeave(() => {
       class="min-h-0 flex-1 overflow-auto rounded-xl border border-slate-200 bg-white p-4 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
     >
       <div class="mb-4">
-        <h2 class="text-lg font-black text-slate-950">РўР°РєС‚РёРєР°</h2>
-        <p class="mt-1 text-sm text-slate-500">
-          РљРѕРјР°РЅРґС‹ Рё СЂР°Р·РіРѕРІРѕСЂС‹ РґРѕСЃС‚СѓРїРЅС‹ С‚РѕР»СЊРєРѕ РІРѕ РІСЂРµРјСЏ РјР°С‚С‡Р°.
-        </p>
+        <h2 class="text-lg font-black text-slate-950">Тактика</h2>
+        <p class="mt-1 text-sm text-slate-500">Подробная настройка тактики команды</p>
       </div>
       <TacticsPanel
         :model-value="currentTactics"

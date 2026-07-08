@@ -22,6 +22,7 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type {
   Club,
   ClubLineup,
+  CommentaryEvent,
   Formation,
   Match,
   MatchLineups,
@@ -62,6 +63,7 @@ const simulationSpeed = ref<LiveMatchSpeedMultiplier>(1)
 const isCalculating = ref(false)
 const calculationError = ref('')
 const selectedBenchPlayerId = ref('')
+const selectedLineupSlotId = ref('')
 const matchSlotPlayerIds = ref<Record<string, Record<string, string | null>>>({})
 const activeLineupView = ref<'user' | 'opponent'>('user')
 const lastCoachActionMinute = ref<number | null>(null)
@@ -290,8 +292,27 @@ const visibleCommentary = computed(() =>
 )
 
 // РЕВЕРС КОММЕНТАРИЕВ
-const reversedVisibleCommentary = computed(() => {
-  return [...visibleCommentary.value].reverse()
+interface VisibleCommentaryEvent extends CommentaryEvent {
+  isBestPlayer?: boolean
+}
+
+const reversedVisibleCommentary = computed<VisibleCommentaryEvent[]>(() => {
+  const events: VisibleCommentaryEvent[] = [...visibleCommentary.value].reverse()
+  const result = currentResult.value
+  if (!result || !isMatchEventVisible(90)) {
+    return events
+  }
+  const bestPlayerEvent: VisibleCommentaryEvent = {
+    minute: 90,
+    text: `${t('match.bestPlayer')} ${playerName(result.bestPlayerId)}`,
+    isBestPlayer: true,
+  }
+  const fullTimeIndex = events.findIndex((event) => event.minute === 90)
+  if (fullTimeIndex >= 0) {
+    events.splice(fullTimeIndex + 1, 0, bestPlayerEvent)
+    return events
+  }
+  return [bestPlayerEvent, ...events]
 })
 
 interface PlayerEventMarker {
@@ -580,6 +601,16 @@ const viewedLineupClub = computed((): Club | undefined => {
   return activeLineupView.value === 'user' ? userClub : opponentClub
 })
 
+const userLineupClub = computed((): Club | undefined => {
+  const userId = userTeamId.value
+  return homeClub.value?.id === userId ? homeClub.value : awayClub.value
+})
+
+const opponentLineupClub = computed((): Club | undefined => {
+  const userId = userTeamId.value
+  return homeClub.value?.id === userId ? awayClub.value : homeClub.value
+})
+
 const viewedLineupFallbackFormation = computed((): Formation => {
   const club = viewedLineupClub.value
   if (!club || !preparedLineups.value) return '4-4-2'
@@ -665,8 +696,17 @@ const activeBenchIds = (teamId: string): string[] => {
   return []
 }
 
+const substitutedOutEvents = (teamId: string) => {
+  void revision.value
+  return (detailedResult.value?.substitutions ?? []).filter(
+    (substitution) => substitution.clubId === teamId && isMatchEventVisible(substitution.minute),
+  )
+}
+
 const playerById = (playerId: string): Player | undefined =>
   allPlayers.value.find((player) => player.id === playerId)
+
+const playerLastName = (playerId: string): string => playerById(playerId)?.lastName ?? playerName(playerId)
 
 const ratingClass = (rating: number): string => {
   if (rating >= 75) return 'bg-emerald-700'
@@ -748,31 +788,84 @@ const lineupSlots = (teamId: string, fallback: Formation): MatchLineupSlot[] => 
 const fieldSlotPlayer = (slot: MatchLineupSlot): Player | undefined =>
   slot.playerId ? playerById(slot.playerId) : undefined
 
-const selectBenchPlayer = (playerId: string): void => {
-  selectedBenchPlayerId.value = selectedBenchPlayerId.value === playerId ? '' : playerId
+const canEditLineup = (teamId: string): boolean =>
+  teamId === userTeamId.value && canSimulate.value && currentMinute.value < 90
+
+const selectedLineupSlot = (): MatchLineupSlot | undefined => {
+  if (!selectedLineupSlotId.value) return undefined
+  return lineupSlots(userTeamId.value, viewedLineupFallbackFormation.value).find(
+    (slot) => slot.id === selectedLineupSlotId.value,
+  )
 }
 
-const replaceSlotWithSelectedBenchPlayer = (slot: MatchLineupSlot): void => {
-  if (!slot.playerId || !selectedBenchPlayerId.value || substitutionsRemaining.value <= 0) return
+const clearLineupSelection = (): void => {
+  selectedBenchPlayerId.value = ''
+  selectedLineupSlotId.value = ''
+}
+
+const selectBenchPlayer = (playerId: string): void => {
+  const selectedSlot = selectedLineupSlot()
+  if (selectedSlot) {
+    replaceSlotWithBenchPlayer(selectedSlot, playerId)
+    return
+  }
+  selectedBenchPlayerId.value = selectedBenchPlayerId.value === playerId ? '' : playerId
+  selectedLineupSlotId.value = ''
+}
+
+const replaceSlotWithBenchPlayer = (slot: MatchLineupSlot, benchPlayerId: string): void => {
+  if (!slot.playerId || !benchPlayerId || substitutionsRemaining.value <= 0) return
   const controller = ensureLiveMatch()
   if (!controller || currentMinute.value >= 90) return
 
   try {
-    controller.substitute(userTeamId.value, slot.playerId, selectedBenchPlayerId.value)
+    controller.substitute(userTeamId.value, slot.playerId, benchPlayerId)
     const current = matchSlotPlayerIds.value[userTeamId.value] ?? {}
     matchSlotPlayerIds.value = {
       ...matchSlotPlayerIds.value,
       [userTeamId.value]: {
         ...current,
-        [slot.id]: selectedBenchPlayerId.value,
+        [slot.id]: benchPlayerId,
       },
     }
-    selectedBenchPlayerId.value = ''
+    clearLineupSelection()
     calculationError.value = ''
     revision.value += 1
   } catch (error) {
     calculationError.value = error instanceof Error ? error.message : 'Замена недоступна'
   }
+}
+
+const swapLineupSlots = (sourceSlotId: string, targetSlotId: string): void => {
+  const current = matchSlotPlayerIds.value[userTeamId.value] ?? {}
+  matchSlotPlayerIds.value = {
+    ...matchSlotPlayerIds.value,
+    [userTeamId.value]: {
+      ...current,
+      [sourceSlotId]: current[targetSlotId] ?? null,
+      [targetSlotId]: current[sourceSlotId] ?? null,
+    },
+  }
+  calculationError.value = ''
+  revision.value += 1
+}
+
+const selectLineupSlot = (slot: MatchLineupSlot): void => {
+  if (!canEditLineup(userTeamId.value)) return
+  if (selectedBenchPlayerId.value) {
+    replaceSlotWithBenchPlayer(slot, selectedBenchPlayerId.value)
+    return
+  }
+  if (!selectedLineupSlotId.value) {
+    if (slot.playerId) selectedLineupSlotId.value = slot.id
+    return
+  }
+  if (selectedLineupSlotId.value === slot.id) {
+    selectedLineupSlotId.value = ''
+    return
+  }
+  swapLineupSlots(selectedLineupSlotId.value, slot.id)
+  selectedLineupSlotId.value = ''
 }
 
 const teamFormation = (teamId: string, fallback: Formation): Formation => {
@@ -818,6 +911,7 @@ watch(
     isPaused.value = false
     simulationSpeed.value = 1
     activeLineupView.value = 'user'
+    clearLineupSelection()
     lastCoachActionMinute.value = null
     coachActionResetMinute.value = null
     revision.value += 1
@@ -848,6 +942,8 @@ watch(
   },
   { immediate: true },
 )
+
+watch(activeLineupView, clearLineupSelection)
 
 onBeforeUnmount(stopSimulationTimer)
 </script>
@@ -915,7 +1011,7 @@ onBeforeUnmount(stopSimulationTimer)
           <div
             v-for="goal in homeVisibleGoals"
             :key="'top-home-' + goal.minute + '-' + goal.playerId"
-            class="truncate rounded bg-emerald-50 px-2 py-1 font-semibold text-emerald-900"
+            class="truncate rounded bg-slate-100 px-2 py-1 font-semibold text-slate-700"
           >
             {{ goal.minute }}' {{ goal.playerName }}
           </div>
@@ -923,16 +1019,13 @@ onBeforeUnmount(stopSimulationTimer)
         <div
           class="self-start rounded-full bg-white px-3 py-1 text-center text-[10px] font-black uppercase tracking-wide text-slate-500"
         >
-          <template v-if="currentResult">
-            {{ t('match.bestPlayer') }}: {{ playerName(currentResult.bestPlayerId) }}
-          </template>
-          <template v-else>{{ t('match.goals') }}</template>
+          {{ t('match.goals') }}
         </div>
         <div class="min-w-0 space-y-1">
           <div
             v-for="goal in awayVisibleGoals"
             :key="'top-away-' + goal.minute + '-' + goal.playerId"
-            class="truncate rounded bg-emerald-50 px-2 py-1 text-right font-semibold text-emerald-900"
+            class="truncate rounded bg-slate-100 px-2 py-1 text-right font-semibold text-slate-700"
           >
             {{ goal.playerName }} {{ goal.minute }}'
           </div>
@@ -1007,9 +1100,9 @@ onBeforeUnmount(stopSimulationTimer)
       </div>
     </div>
 
-    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[0.8fr_1.2fr_1fr] xl:gap-3">
+    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.35fr_1fr_0.85fr] xl:gap-3">
       <div
-        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        class="flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.lineups') }}
@@ -1021,7 +1114,7 @@ onBeforeUnmount(stopSimulationTimer)
             :class="activeLineupView === 'user' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
             @click="activeLineupView = 'user'"
           >
-            Моя команда
+            {{ userLineupClub?.shortName ?? userLineupClub?.name }}
           </button>
           <button
             type="button"
@@ -1029,7 +1122,7 @@ onBeforeUnmount(stopSimulationTimer)
             :class="activeLineupView === 'opponent' ? 'bg-white text-emerald-900 shadow-sm' : 'text-slate-500'"
             @click="activeLineupView = 'opponent'"
           >
-            Соперник
+            {{ opponentLineupClub?.shortName ?? opponentLineupClub?.name }}
           </button>
         </div>
         <div class="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-semibold text-slate-500">
@@ -1067,32 +1160,32 @@ onBeforeUnmount(stopSimulationTimer)
           </div>
 
           <div
-            class="relative h-[430px] overflow-hidden rounded-lg border border-emerald-950/20 bg-[linear-gradient(115deg,rgba(255,255,255,0.08)_0_18%,transparent_18%_100%),#166534] shadow-inner xl:h-[360px]"
+            class="relative h-[520px] overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)] xl:h-[520px]"
           >
-            <div class="pointer-events-none absolute inset-x-[28px] top-[18px] h-[64px] rounded-b-lg border-2 border-t-0 border-white/30"></div>
-            <div class="pointer-events-none absolute inset-x-[28px] bottom-[18px] h-[64px] rounded-t-lg border-2 border-b-0 border-white/30"></div>
-            <div class="pointer-events-none absolute inset-x-[18px] top-1/2 border-t-2 border-white/30"></div>
-            <div class="pointer-events-none absolute left-1/2 top-1/2 h-[88px] w-[88px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/30"></div>
+            <div class="pointer-events-none absolute inset-[26px] rounded-lg border-2 border-white/30"></div>
+            <div class="pointer-events-none absolute inset-x-[26px] top-1/2 border-t-2 border-white/30"></div>
+            <div class="pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/30"></div>
+            <div class="pointer-events-none absolute left-1/2 top-[26px] h-[104px] w-[260px] -translate-x-1/2 rounded-b-lg border-2 border-t-0 border-white/30"></div>
+            <div class="pointer-events-none absolute bottom-[26px] left-1/2 h-[104px] w-[260px] -translate-x-1/2 rounded-t-lg border-2 border-b-0 border-white/30"></div>
 
             <button
               v-for="slot in lineupSlots(viewedLineupClub.id, viewedLineupFallbackFormation)"
               :key="viewedLineupClub.id + '-' + slot.id"
               type="button"
-              class="absolute grid min-h-[56px] w-[74px] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_auto_auto] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/85 p-1 text-left text-slate-50 shadow-[0_10px_22px_rgba(2,6,23,0.22)] transition sm:w-[92px] xl:min-h-[58px] xl:w-[86px]"
+              class="absolute grid min-h-[72px] w-[88px] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_auto_1fr] justify-items-start gap-0.5 rounded-lg border border-slate-400/30 bg-slate-950/85 p-1 text-left text-slate-50 shadow-[0_10px_22px_rgba(2,6,23,0.22)] transition sm:w-[106px] xl:min-h-[74px] xl:w-[108px]"
               :class="{
                 'cursor-pointer hover:-translate-y-[52%] hover:border-lime-200':
-                  viewedLineupClub.id === userTeamId &&
-                  canSimulate &&
-                  currentMinute < 90 &&
-                  Boolean(selectedBenchPlayerId),
+                  canEditLineup(viewedLineupClub.id),
                 'border-lime-300 ring-2 ring-lime-300/40':
                   viewedLineupClub.id === userTeamId && Boolean(selectedBenchPlayerId),
+                'border-cyan-300 ring-2 ring-cyan-300/50':
+                  viewedLineupClub.id === userTeamId && selectedLineupSlotId === slot.id,
                 'border-rose-400/80 ring-1 ring-rose-500/40':
                   Boolean(fieldSlotPlayer(slot)) && isPlayerUnavailable(fieldSlotPlayer(slot)!),
               }"
               :style="{ left: slot.x + '%', top: slot.y + '%' }"
               :disabled="viewedLineupClub.id !== userTeamId || !canSimulate || currentMinute >= 90"
-              @click="replaceSlotWithSelectedBenchPlayer(slot)"
+              @click="selectLineupSlot(slot)"
             >
               <template v-if="fieldSlotPlayer(slot)">
                 <span class="flex items-center gap-1">
@@ -1109,7 +1202,7 @@ onBeforeUnmount(stopSimulationTimer)
                 <span class="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.62rem] font-black uppercase">
                   {{ fieldSlotPlayer(slot)?.lastName }}
                 </span>
-                <span class="flex min-w-0 flex-wrap gap-0.5">
+                <span class="flex max-h-9 min-w-0 flex-wrap gap-0.5 overflow-hidden">
                   <span
                     v-for="marker in playerEventMarkers(viewedLineupClub.id, slot.playerId ?? '')"
                     :key="marker.key"
@@ -1134,7 +1227,10 @@ onBeforeUnmount(stopSimulationTimer)
             </button>
           </div>
 
-          <div v-if="activeBenchIds(viewedLineupClub.id).length" class="mt-3 border-t border-slate-200 pt-2">
+          <div
+            v-if="activeBenchIds(viewedLineupClub.id).length || substitutedOutEvents(viewedLineupClub.id).length"
+            class="mt-3 border-t border-slate-200 pt-2"
+          >
             <div class="mb-1.5 flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-wide text-slate-500">
               <span>{{ t('match.substitutes') }}</span>
               <span v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90">
@@ -1161,13 +1257,24 @@ onBeforeUnmount(stopSimulationTimer)
                 </span>
                 <span class="min-w-0 flex-1 truncate">{{ playerName(playerId) }}</span>
               </button>
+              <div
+                v-for="substitution in substitutedOutEvents(viewedLineupClub.id)"
+                :key="'out-' + substitution.minute + '-' + substitution.playerOutId"
+                class="flex min-w-0 items-center gap-1 overflow-hidden rounded bg-rose-50 px-2 py-1 text-left text-xs font-semibold text-slate-500"
+              >
+                <span class="min-w-0 flex-1 truncate">{{ playerLastName(substitution.playerOutId) }}</span>
+                <span class="shrink-0 font-black text-rose-600">↓</span>
+                <span class="shrink-0 text-[10px] font-black text-rose-700">
+                  {{ substitution.minute }}'
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div
-        class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        class="flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-hidden xl:p-3"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.statistics') }}
@@ -1205,18 +1312,19 @@ onBeforeUnmount(stopSimulationTimer)
           </div>
         </div>
 
-        <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
+        <div class="mt-5 flex min-h-0 flex-1 flex-col border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
           <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
             {{ t('match.commentaryTitle') }}
           </h3>
           <div
             v-if="visibleCommentary.length"
-            class="mt-3 max-h-[360px] space-y-1.5 overflow-auto pr-1 xl:mt-2"
+            class="mt-3 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-2"
           >
             <div
               v-for="(event, index) in reversedVisibleCommentary"
               :key="'commentary-' + event.minute + '-' + index"
-              class="flex gap-2 rounded-md bg-slate-50 px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+              class="flex gap-2 rounded-md px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+              :class="event.isBestPlayer ? 'bg-amber-50 font-semibold text-amber-900' : 'bg-slate-50'"
             >
               <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
               <span

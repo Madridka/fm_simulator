@@ -468,7 +468,6 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     if (isHome(teamId)) state.homeTactics = updated
     else state.awayTactics = updated
     runtime.tacticalChanges.push({ minute: state.minute, teamId, changes: actual })
-    addEvent({ type: 'tactical-change', teamId, changes: actual, text: `Тактика ${clubs.get(teamId)?.shortName} изменена` })
     return state
   }
 
