@@ -1280,7 +1280,7 @@ onBeforeUnmount(stopSimulationTimer)
             >
               <span>{{ t('match.substitutes') }}</span>
               <span v-if="viewedLineupClub.id === userTeamId && canSimulate && currentMinute < 90">
-                Замен: {{ substitutionsRemaining }}
+                {{ t('match.substitutionsRemaining') }}: {{ substitutionsRemaining }}
               </span>
             </div>
             <div class="grid grid-cols-2 gap-1.5 xl:grid-cols-1">
@@ -1448,7 +1448,9 @@ onBeforeUnmount(stopSimulationTimer)
       <div
         class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
-        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">Тактика</h2>
+        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
+          {{ t('match.tactics') }}
+        </h2>
         <div class="mt-4 xl:mt-3">
           <TacticsPanel
             :model-value="userTactics"
@@ -1459,56 +1461,57 @@ onBeforeUnmount(stopSimulationTimer)
         </div>
         <div class="mt-5 border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3">
           <h3 class="text-xs font-black uppercase tracking-wide text-slate-600">
-            Тренерская реакция
+            {{ t('match.coachReaction') }}
           </h3>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <Button
               size="small"
-              label="Успокоить"
+              :label="t('match.coachReactions.calmDown')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ matchCommand: 'calm' })"
             />
             <Button
               size="small"
-              label="Поднять темп"
+              :label="t('match.coachReactions.raiseTempo')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ matchCommand: 'raiseTempo' })"
             />
             <Button
               size="small"
-              label="Удержать"
+              :label="t('match.coachReactions.holdLead')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ matchCommand: 'holdLead' })"
             />
             <Button
               size="small"
-              label="Навал"
+              :label="t('match.coachReactions.loadBox')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ matchCommand: 'loadBox' })"
             />
             <Button
               size="small"
-              label="Похвалить"
+              :label="t('match.coachReactions.praise')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ teamTalk: 'praise' })"
             />
             <Button
               size="small"
-              label="Потребовать"
+              :label="t('match.coachReactions.demandMore')"
               :disabled="!canUseCoachAction"
               @click="useCoachAction({ teamTalk: 'demandMore' })"
             />
           </div>
           <div class="mt-2 text-xs font-semibold text-slate-500">
             <template v-if="coachActionCooldownRemaining">
-              Доступно через {{ coachActionCooldownRemaining }} мин.
+              {{ t('match.coachActionCooldownRemaining', { min: coachActionCooldownRemaining }) }}
             </template>
-            <template v-else> Эффект короткий, повтор раз в 15 минут. </template>
+            <template v-else> {{ t('match.reactionDescription') }}</template>
           </div>
         </div>
       </div>
     </div>
   </section>
+
   <!-- СОСТОЯНИЕ БЕЗ ВЫБРАННОГО МАТЧА -->
   <section
     v-else

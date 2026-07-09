@@ -34,7 +34,12 @@
   "notFound": "Матч не найден.",
   "lineupNotSelected": "Состав не выбран.",
   "substitution": "Замена {club}:",
+  "substitutionsRemaining": "Замена {club}:",
   "substitutedFor": "заменён на",
+  "tactics": "Тактика",
+  "coachReaction": "Тренерская реакция",
+  "coachActionCooldownRemaining": "Доступно через {min} мин.",
+  "reactionDescription": "Эффект короткий, повтор раз в 15 минут.",
   "legend": {
     "goal": "⚽ Гол",
     "yellowCard": "🟨 ЖК",
@@ -72,5 +77,13 @@
     "matchesOne": "{count} матч",
     "matchesFew": "{count} матча",
     "matchesMany": "{count} матчей"
+  },
+  "coachReactions": {
+    "calmDown": "Успокоить",
+    "raiseTempo": "Поднять темп",
+    "holdLead": "Удержание",
+    "loadBox": "Нагружать штрафную",
+    "praise": "Похвалить",
+    "demandMore": "Прикрикнуть"
   }
 }
