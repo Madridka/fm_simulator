@@ -19,6 +19,21 @@ describe('league schedule generation', () => {
     }
   })
 
+  it('avoids long home or away streaks in a 20 club double round robin', () => {
+    const clubIds = Array.from({ length: 20 }, (_, index) => `club-${index + 1}`)
+    const rounds = generateLeagueRoundPairings(clubIds)
+
+    for (const clubId of clubIds) {
+      const homeAwayPattern = rounds
+        .map((round) => round.find((match) => match.homeClubId === clubId || match.awayClubId === clubId))
+        .map((match) => match?.homeClubId === clubId ? 'H' : 'A')
+        .join('')
+      const longestStreak = Math.max(...(homeAwayPattern.match(/H+|A+/g) ?? []).map((streak) => streak.length))
+
+      expect(longestStreak).toBeLessThanOrEqual(2)
+    }
+  })
+
   it('creates one bye per round for an odd participant count', () => {
     const clubIds = Array.from({ length: 9 }, (_, index) => `club-${index + 1}`)
     const rounds = generateLeagueRoundPairings(clubIds)

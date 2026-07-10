@@ -61,7 +61,7 @@ export const generateLeagueRoundPairings = (
       const right = teams[teams.length - 1 - index]
       if (!left || !right) throw new Error('Invalid round-robin state')
       if (left !== bye && right !== bye) {
-        const swapHome = (roundIndex + index) % 2 === 1
+        const swapHome = index === 0 ? roundIndex % 2 === 0 : roundIndex % 2 === 1
         pairings.push({ homeClubId: swapHome ? right : left, awayClubId: swapHome ? left : right })
       }
     }

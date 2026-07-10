@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import Dialog from 'primevue/dialog'
 import Drawer from 'primevue/drawer'
 import { RouterView, useRoute, useRouter } from 'vue-router'
+import { getSeasonTaskProgressList } from '@/domain/tasks/seasonTaskService'
 import { useAppStore } from '@/stores/app/app'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useMatchStore } from '@/stores/matches/matchStore'
 import { useToastStore } from '@/stores/ui/toastStore'
+import type { SeasonTaskCategory } from '@/types/football'
 
 import MenuNav from '@/components/layout/MenuNav.vue'
 import TopBar from '@/components/layout/TopBar.vue'
@@ -17,6 +20,34 @@ const matchStore = useMatchStore()
 const toastStore = useToastStore()
 const route = useRoute()
 const router = useRouter()
+
+const taskCategoryLabels: Record<SeasonTaskCategory, string> = {
+  important: 'Основные',
+  secondary: 'Второстепенные',
+  optional: 'Неважные',
+}
+
+const taskCategoryClass: Record<SeasonTaskCategory, string> = {
+  important: 'bg-rose-50 text-rose-700',
+  secondary: 'bg-amber-50 text-amber-700',
+  optional: 'bg-sky-50 text-sky-700',
+}
+
+const seasonTasksDialogVisible = computed({
+  get: () => gameStore.seasonTasksDialogVisible,
+  set: (visible: boolean) => {
+    if (!visible) {
+      gameStore.closeSeasonTasksDialog()
+    }
+  },
+})
+
+const seasonTaskList = computed(() =>
+  gameStore.game ? getSeasonTaskProgressList(gameStore.game) : [],
+)
+
+const taskProgressText = (task: (typeof seasonTaskList.value)[number]): string =>
+  task.task.kind === 'league_position' ? task.detailLabel : `${task.current}/${task.target}`
 
 // ОПРЕДЕЛЯЕТ ЦВЕТОВОЕ ОФОРМЛЕНИЕ УВЕДОМЛЕНИЯ
 const toastClass = computed((): string => {
@@ -116,6 +147,61 @@ const resetGame = (): void => {
       >
         {{ toastStore.message }}
       </div>
+
+      <Dialog
+        v-model:visible="seasonTasksDialogVisible"
+        modal
+        :draggable="false"
+        :closable="false"
+        class="mx-3 w-[min(720px,calc(100vw-24px))]"
+      >
+        <template #header>
+          <div>
+            <div class="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">
+              Сезон {{ gameStore.game.season }}
+            </div>
+            <div class="mt-1 text-xl font-black text-slate-950">Задачи на сезон</div>
+          </div>
+        </template>
+
+        <div class="max-h-[62vh] overflow-auto pr-1">
+          <div class="grid gap-3">
+            <article
+              v-for="item in seasonTaskList"
+              :key="item.task.id"
+              class="rounded-lg border border-slate-200 bg-white p-4"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <span
+                    class="inline-flex rounded-full px-2 py-1 text-[10px] font-black uppercase"
+                    :class="taskCategoryClass[item.task.category]"
+                  >
+                    {{ taskCategoryLabels[item.task.category] }}
+                  </span>
+                  <h3 class="mt-2 text-sm font-black leading-snug text-slate-950 sm:text-base">
+                    {{ item.task.title }}
+                  </h3>
+                  <p class="mt-1 text-sm font-semibold leading-6 text-slate-500">
+                    {{ item.task.description }}
+                  </p>
+                </div>
+                <div class="shrink-0 text-right text-sm font-black text-slate-900">
+                  {{ taskProgressText(item) }}
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <template #footer>
+          <Button
+            label="Начать сезон"
+            class="w-full !font-black sm:w-auto"
+            @click="gameStore.closeSeasonTasksDialog"
+          />
+        </template>
+      </Dialog>
     </template>
 
     <!-- ЭКРАН ДО НАЧАЛА ИГРЫ -->

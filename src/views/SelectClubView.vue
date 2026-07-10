@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { championships, getChampionshipClubs, type ChampionshipId } from '@/data/clubs'
@@ -43,6 +43,7 @@ const { locale, t } = useI18n()
 const selectedChampionship = ref<ChampionshipId>('england')
 const selectedCompetitionId = ref<string>('1')
 const selectedClubId = ref<string>('')
+const startingCareer = ref(false)
 
 // ФОРМИРУЕТ СПИСОК ДОСТУПНЫХ ЧЕМПИОНАТОВ
 const championshipOptions = computed<ChampionshipOption[]>(() =>
@@ -287,15 +288,41 @@ const moveClub = (direction: -1 | 1): void => {
 }
 
 // ЗАПУСКАЕТ НОВУЮ ИГРУ С ВЫБРАННЫМ КЛУБОМ
-const startGame = (): void => {
+const waitForPaint = async (): Promise<void> => {
+  await nextTick()
+  await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()))
+}
+
+const startGame = async (): Promise<void> => {
+  if (startingCareer.value) {
+    return
+  }
+
+  startingCareer.value = true
+  await waitForPaint()
   gameStore.startNewGame(selectedChampionship.value, selectedClub.value.id)
-  void router.push('/dashboard')
+  await router.push('/dashboard')
 }
 </script>
 
 <template>
   <!-- СТРАНИЦА ВЫБОРА КЛУБА -->
-  <section class="mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto pb-4">
+  <section class="relative mx-auto flex h-full w-full max-w-[1500px] items-start overflow-auto pb-4">
+    <div
+      v-if="startingCareer"
+      class="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 px-4 text-white backdrop-blur-sm"
+      role="status"
+      aria-live="polite"
+    >
+      <div class="w-full max-w-sm rounded-xl border border-white/10 bg-slate-950 p-6 text-center shadow-2xl">
+        <div class="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-emerald-400"></div>
+        <h2 class="mt-5 text-xl font-black">Сезон настраивается</h2>
+        <p class="mt-2 text-sm font-semibold leading-6 text-slate-300">
+          Создаем календарь, кубок, академию и задачи клуба.
+        </p>
+      </div>
+    </div>
+
     <!-- ОСНОВНАЯ СЕТКА ВЫБОРА И ИНФОРМАЦИИ -->
     <div
       class="grid w-full gap-3 md:grid-cols-[minmax(300px,0.82fr)_1.18fr] lg:gap-4 xl:grid-cols-[minmax(360px,0.86fr)_1.34fr]"
@@ -521,6 +548,8 @@ const startGame = (): void => {
           <Button
             class="h-12 w-full !font-black"
             :label="t('selectClub.startCareer')"
+            :disabled="startingCareer"
+            :loading="startingCareer"
             @click="startGame"
           />
         </div>

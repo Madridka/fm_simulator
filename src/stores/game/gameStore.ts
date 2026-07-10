@@ -41,6 +41,7 @@ export const useGameStore = defineStore('game', () => {
   )
   const activeMatchId = ref<string | null>(null)
   const preparedMatchContext = ref<PreparedMatchContext | null>(null)
+  const seasonTasksDialogVisible = ref(false)
   let matchDayWorker: Worker | null = null
   let preparedMatchId: string | null = null
   let preparationPromise: Promise<void> | null = null
@@ -126,6 +127,7 @@ export const useGameStore = defineStore('game', () => {
     disposeMatchDayWorker()
     activeMatchId.value = null
     game.value = createInitialGameState(championshipId, clubId)
+    seasonTasksDialogVisible.value = true
     save()
   }
 
@@ -133,8 +135,14 @@ export const useGameStore = defineStore('game', () => {
   const resetGame = (): void => {
     disposeMatchDayWorker()
     activeMatchId.value = null
+    seasonTasksDialogVisible.value = false
     game.value = null
     gameSaveRepository.clear()
+  }
+
+  // Р—РђРљР Р«Р’РђР•Рў РџР•Р Р’РР§РќР«Р™ Р”РРђР›РћР“ РЎ Р—РђР”РђР§РђРњР РќРћР’РћР“Рћ РЎР•Р—РћРќРђ
+  const closeSeasonTasksDialog = (): void => {
+    seasonTasksDialogVisible.value = false
   }
 
   // ДЕЛАЕТ МАТЧ АКТИВНЫМ И ЗАРАНЕЕ ЗАПУСКАЕТ ПОДГОТОВКУ ТУРА
@@ -350,10 +358,12 @@ export const useGameStore = defineStore('game', () => {
     nextMatch,
     activeMatch,
     preparedMatchContext,
+    seasonTasksDialogVisible,
     seasonCanFinish,
     isFinalSeason,
     startNewGame,
     resetGame,
+    closeSeasonTasksDialog,
     openMatch,
     clearActiveMatch,
     updateGame,

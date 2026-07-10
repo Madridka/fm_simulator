@@ -291,13 +291,13 @@ export const createSeasonTasks = (state: GameState): SeasonTask[] => {
   const createTask =
     (category: SeasonTaskCategory) =>
     (task: SeasonTaskPoolItem): SeasonTask | undefined =>
-    task.kind === 'weak_position_purchase'
-      ? weakPositionTask(state, task, category)
-      : { ...task, id: `s${state.season}-${task.id}`, season: state.season, category }
+      task.kind === 'weak_position_purchase'
+        ? weakPositionTask(state, task, category)
+        : { ...task, id: `s${state.season}-${task.id}`, season: state.season, category }
   const secondaryTasks = shuffle(pool.secondary, seed + 31)
     .map(createTask('secondary'))
     .filter((task): task is SeasonTask => Boolean(task))
-    .slice(0, 5)
+    .slice(0, 3)
   const optionalTasks = shuffle(pool.optional, seed + 79)
     .map(createTask('optional'))
     .filter((task): task is SeasonTask => Boolean(task))
@@ -310,7 +310,7 @@ export const ensureSeasonTasks = (state: GameState): GameState => {
   const existingTasks = state.seasonTasks?.filter((task) => task.season === state.season) ?? []
   const hasExpectedStructure =
     existingTasks.filter((task) => task.category === 'important').length >= 2 &&
-    existingTasks.filter((task) => task.category === 'secondary').length >= 5 &&
+    existingTasks.filter((task) => task.category === 'secondary').length >= 3 &&
     existingTasks.filter((task) => task.category === 'optional').length >= 3 &&
     existingTasks
       .filter((task) => task.category === 'secondary')
