@@ -8,6 +8,7 @@ import {
   type AcademyMutationResult,
 } from '@/domain/academy/academyService'
 import { refreshLineupsAfterSquadChange } from '@/domain/season/seasonService'
+import { addSeasonTaskEvent } from '@/domain/tasks/seasonTaskService'
 import { useGameStore } from '@/stores/game/gameStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 import { sellReservePlayer } from '@/domain/transfer/transferService'
@@ -31,18 +32,24 @@ export const useAcademyStore = defineStore('academy', () => {
     (gameStore.selectedClub?.squad ?? []).filter((player) => player.age <= 23),
   )
 
-  const apply = (result: AcademyMutationResult): void => {
+  const apply = (result: AcademyMutationResult, promotedPlayerId?: string): void => {
     toastStore.show(result.message, result.success ? 'success' : 'warning')
     if (!result.success) return
+    const eventState = promotedPlayerId
+      ? addSeasonTaskEvent(result.state, {
+          type: 'academy-promotion',
+          playerId: promotedPlayerId,
+        })
+      : result.state
     const state = {
-      ...result.state,
-      lineups: refreshLineupsAfterSquadChange(result.state),
+      ...eventState,
+      lineups: refreshLineupsAfterSquadChange(eventState),
     }
     gameStore.updateGame(state)
   }
 
   const promote = (playerId: string): void => {
-    if (gameStore.game) apply(promoteToFirstTeam(gameStore.game, playerId))
+    if (gameStore.game) apply(promoteToFirstTeam(gameStore.game, playerId), playerId)
   }
 
   const demote = (playerId: string): void => {

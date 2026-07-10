@@ -7,6 +7,7 @@ import type { MarketPlayer, TransferSortKey } from '@/stores/transfers/types'
 import { getOrganizationClubId } from '@/data/reserveClubRelations'
 import { moveToReserveTeam } from '@/domain/academy/academyService'
 import { refreshLineupsAfterSquadChange } from '@/domain/season/seasonService'
+import { addSeasonTaskEvent } from '@/domain/tasks/seasonTaskService'
 import { getChampionship } from '@/data/clubs'
 import { getClubCompetitionId, getCompetitionName } from '@/domain/competition/competitionIdentity'
 
@@ -152,6 +153,18 @@ export const useTransferStore = defineStore('transfers', () => {
     return sortPlayers(players, squadSortKey.value).map((item) => item.player)
   })
 
+  const addPurchaseTaskEvent = (
+    state: GameState,
+    player: Player,
+    destination: 'first' | 'reserve',
+  ): GameState =>
+    addSeasonTaskEvent(state, {
+      type: destination === 'reserve' ? 'academy-purchase' : 'first-team-purchase',
+      playerId: player.id,
+      position: player.position,
+      rating: player.rating,
+    })
+
   // ПОКУПАЕТ ИГРОКА И ПРИМЕНЯЕТ ОБНОВЛЁННЫЕ СОСТАВЫ
   const buy = (playerId: string, destination: 'first' | 'reserve' = 'first'): void => {
     const game = gameStore.game
@@ -171,10 +184,16 @@ export const useTransferStore = defineStore('transfers', () => {
           clubs: result.clubs,
           academies: { ...game.academies, [result.academy.clubId]: result.academy },
         }
+        let actualDestination = destination
         if (destination === 'reserve') {
           const movement = moveToReserveTeam(nextState, playerId)
-          if (movement.success) nextState = movement.state
+          if (movement.success) {
+            nextState = movement.state
+          } else {
+            actualDestination = 'first'
+          }
         }
+        nextState = addPurchaseTaskEvent(nextState, marketPlayer.player, actualDestination)
         gameStore.updateGame({
           ...nextState,
           lineups: refreshLineupsAfterSquadChange(nextState),
@@ -215,14 +234,23 @@ export const useTransferStore = defineStore('transfers', () => {
           [marketPlayer.championshipId]: countryOverrides,
         },
       }
+      let actualDestination = destination
       if (destination === 'reserve') {
         const movement = moveToReserveTeam(nextState, playerId)
-        if (movement.success) nextState = movement.state
+        if (movement.success) {
+          nextState = movement.state
+        } else {
+          actualDestination = 'first'
+        }
       }
+      nextState = addPurchaseTaskEvent(nextState, marketPlayer.player, actualDestination)
       gameStore.updateGame({
         ...nextState,
         lineups: refreshLineupsAfterSquadChange(nextState),
       })
+      return
+    }
+    if (!marketPlayer) {
       return
     }
     const result = buyPlayer(game.clubs, game.selectedClubId, playerId)
@@ -233,14 +261,25 @@ export const useTransferStore = defineStore('transfers', () => {
         const purchasedState = { ...game, clubs: result.clubs }
         const movement = moveToReserveTeam(purchasedState, playerId)
         if (movement.success) {
+          const nextState = addPurchaseTaskEvent(movement.state, marketPlayer.player, destination)
           gameStore.updateGame({
-            ...movement.state,
-            lineups: refreshLineupsAfterSquadChange(movement.state),
+            ...nextState,
+            lineups: refreshLineupsAfterSquadChange(nextState),
           })
           return
         }
       }
-      gameStore.replaceClubs(result.clubs)
+      const actualDestination = destination === 'reserve' ? 'first' : destination
+      const nextState = addPurchaseTaskEvent(
+        {
+          ...game,
+          clubs: result.clubs,
+          lineups: refreshLineupsAfterSquadChange({ ...game, clubs: result.clubs }),
+        },
+        marketPlayer.player,
+        actualDestination,
+      )
+      gameStore.updateGame(nextState)
     }
   }
 

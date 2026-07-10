@@ -21,6 +21,7 @@ import { simulateFastMatch, simulateMatch } from '@/domain/match/matchSimulator'
 import { normalizeMatchResultDiscipline } from '@/domain/match/disciplineService'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
 import { resolveScheduleConflicts } from '@/domain/schedule/calendarSlotResolver'
+import { createSeasonTasks, ensureSeasonTasks } from '@/domain/tasks/seasonTaskService'
 import {
   autoSelectLineup,
   getFormationSlots,
@@ -427,7 +428,7 @@ export const createInitialGameState = (
   }
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
-  return {
+  return ensureSeasonTasks({
     configVersion: 3,
     careerSeed,
     championshipId,
@@ -446,9 +447,11 @@ export const createInitialGameState = (
     playerStats: createInitialPlayerStats(clubs),
     worldPlayerStats: createInitialWorldPlayerStats(worldClubs),
     academies: createAcademies(clubs, 1, selectedClubId),
+    seasonTasks: [],
+    seasonTaskEvents: [],
     externalClubOverrides: {},
     lastCompletedOrder: 0,
-  }
+  })
 }
 
 // ДОПОЛНЯЕТ НЕПОЛНОЕ СОХРАНЕНИЕ ДАННЫМИ МИРОВЫХ ЛИГ
@@ -516,7 +519,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
     {} as Record<ChampionshipId, Record<string, PlayerStats>>,
   )
 
-  return {
+  return ensureSeasonTasks({
     ...state,
     configVersion: 3,
     careerSeed,
@@ -533,7 +536,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
       ]),
     ),
     worldPlayerStats,
-  }
+  })
 }
 
 // НАХОДИТ КЛУБ И ПРЕРЫВАЕТ РАСЧЁТ ПРИ НАРУШЕНИИ ДАННЫХ
@@ -1489,7 +1492,7 @@ export const finishSeason = (state: GameState): GameState => {
   }
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
-  return {
+  const nextState: GameState = {
     configVersion: 3,
     careerSeed: state.careerSeed,
     championshipId: state.championshipId,
@@ -1508,8 +1511,14 @@ export const finishSeason = (state: GameState): GameState => {
     playerStats: createInitialPlayerStats(progressedClubs),
     worldPlayerStats: createInitialWorldPlayerStats(worldClubs),
     academies: academyProgress.academies,
+    seasonTasks: [],
+    seasonTaskEvents: [],
     externalClubOverrides,
     lastCompletedOrder: 0,
+  }
+  return {
+    ...nextState,
+    seasonTasks: createSeasonTasks(nextState),
   }
 }
 

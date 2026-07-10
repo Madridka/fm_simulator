@@ -8,14 +8,13 @@ const routes: RouteRecordRaw[] = [
     path: '/admin/login',
     name: 'admin-login',
     component: () => import('@/views/admin/AdminLoginView.vue'),
-    beforeEnter: () => isAdminAuthenticated() ? { name: 'admin-simulation' } : true,
+    beforeEnter: () => (isAdminAuthenticated() ? { name: 'admin-simulation' } : true),
   },
   {
     path: '/admin',
     component: () => import('@/views/admin/AdminLayout.vue'),
-    beforeEnter: (to) => isAdminAuthenticated()
-      ? true
-      : { name: 'admin-login', query: { redirect: to.fullPath } },
+    beforeEnter: (to) =>
+      isAdminAuthenticated() ? true : { name: 'admin-login', query: { redirect: to.fullPath } },
     children: [
       {
         path: '',
@@ -74,6 +73,11 @@ const routes: RouteRecordRaw[] = [
         path: 'cup',
         name: 'cup',
         component: () => import('@/views/CupView.vue'),
+      },
+      {
+        path: 'tasks',
+        name: 'tasks',
+        component: () => import('@/views/TasksView.vue'),
       },
       {
         path: 'calendar',

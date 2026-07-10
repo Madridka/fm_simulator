@@ -1,0 +1,94 @@
+[
+  {
+    "id": "academy-promotions-2",
+    "kind": "academy_promotions",
+    "category": "secondary",
+    "title": "Поднять молодежь",
+    "description": "Переведи 2 игроков из академии в основную команду.",
+    "targetCount": 2
+  },
+  {
+    "id": "academy-promotions-3",
+    "kind": "academy_promotions",
+    "category": "secondary",
+    "title": "Смелее с резервом",
+    "description": "Переведи 3 игроков из академии в основную команду.",
+    "targetCount": 3
+  },
+  {
+    "id": "academy-appearances-8",
+    "kind": "academy_appearances",
+    "category": "secondary",
+    "title": "Минуты воспитанникам",
+    "description": "Дай воспитанникам академии суммарно 8 матчей за сезон.",
+    "targetCount": 8
+  },
+  {
+    "id": "academy-appearances-12",
+    "kind": "academy_appearances",
+    "category": "secondary",
+    "title": "Ставка на своих",
+    "description": "Дай воспитанникам академии суммарно 12 матчей за сезон.",
+    "targetCount": 12
+  },
+  {
+    "id": "academy-market-buy",
+    "kind": "academy_purchase",
+    "category": "optional",
+    "title": "Талант в академию",
+    "description": "Купи игрока на трансферном рынке и отправь его в академию.",
+    "targetCount": 1
+  },
+  {
+    "id": "weak-position-buy",
+    "kind": "weak_position_purchase",
+    "category": "secondary",
+    "title": "Закрыть слабую позицию",
+    "description": "Купи игрока сильнее на самую проседающую позицию стартового состава.",
+    "targetCount": 1
+  },
+  {
+    "id": "score-three",
+    "kind": "goals_in_match",
+    "category": "optional",
+    "title": "Матч без тормозов",
+    "description": "Забей 3 или больше голов в одном матче.",
+    "targetCount": 3
+  },
+  {
+    "id": "win-460",
+    "kind": "win_with_formation",
+    "category": "optional",
+    "title": "Победа без форварда",
+    "description": "Сыграй схемой 4-6-0 и победи.",
+    "targetFormation": "4-6-0",
+    "targetCount": 1
+  },
+  {
+    "id": "clean-235",
+    "kind": "clean_sheet_with_formation",
+    "category": "optional",
+    "title": "Ретро-автобус наоборот",
+    "description": "Сыграй схемой 2-3-5 и не пропусти.",
+    "targetFormation": "2-3-5",
+    "targetCount": 1
+  },
+  {
+    "id": "win-235",
+    "kind": "win_with_formation",
+    "category": "optional",
+    "title": "Атака из музея",
+    "description": "Сыграй схемой 2-3-5 и победи.",
+    "targetFormation": "2-3-5",
+    "targetCount": 1
+  },
+  {
+    "id": "clean-460",
+    "kind": "clean_sheet_with_formation",
+    "category": "optional",
+    "title": "Нулевая ложная девятка",
+    "description": "Сыграй схемой 4-6-0 и не пропусти.",
+    "targetFormation": "4-6-0",
+    "targetCount": 1
+  }
+]

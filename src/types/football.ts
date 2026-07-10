@@ -408,6 +408,47 @@ export interface CompetitionPlayerLeaderboards {
   redCards: PlayerLeaderboardEntry[]
 }
 
+export type SeasonTaskCategory = 'important' | 'secondary' | 'optional'
+
+export type SeasonTaskKind =
+  | 'league_position'
+  | 'cup_stage'
+  | 'academy_promotions'
+  | 'academy_appearances'
+  | 'academy_purchase'
+  | 'weak_position_purchase'
+  | 'goals_in_match'
+  | 'win_with_formation'
+  | 'clean_sheet_with_formation'
+
+export interface SeasonTask {
+  id: string
+  season: number
+  kind: SeasonTaskKind
+  category: SeasonTaskCategory
+  title: string
+  description: string
+  targetCount?: number
+  targetPosition?: number
+  targetCupRoundId?: string
+  targetFormation?: Formation
+  weakPosition?: PlayerPosition
+  minimumRating?: number
+}
+
+export type SeasonTaskEventType =
+  | 'academy-promotion'
+  | 'academy-purchase'
+  | 'first-team-purchase'
+
+export interface SeasonTaskEvent {
+  season: number
+  type: SeasonTaskEventType
+  playerId: string
+  position?: PlayerPosition
+  rating?: number
+}
+
 // КОРНЕВОЕ СОСТОЯНИЕ КАРЬЕРЫ, СОХРАНЯЕМОЕ МЕЖДУ СЕССИЯМИ
 export interface GameState {
   configVersion: number
@@ -429,5 +470,7 @@ export interface GameState {
   playerStats: Record<string, PlayerStats>
   worldPlayerStats?: Partial<Record<ChampionshipId, Record<string, PlayerStats>>>
   academies: Record<string, AcademyState>
+  seasonTasks: SeasonTask[]
+  seasonTaskEvents: SeasonTaskEvent[]
   lastCompletedOrder: number
 }

@@ -5,6 +5,7 @@ type IconName =
   | 'academy'
   | 'swap'
   | 'table'
+  | 'tasks'
   | 'calendar'
   | 'trophy'
   | 'settings'
@@ -48,6 +49,16 @@ defineProps<{
       <rect x="3" y="5" width="18" height="16" rx="2" />
       <path d="M7 3v4M17 3v4M3 10h18" />
       <path d="M7 14h.01M12 14h.01M17 14h.01M7 18h.01M12 18h.01M17 18h.01" />
+    </template>
+
+    <template v-else-if="name === 'tasks'">
+      <path d="M9 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3" />
+      <rect x="9" y="3" width="6" height="4" rx="1" />
+      <path d="m7.5 12 1.5 1.5 2.5-3" />
+      <path d="M13.5 12h3" />
+
+      <path d="m7.5 17 1.5 1.5 2.5-3" />
+      <path d="M13.5 17h3" />
     </template>
 
     <path v-else-if="name === 'menu'" d="M4 7h16M4 12h16M4 17h16" stroke-width="2" />
