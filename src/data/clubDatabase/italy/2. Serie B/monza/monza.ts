@@ -42,6 +42,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Сенегал',
+      preferredFoot: 'right',
     },
     {
       id: 'semuel-pizzignacco',
@@ -56,6 +59,9 @@ export const monzaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-carboni',
@@ -86,6 +95,9 @@ export const monzaProfile: ClubProfile = {
       value: 2_300_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'luca-ravanelli',
@@ -100,6 +112,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-delli-carri',
@@ -114,6 +129,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'valentin-antov',
@@ -128,6 +146,9 @@ export const monzaProfile: ClubProfile = {
       value: 2_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 74,
+      nationality: 'Болгария',
+      preferredFoot: 'right',
     },
     {
       id: 'arvid-brorsson',
@@ -142,6 +163,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Швеция',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-lucchesi',
@@ -156,6 +180,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 140_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'paulo-azzi',
@@ -170,6 +197,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Бразилия',
+      preferredFoot: 'right',
     },
     {
       id: 'samuele-birindelli',
@@ -184,6 +214,9 @@ export const monzaProfile: ClubProfile = {
       value: 5_000_000,
       salary: 125_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -200,6 +233,9 @@ export const monzaProfile: ClubProfile = {
       value: 700_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Экваториальная Гвинея',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-colombo',
@@ -214,6 +250,9 @@ export const monzaProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-pessina',
@@ -228,6 +267,9 @@ export const monzaProfile: ClubProfile = {
       value: 7_500_000,
       salary: 145_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'kevin-zeroli',
@@ -242,6 +284,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 130_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'dany-mota',
@@ -256,6 +301,9 @@ export const monzaProfile: ClubProfile = {
       value: 6_000_000,
       salary: 140_000,
       isInjured: false,
+      shirtNumber: 47,
+      nationality: 'Португалия',
+      preferredFoot: 'right',
     },
     {
       id: 'gianluca-caprari',
@@ -270,6 +318,9 @@ export const monzaProfile: ClubProfile = {
       value: 3_500_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'patrick-ciurria',
@@ -284,6 +335,9 @@ export const monzaProfile: ClubProfile = {
       value: 2_300_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'nicolas-galazzi',
@@ -298,6 +352,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Forwards
@@ -314,6 +371,9 @@ export const monzaProfile: ClubProfile = {
       value: 15_500_000,
       salary: 160_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'omari-forson',
@@ -328,6 +388,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 75,
+      nationality: 'Англия',
+      preferredFoot: 'left',
     },
     {
       id: 'agustin-alvarez',
@@ -342,6 +405,9 @@ export const monzaProfile: ClubProfile = {
       value: 3_700_000,
       salary: 220_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Уругвай',
+      preferredFoot: 'right',
     },
     {
       id: 'keita-balde',
@@ -356,6 +422,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Сенегал',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-petagna',
@@ -370,6 +439,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 37,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'mirko-maric',
@@ -384,6 +456,9 @@ export const monzaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Хорватия',
+      preferredFoot: 'left',
     },
   ],
 }

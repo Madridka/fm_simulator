@@ -42,6 +42,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_200_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'christian-marietta',
@@ -56,6 +59,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 550_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'edoardo-borrelli',
@@ -70,6 +76,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 500_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 300_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matias-antonini',
@@ -100,6 +112,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 750_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Бразилия',
+      preferredFoot: 'right',
     },
     {
       id: 'ervin-bashi',
@@ -114,6 +129,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_400_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'davide-bettella',
@@ -128,6 +146,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 950_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gianluca-di-chiara',
@@ -142,6 +163,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_000_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'tommaso-cassandro',
@@ -156,6 +180,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_000_000,
       salary: 265_000,
       isInjured: false,
+      shirtNumber: 84,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ruggero-frosinini',
@@ -170,6 +197,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 450_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 62,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -186,6 +216,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_200_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-pompetti',
@@ -200,6 +233,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_800_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'davide-buglio',
@@ -214,6 +250,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 98,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-pontisso',
@@ -228,6 +267,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alphadjo-cisse',
@@ -242,6 +284,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_400_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 80,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -258,11 +303,14 @@ export const catanzaroProfile: ClubProfile = {
       value: 3_500_000,
       salary: 145_000,
       isInjured: false,
+      shirtNumber: 94,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-d-alessandro',
       firstName: 'Marco',
-      lastName: 'D\'Alessandro',
+      lastName: "D'Alessandro",
       age: 35,
       position: 'LW',
       rating: 70,
@@ -272,6 +320,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 750_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicolo-buso',
@@ -286,6 +337,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 45,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'patrick-nuamah',
@@ -300,6 +354,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_500_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'remi-oudin',
@@ -314,6 +371,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_400_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'costantino-favasuli',
@@ -328,6 +388,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'mattia-liberali',
@@ -342,6 +405,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'pietro-iemmello',
@@ -356,6 +422,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_500_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'luca-pandolfi',
@@ -370,6 +439,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-pittarello',
@@ -384,6 +456,9 @@ export const catanzaroProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

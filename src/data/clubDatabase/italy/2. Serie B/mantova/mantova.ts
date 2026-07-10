@@ -42,6 +42,9 @@ export const mantovaProfile: ClubProfile = {
       value: 400_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-andrenacci',
@@ -56,6 +59,9 @@ export const mantovaProfile: ClubProfile = {
       value: 600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'stefano-cella',
@@ -86,6 +95,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'senan-mullen',
@@ -100,6 +112,9 @@ export const mantovaProfile: ClubProfile = {
       value: 900_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Ирландия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessio-castellini',
@@ -114,6 +129,9 @@ export const mantovaProfile: ClubProfile = {
       value: 700_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-pittino',
@@ -128,6 +146,9 @@ export const mantovaProfile: ClubProfile = {
       value: 700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 53,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cristiano-bani',
@@ -142,6 +163,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-maggioni',
@@ -156,6 +180,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 96,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicolo-radaelli',
@@ -170,6 +197,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giacomo-fedel',
@@ -184,6 +214,9 @@ export const mantovaProfile: ClubProfile = {
       value: 900_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -200,6 +233,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'federico-artioli',
@@ -214,6 +250,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'zan-majer',
@@ -228,6 +267,9 @@ export const mantovaProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 37,
+      nationality: 'Словения',
+      preferredFoot: 'right',
     },
     {
       id: 'david-wieser',
@@ -242,6 +284,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'flavio-paoletti',
@@ -256,6 +301,9 @@ export const mantovaProfile: ClubProfile = {
       value: 550_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 36,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cesar-falletti',
@@ -270,6 +318,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Уругвай',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-mancuso',
@@ -284,6 +335,9 @@ export const mantovaProfile: ClubProfile = {
       value: 900_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -300,6 +354,9 @@ export const mantovaProfile: ClubProfile = {
       value: 2_700_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-ruocco',
@@ -314,6 +371,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'maat-caprini',
@@ -328,6 +388,9 @@ export const mantovaProfile: ClubProfile = {
       value: 800_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-galuppini',
@@ -342,6 +405,9 @@ export const mantovaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'davide-bragantini',
@@ -356,6 +422,9 @@ export const mantovaProfile: ClubProfile = {
       value: 2_700_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'davis-mensah',
@@ -370,6 +439,9 @@ export const mantovaProfile: ClubProfile = {
       value: 900_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicholas-bonfanti',
@@ -384,6 +456,9 @@ export const mantovaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

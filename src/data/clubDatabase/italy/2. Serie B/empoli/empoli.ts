@@ -42,6 +42,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_100_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'samuele-perisan',
@@ -56,6 +59,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_800_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-lovato',
@@ -86,6 +95,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_400_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nosa-obaretin',
@@ -100,6 +112,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_800_000,
       salary: 245_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-guarino',
@@ -114,6 +129,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 34,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-indragoli',
@@ -128,6 +146,9 @@ export const empoliProfile: ClubProfile = {
       value: 750_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-tosto',
@@ -142,6 +163,9 @@ export const empoliProfile: ClubProfile = {
       value: 550_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'brando-moruzzi',
@@ -156,6 +180,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_800_000,
       salary: 245_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'franco-carboni',
@@ -170,6 +197,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_000_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 79,
+      nationality: 'Аргентина',
+      preferredFoot: 'left',
     },
     {
       id: 'tyronne-ebuehi',
@@ -184,6 +214,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_600_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Нигерия',
+      preferredFoot: 'right',
     },
     {
       id: 'salvatore-elia',
@@ -198,6 +231,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_700_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -214,6 +250,9 @@ export const empoliProfile: ClubProfile = {
       value: 4_000_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Испания',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-ghion',
@@ -228,6 +267,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_800_000,
       salary: 155_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicolas-haas',
@@ -242,6 +284,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_200_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Швейцария',
+      preferredFoot: 'right',
     },
     {
       id: 'duccio-degli-innocenti',
@@ -256,6 +301,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 67,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'luca-belardinelli',
@@ -270,6 +318,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_300_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-ignacchiti',
@@ -284,6 +335,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_300_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'edoardo-saporiti',
@@ -298,6 +352,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_400_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 70,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -314,10 +371,13 @@ export const empoliProfile: ClubProfile = {
       value: 3_100_000,
       salary: 165_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Румыния',
+      preferredFoot: 'right',
     },
     {
-      id: 'lars-ceesay',
-      firstName: 'Lars',
+      id: 'joseph-ceesay',
+      firstName: 'Joseph',
       lastName: 'Ceesay',
       age: 28,
       position: 'RW',
@@ -328,6 +388,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Гамбия',
+      preferredFoot: 'right',
     },
     {
       id: 'pietro-pellegri',
@@ -342,6 +405,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_800_000,
       salary: 210_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-nasti',
@@ -356,6 +422,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_900_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'bogdan-popov',
@@ -370,6 +439,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Украина',
+      preferredFoot: 'right',
     },
     {
       id: 'stiven-shpendi',
@@ -384,6 +456,9 @@ export const empoliProfile: ClubProfile = {
       value: 1_600_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
   ],
 }

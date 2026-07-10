@@ -42,6 +42,9 @@ export const carrareseProfile: ClubProfile = {
       value: 150_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-bleve',
@@ -56,6 +59,9 @@ export const carrareseProfile: ClubProfile = {
       value: 650_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giovanni-garofani',
@@ -70,6 +76,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_000_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 12,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Аргентина',
+      preferredFoot: 'right',
     },
     {
       id: 'bartosz-salamon',
@@ -100,6 +112,9 @@ export const carrareseProfile: ClubProfile = {
       value: 400_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Польша',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-imperiale',
@@ -114,6 +129,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_200_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'filippo-oliana',
@@ -128,6 +146,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_300_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'fabio-ruggeri',
@@ -142,6 +163,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_100_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -158,6 +182,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_800_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Аргентина',
+      preferredFoot: 'right',
     },
     {
       id: 'emanuele-zuelli',
@@ -172,6 +199,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-capezzi',
@@ -186,6 +216,9 @@ export const carrareseProfile: ClubProfile = {
       value: 700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 82,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'luis-hasa',
@@ -200,6 +233,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_600_000,
       salary: 190_000,
       isInjured: false,
+      shirtNumber: 70,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-parlanti',
@@ -214,6 +250,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_400_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-arena',
@@ -228,6 +267,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_300_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'kleis-bozhanaj',
@@ -242,6 +284,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_000_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-melegoni',
@@ -256,6 +301,9 @@ export const carrareseProfile: ClubProfile = {
       value: 850_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nikola-sekulov',
@@ -270,6 +318,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -286,6 +337,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_600_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'niccolo-belloni',
@@ -300,6 +354,9 @@ export const carrareseProfile: ClubProfile = {
       value: 600_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'simone-zanon',
@@ -314,6 +371,9 @@ export const carrareseProfile: ClubProfile = {
       value: 2_200_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 72,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'devid-bouah',
@@ -328,6 +388,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_100_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'mattia-finotto',
@@ -342,6 +405,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ernesto-torregrossa',
@@ -356,6 +422,9 @@ export const carrareseProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 92,
+      nationality: 'Венесуэла',
+      preferredFoot: 'left',
     },
     {
       id: 'fabio-abiuso',
@@ -370,6 +439,9 @@ export const carrareseProfile: ClubProfile = {
       value: 2_300_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-distefano',
@@ -384,6 +456,9 @@ export const carrareseProfile: ClubProfile = {
       value: 1_600_000,
       salary: 140_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

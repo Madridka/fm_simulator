@@ -42,6 +42,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 600_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'pietro-boer',
@@ -56,6 +59,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'marco-ruggero',
@@ -86,6 +95,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-varnier',
@@ -100,6 +112,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-giorgini',
@@ -114,6 +129,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 2_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giacomo-stabile',
@@ -128,6 +146,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'lorenzo-carissoni',
@@ -142,6 +163,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 500_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-reale',
@@ -156,6 +180,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'mattia-mannini',
@@ -170,6 +197,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 76,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -186,6 +216,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 800_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'giuseppe-leone',
@@ -200,6 +233,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 55,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'christian-pierobon',
@@ -214,6 +250,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'federico-zuccon',
@@ -228,6 +267,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 205_000,
       isInjured: false,
+      shirtNumber: 45,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'thomas-battistella',
@@ -242,6 +284,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'edoardo-duca',
@@ -256,6 +301,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 500_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'aaron-ciammaglichella',
@@ -270,6 +318,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'fabio-maistro',
@@ -284,6 +335,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 37,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'kevin-piscopo',
@@ -298,6 +352,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicola-mosti',
@@ -312,6 +369,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 98,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gregorio-morachioli',
@@ -326,6 +386,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 800_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -342,6 +405,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'leonardo-candellone',
@@ -356,6 +422,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-gabrielloni',
@@ -370,10 +439,13 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 420_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
-      id: 'rare-burnete',
-      firstName: 'Rare',
+      id: 'rares-burnete',
+      firstName: 'Rareș',
       lastName: 'Burnete',
       age: 22,
       position: 'ST',
@@ -384,6 +456,9 @@ export const juveStabiaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Румыния',
+      preferredFoot: 'right',
     },
   ],
 }

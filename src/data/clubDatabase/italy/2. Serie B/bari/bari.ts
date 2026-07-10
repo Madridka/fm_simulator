@@ -42,6 +42,9 @@ export const bariProfile: ClubProfile = {
       value: 1_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-pissardo',
@@ -56,6 +59,9 @@ export const bariProfile: ClubProfile = {
       value: 250_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const bariProfile: ClubProfile = {
       value: 1_600_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 43,
+      nationality: 'Греция',
+      preferredFoot: 'left',
     },
     {
       id: 'francesco-vicari',
@@ -86,6 +95,9 @@ export const bariProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-meroni',
@@ -100,6 +112,9 @@ export const bariProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'raffaele-pucino',
@@ -114,6 +129,9 @@ export const bariProfile: ClubProfile = {
       value: 300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'mehdi-dorval',
@@ -128,6 +146,9 @@ export const bariProfile: ClubProfile = {
       value: 2_600_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 93,
+      nationality: 'Алжир',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-dickmann',
@@ -142,6 +163,9 @@ export const bariProfile: ClubProfile = {
       value: 1_700_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'moussa-mane',
@@ -156,6 +180,9 @@ export const bariProfile: ClubProfile = {
       value: 850_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -172,6 +199,9 @@ export const bariProfile: ClubProfile = {
       value: 4_200_000,
       salary: 125_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giulio-maggiore',
@@ -186,6 +216,9 @@ export const bariProfile: ClubProfile = {
       value: 2_000_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matthias-braunoder',
@@ -200,6 +233,9 @@ export const bariProfile: ClubProfile = {
       value: 2_800_000,
       salary: 365_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Австрия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicola-bellomo',
@@ -214,6 +250,9 @@ export const bariProfile: ClubProfile = {
       value: 500_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ebrima-darboe',
@@ -228,6 +267,9 @@ export const bariProfile: ClubProfile = {
       value: 2_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Гамбия',
+      preferredFoot: 'right',
     },
     {
       id: 'matthias-verreth',
@@ -242,6 +284,9 @@ export const bariProfile: ClubProfile = {
       value: 800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Бельгия',
+      preferredFoot: 'right',
     },
     {
       id: 'riccardo-pagano',
@@ -256,6 +301,9 @@ export const bariProfile: ClubProfile = {
       value: 700_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -272,6 +320,9 @@ export const bariProfile: ClubProfile = {
       value: 1_500_000,
       salary: 200_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'anthony-partipilo',
@@ -286,9 +337,12 @@ export const bariProfile: ClubProfile = {
       value: 1_800_000,
       salary: 225_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
-      id: 'christian-gytkj-r',
+      id: 'christian-gytkjaer',
       firstName: 'Christian',
       lastName: 'Gytkjær',
       age: 36,
@@ -300,6 +354,9 @@ export const bariProfile: ClubProfile = {
       value: 700_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Дания',
+      preferredFoot: 'right',
     },
     {
       id: 'giuseppe-sibilli',
@@ -314,6 +371,9 @@ export const bariProfile: ClubProfile = {
       value: 1_600_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-moncini',
@@ -328,6 +388,9 @@ export const bariProfile: ClubProfile = {
       value: 1_400_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'mirko-antonucci',
@@ -342,6 +405,9 @@ export const bariProfile: ClubProfile = {
       value: 1_400_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gaston-pereiro',
@@ -356,6 +422,9 @@ export const bariProfile: ClubProfile = {
       value: 1_200_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Уругвай',
+      preferredFoot: 'left',
     },
     {
       id: 'leonardo-cerri',
@@ -370,6 +439,9 @@ export const bariProfile: ClubProfile = {
       value: 2_300_000,
       salary: 380_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'hemsley-akpa-chukwu',
@@ -384,6 +456,9 @@ export const bariProfile: ClubProfile = {
       value: 700_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Камерун',
+      preferredFoot: 'right',
     },
   ],
 }

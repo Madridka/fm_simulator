@@ -42,6 +42,9 @@ export const speziaProfile: ClubProfile = {
       value: 500_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Сенегал',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-loria',
@@ -56,6 +59,9 @@ export const speziaProfile: ClubProfile = {
       value: 550_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'diego-mascardi',
@@ -70,6 +76,9 @@ export const speziaProfile: ClubProfile = {
       value: 300_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 12,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const speziaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Польша',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-cistana',
@@ -100,6 +112,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'petko-hristov',
@@ -114,6 +129,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 55,
+      nationality: 'Болгария',
+      preferredFoot: 'right',
     },
     {
       id: 'ales-mateju',
@@ -128,6 +146,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 37,
+      nationality: 'Чехия',
+      preferredFoot: 'right',
     },
     {
       id: 'fellipe-jack',
@@ -142,6 +163,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 130_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'giuseppe-aurelio',
@@ -156,6 +180,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'antonio-candela',
@@ -170,6 +197,9 @@ export const speziaProfile: ClubProfile = {
       value: 2_200_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'luca-vignali',
@@ -184,6 +214,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -200,6 +233,9 @@ export const speziaProfile: ClubProfile = {
       value: 5_500_000,
       salary: 115_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-bandinelli',
@@ -214,6 +250,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'adam-nagy',
@@ -228,6 +267,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Венгрия',
+      preferredFoot: 'right',
     },
     {
       id: 'szymon-zurkowski',
@@ -242,6 +284,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Польша',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-cassata',
@@ -256,6 +301,9 @@ export const speziaProfile: ClubProfile = {
       value: 750_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'rachid-kouda',
@@ -270,6 +318,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 80,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'christian-comotto',
@@ -284,6 +335,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 34,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -300,6 +354,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 115_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'daniele-verde',
@@ -314,6 +371,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'gianluca-lapadula',
@@ -328,6 +388,9 @@ export const speziaProfile: ClubProfile = {
       value: 800_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Перу',
+      preferredFoot: 'left',
     },
     {
       id: 'edoardo-soleri',
@@ -342,6 +405,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giuseppe-di-serio',
@@ -356,6 +422,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'vanja-vlahovic',
@@ -370,6 +439,9 @@ export const speziaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 195_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Сербия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-artistico',
@@ -384,6 +456,9 @@ export const speziaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

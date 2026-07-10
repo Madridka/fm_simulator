@@ -42,6 +42,9 @@ export const cesenaProfile: ClubProfile = {
       value: 900_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'США',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-siano',
@@ -56,6 +59,9 @@ export const cesenaProfile: ClubProfile = {
       value: 150_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'niccolo-fontana',
@@ -70,6 +76,9 @@ export const cesenaProfile: ClubProfile = {
       value: 150_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 39,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'massimiliano-mangraviti',
@@ -100,6 +112,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'andrea-ciofi',
@@ -114,6 +129,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-piacentini',
@@ -128,6 +146,9 @@ export const cesenaProfile: ClubProfile = {
       value: 700_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'peter-amoran',
@@ -142,6 +163,9 @@ export const cesenaProfile: ClubProfile = {
       value: 750_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Швеция',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-corazza',
@@ -156,6 +180,9 @@ export const cesenaProfile: ClubProfile = {
       value: 2_200_000,
       salary: 165_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gianluca-frabotta',
@@ -170,6 +197,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'raffaele-celia',
@@ -184,6 +214,9 @@ export const cesenaProfile: ClubProfile = {
       value: 800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'emanuele-adamo',
@@ -198,6 +231,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'vittorio-magni',
@@ -212,6 +248,9 @@ export const cesenaProfile: ClubProfile = {
       value: 900_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -228,6 +267,9 @@ export const cesenaProfile: ClubProfile = {
       value: 450_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'matteo-guidi',
@@ -242,6 +284,9 @@ export const cesenaProfile: ClubProfile = {
       value: 500_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'dimitri-bisoli',
@@ -256,6 +301,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-bastoni',
@@ -270,6 +318,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'tommaso-arrigoni',
@@ -284,6 +335,9 @@ export const cesenaProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-berti',
@@ -298,6 +352,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-francesconi',
@@ -312,6 +369,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 70,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -328,6 +388,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 115_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cristian-shpendi',
@@ -342,6 +405,9 @@ export const cesenaProfile: ClubProfile = {
       value: 3_600_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-olivieri',
@@ -356,6 +422,9 @@ export const cesenaProfile: ClubProfile = {
       value: 850_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'siren-diao',
@@ -370,6 +439,9 @@ export const cesenaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 145_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Испания',
+      preferredFoot: 'left',
     },
     {
       id: 'jalen-blesa',
@@ -384,6 +456,9 @@ export const cesenaProfile: ClubProfile = {
       value: 300_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Испания',
+      preferredFoot: 'right',
     },
   ],
 }

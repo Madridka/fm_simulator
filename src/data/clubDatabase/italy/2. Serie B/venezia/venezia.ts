@@ -42,6 +42,9 @@ export const veneziaProfile: ClubProfile = {
       value: 8_000_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Сербия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-plizzari',
@@ -56,6 +59,9 @@ export const veneziaProfile: ClubProfile = {
       value: 800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Австрия',
+      preferredFoot: 'right',
     },
     {
       id: 'joel-schingtienne',
@@ -86,6 +95,9 @@ export const veneziaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Бельгия',
+      preferredFoot: 'right',
     },
     {
       id: 'michael-venturi',
@@ -100,6 +112,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marin-sverko',
@@ -114,6 +129,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Хорватия',
+      preferredFoot: 'left',
     },
     {
       id: 'ahmed-sidibe',
@@ -128,6 +146,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 48,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'ridgeciano-haps',
@@ -142,6 +163,9 @@ export const veneziaProfile: ClubProfile = {
       value: 800_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Суринам',
+      preferredFoot: 'left',
     },
     {
       id: 'antoine-hainaut',
@@ -156,6 +180,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -172,6 +199,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 270_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Хорватия',
+      preferredFoot: 'left',
     },
     {
       id: 'gianluca-busio',
@@ -186,6 +216,9 @@ export const veneziaProfile: ClubProfile = {
       value: 8_500_000,
       salary: 125_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'США',
+      preferredFoot: 'right',
     },
     {
       id: 'kike-perez',
@@ -200,10 +233,13 @@ export const veneziaProfile: ClubProfile = {
       value: 4_200_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 71,
+      nationality: 'Испания',
+      preferredFoot: 'left',
     },
     {
-      id: 'joseph-duncan',
-      firstName: 'Joseph',
+      id: 'alfred-duncan',
+      firstName: 'Alfred',
       lastName: 'Duncan',
       age: 33,
       position: 'CM',
@@ -214,6 +250,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Гана',
+      preferredFoot: 'left',
     },
     {
       id: 'emil-bohinen',
@@ -228,6 +267,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 175_000,
       isInjured: false,
+      shirtNumber: 37,
+      nationality: 'Норвегия',
+      preferredFoot: 'left',
     },
     {
       id: 'cheick-conde',
@@ -242,6 +284,9 @@ export const veneziaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Гвинея',
+      preferredFoot: 'right',
     },
     {
       id: 'issa-doumbia',
@@ -256,6 +301,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nunzio-lella',
@@ -270,6 +318,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -286,6 +337,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 295_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'richie-sagrado',
@@ -300,6 +354,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Бельгия',
+      preferredFoot: 'right',
     },
     {
       id: 'mattia-compagnon',
@@ -314,6 +371,9 @@ export const veneziaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 250_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'bjarki-bjarkason',
@@ -328,11 +388,14 @@ export const veneziaProfile: ClubProfile = {
       value: 700_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Исландия',
+      preferredFoot: 'right',
     },
     {
-      id: 'casas',
-      firstName: 'Casas',
-      lastName: '',
+      id: 'antonio-casas',
+      firstName: 'Antonio',
+      lastName: 'Casas',
       age: 26,
       position: 'ST',
       rating: 71,
@@ -342,6 +405,9 @@ export const veneziaProfile: ClubProfile = {
       value: 2_500_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 80,
+      nationality: 'Испания',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-adorante',
@@ -356,6 +422,9 @@ export const veneziaProfile: ClubProfile = {
       value: 2_500_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'daniel-fila',
@@ -370,6 +439,9 @@ export const veneziaProfile: ClubProfile = {
       value: 4_200_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Чехия',
+      preferredFoot: 'left',
     },
     {
       id: 'john-yeboah',
@@ -384,6 +456,9 @@ export const veneziaProfile: ClubProfile = {
       value: 2_400_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Эквадор',
+      preferredFoot: 'left',
     },
   ],
 }

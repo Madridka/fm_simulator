@@ -42,6 +42,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 900_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'simone-colombi',
@@ -56,6 +59,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 150_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ovidijus-siaulys',
@@ -70,6 +76,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 700_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Литва',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 250_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'luca-parodi',
@@ -100,6 +112,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-tiritiello',
@@ -114,6 +129,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-del-lungo',
@@ -128,6 +146,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 150_000,
       isInjured: false,
+      shirtNumber: 57,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'denis-portanova',
@@ -142,6 +163,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 90,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'luigi-palomba',
@@ -156,6 +180,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 600_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-moretti',
@@ -170,6 +197,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 500_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 42,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'stefano-di-mario',
@@ -184,6 +214,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'antonio-boccadamo',
@@ -198,6 +231,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-mezzoni',
@@ -212,6 +248,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 600_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 94,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -228,6 +267,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'iacopo-lipani',
@@ -242,6 +284,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ahmed-benali',
@@ -256,6 +301,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 50,
+      nationality: 'Ливия',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-franzoni',
@@ -270,6 +318,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nermin-karic',
@@ -284,6 +335,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Швеция',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-dalla-vecchia',
@@ -298,6 +352,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 800_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -314,6 +371,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'tommaso-fumagalli',
@@ -328,6 +388,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 425_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-debenedetti',
@@ -342,6 +405,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 115_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'bernat-guiu',
@@ -356,6 +422,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Испания',
+      preferredFoot: 'right',
     },
     {
       id: 'flavio-russo',
@@ -370,6 +439,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'david-ankeye',
@@ -384,6 +456,9 @@ export const virtusEntellaProfile: ClubProfile = {
       value: 700_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 45,
+      nationality: 'Нигерия',
+      preferredFoot: 'right',
     },
   ],
 }

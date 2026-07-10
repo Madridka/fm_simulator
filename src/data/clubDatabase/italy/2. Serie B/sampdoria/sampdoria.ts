@@ -42,6 +42,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gaetan-coucke',
@@ -56,6 +59,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 98,
+      nationality: 'Бельгия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Босния и Герцеговина',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-romagnoli',
@@ -86,6 +95,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 400_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giorgio-altare',
@@ -100,6 +112,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alex-ferrari',
@@ -114,6 +129,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 950_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'stipe-vulikic',
@@ -128,11 +146,14 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Хорватия',
+      preferredFoot: 'right',
     },
     {
-      id: 'andrei-coubi',
+      id: 'andrei-coubis',
       firstName: 'Andrei',
-      lastName: 'Coubi',
+      lastName: 'Coubiș',
       age: 22,
       position: 'CB',
       rating: 66,
@@ -142,6 +163,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 145_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Румыния',
+      preferredFoot: 'right',
     },
     {
       id: 'nicolas-ioannou',
@@ -156,6 +180,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Кипр',
+      preferredFoot: 'left',
     },
     {
       id: 'simone-giordano',
@@ -170,6 +197,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'fabio-depaoli',
@@ -184,6 +214,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-venuti',
@@ -198,6 +231,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -214,6 +250,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-ricci',
@@ -228,6 +267,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 700_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'antonin-barak',
@@ -242,6 +284,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 5_500_000,
       salary: 500_000,
       isInjured: false,
+      shirtNumber: 72,
+      nationality: 'Чехия',
+      preferredFoot: 'left',
     },
     {
       id: 'alessandro-bellemo',
@@ -256,6 +301,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'oliver-abildgaard',
@@ -270,6 +318,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Дания',
+      preferredFoot: 'left',
     },
     {
       id: 'liam-henderson',
@@ -284,6 +335,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Шотландия',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-benedetti',
@@ -298,6 +352,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 80,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-pafundi',
@@ -312,6 +369,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 3_100_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'luigi-cherubini',
@@ -326,6 +386,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_900_000,
       salary: 165_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -342,6 +405,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 3_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Испания',
+      preferredFoot: 'right',
     },
     {
       id: 'victor-narro',
@@ -356,6 +422,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 70,
+      nationality: 'Испания',
+      preferredFoot: 'left',
     },
     {
       id: 'massimo-coda',
@@ -370,6 +439,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 115_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marvin-cuni',
@@ -384,6 +456,9 @@ export const sampdoriaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
   ],
 }

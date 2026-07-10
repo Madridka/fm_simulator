@@ -42,6 +42,9 @@ export const modenaProfile: ClubProfile = {
       value: 200_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Аргентина',
+      preferredFoot: 'right',
     },
     {
       id: 'fabrizio-bagheria',
@@ -56,6 +59,9 @@ export const modenaProfile: ClubProfile = {
       value: 400_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 78,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cristian-cauz',
@@ -86,6 +95,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'antonio-pergreffi',
@@ -100,6 +112,9 @@ export const modenaProfile: ClubProfile = {
       value: 200_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'daniel-tonoli',
@@ -114,6 +129,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-dellavalle',
@@ -128,6 +146,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 25,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'bryant-nieling',
@@ -142,6 +163,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Нидерланды',
+      preferredFoot: 'left',
     },
     {
       id: 'steven-nador',
@@ -156,6 +180,9 @@ export const modenaProfile: ClubProfile = {
       value: 800_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Того',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-zampano',
@@ -170,6 +197,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'fabio-ponsi',
@@ -184,6 +214,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gady-pierre-beyuku',
@@ -198,6 +231,9 @@ export const modenaProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -214,6 +250,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'niklas-pyyhtia',
@@ -228,6 +267,9 @@ export const modenaProfile: ClubProfile = {
       value: 3_100_000,
       salary: 215_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Финляндия',
+      preferredFoot: 'left',
     },
     {
       id: 'simone-santoro',
@@ -242,6 +284,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'fabio-gerli',
@@ -256,6 +301,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-sersanti',
@@ -270,6 +318,9 @@ export const modenaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 350_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'yanis-massolin',
@@ -284,6 +335,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'giuseppe-caso',
@@ -298,6 +352,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -314,6 +371,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'luca-zanimacchia',
@@ -328,6 +388,9 @@ export const modenaProfile: ClubProfile = {
       value: 2_600_000,
       salary: 170_000,
       isInjured: false,
+      shirtNumber: 98,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-di-mariano',
@@ -342,6 +405,9 @@ export const modenaProfile: ClubProfile = {
       value: 1_800_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gregoire-defrel',
@@ -356,6 +422,9 @@ export const modenaProfile: ClubProfile = {
       value: 800_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 92,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'pedro-mendes',
@@ -370,6 +439,9 @@ export const modenaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Португалия',
+      preferredFoot: 'right',
     },
     {
       id: 'ettore-gliozzi',
@@ -384,6 +456,9 @@ export const modenaProfile: ClubProfile = {
       value: 850_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

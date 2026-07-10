@@ -42,6 +42,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_200_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-pisseri',
@@ -56,6 +59,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 300_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 75,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ilario-monterisi',
@@ -86,6 +95,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 2_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giorgio-cittadini',
@@ -100,6 +112,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_800_000,
       salary: 195_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'jacopo-gelli',
@@ -114,6 +129,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 900_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-bracaglia',
@@ -128,6 +146,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 700_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 79,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'gabriele-calvani',
@@ -142,6 +163,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'sergio-kalaj',
@@ -156,6 +180,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 600_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'riccardo-marchizza',
@@ -170,6 +197,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_300_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'niccolo-corrado',
@@ -184,6 +214,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'edoardo-masciangelo',
@@ -198,6 +231,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 900_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'anthony-oyono',
@@ -212,6 +248,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_200_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Габон',
+      preferredFoot: 'right',
     },
     {
       id: 'jeremy-oyono',
@@ -226,6 +265,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 700_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Габон',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -242,6 +284,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_200_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'francesco-gelli',
@@ -256,6 +301,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'benjamin-kone',
@@ -270,6 +318,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_100_000,
       salary: 275_000,
       isInjured: false,
+      shirtNumber: 92,
+      nationality: "Кот-д'Ивуар",
+      preferredFoot: 'left',
     },
     {
       id: 'ilias-koutsoupias',
@@ -284,6 +335,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_300_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Греция',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-cichella',
@@ -298,6 +352,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 800_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'kevin-barcella',
@@ -312,6 +369,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 500_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -328,6 +388,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Грузия',
+      preferredFoot: 'right',
     },
     {
       id: 'fares-ghedjemis',
@@ -342,6 +405,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 1_000_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'antonio-raimondo',
@@ -356,6 +422,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 3_000_000,
       salary: 210_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'massimo-zilli',
@@ -370,6 +439,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 900_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'edoardo-vergani',
@@ -384,6 +456,9 @@ export const frosinoneProfile: ClubProfile = {
       value: 500_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 90,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

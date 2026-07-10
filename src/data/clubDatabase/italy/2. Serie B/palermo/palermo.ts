@@ -42,10 +42,13 @@ export const palermoProfile: ClubProfile = {
       value: 1_000_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
-      id: 'amigo-gomis',
-      firstName: 'Amigo',
+      id: 'alfred-gomis',
+      firstName: 'Alfred',
       lastName: 'Gomis',
       age: 32,
       position: 'GK',
@@ -56,6 +59,9 @@ export const palermoProfile: ClubProfile = {
       value: 750_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Сенегал',
+      preferredFoot: 'right',
     },
     {
       id: 'jesse-joronen',
@@ -70,6 +76,9 @@ export const palermoProfile: ClubProfile = {
       value: 700_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 66,
+      nationality: 'Финляндия',
+      preferredFoot: 'right',
     },
     {
       id: 'michele-avella',
@@ -84,6 +93,9 @@ export const palermoProfile: ClubProfile = {
       value: 200_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Defenders
@@ -100,6 +112,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_300_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'pietro-ceccaroni',
@@ -114,6 +129,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_300_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'davide-veroli',
@@ -128,6 +146,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_500_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 72,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'patryk-peda',
@@ -142,6 +163,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Польша',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-augello',
@@ -156,6 +180,9 @@ export const palermoProfile: ClubProfile = {
       value: 3_600_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'salim-diakite',
@@ -170,6 +197,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_200_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Мали',
+      preferredFoot: 'right',
     },
     {
       id: 'niccolo-pierozzi',
@@ -184,6 +214,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_700_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -200,6 +233,9 @@ export const palermoProfile: ClubProfile = {
       value: 5_500_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'alexis-blin',
@@ -214,6 +250,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_600_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'valerio-verre',
@@ -228,6 +267,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_500_000,
       salary: 130_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-ranocchia',
@@ -242,6 +284,9 @@ export const palermoProfile: ClubProfile = {
       value: 3_500_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'jacopo-segre',
@@ -256,6 +301,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_400_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'aljosa-vasic',
@@ -270,6 +318,9 @@ export const palermoProfile: ClubProfile = {
       value: 2_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Сербия',
+      preferredFoot: 'right',
     },
     {
       id: 'samuel-giovane',
@@ -284,6 +335,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_900_000,
       salary: 205_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'antonio-palumbo',
@@ -298,6 +352,9 @@ export const palermoProfile: ClubProfile = {
       value: 4_200_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Forwards
@@ -314,10 +371,13 @@ export const palermoProfile: ClubProfile = {
       value: 550_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
-      id: 'emanuel-gyasi',
-      firstName: 'Emanuel',
+      id: 'emmanuel-gyasi',
+      firstName: 'Emmanuel',
       lastName: 'Gyasi',
       age: 32,
       position: 'RW',
@@ -328,6 +388,9 @@ export const palermoProfile: ClubProfile = {
       value: 3_500_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Гана',
+      preferredFoot: 'right',
     },
     {
       id: 'jeremy-le-douaron',
@@ -342,6 +405,9 @@ export const palermoProfile: ClubProfile = {
       value: 4_600_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
       id: 'joel-pohjanpalo',
@@ -356,6 +422,9 @@ export const palermoProfile: ClubProfile = {
       value: 4_100_000,
       salary: 145_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Финляндия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-brunori',
@@ -370,6 +439,9 @@ export const palermoProfile: ClubProfile = {
       value: 3_000_000,
       salary: 130_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giacomo-corona',
@@ -384,6 +456,9 @@ export const palermoProfile: ClubProfile = {
       value: 1_100_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

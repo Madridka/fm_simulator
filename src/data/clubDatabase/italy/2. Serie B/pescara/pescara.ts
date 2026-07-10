@@ -42,6 +42,9 @@ export const pescaraProfile: ClubProfile = {
       value: 3_600_000,
       salary: 85_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'ivan-saio',
@@ -56,6 +59,9 @@ export const pescaraProfile: ClubProfile = {
       value: 600_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_700_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 76,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'riccardo-brosco',
@@ -86,6 +95,9 @@ export const pescaraProfile: ClubProfile = {
       value: 450_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 13,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-pellacani',
@@ -100,6 +112,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'riccardo-capellini',
@@ -114,6 +129,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_000_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gabriele-corbo',
@@ -128,6 +146,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_000_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 95,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'davide-giannini',
@@ -142,9 +163,12 @@ export const pescaraProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 35,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
-      id: 'tommaso-corazza',
+      id: 'tommaso-corazza-pescara',
       firstName: 'Tommaso',
       lastName: 'Corazza',
       age: 22,
@@ -156,6 +180,9 @@ export const pescaraProfile: ClubProfile = {
       value: 2_200_000,
       salary: 170_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gaetano-letizia',
@@ -170,6 +197,9 @@ export const pescaraProfile: ClubProfile = {
       value: 400_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -186,6 +216,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_800_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'erdis-kraja',
@@ -200,6 +233,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_300_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 73,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'julian-brandes',
@@ -214,6 +250,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_100_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Нидерланды',
+      preferredFoot: 'right',
     },
     {
       id: 'luca-valzania',
@@ -228,6 +267,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'matteo-dagasso',
@@ -242,6 +284,9 @@ export const pescaraProfile: ClubProfile = {
       value: 2_700_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'fabrizio-caligara',
@@ -256,6 +301,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_400_000,
       salary: 130_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'lorenzo-meazzi',
@@ -270,6 +318,9 @@ export const pescaraProfile: ClubProfile = {
       value: 900_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'giacomo-olzer',
@@ -284,6 +335,9 @@ export const pescaraProfile: ClubProfile = {
       value: 850_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 27,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Forwards
@@ -300,6 +354,9 @@ export const pescaraProfile: ClubProfile = {
       value: 800_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'davide-merola',
@@ -314,6 +371,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_500_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'andrea-oliveri',
@@ -328,6 +388,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_100_000,
       salary: 140_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'frank-tsadjout',
@@ -342,6 +405,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_500_000,
       salary: 120_000,
       isInjured: false,
+      shirtNumber: 74,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'orji-okwonkwo',
@@ -356,6 +422,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_100_000,
       salary: 240_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Нигерия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-sgarbi',
@@ -370,6 +439,9 @@ export const pescaraProfile: ClubProfile = {
       value: 1_100_000,
       salary: 240_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'riccardo-tonin',
@@ -384,6 +456,9 @@ export const pescaraProfile: ClubProfile = {
       value: 700_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
   ],
 }

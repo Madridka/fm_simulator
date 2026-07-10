@@ -42,6 +42,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_700_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-sorrentino',
@@ -56,6 +59,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 22,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const padovaProfile: ClubProfile = {
       value: 700_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-perrotta',
@@ -86,6 +95,9 @@ export const padovaProfile: ClubProfile = {
       value: 700_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'carlo-faedo',
@@ -100,6 +112,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 72,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'christian-pastina',
@@ -114,6 +129,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 58,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'filippo-sgarbi',
@@ -128,6 +146,9 @@ export const padovaProfile: ClubProfile = {
       value: 800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-villa',
@@ -142,6 +163,9 @@ export const padovaProfile: ClubProfile = {
       value: 750_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 55,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'antonio-barreca',
@@ -156,6 +180,9 @@ export const padovaProfile: ClubProfile = {
       value: 900_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Midfielders
@@ -172,6 +199,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'daniele-baselli',
@@ -186,6 +216,9 @@ export const padovaProfile: ClubProfile = {
       value: 750_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'pietro-fusi',
@@ -200,6 +233,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'jonathan-silva',
@@ -214,6 +250,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 105_000,
       isInjured: false,
+      shirtNumber: 41,
+      nationality: 'Бразилия',
+      preferredFoot: 'left',
     },
     {
       id: 'luca-di-maggio',
@@ -228,6 +267,9 @@ export const padovaProfile: ClubProfile = {
       value: 800_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'jonas-harder',
@@ -242,6 +284,9 @@ export const padovaProfile: ClubProfile = {
       value: 600_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cristian-buonaiuto',
@@ -256,6 +301,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 92,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'kevin-varas',
@@ -270,6 +318,9 @@ export const padovaProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Эквадор',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -286,6 +337,9 @@ export const padovaProfile: ClubProfile = {
       value: 900_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 30,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'simone-russini',
@@ -300,6 +354,9 @@ export const padovaProfile: ClubProfile = {
       value: 400_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'paolo-ghiglione',
@@ -314,6 +371,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-capelli',
@@ -328,6 +388,9 @@ export const padovaProfile: ClubProfile = {
       value: 850_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'kevin-lasagna',
@@ -342,6 +405,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 15,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'mattia-bortolussi',
@@ -356,6 +422,9 @@ export const padovaProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 20,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alberto-spagnoli',
@@ -370,6 +439,9 @@ export const padovaProfile: ClubProfile = {
       value: 700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-seghetti',
@@ -384,6 +456,9 @@ export const padovaProfile: ClubProfile = {
       value: 750_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
   ],
 }

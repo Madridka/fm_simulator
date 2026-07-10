@@ -42,6 +42,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 950_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Литва',
+      preferredFoot: 'right',
     },
     {
       id: 'giacomo-poluzzi',
@@ -56,6 +59,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 100_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'daniel-theiner',
@@ -70,6 +76,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 250_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 62,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 250_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'nicola-pietrangeli',
@@ -100,6 +112,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 2_600_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'frederic-veseli',
@@ -114,6 +129,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 34,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'raphael-kofler',
@@ -128,6 +146,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 2_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 28,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filipe-bordon',
@@ -142,6 +163,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_200_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 3,
+      nationality: 'Бразилия',
+      preferredFoot: 'right',
     },
     {
       id: 'davide-mancini',
@@ -156,6 +180,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-davi',
@@ -170,6 +197,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'karim-zedadka',
@@ -184,6 +214,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 800_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Франция',
+      preferredFoot: 'right',
     },
     {
       id: 'federico-davi',
@@ -198,6 +231,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 400_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'salvatore-molina',
@@ -212,6 +248,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 800_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 79,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'hamza-el-kaouakibi',
@@ -226,6 +265,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 750_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 94,
+      nationality: 'Марокко',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -242,6 +284,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 300_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 46,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'daniele-casiraghi',
@@ -256,6 +301,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_800_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'mamadou-coulibaly',
@@ -270,6 +318,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Сенегал',
+      preferredFoot: 'right',
     },
     {
       id: 'fabian-tait',
@@ -284,6 +335,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 800_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'simone-tronchin',
@@ -298,6 +352,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 18,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-mallamo',
@@ -312,6 +369,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 700_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'jacopo-martini',
@@ -326,6 +386,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 900_000,
       salary: 35_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -342,6 +405,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 700_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 90,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'silvio-merkaj',
@@ -356,6 +422,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Албания',
+      preferredFoot: 'right',
     },
     {
       id: 'jonathan-italeng',
@@ -370,6 +439,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_100_000,
       salary: 180_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Камерун',
+      preferredFoot: 'right',
     },
     {
       id: 'emanuele-pecorino',
@@ -384,6 +456,9 @@ export const sudtirolProfile: ClubProfile = {
       value: 1_200_000,
       salary: 245_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
   ],
 }

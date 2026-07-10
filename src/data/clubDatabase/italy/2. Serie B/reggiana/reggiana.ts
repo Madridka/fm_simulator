@@ -42,6 +42,9 @@ export const reggianaProfile: ClubProfile = {
       value: 150_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 12,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'gianluca-saro',
@@ -56,6 +59,9 @@ export const reggianaProfile: ClubProfile = {
       value: 300_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'edoardo-motta',
@@ -70,6 +76,9 @@ export const reggianaProfile: ClubProfile = {
       value: 500_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Defenders
@@ -86,6 +95,9 @@ export const reggianaProfile: ClubProfile = {
       value: 3_500_000,
       salary: 135_000,
       isInjured: false,
+      shirtNumber: 96,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'andrea-papetti',
@@ -100,6 +112,9 @@ export const reggianaProfile: ClubProfile = {
       value: 2_100_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'danilo-quaranta',
@@ -114,6 +129,9 @@ export const reggianaProfile: ClubProfile = {
       value: 800_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'paolo-rozzio',
@@ -128,6 +146,9 @@ export const reggianaProfile: ClubProfile = {
       value: 500_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'lorenzo-libutti',
@@ -142,6 +163,9 @@ export const reggianaProfile: ClubProfile = {
       value: 700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-tripaldelli',
@@ -156,6 +180,9 @@ export const reggianaProfile: ClubProfile = {
       value: 800_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'mario-sampirisi',
@@ -170,6 +197,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 31,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -186,6 +216,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 80_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Словения',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-mendicino',
@@ -200,6 +233,9 @@ export const reggianaProfile: ClubProfile = {
       value: 700_000,
       salary: 95_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'manolo-portanova',
@@ -214,6 +250,9 @@ export const reggianaProfile: ClubProfile = {
       value: 2_000_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 90,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'massimo-bertagnoli',
@@ -228,6 +267,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 26,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tobias-reinhart',
@@ -242,6 +284,9 @@ export const reggianaProfile: ClubProfile = {
       value: 950_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Аргентина',
+      preferredFoot: 'right',
     },
     {
       id: 'charlys-matheus-lima-pontes',
@@ -256,6 +301,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 8,
+      nationality: 'Бразилия',
+      preferredFoot: 'right',
     },
     {
       id: 'oliver-urso',
@@ -270,6 +318,9 @@ export const reggianaProfile: ClubProfile = {
       value: 300_000,
       salary: 30_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Дания',
+      preferredFoot: 'left',
     },
     {
       id: 'natan-girma',
@@ -284,6 +335,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 80,
+      nationality: 'Швейцария',
+      preferredFoot: 'right',
     },
     {
       id: 'damiano-basili',
@@ -298,6 +352,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_100_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 19,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Forwards
@@ -314,6 +371,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'manuel-marras',
@@ -328,6 +388,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'elayis-tavsan',
@@ -342,6 +405,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_600_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Нидерланды',
+      preferredFoot: 'left',
     },
     {
       id: 'mathis-lambourde',
@@ -356,10 +422,13 @@ export const reggianaProfile: ClubProfile = {
       value: 1_500_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 93,
+      nationality: 'Франция',
+      preferredFoot: 'left',
     },
     {
-      id: 'diomande-gondo',
-      firstName: 'Diomandè',
+      id: 'cedric-gondo',
+      firstName: 'Cedric',
       lastName: 'Gondo',
       age: 29,
       position: 'ST',
@@ -370,6 +439,9 @@ export const reggianaProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: "Кот-д'Ивуар",
+      preferredFoot: 'right',
     },
     {
       id: 'andrija-novakovich',
@@ -384,6 +456,9 @@ export const reggianaProfile: ClubProfile = {
       value: 900_000,
       salary: 65_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'США',
+      preferredFoot: 'right',
     },
   ],
 }

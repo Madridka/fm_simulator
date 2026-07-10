@@ -42,6 +42,9 @@ export const avellinoProfile: ClubProfile = {
       value: 150_000,
       salary: 60_000,
       isInjured: false,
+      shirtNumber: 1,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'leonardo-marson',
@@ -56,6 +59,9 @@ export const avellinoProfile: ClubProfile = {
       value: 500_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 77,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Defenders
@@ -72,6 +78,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_100_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 44,
+      nationality: 'Хорватия',
+      preferredFoot: 'right',
     },
     {
       id: 'michele-rigione',
@@ -86,6 +95,9 @@ export const avellinoProfile: ClubProfile = {
       value: 300_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 5,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'alessandro-fontanarosa',
@@ -100,6 +112,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_500_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 63,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'patrick-enrici',
@@ -114,6 +129,9 @@ export const avellinoProfile: ClubProfile = {
       value: 700_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 56,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'andrea-cagnano',
@@ -128,6 +146,9 @@ export const avellinoProfile: ClubProfile = {
       value: 750_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 23,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'tommaso-cancellotti',
@@ -142,6 +163,9 @@ export const avellinoProfile: ClubProfile = {
       value: 450_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 29,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'filippo-missori',
@@ -156,6 +180,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 2,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
 
     // Midfielders
@@ -172,6 +199,9 @@ export const avellinoProfile: ClubProfile = {
       value: 700_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 6,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'dimitrios-sounas',
@@ -186,6 +216,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 24,
+      nationality: 'Греция',
+      preferredFoot: 'right',
     },
     {
       id: 'marco-armellino',
@@ -200,6 +233,9 @@ export const avellinoProfile: ClubProfile = {
       value: 350_000,
       salary: 55_000,
       isInjured: false,
+      shirtNumber: 21,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'michele-besaggio',
@@ -214,6 +250,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_600_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 39,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'justin-kumi',
@@ -228,6 +267,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_700_000,
       salary: 90_000,
       isInjured: false,
+      shirtNumber: 16,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'antonio-de-cristofaro',
@@ -242,6 +284,9 @@ export const avellinoProfile: ClubProfile = {
       value: 600_000,
       salary: 40_000,
       isInjured: false,
+      shirtNumber: 4,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'roberto-insigne',
@@ -256,6 +301,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_900_000,
       salary: 100_000,
       isInjured: false,
+      shirtNumber: 94,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'giuseppe-panico',
@@ -270,6 +318,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 33,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'raffaele-russo',
@@ -284,13 +335,16 @@ export const avellinoProfile: ClubProfile = {
       value: 700_000,
       salary: 45_000,
       isInjured: false,
+      shirtNumber: 10,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
 
     // Forwards
     {
       id: 'luca-d-andrea',
       firstName: 'Luca',
-      lastName: 'D\'Andrea',
+      lastName: "D'Andrea",
       age: 21,
       position: 'RW',
       rating: 64,
@@ -300,6 +354,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_400_000,
       salary: 75_000,
       isInjured: false,
+      shirtNumber: 11,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
     {
       id: 'gennaro-tutino',
@@ -314,6 +371,9 @@ export const avellinoProfile: ClubProfile = {
       value: 2_400_000,
       salary: 110_000,
       isInjured: false,
+      shirtNumber: 7,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'tommaso-biasci',
@@ -328,6 +388,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 14,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'facundo-lescano',
@@ -342,6 +405,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_200_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 32,
+      nationality: 'Аргентина',
+      preferredFoot: 'right',
     },
     {
       id: 'andrea-favilli',
@@ -356,6 +422,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_000_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 99,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'cosimo-patierno',
@@ -370,6 +439,9 @@ export const avellinoProfile: ClubProfile = {
       value: 500_000,
       salary: 70_000,
       isInjured: false,
+      shirtNumber: 9,
+      nationality: 'Италия',
+      preferredFoot: 'right',
     },
     {
       id: 'valerio-crespi',
@@ -384,6 +456,9 @@ export const avellinoProfile: ClubProfile = {
       value: 1_700_000,
       salary: 50_000,
       isInjured: false,
+      shirtNumber: 17,
+      nationality: 'Италия',
+      preferredFoot: 'left',
     },
   ],
 }
