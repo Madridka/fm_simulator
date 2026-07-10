@@ -416,10 +416,15 @@ export type SeasonTaskKind =
   | 'academy_promotions'
   | 'academy_appearances'
   | 'academy_purchase'
+  | 'first_team_purchase'
   | 'weak_position_purchase'
   | 'goals_in_match'
   | 'win_with_formation'
   | 'clean_sheet_with_formation'
+  | 'win_with_mentality'
+  | 'clean_sheet_with_mentality'
+  | 'goals_with_mentality'
+  | 'win_with_tactical_style'
 
 export interface SeasonTask {
   id: string
@@ -432,6 +437,8 @@ export interface SeasonTask {
   targetPosition?: number
   targetCupRoundId?: string
   targetFormation?: Formation
+  targetMentality?: MatchMentality
+  targetTacticalStyle?: TacticalStyle
   weakPosition?: PlayerPosition
   minimumRating?: number
 }

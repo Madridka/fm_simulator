@@ -5,6 +5,7 @@ import type {
   Club,
   Formation,
   GameState,
+  MatchMentality,
   Match,
   Player,
   PlayerPosition,
@@ -12,17 +13,24 @@ import type {
   SeasonTaskCategory,
   SeasonTaskEvent,
   SeasonTaskKind,
+  TacticalStyle,
 } from '@/types/football'
 import { createSeededRandom } from '@/utils/random'
 
 interface SeasonTaskPoolItem {
   id: string
   kind: SeasonTaskKind
-  category: SeasonTaskCategory
   title: string
   description: string
   targetCount?: number
   targetFormation?: Formation
+  targetMentality?: MatchMentality
+  targetTacticalStyle?: TacticalStyle
+}
+
+interface SeasonTaskPool {
+  secondary: SeasonTaskPoolItem[]
+  optional: SeasonTaskPoolItem[]
 }
 
 export interface SeasonTaskProgress {
@@ -35,7 +43,25 @@ export interface SeasonTaskProgress {
   detailLabel: string
 }
 
-const pool = seasonTaskPool as SeasonTaskPoolItem[]
+const pool = seasonTaskPool as SeasonTaskPool
+
+const secondaryTaskKinds = new Set<SeasonTaskKind>([
+  'academy_promotions',
+  'academy_appearances',
+  'academy_purchase',
+  'first_team_purchase',
+  'weak_position_purchase',
+])
+
+const optionalTaskKinds = new Set<SeasonTaskKind>([
+  'goals_in_match',
+  'win_with_formation',
+  'clean_sheet_with_formation',
+  'win_with_mentality',
+  'clean_sheet_with_mentality',
+  'goals_with_mentality',
+  'win_with_tactical_style',
+])
 
 const cupRoundNames: Record<string, string> = {
   preliminary: 'предварительного раунда',
@@ -218,7 +244,11 @@ const createCupTask = (state: GameState): SeasonTask | undefined => {
   }
 }
 
-const weakPositionTask = (state: GameState, source: SeasonTaskPoolItem): SeasonTask | undefined => {
+const weakPositionTask = (
+  state: GameState,
+  source: SeasonTaskPoolItem,
+  category: SeasonTaskCategory,
+): SeasonTask | undefined => {
   const club = selectedClub(state)
   const lineup = state.lineups[state.selectedClubId]
   if (!club || !lineup) return undefined
@@ -246,6 +276,7 @@ const weakPositionTask = (state: GameState, source: SeasonTaskPoolItem): SeasonT
     ...source,
     id: `s${state.season}-${source.id}-${weakest.position}`,
     season: state.season,
+    category,
     weakPosition: weakest.position,
     minimumRating,
     description: `Купи игрока на позицию ${positionLabels[weakest.position]} с рейтингом ${minimumRating}+.`,
@@ -257,26 +288,18 @@ export const createSeasonTasks = (state: GameState): SeasonTask[] => {
     (task): task is SeasonTask => Boolean(task),
   )
   const seed = state.careerSeed + state.season * 9_973
-  const createTask = (task: SeasonTaskPoolItem): SeasonTask | undefined =>
+  const createTask =
+    (category: SeasonTaskCategory) =>
+    (task: SeasonTaskPoolItem): SeasonTask | undefined =>
     task.kind === 'weak_position_purchase'
-      ? weakPositionTask(state, task)
-      : { ...task, id: `s${state.season}-${task.id}`, season: state.season }
-  const secondaryTasks = shuffle(
-    pool.filter((task) => task.category === 'secondary'),
-    seed + 31,
-  )
-    .map(createTask)
+      ? weakPositionTask(state, task, category)
+      : { ...task, id: `s${state.season}-${task.id}`, season: state.season, category }
+  const secondaryTasks = shuffle(pool.secondary, seed + 31)
+    .map(createTask('secondary'))
     .filter((task): task is SeasonTask => Boolean(task))
     .slice(0, 5)
-  const optionalTasks = shuffle(
-    pool.filter((task) => task.category === 'optional'),
-    seed + 79,
-  )
-    .map((task) =>
-      task.kind === 'weak_position_purchase'
-        ? weakPositionTask(state, task)
-        : { ...task, id: `s${state.season}-${task.id}`, season: state.season },
-    )
+  const optionalTasks = shuffle(pool.optional, seed + 79)
+    .map(createTask('optional'))
     .filter((task): task is SeasonTask => Boolean(task))
     .slice(0, 3)
 
@@ -288,12 +311,19 @@ export const ensureSeasonTasks = (state: GameState): GameState => {
   const hasExpectedStructure =
     existingTasks.filter((task) => task.category === 'important').length >= 2 &&
     existingTasks.filter((task) => task.category === 'secondary').length >= 5 &&
-    existingTasks.filter((task) => task.category === 'optional').length >= 3
+    existingTasks.filter((task) => task.category === 'optional').length >= 3 &&
+    existingTasks
+      .filter((task) => task.category === 'secondary')
+      .every((task) => secondaryTaskKinds.has(task.kind)) &&
+    existingTasks
+      .filter((task) => task.category === 'optional')
+      .every((task) => optionalTaskKinds.has(task.kind))
   const tasks = hasExpectedStructure ? existingTasks : createSeasonTasks(state)
   return {
     ...state,
     seasonTasks: tasks,
-    seasonTaskEvents: state.seasonTaskEvents?.filter((event) => event.season === state.season) ?? [],
+    seasonTaskEvents:
+      state.seasonTaskEvents?.filter((event) => event.season === state.season) ?? [],
   }
 }
 
@@ -360,6 +390,16 @@ const userFormation = (state: GameState, match: Match): Formation | undefined =>
   return side ? match.lineups?.[side].formation : undefined
 }
 
+const userMentality = (state: GameState, match: Match): MatchMentality | undefined => {
+  const side = userSide(state, match)
+  return side ? match.lineups?.[side].tactics?.mentality : undefined
+}
+
+const userTacticalStyle = (state: GameState, match: Match): TacticalStyle | undefined => {
+  const side = userSide(state, match)
+  return side ? match.lineups?.[side].tacticalStyle : undefined
+}
+
 const seasonEvents = (state: GameState, type: SeasonTaskEvent['type']): SeasonTaskEvent[] =>
   (state.seasonTaskEvents ?? []).filter(
     (event) => event.season === state.season && event.type === type,
@@ -377,8 +417,7 @@ const academyAppearances = (state: GameState): number =>
 const matchingWeakPurchases = (state: GameState, task: SeasonTask): number =>
   seasonEvents(state, 'first-team-purchase').filter(
     (event) =>
-      event.position === task.weakPosition &&
-      (event.rating ?? 0) >= (task.minimumRating ?? 0),
+      event.position === task.weakPosition && (event.rating ?? 0) >= (task.minimumRating ?? 0),
   ).length
 
 const countTaskProgress = (state: GameState, task: SeasonTask): number => {
@@ -388,6 +427,7 @@ const countTaskProgress = (state: GameState, task: SeasonTask): number => {
 
   if (task.kind === 'academy_promotions') return seasonEvents(state, 'academy-promotion').length
   if (task.kind === 'academy_purchase') return seasonEvents(state, 'academy-purchase').length
+  if (task.kind === 'first_team_purchase') return seasonEvents(state, 'first-team-purchase').length
   if (task.kind === 'academy_appearances') return academyAppearances(state)
   if (task.kind === 'weak_position_purchase') return matchingWeakPurchases(state, task)
   if (task.kind === 'goals_in_match') {
@@ -404,6 +444,37 @@ const countTaskProgress = (state: GameState, task: SeasonTask): number => {
     return playedUserMatches.some(
       (match) =>
         userFormation(state, match) === task.targetFormation && opponentGoals(state, match) === 0,
+    )
+      ? 1
+      : 0
+  }
+  if (task.kind === 'win_with_mentality') {
+    return playedUserMatches.some(
+      (match) => userMentality(state, match) === task.targetMentality && userWon(state, match),
+    )
+      ? 1
+      : 0
+  }
+  if (task.kind === 'clean_sheet_with_mentality') {
+    return playedUserMatches.some(
+      (match) =>
+        userMentality(state, match) === task.targetMentality && opponentGoals(state, match) === 0,
+    )
+      ? 1
+      : 0
+  }
+  if (task.kind === 'goals_with_mentality') {
+    return Math.max(
+      0,
+      ...playedUserMatches
+        .filter((match) => userMentality(state, match) === task.targetMentality)
+        .map((match) => userGoals(state, match)),
+    )
+  }
+  if (task.kind === 'win_with_tactical_style') {
+    return playedUserMatches.some(
+      (match) =>
+        userTacticalStyle(state, match) === task.targetTacticalStyle && userWon(state, match),
     )
       ? 1
       : 0

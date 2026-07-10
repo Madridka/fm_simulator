@@ -1,94 +1,629 @@
-[
-  {
-    "id": "academy-promotions-2",
-    "kind": "academy_promotions",
-    "category": "secondary",
-    "title": "Поднять молодежь",
-    "description": "Переведи 2 игроков из академии в основную команду.",
-    "targetCount": 2
-  },
-  {
-    "id": "academy-promotions-3",
-    "kind": "academy_promotions",
-    "category": "secondary",
-    "title": "Смелее с резервом",
-    "description": "Переведи 3 игроков из академии в основную команду.",
-    "targetCount": 3
-  },
-  {
-    "id": "academy-appearances-8",
-    "kind": "academy_appearances",
-    "category": "secondary",
-    "title": "Минуты воспитанникам",
-    "description": "Дай воспитанникам академии суммарно 8 матчей за сезон.",
-    "targetCount": 8
-  },
-  {
-    "id": "academy-appearances-12",
-    "kind": "academy_appearances",
-    "category": "secondary",
-    "title": "Ставка на своих",
-    "description": "Дай воспитанникам академии суммарно 12 матчей за сезон.",
-    "targetCount": 12
-  },
-  {
-    "id": "academy-market-buy",
-    "kind": "academy_purchase",
-    "category": "optional",
-    "title": "Талант в академию",
-    "description": "Купи игрока на трансферном рынке и отправь его в академию.",
-    "targetCount": 1
-  },
-  {
-    "id": "weak-position-buy",
-    "kind": "weak_position_purchase",
-    "category": "secondary",
-    "title": "Закрыть слабую позицию",
-    "description": "Купи игрока сильнее на самую проседающую позицию стартового состава.",
-    "targetCount": 1
-  },
-  {
-    "id": "score-three",
-    "kind": "goals_in_match",
-    "category": "optional",
-    "title": "Матч без тормозов",
-    "description": "Забей 3 или больше голов в одном матче.",
-    "targetCount": 3
-  },
-  {
-    "id": "win-460",
-    "kind": "win_with_formation",
-    "category": "optional",
-    "title": "Победа без форварда",
-    "description": "Сыграй схемой 4-6-0 и победи.",
-    "targetFormation": "4-6-0",
-    "targetCount": 1
-  },
-  {
-    "id": "clean-235",
-    "kind": "clean_sheet_with_formation",
-    "category": "optional",
-    "title": "Ретро-автобус наоборот",
-    "description": "Сыграй схемой 2-3-5 и не пропусти.",
-    "targetFormation": "2-3-5",
-    "targetCount": 1
-  },
-  {
-    "id": "win-235",
-    "kind": "win_with_formation",
-    "category": "optional",
-    "title": "Атака из музея",
-    "description": "Сыграй схемой 2-3-5 и победи.",
-    "targetFormation": "2-3-5",
-    "targetCount": 1
-  },
-  {
-    "id": "clean-460",
-    "kind": "clean_sheet_with_formation",
-    "category": "optional",
-    "title": "Нулевая ложная девятка",
-    "description": "Сыграй схемой 4-6-0 и не пропусти.",
-    "targetFormation": "4-6-0",
-    "targetCount": 1
-  }
-]
+{
+  "secondary": [
+    {
+      "id": "academy-promotions-2",
+      "kind": "academy_promotions",
+      "title": "Поднять молодежь",
+      "description": "Переведи 2 игроков из академии в основную команду.",
+      "targetCount": 2
+    },
+    {
+      "id": "academy-promotions-3",
+      "kind": "academy_promotions",
+      "title": "Смелее с резервом",
+      "description": "Переведи 3 игроков из академии в основную команду.",
+      "targetCount": 3
+    },
+    {
+      "id": "academy-appearances-8",
+      "kind": "academy_appearances",
+      "title": "Минуты воспитанникам",
+      "description": "Воспитанники академии должны суммарно принять участие в 8 матчах за сезон.",
+      "targetCount": 8
+    },
+    {
+      "id": "academy-appearances-12",
+      "kind": "academy_appearances",
+      "title": "Ставка на своих",
+      "description": "Воспитанники академии должны суммарно принять участие в 12 матчах за сезон.",
+      "targetCount": 12
+    },
+    {
+      "id": "academy-appearances-20",
+      "kind": "academy_appearances",
+      "title": "Доверие молодым",
+      "description": "Воспитанники академии должны суммарно принять участие в 20 матчах за сезон.",
+      "targetCount": 20
+    },
+    {
+      "id": "academy-market-buy",
+      "kind": "academy_purchase",
+      "title": "Талант в академию",
+      "description": "Купи молодого игрока на трансферном рынке и отправь его в академию.",
+      "targetCount": 1
+    },
+    {
+      "id": "first-team-market-buy",
+      "kind": "first_team_purchase",
+      "title": "Усилить основу",
+      "description": "Купи игрока на трансферном рынке в основную команду.",
+      "targetCount": 1
+    },
+    {
+      "id": "first-team-market-buys-2",
+      "kind": "first_team_purchase",
+      "title": "Перестроить состав",
+      "description": "Купи 2 игроков на трансферном рынке в основную команду.",
+      "targetCount": 2
+    },
+    {
+      "id": "first-team-market-buys-3",
+      "kind": "first_team_purchase",
+      "title": "Новое лицо команды",
+      "description": "Купи 3 игроков на трансферном рынке в основную команду.",
+      "targetCount": 3
+    },
+    {
+      "id": "weak-position-buy",
+      "kind": "weak_position_purchase",
+      "title": "Закрыть слабую позицию",
+      "description": "Купи игрока, который усилит самую слабую позицию стартового состава.",
+      "targetCount": 1
+    }
+  ],
+  "optional": [
+    {
+      "id": "score-three",
+      "kind": "goals_in_match",
+      "title": "Матч без тормозов",
+      "description": "Дождись матча, в котором твоя команда забьет не менее 3 голов.",
+      "targetCount": 3
+    },
+    {
+      "id": "score-four",
+      "kind": "goals_in_match",
+      "title": "Фейерверк",
+      "description": "Дождись матча, в котором твоя команда забьет не менее 4 голов.",
+      "targetCount": 4
+    },
+    {
+      "id": "score-five",
+      "kind": "goals_in_match",
+      "title": "Футбольный разгром",
+      "description": "Дождись матча, в котором твоя команда забьет не менее 5 голов.",
+      "targetCount": 5
+    },
+    {
+      "id": "win-by-four",
+      "kind": "win_by_goal_difference",
+      "title": "Без права на ответ",
+      "description": "Пусть твоя команда одержит победу с разницей минимум в 4 мяча.",
+      "targetCount": 4
+    },
+    {
+      "id": "comeback-from-one",
+      "kind": "comeback_win",
+      "title": "Характер",
+      "description": "Стань свидетелем победы команды после того, как она уступала по ходу матча.",
+      "targetCount": 1
+    },
+    {
+      "id": "comeback-from-two",
+      "kind": "comeback_win_from_deficit",
+      "title": "Невозможный камбэк",
+      "description": "Стань свидетелем победы команды после отставания минимум в 2 мяча.",
+      "targetDeficit": 2,
+      "targetCount": 1
+    },
+    {
+      "id": "late-winning-goal",
+      "kind": "late_winning_goal",
+      "title": "На последних секундах",
+      "description": "Пусть твоя команда забьет победный гол после 85-й минуты.",
+      "targetMinute": 85,
+      "targetCount": 1
+    },
+    {
+      "id": "early-goal",
+      "kind": "early_goal",
+      "title": "Быстрый старт",
+      "description": "Пусть твоя команда забьет гол в первые 5 минут матча.",
+      "targetMinute": 5,
+      "targetCount": 1
+    },
+    {
+      "id": "two-goals-in-five-minutes",
+      "kind": "goals_within_minutes",
+      "title": "Двойной удар",
+      "description": "Дождись момента, когда команда забьет 2 гола за 5 игровых минут.",
+      "targetGoals": 2,
+      "targetMinutes": 5,
+      "targetCount": 1
+    },
+    {
+      "id": "substitute-scores",
+      "kind": "substitute_goal",
+      "title": "Удачная замена",
+      "description": "Пусть игрок, вышедший на замену, забьет гол.",
+      "targetCount": 1
+    },
+    {
+      "id": "two-substitute-goals",
+      "kind": "substitute_goals_in_match",
+      "title": "Золотая скамейка",
+      "description": "Пусть вышедшие на замену игроки забьют 2 гола в одном матче.",
+      "targetCount": 2
+    },
+    {
+      "id": "substitute-assist",
+      "kind": "substitute_assist",
+      "title": "Тренер угадал",
+      "description": "Пусть игрок, вышедший на замену, сделает голевую передачу.",
+      "targetCount": 1
+    },
+    {
+      "id": "academy-player-scores",
+      "kind": "academy_player_goal",
+      "title": "Первый гол воспитанника",
+      "description": "Пусть воспитанник клубной академии забьет гол за основную команду.",
+      "targetCount": 1
+    },
+    {
+      "id": "academy-player-assists",
+      "kind": "academy_player_assist",
+      "title": "Сделано в академии",
+      "description": "Пусть воспитанник клубной академии сделает голевую передачу.",
+      "targetCount": 1
+    },
+    {
+      "id": "academy-starting-eleven-3",
+      "kind": "academy_players_in_starting_eleven",
+      "title": "Свои ребята",
+      "description": "Выпусти в стартовом составе минимум 3 воспитанников академии.",
+      "targetCount": 3
+    },
+    {
+      "id": "young-player-scores",
+      "kind": "young_player_goal",
+      "title": "Юное дарование",
+      "description": "Пусть игрок не старше 19 лет забьет гол за твою команду.",
+      "targetAge": 19,
+      "targetCount": 1
+    },
+    {
+      "id": "veteran-player-scores",
+      "kind": "veteran_player_goal",
+      "title": "Старый конь",
+      "description": "Пусть игрок в возрасте 35 лет или старше забьет гол.",
+      "targetAge": 35,
+      "targetCount": 1
+    },
+    {
+      "id": "defender-double",
+      "kind": "position_goals_in_match",
+      "title": "Защитник-бомбардир",
+      "description": "Пусть один защитник забьет 2 гола в одном матче.",
+      "targetPositionGroup": "defender",
+      "targetCount": 2
+    },
+    {
+      "id": "goalkeeper-assist",
+      "kind": "goalkeeper_assist",
+      "title": "Начало атаки",
+      "description": "Пусть вратарь твоей команды сделает голевую передачу.",
+      "targetCount": 1
+    },
+    {
+      "id": "captain-scores",
+      "kind": "captain_goal",
+      "title": "Капитанский пример",
+      "description": "Пусть капитан команды отметится забитым голом.",
+      "targetCount": 1
+    },
+    {
+      "id": "hat-trick",
+      "kind": "player_goals_in_match",
+      "title": "Забрать мяч домой",
+      "description": "Дождись матча, в котором один игрок твоей команды оформит хет-трик.",
+      "targetCount": 3
+    },
+    {
+      "id": "four-goals-player",
+      "kind": "player_goals_in_match",
+      "title": "Покер",
+      "description": "Дождись матча, в котором один игрок твоей команды забьет 4 гола.",
+      "targetCount": 4
+    },
+    {
+      "id": "three-assists-player",
+      "kind": "player_assists_in_match",
+      "title": "Дирижер",
+      "description": "Пусть один игрок сделает 3 голевые передачи в одном матче.",
+      "targetCount": 3
+    },
+    {
+      "id": "goal-and-assist",
+      "kind": "goal_and_assist_in_match",
+      "title": "Главный герой",
+      "description": "Пусть один игрок забьет гол и сделает голевую передачу в одном матче.",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-sheet",
+      "kind": "clean_sheets",
+      "title": "На замке",
+      "description": "Дождись матча, в котором твоя команда не пропустит ни одного гола.",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-sheet-streak-3",
+      "kind": "clean_sheet_streak",
+      "title": "Сухая серия",
+      "description": "Пусть команда не пропустит ни одного гола в 3 матчах подряд.",
+      "targetCount": 3
+    },
+    {
+      "id": "win-streak-3",
+      "kind": "win_streak",
+      "title": "На ходу",
+      "description": "Пусть команда одержит 3 победы подряд.",
+      "targetCount": 3
+    },
+    {
+      "id": "win-streak-5",
+      "kind": "win_streak",
+      "title": "Машина побед",
+      "description": "Пусть команда одержит 5 побед подряд.",
+      "targetCount": 5
+    },
+    {
+      "id": "unbeaten-streak-5",
+      "kind": "unbeaten_streak",
+      "title": "Нас не сломить",
+      "description": "Пусть команда проведет 5 матчей подряд без поражений.",
+      "targetCount": 5
+    },
+    {
+      "id": "away-win-streak-3",
+      "kind": "away_win_streak",
+      "title": "Короли выезда",
+      "description": "Пусть команда одержит 3 гостевые победы подряд.",
+      "targetCount": 3
+    },
+    {
+      "id": "home-clean-sheets-3",
+      "kind": "home_clean_sheet_streak",
+      "title": "Дома не пропускаем",
+      "description": "Пусть команда не пропустит в 3 домашних матчах подряд.",
+      "targetCount": 3
+    },
+    {
+      "id": "win-with-ten-men",
+      "kind": "win_after_red_card",
+      "title": "В меньшинстве",
+      "description": "Стань свидетелем победы команды после удаления одного из ее игроков.",
+      "targetCount": 1
+    },
+    {
+      "id": "no-cards-match",
+      "kind": "match_without_cards",
+      "title": "Чистая игра",
+      "description": "Дождись матча, в котором игроки твоей команды не получат ни одной карточки.",
+      "targetCount": 1
+    },
+    {
+      "id": "three-matches-no-red",
+      "kind": "matches_without_red_cards",
+      "title": "Холодная голова",
+      "description": "Пусть команда проведет 3 матча подряд без удалений.",
+      "targetCount": 3
+    },
+    {
+      "id": "penalty-save",
+      "kind": "penalty_saved",
+      "title": "Угадал угол",
+      "description": "Пусть вратарь твоей команды отразит пенальти.",
+      "targetCount": 1
+    },
+    {
+      "id": "penalty-win",
+      "kind": "penalty_shootout_win",
+      "title": "Железные нервы",
+      "description": "Дождись победы своей команды в серии пенальти.",
+      "targetCount": 1
+    },
+    {
+      "id": "win-without-substitutions",
+      "kind": "win_without_substitutions",
+      "title": "Незаменимые",
+      "description": "Не используй замены и дождись победы своей команды.",
+      "targetCount": 1
+    },
+    {
+      "id": "win-with-five-substitutions",
+      "kind": "win_with_substitutions",
+      "title": "Использовать всю скамейку",
+      "description": "Сделай 5 замен в одном матче, который завершится победой твоей команды.",
+      "targetSubstitutions": 5,
+      "targetCount": 1
+    },
+    {
+      "id": "different-scorers-4",
+      "kind": "different_scorers_in_match",
+      "title": "Командная работа",
+      "description": "Дождись матча, в котором голы забьют 4 разных игрока твоей команды.",
+      "targetCount": 4
+    },
+    {
+      "id": "score-both-halves",
+      "kind": "score_in_both_halves",
+      "title": "Стабильное давление",
+      "description": "Пусть твоя команда забьет как в первом, так и во втором тайме.",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-first-half",
+      "kind": "clean_sheet_first_half",
+      "title": "Без раскачки",
+      "description": "Пусть команда завершит первый тайм без пропущенных голов.",
+      "targetCount": 1
+    },
+    {
+      "id": "second-half-comeback",
+      "kind": "second_half_comeback_win",
+      "title": "Разговор в раздевалке",
+      "description": "Стань свидетелем победы команды после проигранного первого тайма.",
+      "targetCount": 1
+    },
+    {
+      "id": "win-after-draw-half-time",
+      "kind": "win_after_draw_at_half_time",
+      "title": "Дожать соперника",
+      "description": "Дождись победы команды после ничейного счета по итогам первого тайма.",
+      "targetCount": 1
+    },
+    {
+      "id": "formation-change-win",
+      "kind": "win_after_formation_change",
+      "title": "Тактический переворот",
+      "description": "Измени схему по ходу матча, который завершится победой твоей команды.",
+      "targetCount": 1
+    },
+    {
+      "id": "mentality-change-goal",
+      "kind": "goal_after_mentality_change",
+      "title": "Риск оправдан",
+      "description": "Переключись на атакующий менталитет и дождись гола своей команды.",
+      "targetCount": 1
+    },
+    {
+      "id": "win-460",
+      "kind": "win_with_formation",
+      "title": "Победа без форварда",
+      "description": "Используй схему 4-6-0 в матче, который завершится победой твоей команды.",
+      "targetFormation": "4-6-0",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-235",
+      "kind": "clean_sheet_with_formation",
+      "title": "Ретро-сухарь",
+      "description": "Используй схему 2-3-5 и дождись матча без пропущенных голов.",
+      "targetFormation": "2-3-5",
+      "targetCount": 1
+    },
+    {
+      "id": "win-235",
+      "kind": "win_with_formation",
+      "title": "Атака из музея",
+      "description": "Используй схему 2-3-5 в матче, который завершится победой твоей команды.",
+      "targetFormation": "2-3-5",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-460",
+      "kind": "clean_sheet_with_formation",
+      "title": "Нулевая ложная девятка",
+      "description": "Используй схему 4-6-0 и дождись матча без пропущенных голов.",
+      "targetFormation": "4-6-0",
+      "targetCount": 1
+    },
+    {
+      "id": "win-343",
+      "kind": "win_with_formation",
+      "title": "Тройка сзади",
+      "description": "Используй схему 3-4-3 в матче, который завершится победой твоей команды.",
+      "targetFormation": "3-4-3",
+      "targetCount": 1
+    },
+    {
+      "id": "clean-532",
+      "kind": "clean_sheet_with_formation",
+      "title": "Пять замков",
+      "description": "Используй схему 5-3-2 и дождись матча без пропущенных голов.",
+      "targetFormation": "5-3-2",
+      "targetCount": 1
+    },
+    {
+      "id": "win-three-formations",
+      "kind": "wins_with_different_formations",
+      "title": "Тактический хамелеон",
+      "description": "Дождись побед с использованием 3 разных игровых схем.",
+      "targetCount": 3
+    },
+    {
+      "id": "win-all-out",
+      "kind": "win_with_mentality",
+      "title": "Все в атаку",
+      "description": "Используй менталитет «Все в атаку» и дождись победы своей команды.",
+      "targetMentality": "allOutAttack",
+      "targetCount": 1
+    },
+    {
+      "id": "score-three-all-out",
+      "kind": "goals_with_mentality",
+      "title": "Без ремней безопасности",
+      "description": "Используй менталитет «Все в атаку» и дождись матча с 3 или более голами своей команды.",
+      "targetMentality": "allOutAttack",
+      "targetCount": 3
+    },
+    {
+      "id": "clean-park-bus",
+      "kind": "clean_sheet_with_mentality",
+      "title": "Закрытая дверь",
+      "description": "Используй менталитет «Автобус» и дождись матча без пропущенных голов.",
+      "targetMentality": "parkTheBus",
+      "targetCount": 1
+    },
+    {
+      "id": "win-defensive-style",
+      "kind": "win_with_tactical_style",
+      "title": "Холодный расчет",
+      "description": "Используй оборонительный тактический стиль и дождись победы своей команды.",
+      "targetTacticalStyle": "defensive",
+      "targetCount": 1
+    },
+    {
+      "id": "win-attacking-style",
+      "kind": "win_with_tactical_style",
+      "title": "Первым номером",
+      "description": "Используй атакующий тактический стиль и дождись победы своей команды.",
+      "targetTacticalStyle": "attacking",
+      "targetCount": 1
+    },
+    {
+      "id": "high-press-win",
+      "kind": "win_with_pressing",
+      "title": "Задушить прессингом",
+      "description": "Используй высокий прессинг и дождись победы своей команды.",
+      "targetPressing": "high",
+      "targetCount": 1
+    },
+    {
+      "id": "low-block-clean-sheet",
+      "kind": "clean_sheet_with_defensive_line",
+      "title": "Глубокая оборона",
+      "description": "Используй низкую линию обороны и дождись матча без пропущенных голов.",
+      "targetDefensiveLine": "low",
+      "targetCount": 1
+    },
+    {
+      "id": "rotate-starting-eleven",
+      "kind": "starting_lineup_changes",
+      "title": "Большая ротация",
+      "description": "Замени минимум 5 игроков стартового состава по сравнению с предыдущим матчем.",
+      "targetCount": 5
+    },
+    {
+      "id": "same-eleven-three-matches",
+      "kind": "same_starting_lineup_streak",
+      "title": "Стабильность состава",
+      "description": "Используй один и тот же стартовый состав в 3 матчах подряд.",
+      "targetCount": 3
+    },
+    {
+      "id": "all-players-fit",
+      "kind": "match_with_full_fitness_starting_eleven",
+      "title": "Свежие ноги",
+      "description": "Начни матч составом, в котором готовность каждого игрока составляет не менее 90.",
+      "targetFitness": 90,
+      "targetCount": 1
+    },
+    {
+      "id": "low-fitness-win",
+      "kind": "win_with_low_fitness_player",
+      "title": "На морально-волевых",
+      "description": "Выпусти в стартовом составе игрока с готовностью ниже 60 и дождись победы команды.",
+      "targetFitness": 60,
+      "targetCount": 1
+    },
+    {
+      "id": "underdog-win",
+      "kind": "win_against_stronger_team",
+      "title": "Прыжок выше головы",
+      "description": "Дождись победы над командой с более высоким средним рейтингом состава.",
+      "targetCount": 1
+    },
+    {
+      "id": "win-with-lower-possession",
+      "kind": "win_with_lower_possession",
+      "title": "Пусть мяч остается у них",
+      "description": "Дождись победы в матче, где твоя команда владела мячом меньше соперника.",
+      "targetCount": 1
+    },
+    {
+      "id": "dominant-possession-win",
+      "kind": "win_with_possession",
+      "title": "Тотальный контроль",
+      "description": "Дождись победы с владением мячом не менее 65 процентов.",
+      "targetPercent": 65,
+      "targetCount": 1
+    },
+    {
+      "id": "many-shots",
+      "kind": "shots_in_match",
+      "title": "Обстрел ворот",
+      "description": "Пусть твоя команда нанесет не менее 20 ударов за один матч.",
+      "targetCount": 20
+    },
+    {
+      "id": "clinical-finishing",
+      "kind": "goals_from_shots",
+      "title": "Хладнокровие",
+      "description": "Дождись матча, в котором команда забьет минимум 3 гола при не более чем 5 ударах в створ.",
+      "targetGoals": 3,
+      "maxShotsOnTarget": 5,
+      "targetCount": 1
+    },
+    {
+      "id": "one-shot-one-goal",
+      "kind": "perfect_shot_conversion",
+      "title": "Один шанс",
+      "description": "Дождись победы, в которой единственный удар команды в створ завершится голом.",
+      "targetShotsOnTarget": 1,
+      "targetCount": 1
+    },
+    {
+      "id": "transfer-debut-goal",
+      "kind": "new_signing_debut_goal",
+      "title": "Мгновенная отдача",
+      "description": "Пусть новичок команды забьет гол в своем дебютном матче.",
+      "targetCount": 1
+    },
+    {
+      "id": "free-agent-goal",
+      "kind": "free_agent_goal",
+      "title": "Бесплатная находка",
+      "description": "Пусть игрок, подписанный свободным агентом, забьет гол.",
+      "targetCount": 1
+    },
+    {
+      "id": "cheap-signing-success",
+      "kind": "low_cost_signing_goal",
+      "title": "Выгодная покупка",
+      "description": "Пусть игрок, купленный дешевле своей рыночной стоимости, забьет гол.",
+      "targetCount": 1
+    },
+    {
+      "id": "sell-for-profit",
+      "kind": "profitable_player_sale",
+      "title": "Трансферный делец",
+      "description": "Продай игрока дороже суммы, за которую клуб его приобрел.",
+      "targetCount": 1
+    },
+    {
+      "id": "international-starting-eleven",
+      "kind": "nationalities_in_starting_eleven",
+      "title": "Интернационал",
+      "description": "Выпусти в стартовом составе игроков минимум 7 разных национальностей.",
+      "targetCount": 7
+    },
+    {
+      "id": "domestic-starting-eleven",
+      "kind": "domestic_players_in_starting_eleven",
+      "title": "Национальный костяк",
+      "description": "Выпусти в стартовом составе минимум 8 игроков из страны клуба.",
+      "targetCount": 8
+    }
+  ]
+}
