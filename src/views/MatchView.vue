@@ -22,8 +22,10 @@ import { useGameStore } from '@/stores/game/gameStore'
 import type {
   Club,
   ClubLineup,
+  CardEvent,
   CommentaryEvent,
   Formation,
+  InjuryEvent,
   Match,
   MatchLineups,
   MatchResult,
@@ -71,6 +73,22 @@ const coachActionResetMinute = ref<number | null>(null)
 let matchCompletionPromise: Promise<void> | null = null
 const HALF_TIME_MINUTE = 45
 const COACH_ACTION_COOLDOWN_MINUTES = 15
+const LIVE_EVENT_DIALOG_DURATION_MS = 2_000
+
+type LiveEventDialogTone = 'goal' | 'yellow-card' | 'red-card' | 'injury'
+
+interface LiveEventDialog {
+  id: string
+  tone: LiveEventDialogTone
+  minute: number
+  title: string
+  description: string
+}
+
+const liveEventDialog = ref<LiveEventDialog | null>(null)
+const liveEventQueue = ref<LiveEventDialog[]>([])
+const seenLiveEventKeys = ref<Set<string>>(new Set())
+const liveEventTimerId = ref<number | null>(null)
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -242,11 +260,6 @@ const emptySnapshot = (): MatchSnapshot => ({
 const formationOptions = formations.map((formation) => ({
   label: formation,
   value: formation,
-}))
-
-const simulationSpeedOptions = LIVE_MATCH_SPEED_MULTIPLIERS.map((speed) => ({
-  label: `x${speed}`,
-  value: speed,
 }))
 
 // ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
@@ -454,6 +467,103 @@ const playerName = (playerId?: string): string => {
   return player ? `${player.firstName} ${player.lastName}` : playerId
 }
 
+const clubDisplayName = (clubId: string): string =>
+  clubStore.getClubById(clubId)?.name ?? clubId
+
+const liveEventToneClass = (tone: LiveEventDialogTone): string => {
+  if (tone === 'goal') return 'border-emerald-200 bg-emerald-50 text-emerald-950'
+  if (tone === 'yellow-card') return 'border-amber-200 bg-amber-50 text-amber-950'
+  if (tone === 'red-card') return 'border-rose-200 bg-rose-50 text-rose-950'
+  return 'border-sky-200 bg-sky-50 text-sky-950'
+}
+
+const liveEventIconClass = (tone: LiveEventDialogTone): string => {
+  if (tone === 'goal') return 'pi pi-flag-fill text-emerald-600'
+  if (tone === 'yellow-card') return 'pi pi-stop text-amber-500'
+  if (tone === 'red-card') return 'pi pi-stop text-rose-600'
+  return 'pi pi-plus-circle text-sky-600'
+}
+
+const clearLiveEventDialog = (): void => {
+  if (liveEventTimerId.value !== null) {
+    window.clearTimeout(liveEventTimerId.value)
+    liveEventTimerId.value = null
+  }
+  liveEventDialog.value = null
+  liveEventQueue.value = []
+}
+
+const showNextLiveEventDialog = (): void => {
+  if (liveEventTimerId.value !== null || liveEventDialog.value) return
+  const next = liveEventQueue.value.shift()
+  if (!next) return
+
+  liveEventDialog.value = next
+  liveEventTimerId.value = window.setTimeout(() => {
+    liveEventTimerId.value = null
+    liveEventDialog.value = null
+    showNextLiveEventDialog()
+  }, LIVE_EVENT_DIALOG_DURATION_MS)
+}
+
+const enqueueLiveEventDialog = (dialog: LiveEventDialog): void => {
+  if (seenLiveEventKeys.value.has(dialog.id)) return
+  seenLiveEventKeys.value.add(dialog.id)
+  liveEventQueue.value.push(dialog)
+  showNextLiveEventDialog()
+}
+
+const createGoalDialog = (
+  goal: MatchResult['goals'][number],
+  index: number,
+): LiveEventDialog => ({
+  id: `goal-${goal.minute}-${goal.clubId}-${goal.playerId}-${index}`,
+  tone: 'goal',
+  minute: goal.minute,
+  title: 'Гол!',
+  description: `${playerName(goal.playerId)} забил за ${clubDisplayName(goal.clubId)}.`,
+})
+
+const createCardDialog = (card: CardEvent, index: number): LiveEventDialog => {
+  const isRed = card.card === 'red'
+  return {
+    id: `${card.card}-${card.minute ?? 0}-${card.clubId}-${card.playerId}-${index}`,
+    tone: isRed ? 'red-card' : 'yellow-card',
+    minute: card.minute ?? currentMinute.value,
+    title: isRed ? 'Красная карточка' : 'Желтая карточка',
+    description: `${playerName(card.playerId)} (${clubDisplayName(card.clubId)}).`,
+  }
+}
+
+const createInjuryDialog = (injury: InjuryEvent, index: number): LiveEventDialog => ({
+  id: `injury-${injury.minute ?? 0}-${injury.clubId}-${injury.playerId}-${index}`,
+  tone: 'injury',
+  minute: injury.minute ?? currentMinute.value,
+  title: 'Травма',
+  description: `${playerName(injury.playerId)} из ${clubDisplayName(injury.clubId)} получил повреждение.`,
+})
+
+const showLiveEventsForMinute = (
+  result: MatchResult,
+  previousMinute: number,
+  nextMinute: number,
+): void => {
+  const isNewEvent = (minute?: number): boolean => {
+    const eventMinute = minute ?? nextMinute
+    return eventMinute > previousMinute && eventMinute <= nextMinute
+  }
+
+  const dialogs = [
+    ...result.goals.map(createGoalDialog).filter((dialog) => isNewEvent(dialog.minute)),
+    ...(result.cards ?? []).map(createCardDialog).filter((dialog) => isNewEvent(dialog.minute)),
+    ...(result.injuries ?? [])
+      .map(createInjuryDialog)
+      .filter((dialog) => isNewEvent(dialog.minute)),
+  ].sort((left, right) => left.minute - right.minute)
+
+  dialogs.forEach(enqueueLiveEventDialog)
+}
+
 // СОЗДАЁТ ИЛИ ВОЗВРАЩАЕТ УПРАВЛЯЕМОЕ СОСТОЯНИЕ МАТЧА
 const ensureLiveMatch = (): LiveMatchController | undefined => {
   const currentMatch = match.value
@@ -531,8 +641,10 @@ const advanceOneMinute = (): void => {
   if (!canSimulate.value || isCalculating.value) return
   const controller = ensureLiveMatch()
   if (!controller) return
+  const previousMinute = currentMinute.value
   controller.advance(1)
   currentMinute.value = controller.state.minute
+  showLiveEventsForMinute(controller.result(), previousMinute, currentMinute.value)
   resetExpiredCoachAction()
   revision.value += 1
   if (currentMinute.value === HALF_TIME_MINUTE) {
@@ -926,6 +1038,8 @@ watch(
   () => match.value?.id,
   () => {
     stopSimulationTimer()
+    clearLiveEventDialog()
+    seenLiveEventKeys.value = new Set()
     liveMatch.value = null
     currentMinute.value = 0
     isPaused.value = false
@@ -965,7 +1079,10 @@ watch(
 
 watch(activeLineupView, clearLineupSelection)
 
-onBeforeUnmount(stopSimulationTimer)
+onBeforeUnmount(() => {
+  stopSimulationTimer()
+  clearLiveEventDialog()
+})
 </script>
 
 <template>
@@ -974,6 +1091,43 @@ onBeforeUnmount(stopSimulationTimer)
     v-if="match && homeClub && awayClub"
     class="space-y-5 xl:flex xl:h-full xl:min-h-0 xl:flex-col xl:gap-3 xl:space-y-0"
   >
+    <Transition name="live-event-dialog">
+      <div
+        v-if="liveEventDialog"
+        :key="liveEventDialog.id"
+        role="status"
+        aria-live="polite"
+        class="fixed left-1/2 top-4 z-50 w-[calc(100vw-1.5rem)] max-w-sm -translate-x-1/2 overflow-hidden rounded-lg border shadow-[0_18px_45px_rgba(15,23,42,0.22)] sm:top-6 sm:w-full"
+        :class="liveEventToneClass(liveEventDialog.tone)"
+      >
+        <div class="flex items-start gap-3 px-4 py-3">
+          <span
+            class="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/80 text-base shadow-sm"
+          >
+            <i :class="liveEventIconClass(liveEventDialog.tone)"></i>
+          </span>
+          <div class="min-w-0 flex-1 text-left">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-black uppercase tracking-wide opacity-70">
+                {{ liveEventDialog.minute }}'
+              </span>
+              <h2 class="truncate text-sm font-black sm:text-base">
+                {{ liveEventDialog.title }}
+              </h2>
+            </div>
+            <p class="mt-0.5 text-xs font-semibold leading-snug sm:text-sm">
+              {{ liveEventDialog.description }}
+            </p>
+          </div>
+        </div>
+        <div class="h-1 bg-black/10">
+          <div
+            class="live-event-dialog-progress h-full bg-current opacity-70"
+            :style="{ animationDuration: `${LIVE_EVENT_DIALOG_DURATION_MS}ms` }"
+          ></div>
+        </div>
+      </div>
+    </Transition>
     <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
     <div
       class="shrink-0 rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5 xl:p-3"
@@ -1026,16 +1180,19 @@ onBeforeUnmount(stopSimulationTimer)
                 :title="isPaused ? 'Продолжить матч' : 'Пауза'"
                 @click="togglePause"
               />
-              <Select
-                :model-value="simulationSpeed"
-                :options="simulationSpeedOptions"
-                option-label="label"
-                option-value="value"
-                size="small"
-                class="w-[74px]"
-                :disabled="!canSimulate"
-                @update:model-value="setSimulationSpeed"
-              />
+              <div class="grid grid-cols-4 gap-1">
+                <Button
+                  v-for="speed in LIVE_MATCH_SPEED_MULTIPLIERS"
+                  :key="speed"
+                  size="small"
+                  class="!h-8 !min-w-9 !px-2"
+                  :severity="simulationSpeed === speed ? 'success' : 'secondary'"
+                  :outlined="simulationSpeed !== speed"
+                  :label="'x' + speed"
+                  :disabled="!canSimulate"
+                  @click="setSimulationSpeed(speed)"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -1535,3 +1692,35 @@ onBeforeUnmount(stopSimulationTimer)
     {{ t('match.notFound') }}
   </section>
 </template>
+
+<style scoped>
+.live-event-dialog-enter-active,
+.live-event-dialog-leave-active {
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.live-event-dialog-enter-from,
+.live-event-dialog-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -10px) scale(0.98);
+}
+
+.live-event-dialog-progress {
+  animation-name: live-event-dialog-countdown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  transform-origin: left center;
+}
+
+@keyframes live-event-dialog-countdown {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+</style>

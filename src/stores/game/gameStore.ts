@@ -14,7 +14,7 @@ import {
   refreshLineupsAfterSquadChange,
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
-import { gameSaveRepository } from '@/repositories/gameSaveRepository'
+import { gameSaveRepository, type SaveSlotSummary } from '@/repositories/gameSaveRepository'
 import { t } from '@/plugins/i18n/i18n'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type {
@@ -39,6 +39,8 @@ export const useGameStore = defineStore('game', () => {
   const game = ref<GameState | null>(
     savedGame ? settleAiOnlyDaysUntilNextUserMatch(savedGame) : null,
   )
+  const activeSlotId = ref(gameSaveRepository.activeSlotId())
+  const saveSlots = ref<SaveSlotSummary[]>(gameSaveRepository.listSlots())
   const activeMatchId = ref<string | null>(null)
   const preparedMatchContext = ref<PreparedMatchContext | null>(null)
   const seasonTasksDialogVisible = ref(false)
@@ -113,6 +115,8 @@ export const useGameStore = defineStore('game', () => {
   const save = (): void => {
     if (game.value) {
       const result = gameSaveRepository.save(game.value)
+      activeSlotId.value = gameSaveRepository.activeSlotId()
+      saveSlots.value = gameSaveRepository.listSlots()
       if (!result.saved) {
         toastStore.show(
           t('app.saveStorageFull'),
@@ -129,6 +133,57 @@ export const useGameStore = defineStore('game', () => {
     game.value = createInitialGameState(championshipId, clubId)
     seasonTasksDialogVisible.value = true
     save()
+  }
+
+  const startNewGameInSlot = (
+    slotId: number,
+    championshipId: ChampionshipId,
+    clubId: string,
+  ): void => {
+    gameSaveRepository.selectSlot(slotId)
+    activeSlotId.value = gameSaveRepository.activeSlotId()
+    startNewGame(championshipId, clubId)
+  }
+
+  const selectSaveSlot = (slotId: number): void => {
+    gameSaveRepository.selectSlot(slotId)
+    activeSlotId.value = gameSaveRepository.activeSlotId()
+    saveSlots.value = gameSaveRepository.listSlots()
+  }
+
+  const prepareNewCareerSlot = (slotId: number): void => {
+    disposeMatchDayWorker()
+    activeMatchId.value = null
+    seasonTasksDialogVisible.value = false
+    game.value = null
+    selectSaveSlot(slotId)
+  }
+
+  const loadSaveSlot = (slotId: number): boolean => {
+    const loaded = gameSaveRepository.loadSlot(slotId)
+    if (!loaded) {
+      saveSlots.value = gameSaveRepository.listSlots()
+      return false
+    }
+
+    disposeMatchDayWorker()
+    activeMatchId.value = null
+    seasonTasksDialogVisible.value = false
+    game.value = settleAiOnlyDaysUntilNextUserMatch(loaded)
+    activeSlotId.value = gameSaveRepository.activeSlotId()
+    saveSlots.value = gameSaveRepository.listSlots()
+    return true
+  }
+
+  const deleteSaveSlot = (slotId: number): void => {
+    gameSaveRepository.clearSlot(slotId)
+    if (slotId === activeSlotId.value) {
+      disposeMatchDayWorker()
+      activeMatchId.value = null
+      seasonTasksDialogVisible.value = false
+      game.value = null
+    }
+    saveSlots.value = gameSaveRepository.listSlots()
   }
 
   // ПОЛНОСТЬЮ СБРАСЫВАЕТ КАРЬЕРУ И ЛОКАЛЬНОЕ СОХРАНЕНИЕ
@@ -353,6 +408,8 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     game,
+    activeSlotId,
+    saveSlots,
     championship,
     selectedClub,
     nextMatch,
@@ -362,6 +419,11 @@ export const useGameStore = defineStore('game', () => {
     seasonCanFinish,
     isFinalSeason,
     startNewGame,
+    startNewGameInSlot,
+    selectSaveSlot,
+    prepareNewCareerSlot,
+    loadSaveSlot,
+    deleteSaveSlot,
     resetGame,
     closeSeasonTasksDialog,
     openMatch,

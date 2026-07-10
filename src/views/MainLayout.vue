@@ -73,8 +73,7 @@ const openNextMatch = (): void => {
 // СБРАСЫВАЕТ ТЕКУЩУЮ ИГРУ И ВОЗВРАЩАЕТ К ВЫБОРУ КЛУБА
 const resetGame = (): void => {
   appStore.closeNavigation()
-  gameStore.resetGame()
-  void router.push('/select-club')
+  void router.push('/menu')
 }
 </script>
 

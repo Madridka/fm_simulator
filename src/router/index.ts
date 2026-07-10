@@ -28,16 +28,14 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/menu',
+    name: 'menu',
+    component: () => import('@/views/MenuView.vue'),
+  },
+  {
     path: '/',
     name: 'home',
-    beforeEnter: (to) => {
-      if (to.path !== '/') {
-        return true
-      }
-
-      const gameStore = useGameStore()
-      return gameStore.game ? { name: 'dashboard' } : { name: 'select-club' }
-    },
+    redirect: { name: 'menu' },
     component: () => import('@/views/MainLayout.vue'),
     children: [
       {
@@ -117,6 +115,7 @@ router.beforeEach((to) => {
   if (
     !gameStore.game &&
     to.name !== 'home' &&
+    to.name !== 'menu' &&
     to.name !== 'select-club' &&
     to.name !== 'not-found'
   ) {

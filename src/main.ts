@@ -8,24 +8,27 @@ import 'primeicons/primeicons.css'
 import App from './App.vue'
 import i18n from './plugins/i18n/i18n'
 import { router } from './router'
+import { gameSaveRepository } from '@/repositories/gameSaveRepository'
 import './styles/main.css'
 
-// СОЗДАЁТ КОРНЕВОЙ ЭКЗЕМПЛЯР VUE-ПРИЛОЖЕНИЯ
-const app = createApp(App)
+const bootstrap = async (): Promise<void> => {
+  await gameSaveRepository.init()
 
-// ПОДКЛЮЧАЕТ СОСТОЯНИЕ, МАРШРУТЫ, ЛОКАЛИЗАЦИЮ И ТЕМУ PRIMEVUE
-app.use(createPinia())
-app.use(router)
-app.use(i18n)
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-  },
-})
+  const app = createApp(App)
 
-// РЕГИСТРИРУЕТ ОБЩИЕ КОМПОНЕНТЫ PRIMEVUE ДЛЯ ВСЕХ ШАБЛОНОВ
-app.component('Button', Button)
-app.component('Select', Select)
+  app.use(createPinia())
+  app.use(router)
+  app.use(i18n)
+  app.use(PrimeVue, {
+    theme: {
+      preset: Aura,
+    },
+  })
 
-// МОНТИРУЕТ ПРИЛОЖЕНИЕ В DOM-КОНТЕЙНЕР
-app.mount('#app')
+  app.component('Button', Button)
+  app.component('Select', Select)
+
+  app.mount('#app')
+}
+
+void bootstrap()

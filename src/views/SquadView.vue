@@ -248,7 +248,7 @@ const conditionLabel = (player: Player): string =>
 const conditionWithAgeLabel = (player: Player): string =>
   t('squad.formFitnessAge', {
     form: player.form,
-    fitness: player.fitness,
+    fitness: player.fitness.toFixed(0),
     age: t('common.age', { age: player.age }),
   })
 
@@ -522,9 +522,52 @@ const selectTouchSlot = (slotId: string): void => {
   selectedTouchPayload.value = null
 }
 
+const selectSlotForMove = (slotId: string): void => {
+  if (!selectedTouchPayload.value) {
+    return
+  }
+  movePayloadToSlot(selectedTouchPayload.value, slotId)
+  selectedTouchPayload.value = null
+}
+
+const selectPlayerForMove = (player: Player, source: DragSource, slotId?: string): void => {
+  const payload: DragPayload = { playerId: player.id, source, slotId }
+  const selected = selectedTouchPayload.value
+  if (!selected) {
+    selectedTouchPayload.value = payload
+    return
+  }
+  if (samePayload(selected, payload)) {
+    selectedTouchPayload.value = null
+    return
+  }
+
+  if (source === 'starter' && slotId) {
+    movePayloadToSlot(selected, slotId)
+  } else if (source === 'substitute') {
+    movePayloadToSubstitutePlayer(selected, player)
+  } else {
+    movePayloadToReservePlayer(selected, player)
+  }
+  selectedTouchPayload.value = null
+}
+
 // ПРОВЕРЯЕТ ВЫБОР ИГРОКА НА МОБИЛЬНОМ УСТРОЙСТВЕ
 const isTouchSelected = (playerId: string): boolean =>
   selectedTouchPayload.value?.playerId === playerId
+
+const selectGroupForMove = (group: 'substitutes' | 'reserve'): void => {
+  const selected = selectedTouchPayload.value
+  if (!selected) {
+    return
+  }
+  if (group === 'substitutes') {
+    squadStore.movePlayerToSubstitutes(selected.playerId)
+  } else {
+    squadStore.movePlayerToReserve(selected.playerId)
+  }
+  selectedTouchPayload.value = null
+}
 
 // ПОКАЗЫВАЕТ ПРЕДУПРЕЖДЕНИЕ ПРИ ОШИБКЕ СОСТАВА
 watch(
@@ -674,33 +717,26 @@ onBeforeRouteLeave(() => {
               'border-dashed bg-slate-950/60': !slotPlayer(slot.id),
               'border-lime-400 shadow-[0_0_0_2px_rgba(163,230,53,0.24),0_12px_26px_rgba(2,6,23,0.22)]':
                 slot.id === dragOverSlotId,
-              'ring-2 ring-cyan-300':
+              'border-cyan-300 ring-2 ring-cyan-300 shadow-[0_0_0_4px_rgba(103,232,249,0.18),0_12px_26px_rgba(2,6,23,0.22)]':
                 Boolean(slotPlayer(slot.id)) && isTouchSelected(slotPlayer(slot.id)!.id),
               'opacity-45': slotPlayer(slot.id)?.id === draggingPlayerId,
               'border-rose-400 ring-2 ring-rose-500/50':
                 Boolean(slotPlayer(slot.id)) && isPlayerUnavailable(slotPlayer(slot.id)!),
             }"
             :style="{ left: `${slot.x}%`, top: `${slot.y}%` }"
-            :draggable="Boolean(slotPlayer(slot.id))"
-            @dragstart="
-              slotPlayer(slot.id) &&
-              startPlayerDrag($event, slotPlayer(slot.id)!, 'starter', slot.id)
+            @click="
+              slotPlayer(slot.id)
+                ? selectPlayerForMove(slotPlayer(slot.id)!, 'starter', slot.id)
+                : selectSlotForMove(slot.id)
             "
-            @dragend="endPlayerDrag"
-            @pointerdown="
-              slotPlayer(slot.id) &&
-              startPointerDrag($event, slotPlayer(slot.id)!, 'starter', slot.id)
-            "
-            @pointermove="movePointerDrag"
-            @pointerup="finishPointerDrag"
-            @pointercancel="cancelPointerDrag"
-            @click="selectTouchSlot(slot.id)"
-            @dragenter.prevent="dragOverSlotId = slot.id"
-            @dragover.prevent="dragOverSlotId = slot.id"
-            @dragleave="dragOverSlotId === slot.id && (dragOverSlotId = null)"
-            @drop.prevent="dropOnSlot($event, slot.id)"
           >
             <template v-if="slotPlayer(slot.id)">
+              <span
+                v-if="isTouchSelected(slotPlayer(slot.id)!.id)"
+                class="absolute -left-2 -top-2 z-10 rounded-full border border-white bg-cyan-400 px-2 py-0.5 text-[9px] font-black uppercase leading-none text-slate-950 shadow-lg"
+              >
+                выбран
+              </span>
               <span
                 v-if="isPlayerUnavailable(slotPlayer(slot.id)!)"
                 class="absolute -right-2 -top-2 z-10 flex items-center gap-0.5"
@@ -790,10 +826,7 @@ onBeforeRouteLeave(() => {
             'shadow-[0_0_0_2px_rgba(163,230,53,0.34),0_12px_32px_rgba(20,46,38,0.08)]':
               dragOverGroup === 'substitutes',
           }"
-          @dragenter.prevent="dragOverGroup = 'substitutes'"
-          @dragover.prevent="dragOverGroup = 'substitutes'"
-          @dragleave="dragOverGroup === 'substitutes' && (dragOverGroup = null)"
-          @drop.prevent="dropOnSubstitutes"
+          @click="selectGroupForMove('substitutes')"
         >
           <button
             v-for="player in substitutePlayers"
@@ -805,19 +838,17 @@ onBeforeRouteLeave(() => {
             :class="{
               'border-rose-400/80 ring-1 ring-rose-500/40': isPlayerUnavailable(player),
               'opacity-45': player.id === draggingPlayerId,
-              'ring-2 ring-cyan-300': isTouchSelected(player.id),
+              'border-cyan-300 ring-2 ring-cyan-300 shadow-[0_0_0_4px_rgba(103,232,249,0.16)]':
+                isTouchSelected(player.id),
             }"
-            draggable="true"
-            @dragstart="startPlayerDrag($event, player, 'substitute')"
-            @dragend="endPlayerDrag"
-            @pointerdown="startPointerDrag($event, player, 'substitute')"
-            @pointermove="movePointerDrag"
-            @pointerup="finishPointerDrag"
-            @pointercancel="cancelPointerDrag"
-            @dragenter.stop.prevent
-            @dragover.stop.prevent
-            @drop.stop.prevent="dropOnSubstitutePlayer($event, player)"
+            @click.stop="selectPlayerForMove(player, 'substitute')"
           >
+            <span
+              v-if="isTouchSelected(player.id)"
+              class="absolute -left-1.5 -top-1.5 z-10 rounded-full border border-white bg-cyan-400 px-2 py-0.5 text-[9px] font-black uppercase leading-none text-slate-950 shadow-lg"
+            >
+              выбран
+            </span>
             <span
               v-if="isPlayerUnavailable(player)"
               class="absolute -right-1.5 -top-1.5 z-10 flex items-center gap-0.5"
@@ -885,10 +916,7 @@ onBeforeRouteLeave(() => {
           data-drop-group="reserve"
           class="min-h-0 flex-1 overflow-hidden px-4 pb-4"
           :class="{ 'bg-emerald-50': dragOverGroup === 'reserve' }"
-          @dragenter.prevent="dragOverGroup = 'reserve'"
-          @dragover.prevent="dragOverGroup = 'reserve'"
-          @dragleave="dragOverGroup === 'reserve' && (dragOverGroup = null)"
-          @drop.prevent="dropOnReserve"
+          @click="selectGroupForMove('reserve')"
         >
           <h3 class="mb-2 text-xs font-black uppercase text-slate-700">
             {{ t('squad.reserve') }}
@@ -904,19 +932,17 @@ onBeforeRouteLeave(() => {
               :class="{
                 'border-rose-300 bg-rose-50': isPlayerUnavailable(player),
                 'opacity-45': player.id === draggingPlayerId,
-                'ring-2 ring-cyan-400': isTouchSelected(player.id),
+                'border-cyan-300 ring-2 ring-cyan-400 shadow-[0_0_0_4px_rgba(34,211,238,0.14)]':
+                  isTouchSelected(player.id),
               }"
-              draggable="true"
-              @dragstart="startPlayerDrag($event, player, 'reserve')"
-              @dragend="endPlayerDrag"
-              @pointerdown="startPointerDrag($event, player, 'reserve')"
-              @pointermove="movePointerDrag"
-              @pointerup="finishPointerDrag"
-              @pointercancel="cancelPointerDrag"
-              @dragenter.stop.prevent
-              @dragover.stop.prevent
-              @drop.stop.prevent="dropOnReservePlayer($event, player)"
+              @click.stop="selectPlayerForMove(player, 'reserve')"
             >
+              <span
+                v-if="isTouchSelected(player.id)"
+                class="absolute -left-1.5 -top-1.5 z-10 rounded-full border border-white bg-cyan-400 px-2 py-0.5 text-[9px] font-black uppercase leading-none text-slate-950 shadow-lg"
+              >
+                выбран
+              </span>
               <span
                 v-if="isPlayerUnavailable(player)"
                 class="absolute right-1 top-1 flex items-center gap-0.5"

@@ -2,6 +2,7 @@
   "brand": "FM Simulator",
   "game": "Игра",
   "menu": "Меню",
+  "mainMenu": "Главное меню",
   "openMenu": "Открыть меню",
   "newGame": "Новая игра",
   "season": "Сезон {season}",

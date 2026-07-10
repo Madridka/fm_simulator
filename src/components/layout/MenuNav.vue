@@ -138,7 +138,7 @@ const handleNavigate = (): void => {
           class="w-full rounded-lg px-3 py-2.5 text-left text-sm font-bold text-rose-700 hover:bg-rose-50"
           @click="emit('resetGame')"
         >
-          {{ t('app.newGame') }}
+          {{ t('app.mainMenu') }}
         </button>
       </div>
     </div>
