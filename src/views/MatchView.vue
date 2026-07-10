@@ -244,6 +244,11 @@ const formationOptions = formations.map((formation) => ({
   value: formation,
 }))
 
+const simulationSpeedOptions = LIVE_MATCH_SPEED_MULTIPLIERS.map((speed) => ({
+  label: `x${speed}`,
+  value: speed,
+}))
+
 // ВОЗВРАЩАЕТ СОСТОЯНИЕ МАТЧА НА ТЕКУЩЕЙ МИНУТЕ
 const visibleSnapshot = computed<MatchSnapshot>(() => {
   void revision.value
@@ -1002,6 +1007,37 @@ onBeforeUnmount(stopSimulationTimer)
                 : `${visibleSnapshot.minute}'`
             }}
           </div>
+          <div
+            v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90"
+            class="mt-2 flex justify-center"
+          >
+            <div
+              class="inline-flex items-center gap-1 rounded-lg bg-white/85 p-1 shadow-sm ring-1 ring-slate-200"
+            >
+              <Button
+                class="!h-8 !w-8"
+                size="small"
+                text
+                rounded
+                :severity="isPaused ? 'success' : 'secondary'"
+                :icon="isPaused ? 'pi pi-play' : 'pi pi-pause'"
+                :disabled="!canSimulate"
+                :aria-label="isPaused ? 'Продолжить матч' : 'Пауза'"
+                :title="isPaused ? 'Продолжить матч' : 'Пауза'"
+                @click="togglePause"
+              />
+              <Select
+                :model-value="simulationSpeed"
+                :options="simulationSpeedOptions"
+                option-label="label"
+                option-value="value"
+                size="small"
+                class="w-[74px]"
+                :disabled="!canSimulate"
+                @update:model-value="setSimulationSpeed"
+              />
+            </div>
+          </div>
         </div>
         <div class="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
           <div class="min-w-0 text-right">
@@ -1044,27 +1080,6 @@ onBeforeUnmount(stopSimulationTimer)
       <!-- УПРАВЛЕНИЕ МАТЧЕМ -->
       <div class="mt-2 grid justify-items-center gap-1.5 sm:mt-3 sm:gap-2">
         <template v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90">
-          <div v-if="canSimulate" class="grid w-full max-w-[220px] gap-2">
-            <div class="grid grid-cols-4 gap-1.5">
-              <Button
-                v-for="speed in LIVE_MATCH_SPEED_MULTIPLIERS"
-                :key="speed"
-                size="small"
-                class="w-full"
-                :severity="simulationSpeed === speed ? 'success' : 'secondary'"
-                :outlined="simulationSpeed !== speed"
-                :label="'x' + speed"
-                @click="setSimulationSpeed(speed)"
-              />
-            </div>
-            <Button
-              class="w-full"
-              :severity="isPaused ? 'success' : 'secondary'"
-              :icon="isPaused ? 'pi pi-play' : 'pi pi-pause'"
-              :label="isPaused ? 'Продолжить матч' : 'Пауза'"
-              @click="togglePause"
-            />
-          </div>
           <RouterLink v-if="!userValidation.valid" to="/squad" class="w-full text-center">
             <Button
               class="w-full max-w-[180px] sm:min-w-[220px]"

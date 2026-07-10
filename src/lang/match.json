@@ -34,7 +34,7 @@
   "notFound": "Матч не найден.",
   "lineupNotSelected": "Состав не выбран.",
   "substitution": "Замена {club}:",
-  "substitutionsRemaining": "Замена {club}:",
+  "substitutionsRemaining": "Замена {club}",
   "substitutedFor": "заменён на",
   "tactics": "Тактика",
   "coachReaction": "Тренерская реакция",
