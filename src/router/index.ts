@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/MenuView.vue'),
   },
   {
+    path: '/achievements',
+    name: 'achievements',
+    component: () => import('@/views/AchievementsView.vue'),
+  },
+  {
     path: '/',
     name: 'home',
     redirect: { name: 'menu' },
@@ -116,6 +121,7 @@ router.beforeEach((to) => {
     !gameStore.game &&
     to.name !== 'home' &&
     to.name !== 'menu' &&
+    to.name !== 'achievements' &&
     to.name !== 'select-club' &&
     to.name !== 'not-found'
   ) {

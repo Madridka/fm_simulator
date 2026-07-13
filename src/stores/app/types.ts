@@ -8,6 +8,7 @@ export type AppNavIcon =
   | 'calendar'
   | 'tasks'
   | 'trophy'
+  | 'medal'
 
 export interface AppNavRouteItem {
   to: string

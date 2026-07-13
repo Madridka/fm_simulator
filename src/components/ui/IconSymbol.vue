@@ -8,6 +8,7 @@ type IconName =
   | 'tasks'
   | 'calendar'
   | 'trophy'
+  | 'medal'
   | 'settings'
   | 'menu'
   | 'chevronRight'
@@ -38,6 +39,11 @@ defineProps<{
       v-else-if="name === 'trophy'"
       d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4M12 13v4m-4 3h8"
     />
+    <template v-else-if="name === 'medal'">
+      <path d="M8 3h8l-2 6h-4z" />
+      <circle cx="12" cy="15" r="5" />
+      <path d="m10.5 15 1 1 2-2" />
+    </template>
     <template v-else-if="name === 'settings'">
       <circle cx="12" cy="12" r="3" />
       <path

@@ -2,13 +2,20 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { championships } from '@/data/clubs'
+import { useAchievementStore } from '@/stores/achievements/achievementStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { SaveSlotSummary } from '@/repositories/gameSaveRepository'
 
 const router = useRouter()
+const achievementStore = useAchievementStore()
 const gameStore = useGameStore()
 
 const occupiedSlots = computed(() => gameStore.saveSlots.filter((slot) => slot.occupied))
+const unlockedPercent = computed(() =>
+  achievementStore.totalCount
+    ? Math.round((achievementStore.unlockedCount / achievementStore.totalCount) * 100)
+    : 0,
+)
 
 const slotTitle = (slot: SaveSlotSummary): string =>
   slot.occupied ? (slot.selectedClubName ?? slot.selectedClubId ?? 'Карьера') : 'Пустой слот'
@@ -43,6 +50,10 @@ const continueCareer = async (): Promise<void> => {
   }
 }
 
+const openAchievements = async (): Promise<void> => {
+  await router.push('/achievements')
+}
+
 const deleteCareer = (slotId: number): void => {
   gameStore.deleteSaveSlot(slotId)
 }
@@ -60,38 +71,93 @@ const deleteCareer = (slotId: number): void => {
           </div>
           <h1 class="mt-2 text-3xl font-black tracking-wide sm:text-5xl">Главное меню</h1>
         </div>
-        <Button
-          v-if="gameStore.game || occupiedSlots.length"
-          class="!h-11"
-          icon="pi pi-play"
-          label="Продолжить"
-          @click="continueCareer"
-        />
+        <div class="flex flex-wrap gap-2">
+          <Button
+            severity="secondary"
+            outlined
+            icon="pi pi-trophy"
+            label="Достижения"
+            @click="openAchievements"
+          />
+          <Button
+            v-if="gameStore.game || occupiedSlots.length"
+            class="!h-11"
+            icon="pi pi-play"
+            label="Продолжить"
+            @click="continueCareer"
+          />
+        </div>
       </header>
 
       <main class="grid flex-1 gap-5 py-6 lg:grid-cols-[0.78fr_1.22fr]">
-        <aside class="rounded-lg border border-white/10 bg-white/[0.06] p-5 shadow-2xl">
-          <h2 class="text-lg font-black">Карьера</h2>
-          <p class="mt-2 text-sm font-semibold leading-6 text-slate-300">
-            Можно хранить до 5 карьер одновременно: разные клубы, страны и сезоны не будут
-            перезаписывать друг друга.
-          </p>
-          <div class="mt-5 grid gap-2">
+        <aside class="grid content-start gap-4">
+          <section class="rounded-lg border border-white/10 bg-white/[0.06] p-5 shadow-2xl">
+            <h2 class="text-lg font-black">Карьера</h2>
+            <p class="mt-2 text-sm font-semibold leading-6 text-slate-300">
+              Можно хранить до 5 карьер одновременно: разные клубы, страны и сезоны не будут
+              перезаписывать друг друга.
+            </p>
+            <div class="mt-5 grid gap-2">
+              <Button
+                class="w-full"
+                icon="pi pi-plus"
+                label="Новая карьера"
+                @click="startNewCareer(gameStore.saveSlots.find((slot) => !slot.occupied)?.id ?? 1)"
+              />
+              <Button
+                class="w-full"
+                severity="secondary"
+                outlined
+                icon="pi pi-folder-open"
+                label="Загрузить карьеру"
+                :disabled="!occupiedSlots.length"
+                @click="continueCareer"
+              />
+            </div>
+          </section>
+
+          <section class="rounded-lg border border-emerald-300/20 bg-emerald-300/[0.08] p-5 shadow-2xl">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-emerald-300">
+                  Локальный профиль
+                </p>
+                <h2 class="mt-1 text-lg font-black">Достижения</h2>
+              </div>
+              <div class="rounded-lg bg-emerald-300 px-3 py-2 text-right text-emerald-950">
+                <div class="text-lg font-black">{{ achievementStore.totalPoints }}</div>
+                <div class="text-[10px] font-black uppercase">очков</div>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-2">
+              <div class="rounded-lg bg-white/[0.08] p-3">
+                <div class="text-xl font-black">
+                  {{ achievementStore.unlockedCount }}/{{ achievementStore.totalCount }}
+                </div>
+                <div class="mt-1 text-xs font-bold text-slate-300">открыто</div>
+              </div>
+              <div class="rounded-lg bg-white/[0.08] p-3">
+                <div class="text-xl font-black">{{ unlockedPercent }}%</div>
+                <div class="mt-1 text-xs font-bold text-slate-300">прогресс</div>
+              </div>
+            </div>
+
+            <div class="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+              <div
+                class="h-full rounded-full bg-emerald-300 transition-[width] duration-500"
+                :style="{ width: `${unlockedPercent}%` }"
+              />
+            </div>
+
             <Button
-              class="w-full"
-              icon="pi pi-plus"
-              label="Новая карьера"
-              @click="startNewCareer(gameStore.saveSlots.find((slot) => !slot.occupied)?.id ?? 1)"
-            />
-            <Button
-              class="w-full"
+              class="mt-5 w-full"
               severity="secondary"
-              outlined
-              icon="pi pi-folder-open"
-              label="Загрузить карьеру"
-              :disabled="!occupiedSlots.length"
+              icon="pi pi-trophy"
+              label="Открыть достижения"
+              @click="openAchievements"
             />
-          </div>
+          </section>
         </aside>
 
         <div class="grid gap-3">

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "first-career",
+    "title": "Первый контракт",
+    "description": "Начать первую карьеру на аккаунте.",
+    "category": "career",
+    "points": 10
+  },
+  {
+    "id": "five-careers",
+    "title": "Пять историй",
+    "description": "Создать карьеру в каждом из пяти слотов.",
+    "category": "collection",
+    "points": 25
+  },
+  {
+    "id": "season-finished",
+    "title": "Полный сезон",
+    "description": "Довести любой клуб до конца сезона.",
+    "category": "career",
+    "points": 10
+  },
+  {
+    "id": "three-seasons",
+    "title": "Долгий проект",
+    "description": "Завершить три сезона суммарно на аккаунте.",
+    "category": "career",
+    "points": 25
+  },
+  {
+    "id": "league-podium",
+    "title": "На пьедестале",
+    "description": "Закончить сезон в топ-3 лиги.",
+    "category": "league",
+    "points": 20
+  },
+  {
+    "id": "league-champion",
+    "title": "Чемпионская печать",
+    "description": "Выиграть национальную лигу.",
+    "category": "league",
+    "points": 40
+  },
+  {
+    "id": "big-win",
+    "title": "Разгром",
+    "description": "Победить с разницей в четыре или больше мяча.",
+    "category": "match",
+    "points": 15
+  },
+  {
+    "id": "clean-sheet-streak-3",
+    "title": "Сухая стена",
+    "description": "Провести три победных матча подряд без пропущенных голов.",
+    "category": "match",
+    "points": 25
+  }
+]

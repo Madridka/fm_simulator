@@ -15,7 +15,9 @@ import {
   settleAiOnlyDaysUntilNextUserMatch,
 } from '@/domain/season/seasonService'
 import { gameSaveRepository, type SaveSlotSummary } from '@/repositories/gameSaveRepository'
+import { achievementById } from '@/domain/achievements/achievementCatalog'
 import { t } from '@/plugins/i18n/i18n'
+import { useAchievementStore } from '@/stores/achievements/achievementStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 import type {
   ChampionshipId,
@@ -34,6 +36,7 @@ type MatchDayWorkerResponse =
 
 // ХРАНИТ КАРЬЕРУ, УПРАВЛЯЕТ МАТЧАМИ, СЕЗОНАМИ И СОХРАНЕНИЕМ ИГРЫ
 export const useGameStore = defineStore('game', () => {
+  const achievementStore = useAchievementStore()
   const toastStore = useToastStore()
   const savedGame = gameSaveRepository.load()
   const game = ref<GameState | null>(
@@ -115,6 +118,13 @@ export const useGameStore = defineStore('game', () => {
       (game.value?.season ?? 0) >= careerConfig.maximumSeasons,
   )
 
+  const showAchievementUnlocks = (achievementIds: string[]): void => {
+    const firstAchievement = achievementById[achievementIds[0]]
+    if (!firstAchievement) return
+
+    toastStore.show(`Достижение открыто: ${firstAchievement.title}`, 'success')
+  }
+
   // СОХРАНЯЕТ ТЕКУЩУЮ КАРЬЕРУ И УВЕДОМЛЯЕТ О ПЕРЕПОЛНЕНИИ ХРАНИЛИЩА
   const save = (): void => {
     if (game.value) {
@@ -132,6 +142,7 @@ export const useGameStore = defineStore('game', () => {
     disposeMatchDayWorker()
     activeMatchId.value = null
     game.value = createInitialGameState(championshipId, clubId)
+    showAchievementUnlocks(achievementStore.recordCareerStarted(activeSlotId.value))
     seasonTasksDialogVisible.value = true
     save()
   }
@@ -228,6 +239,7 @@ export const useGameStore = defineStore('game', () => {
   // ПРИМЕНЯЕТ НОВОЕ СОСТОЯНИЕ, ВОССТАНАВЛИВАЕТ МИР И СОХРАНЯЕТ ЕГО
   const updateGame = (nextState: GameState): void => {
     game.value = ensureWorldCompetitions(nextState)
+    showAchievementUnlocks(achievementStore.recordMatchSnapshot(game.value))
     save()
   }
 
@@ -388,9 +400,11 @@ export const useGameStore = defineStore('game', () => {
     if (!game.value || !seasonCanFinish.value) {
       return
     }
+    const finishedSeasonState = game.value
     const retiringPlayers =
       selectedClub.value?.squad.filter((player) => willPlayerRetireAfterSeason(player.age)) ?? []
-    const nextState = finishSeason(game.value)
+    const nextState = finishSeason(finishedSeasonState)
+    showAchievementUnlocks(achievementStore.recordSeasonFinished(finishedSeasonState))
     updateGame(nextState)
     if (retiringPlayers.length) {
       const visibleNames = retiringPlayers
