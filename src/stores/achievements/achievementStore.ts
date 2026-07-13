@@ -5,6 +5,7 @@ import {
   getBiggestUserWinMargin,
   getCleanSheetWinStreak,
   getAchievementProgress,
+  getSeasonAchievementStats,
   getUserLeaguePosition,
   mergeAchievementSnapshot,
   type AchievementAccountStats,
@@ -56,6 +57,7 @@ export const useAchievementStore = defineStore('achievements', () => {
         position === 1 ? snapshot.value.stats.leagueTitles + 1 : snapshot.value.stats.leagueTitles,
       biggestWinMargin: getBiggestUserWinMargin(stateBeforeSeasonChange),
       cleanSheetWinStreak: getCleanSheetWinStreak(stateBeforeSeasonChange),
+      ...getSeasonAchievementStats(stateBeforeSeasonChange, snapshot.value.stats),
     })
   }
 

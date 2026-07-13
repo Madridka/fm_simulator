@@ -54,5 +54,75 @@
     "description": "Провести три победных матча подряд без пропущенных голов.",
     "category": "match",
     "points": 25
+  },
+  {
+    "id": "bald-fraud",
+    "title": "Лысый шарлатан",
+    "description": "Выиграть чемпионат в каждой из пяти ведущих европейских лиг.",
+    "category": "epic",
+    "points": 200
+  },
+  {
+    "id": "special-one",
+    "title": "Special One",
+    "description": "Выиграть чемпионат и национальный кубок в дебютном сезоне в клубе.",
+    "category": "epic",
+    "points": 150
+  },
+  {
+    "id": "arsene-knows",
+    "title": "Арсен Венгер знает",
+    "description": "Выиграть чемпионат без поражений.",
+    "category": "epic",
+    "points": 75
+  },
+  {
+    "id": "ferguson-heir",
+    "title": "Наследник Фергюсона",
+    "description": "Провести 20 сезонов в одном клубе и выиграть не менее 10 чемпионатов.",
+    "category": "epic",
+    "points": 250
+  },
+  {
+    "id": "park-the-bus",
+    "title": "Автобус уже подан",
+    "description": "Не пропустить ни одного гола в последних пяти матчах чемпионата и завоевать титул.",
+    "category": "epic",
+    "points": 100
+  },
+  {
+    "id": "from-champions-to-relegation",
+    "title": "Из князи в грязи",
+    "description": "Выиграть чемпионат, а в следующем сезоне вылететь из высшего дивизиона.",
+    "category": "epic",
+    "points": 100
+  },
+  {
+    "id": "leicester-fairytale",
+    "title": "Лестерская сказка",
+    "description": "Выиграть чемпионат клубом, который перед началом сезона считался кандидатом на вылет.",
+    "category": "epic",
+    "points": 150
+  },
+  {
+    "id": "kaiserslautern",
+    "title": "Кайзерслаутерн",
+    "description": "Выйти в высший дивизион и выиграть чемпионат в первом же сезоне после повышения.",
+    "category": "epic",
+    "points": 200
+  },
+  {
+    "id": "double-relegation",
+    "title": "Двойной парашют",
+    "description": "Два сезона подряд вылететь в дивизион ниже.",
+    "category": "epic",
+    "points": 50
+  },
+  {
+    "id": "yo-yo-club",
+    "title": "Лифт работает исправно",
+    "description": "За пять сезонов дважды выйти в высший дивизион и дважды вылететь из него.",
+    "category": "epic",
+    "points": 100
   }
 ]
