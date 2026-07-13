@@ -125,6 +125,7 @@ const resetGame = (): void => {
         <TopBar
           :next-match="route.name === 'match' ? undefined : matchStore.nextMatch"
           :next-opponent="route.name === 'match' ? undefined : matchStore.nextOpponent"
+          :show-match-controls="route.name === 'match'"
           :season="gameStore.game.season"
           :selected-club="gameStore.selectedClub"
           @open-menu="appStore.openDrawer"

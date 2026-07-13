@@ -308,6 +308,81 @@ const detailedResult = computed<MatchResult | undefined>(() => {
   return match.value?.result ?? liveMatch.value?.result()
 })
 
+type MatchTimelineEventType = 'goal' | 'yellow-card' | 'red-card' | 'injury' | 'substitution'
+
+interface MatchTimelineEvent {
+  id: string
+  minute: number
+  clubId: string
+  type: MatchTimelineEventType
+  text: string
+  icon: string
+  tone: string
+}
+
+const matchTimelineEvents = computed<MatchTimelineEvent[]>(() => {
+  const result = detailedResult.value
+  if (!result) return []
+
+  const events: MatchTimelineEvent[] = []
+
+  result.goals
+    .filter((goal) => isMatchEventVisible(goal.minute))
+    .forEach((goal, index) => {
+      events.push({
+        id: `goal-${goal.minute}-${goal.playerId}-${index}`,
+        minute: goal.minute,
+        clubId: goal.clubId,
+        type: 'goal',
+        text: `Гол — ${goal.playerName}`,
+        icon: 'pi pi-star-fill',
+        tone: 'text-emerald-700',
+      })
+    })
+  ;(result.cards ?? [])
+    .filter((card) => isMatchEventVisible(card.minute))
+    .forEach((card, index) => {
+      const isRed = card.card === 'red'
+      events.push({
+        id: `card-${card.minute ?? 0}-${card.playerId}-${index}`,
+        minute: card.minute ?? 0,
+        clubId: card.clubId,
+        type: isRed ? 'red-card' : 'yellow-card',
+        text: `${isRed ? 'Красная' : 'Жёлтая'} карточка — ${playerName(card.playerId)}`,
+        icon: 'pi pi-stop-fill',
+        tone: isRed ? 'text-rose-600' : 'text-amber-500',
+      })
+    })
+  ;(result.injuries ?? [])
+    .filter((injury) => isMatchEventVisible(injury.minute))
+    .forEach((injury, index) => {
+      events.push({
+        id: `injury-${injury.minute ?? 0}-${injury.playerId}-${index}`,
+        minute: injury.minute ?? 0,
+        clubId: injury.clubId,
+        type: 'injury',
+        text: `Травма — ${playerName(injury.playerId)}`,
+        icon: 'pi pi-plus-circle',
+        tone: 'text-orange-600',
+      })
+    })
+  ;(result.substitutions ?? [])
+    .filter((substitution) => isMatchEventVisible(substitution.minute))
+    .forEach((substitution, index) => {
+      events.push({
+        id: `substitution-${substitution.minute}-${substitution.playerOutId}-${index}`,
+        minute: substitution.minute,
+        clubId: substitution.clubId,
+        type: 'substitution',
+        text: `${playerName(substitution.playerOutId)} → ${playerName(substitution.playerInId)}`,
+        icon: 'pi pi-arrow-right-arrow-left',
+        tone: 'text-sky-600',
+      })
+    })
+
+  return events.sort((left, right) => left.minute - right.minute || left.id.localeCompare(right.id))
+})
+
 // ВОЗВРАЩАЕТ ДОСТУПНУЮ ТЕКСТОВУЮ ТРАНСЛЯЦИЮ
 const visibleCommentary = computed(() =>
   (detailedResult.value?.commentary ?? []).filter(
@@ -467,8 +542,7 @@ const playerName = (playerId?: string): string => {
   return player ? `${player.firstName} ${player.lastName}` : playerId
 }
 
-const clubDisplayName = (clubId: string): string =>
-  clubStore.getClubById(clubId)?.name ?? clubId
+const clubDisplayName = (clubId: string): string => clubStore.getClubById(clubId)?.name ?? clubId
 
 const liveEventToneClass = (tone: LiveEventDialogTone): string => {
   if (tone === 'goal') return 'border-emerald-200 bg-emerald-50 text-emerald-950'
@@ -513,10 +587,7 @@ const enqueueLiveEventDialog = (dialog: LiveEventDialog): void => {
   showNextLiveEventDialog()
 }
 
-const createGoalDialog = (
-  goal: MatchResult['goals'][number],
-  index: number,
-): LiveEventDialog => ({
+const createGoalDialog = (goal: MatchResult['goals'][number], index: number): LiveEventDialog => ({
   id: `goal-${goal.minute}-${goal.clubId}-${goal.playerId}-${index}`,
   tone: 'goal',
   minute: goal.minute,
@@ -1129,18 +1200,50 @@ onBeforeUnmount(() => {
       </div>
     </Transition>
     <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
+    <Teleport to="#match-simulation-controls">
+      <div
+        v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90"
+        class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white p-1 shadow-sm"
+      >
+        <Button
+          class="!h-8 !w-8"
+          size="small"
+          text
+          rounded
+          :severity="isPaused ? 'success' : 'secondary'"
+          :icon="isPaused ? 'pi pi-play' : 'pi pi-pause'"
+          :disabled="!canSimulate"
+          :aria-label="isPaused ? 'Продолжить матч' : 'Пауза'"
+          :title="isPaused ? 'Продолжить матч' : 'Пауза'"
+          @click="togglePause"
+        />
+        <div class="grid grid-cols-4 gap-1">
+          <Button
+            v-for="speed in LIVE_MATCH_SPEED_MULTIPLIERS"
+            :key="speed"
+            size="small"
+            class="!h-8 !min-w-9 !px-2"
+            :severity="simulationSpeed === speed ? 'success' : 'secondary'"
+            :outlined="simulationSpeed !== speed"
+            :label="'x' + speed"
+            :disabled="!canSimulate"
+            @click="setSimulationSpeed(speed)"
+          />
+        </div>
+      </div>
+    </Teleport>
     <div
       class="shrink-0 rounded-lg border border-white/70 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.96)),#ffffff] p-3 shadow-[0_18px_50px_rgba(20,46,38,0.1)] sm:p-5 xl:p-3"
     >
       <div class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-4">
-        <div class="flex min-w-0 items-center gap-1.5 sm:gap-3">
+        <div class="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
           <ClubBadge
             :club="homeClub"
             size="lg"
-            class="!h-10 !w-10 !text-xs sm:!h-16 sm:!w-16 sm:!text-lg"
+            class="!h-10 !w-10 !text-xs sm:!h-12 sm:!w-12 sm:!text-sm"
           />
           <div class="min-w-0">
-            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
+            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-lg">
               {{ homeClub.name }}
             </h1>
             <div class="hidden text-sm text-slate-500 sm:block">{{ t('match.homeTeam') }}</div>
@@ -1148,7 +1251,7 @@ onBeforeUnmount(() => {
         </div>
         <div class="text-center">
           <div
-            class="min-w-[72px] rounded-lg bg-[linear-gradient(135deg,#10251f,#17603d)] px-2 py-2 text-[1.75rem] font-black leading-none text-emerald-50 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] sm:min-w-[156px] sm:px-5 sm:py-2.5 sm:text-[2.75rem]"
+            class="min-w-[72px] px-1 py-1 text-[1.5rem] font-black leading-none tabular-nums text-emerald-800 sm:min-w-[104px] sm:text-[2rem]"
           >
             {{ match.result?.homeGoals ?? visibleSnapshot.homeGoals }}:{{
               match.result?.awayGoals ?? visibleSnapshot.awayGoals
@@ -1161,10 +1264,9 @@ onBeforeUnmount(() => {
                 : `${visibleSnapshot.minute}'`
             }}
           </div>
-          <div
-            v-if="match.status === 'scheduled' && isPlayableMatch && currentMinute < 90"
-            class="mt-2 flex justify-center"
-          >
+
+          <!-- СКОРОСТЬ -->
+          <div v-if="false" class="mt-2 flex justify-center">
             <div
               class="inline-flex items-center gap-1 rounded-lg bg-white/85 p-1 shadow-sm ring-1 ring-slate-200"
             >
@@ -1196,9 +1298,9 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </div>
-        <div class="flex min-w-0 items-center justify-end gap-1.5 sm:gap-3">
+        <div class="flex min-w-0 items-center justify-start gap-1.5 sm:gap-3">
           <div class="min-w-0 text-right">
-            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-xl">
+            <h1 class="truncate text-sm font-bold text-slate-950 sm:text-lg">
               {{ awayClub.name }}
             </h1>
             <div class="hidden text-sm text-slate-500 sm:block">{{ t('match.awayTeam') }}</div>
@@ -1206,31 +1308,8 @@ onBeforeUnmount(() => {
           <ClubBadge
             :club="awayClub"
             size="lg"
-            class="!h-10 !w-10 !text-xs sm:!h-16 sm:!w-16 sm:!text-lg"
+            class="!h-10 !w-10 !text-xs sm:!h-12 sm:!w-12 sm:!text-sm"
           />
-        </div>
-      </div>
-
-      <!-- ГОЛЫ -->
-      <div
-        class="mt-3 grid items-center gap-2 border-t border-emerald-100 pt-3 text-xs text-slate-700 sm:grid-cols-[1fr_auto_1fr]"
-      >
-        <div
-          class="min-w-0 truncate rounded px-2 py-1 font-semibold text-slate-700"
-          :title="homeGoalsSummary"
-        >
-          {{ homeGoalsSummary }}
-        </div>
-        <div
-          class="rounded-full bg-white px-3 py-1 text-center text-[10px] font-black uppercase tracking-wide text-slate-500"
-        >
-          {{ t('match.goals') }}
-        </div>
-        <div
-          class="min-w-0 truncate rounded px-2 py-1 text-right font-semibold text-slate-700"
-          :title="awayGoalsSummary"
-        >
-          {{ awayGoalsSummary }}
         </div>
       </div>
 
@@ -1283,6 +1362,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.35fr_1fr_0.85fr] xl:gap-3">
+      <!-- СОСТАВЫ -->
       <div
         class="flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >
@@ -1495,128 +1575,177 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div
-        class="flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-hidden xl:p-3"
-      >
-        <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
-          {{ t('match.statistics') }}
-        </h2>
-        <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold"
-              >{{
-                match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
-              }}%</span
-            >
-            <span class="text-slate-500">{{ t('match.possession') }}</span>
-            <span class="font-semibold"
-              >{{
-                match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
-              }}%</span
-            >
-          </div>
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0
-            }}</span>
-            <span class="text-slate-500">{{ t('match.expectedGoals') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0
-            }}</span>
-          </div>
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
-            }}</span>
-            <span class="text-slate-500">{{ t('match.shots') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
-            }}</span>
-          </div>
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
-            }}</span>
-            <span class="text-slate-500">{{ t('match.shotsOnTarget') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
-            }}</span>
-          </div>
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
-            }}</span>
-            <span class="text-slate-500">{{ t('match.yellowCards') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
-            }}</span>
-          </div>
-          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
-            <span class="text-right font-semibold">{{
-              match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
-            }}</span>
-            <span class="text-slate-500">{{ t('match.redCards') }}</span>
-            <span class="font-semibold">{{
-              match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
-            }}</span>
-          </div>
-        </div>
-
-        <div
-          class="mt-5 flex min-h-0 flex-1 flex-col border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3"
+      <!-- СТАТИСТИКА -->
+      <div class="flex min-h-0 flex-col gap-3">
+        <section
+          class="flex min-h-[260px] flex-1 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
         >
-          <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
-            {{ t('match.commentaryTitle') }}
-          </h3>
+          <h2 class="text-center text-lg font-semibold text-slate-950 xl:text-base">
+            События матча
+          </h2>
           <div
-            v-if="visibleCommentary.length"
-            class="mt-3 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-2"
+            v-if="matchTimelineEvents.length"
+            class="mt-4 min-h-0 flex-1 space-y-2 overflow-auto pr-1 xl:mt-3"
           >
             <div
-              v-for="(event, index) in reversedVisibleCommentary"
-              :key="'commentary-' + event.minute + '-' + index"
-              class="flex gap-2 rounded-md px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
-              :class="
-                event.isBestPlayer ? 'bg-amber-50 font-semibold text-amber-900' : 'bg-slate-50'
-              "
+              v-for="event in matchTimelineEvents"
+              :key="event.id"
+              class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 text-sm xl:text-xs"
             >
-              <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
-              <span
-                v-if="event.kind === 'substitution'"
-                class="flex min-w-0 flex-wrap items-center gap-1"
-              >
-                <span class="font-semibold">
-                  {{
-                    t('match.substitution', {
-                      club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '',
-                    })
-                  }}
-                </span>
-                <span>{{ playerName(event.playerOutId) }}</span>
-                <span
-                  class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
+              <div class="min-w-0 text-right">
+                <div
+                  v-if="event.clubId === homeClub.id"
+                  class="inline-flex max-w-full items-center gap-1.5 rounded-md bg-slate-50 px-2 py-1.5 text-right font-semibold text-slate-700"
                 >
-                  <span class="text-rose-600">→</span>
-                  <span class="text-emerald-600">←</span>
-                </span>
-                <span>{{ playerName(event.playerInId) }}</span>
-              </span>
-              <span v-else>{{ event.text }}</span>
+                  <span class="truncate">{{ event.text }}</span>
+                  <i :class="[event.icon, event.tone]" class="shrink-0 text-xs"></i>
+                </div>
+              </div>
+              <span
+                class="grid h-7 min-w-9 place-items-center rounded-full bg-emerald-50 px-1 text-[10px] font-black text-emerald-700"
+                >{{ event.minute }}'</span
+              >
+              <div class="min-w-0">
+                <div
+                  v-if="event.clubId === awayClub.id"
+                  class="inline-flex max-w-full items-center gap-1.5 rounded-md bg-slate-50 px-2 py-1.5 font-semibold text-slate-700"
+                >
+                  <i :class="[event.icon, event.tone]" class="shrink-0 text-xs"></i>
+                  <span class="truncate">{{ event.text }}</span>
+                </div>
+              </div>
             </div>
           </div>
-          <div v-else class="mt-3 text-sm text-slate-500 xl:mt-2 xl:text-xs">
+          <div v-else class="mt-4 text-center text-sm text-slate-500 xl:mt-3 xl:text-xs">
             {{ t('match.noEvents') }}
           </div>
-        </div>
+        </section>
 
-        <div
-          v-if="penaltyWinnerClubName"
-          class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
+        <section
+          class="rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:p-3"
         >
-          {{ t('match.penaltyWinner') }} {{ penaltyWinnerClubName }}
-        </div>
-      </div>
+          <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
+            {{ t('match.statistics') }}
+          </h2>
+          <div class="mt-4 space-y-3 xl:mt-3 xl:space-y-2">
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold"
+                >{{
+                  match.result?.stats.home.possession ?? visibleSnapshot.stats.home.possession
+                }}%</span
+              >
+              <span class="text-slate-500">{{ t('match.possession') }}</span>
+              <span class="font-semibold"
+                >{{
+                  match.result?.stats.away.possession ?? visibleSnapshot.stats.away.possession
+                }}%</span
+              >
+            </div>
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold">{{
+                match.result?.stats.home.xG ?? visibleSnapshot.stats.home.xG ?? 0
+              }}</span>
+              <span class="text-slate-500">{{ t('match.expectedGoals') }}</span>
+              <span class="font-semibold">{{
+                match.result?.stats.away.xG ?? visibleSnapshot.stats.away.xG ?? 0
+              }}</span>
+            </div>
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold">{{
+                match.result?.stats.home.shots ?? visibleSnapshot.stats.home.shots
+              }}</span>
+              <span class="text-slate-500">{{ t('match.shots') }}</span>
+              <span class="font-semibold">{{
+                match.result?.stats.away.shots ?? visibleSnapshot.stats.away.shots
+              }}</span>
+            </div>
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold">{{
+                match.result?.stats.home.shotsOnTarget ?? visibleSnapshot.stats.home.shotsOnTarget
+              }}</span>
+              <span class="text-slate-500">{{ t('match.shotsOnTarget') }}</span>
+              <span class="font-semibold">{{
+                match.result?.stats.away.shotsOnTarget ?? visibleSnapshot.stats.away.shotsOnTarget
+              }}</span>
+            </div>
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold">{{
+                match.result?.stats.home.yellowCards ?? visibleSnapshot.stats.home.yellowCards
+              }}</span>
+              <span class="text-slate-500">{{ t('match.yellowCards') }}</span>
+              <span class="font-semibold">{{
+                match.result?.stats.away.yellowCards ?? visibleSnapshot.stats.away.yellowCards
+              }}</span>
+            </div>
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
+              <span class="text-right font-semibold">{{
+                match.result?.stats.home.redCards ?? visibleSnapshot.stats.home.redCards ?? 0
+              }}</span>
+              <span class="text-slate-500">{{ t('match.redCards') }}</span>
+              <span class="font-semibold">{{
+                match.result?.stats.away.redCards ?? visibleSnapshot.stats.away.redCards ?? 0
+              }}</span>
+            </div>
+          </div>
 
+          <div
+            v-if="false"
+            class="mt-5 flex min-h-0 flex-1 flex-col border-t border-slate-100 pt-4 xl:mt-3 xl:pt-3"
+          >
+            <h3 class="text-sm font-black text-center uppercase tracking-wide text-slate-700">
+              {{ t('match.commentaryTitle') }}
+            </h3>
+            <div
+              v-if="visibleCommentary.length"
+              class="mt-3 min-h-0 flex-1 space-y-1.5 overflow-auto pr-1 xl:mt-2"
+            >
+              <div
+                v-for="(event, index) in reversedVisibleCommentary"
+                :key="'commentary-' + event.minute + '-' + index"
+                class="flex gap-2 rounded-md px-3 py-2 text-sm xl:px-2 xl:py-1.5 xl:text-xs"
+                :class="
+                  event.isBestPlayer ? 'bg-amber-50 font-semibold text-amber-900' : 'bg-slate-50'
+                "
+              >
+                <span class="w-7 shrink-0 font-black text-emerald-700">{{ event.minute }}'</span>
+                <span
+                  v-if="event.kind === 'substitution'"
+                  class="flex min-w-0 flex-wrap items-center gap-1"
+                >
+                  <span class="font-semibold">
+                    {{
+                      t('match.substitution', {
+                        club: clubStore.getClubById(event.clubId ?? '')?.shortName ?? '',
+                      })
+                    }}
+                  </span>
+                  <span>{{ playerName(event.playerOutId) }}</span>
+                  <span
+                    class="inline-flex shrink-0 flex-col items-center text-xs font-black leading-[0.55]"
+                  >
+                    <span class="text-rose-600">→</span>
+                    <span class="text-emerald-600">←</span>
+                  </span>
+                  <span>{{ playerName(event.playerInId) }}</span>
+                </span>
+                <span v-else>{{ event.text }}</span>
+              </div>
+            </div>
+            <div v-else class="mt-3 text-sm text-slate-500 xl:mt-2 xl:text-xs">
+              {{ t('match.noEvents') }}
+            </div>
+          </div>
+
+          <div
+            v-if="penaltyWinnerClubName"
+            class="mt-4 rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800"
+          >
+            {{ t('match.penaltyWinner') }} {{ penaltyWinnerClubName }}
+          </div>
+        </section>
+
+        <!-- ТАКТИКА -->
+      </div>
       <div
         class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
       >

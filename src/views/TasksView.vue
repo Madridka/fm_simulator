@@ -6,6 +6,7 @@ import {
 } from '@/domain/tasks/seasonTaskService'
 import { useGameStore } from '@/stores/game/gameStore'
 import type { SeasonTaskCategory } from '@/types/football'
+import { formatMoney } from '@/utils/format'
 
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
@@ -204,6 +205,15 @@ const categoryAccentClass = (category: SeasonTaskCategory): string => {
                         "
                       >
                         {{ item.statusLabel }}
+                      </div>
+
+                      <div class="mt-2 text-xs font-black text-amber-700">
+                        <i class="pi pi-wallet mr-1" />
+                        {{
+                          item.rewarded
+                            ? 'Премия руководства получена'
+                            : `Премия: ${formatMoney(item.task.reward ?? 0)}`
+                        }}
                       </div>
                     </div>
                   </div>

@@ -21,7 +21,11 @@ import { simulateFastMatch, simulateMatch } from '@/domain/match/matchSimulator'
 import { normalizeMatchResultDiscipline } from '@/domain/match/disciplineService'
 import { generateLeagueSchedule } from '@/domain/season/scheduleGenerator'
 import { resolveScheduleConflicts } from '@/domain/schedule/calendarSlotResolver'
-import { createSeasonTasks, ensureSeasonTasks } from '@/domain/tasks/seasonTaskService'
+import {
+  createSeasonTasks,
+  ensureSeasonTasks,
+  settleSeasonTaskRewards,
+} from '@/domain/tasks/seasonTaskService'
 import {
   autoSelectLineup,
   getFormationSlots,
@@ -428,11 +432,13 @@ export const createInitialGameState = (
   }
   const worldLeagueTables = createWorldLeagueTables(worldClubs, syncedWorldMatches)
 
+  const initialClubBudget = clubs.find((club) => club.id === selectedClubId)?.budget ?? 0
   return ensureSeasonTasks({
     configVersion: 3,
     careerSeed,
     championshipId,
     selectedClubId,
+    initialClubBudget,
     season: 1,
     clubs,
     matches,
@@ -449,6 +455,7 @@ export const createInitialGameState = (
     academies: createAcademies(clubs, 1, selectedClubId),
     seasonTasks: [],
     seasonTaskEvents: [],
+    claimedSeasonTaskIds: [],
     externalClubOverrides: {},
     lastCompletedOrder: 0,
   })
@@ -519,10 +526,12 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
     {} as Record<ChampionshipId, Record<string, PlayerStats>>,
   )
 
-  return ensureSeasonTasks({
+  return settleSeasonTaskRewards(ensureSeasonTasks({
     ...state,
     configVersion: 3,
     careerSeed,
+    initialClubBudget:
+      state.initialClubBudget ?? state.clubs.find((club) => club.id === state.selectedClubId)?.budget ?? 0,
     clubs,
     academies,
     leagueTables: calculateLeagueTables(clubs, state.matches),
@@ -536,7 +545,7 @@ export const ensureWorldCompetitions = (state: GameState): GameState => {
       ]),
     ),
     worldPlayerStats,
-  })
+  }))
 }
 
 // НАХОДИТ КЛУБ И ПРЕРЫВАЕТ РАСЧЁТ ПРИ НАРУШЕНИИ ДАННЫХ
@@ -1439,9 +1448,10 @@ export const finishSeason = (state: GameState): GameState => {
     throw new Error('Season cannot finish before all league, cup and playoff matches are completed')
   }
 
+  const settledState = settleSeasonTaskRewards(ensureSeasonTasks(state))
   const rewardedAndMoved = applySeasonRewardsAndMovement({
-    ...state,
-    leagueTables: calculateLeagueTables(state.clubs, state.matches),
+    ...settledState,
+    leagueTables: calculateLeagueTables(settledState.clubs, settledState.matches),
   })
   const nextSeason = state.season + 1
   const seasonProgressedClubs = rewardedAndMoved.map((club) =>
@@ -1497,6 +1507,7 @@ export const finishSeason = (state: GameState): GameState => {
     careerSeed: state.careerSeed,
     championshipId: state.championshipId,
     selectedClubId: state.selectedClubId,
+    initialClubBudget: settledState.initialClubBudget,
     season: nextSeason,
     clubs: progressedClubs,
     matches,
@@ -1513,6 +1524,7 @@ export const finishSeason = (state: GameState): GameState => {
     academies: academyProgress.academies,
     seasonTasks: [],
     seasonTaskEvents: [],
+    claimedSeasonTaskIds: settledState.claimedSeasonTaskIds ?? [],
     externalClubOverrides,
     lastCompletedOrder: 0,
   }

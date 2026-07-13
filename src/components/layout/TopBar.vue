@@ -11,6 +11,7 @@ defineProps<{
   nextOpponent?: Club
   season?: number
   selectedClub?: Club
+  showMatchControls?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -80,6 +81,11 @@ const matchCompetition = (match: Match): string =>
           <IconSymbol name="chevronRight" class="h-4 w-4" />
         </span>
       </button>
+      <div
+        v-else-if="showMatchControls"
+        id="match-simulation-controls"
+        class="flex shrink-0 items-center"
+      ></div>
     </div>
   </header>
 </template>

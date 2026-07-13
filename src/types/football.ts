@@ -441,6 +441,7 @@ export interface SeasonTask {
   targetTacticalStyle?: TacticalStyle
   weakPosition?: PlayerPosition
   minimumRating?: number
+  reward?: number
 }
 
 export type SeasonTaskEventType =
@@ -462,6 +463,7 @@ export interface GameState {
   careerSeed: number
   championshipId: ChampionshipId
   selectedClubId: string
+  initialClubBudget?: number
   season: number
   clubs: Club[]
   matches: Match[]
@@ -479,5 +481,6 @@ export interface GameState {
   academies: Record<string, AcademyState>
   seasonTasks: SeasonTask[]
   seasonTaskEvents: SeasonTaskEvent[]
+  claimedSeasonTaskIds?: string[]
   lastCompletedOrder: number
 }

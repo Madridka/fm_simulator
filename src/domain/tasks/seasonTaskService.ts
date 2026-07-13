@@ -41,9 +41,22 @@ export interface SeasonTaskProgress {
   progress: number
   statusLabel: string
   detailLabel: string
+  rewarded: boolean
 }
 
 const pool = seasonTaskPool as SeasonTaskPool
+
+const rewardRateByCategory: Record<SeasonTaskCategory, number> = {
+  important: 0.05,
+  secondary: 0.025,
+  optional: 0.01,
+}
+
+const taskReward = (state: GameState, category: SeasonTaskCategory): number => {
+  const club = state.clubs.find((item) => item.id === state.selectedClubId)
+  const baseBudget = state.initialClubBudget ?? club?.budget ?? 0
+  return Math.max(50_000, Math.round((baseBudget * rewardRateByCategory[category]) / 50_000) * 50_000)
+}
 
 const secondaryTaskKinds = new Set<SeasonTaskKind>([
   'academy_promotions',
@@ -303,7 +316,10 @@ export const createSeasonTasks = (state: GameState): SeasonTask[] => {
     .filter((task): task is SeasonTask => Boolean(task))
     .slice(0, 3)
 
-  return [...fixedTasks, ...secondaryTasks, ...optionalTasks]
+  return [...fixedTasks, ...secondaryTasks, ...optionalTasks].map((task) => ({
+    ...task,
+    reward: taskReward(state, task.category),
+  }))
 }
 
 export const ensureSeasonTasks = (state: GameState): GameState => {
@@ -318,7 +334,10 @@ export const ensureSeasonTasks = (state: GameState): GameState => {
     existingTasks
       .filter((task) => task.category === 'optional')
       .every((task) => optionalTaskKinds.has(task.kind))
-  const tasks = hasExpectedStructure ? existingTasks : createSeasonTasks(state)
+  const tasks = (hasExpectedStructure ? existingTasks : createSeasonTasks(state)).map((task) => ({
+    ...task,
+    reward: task.reward ?? taskReward(state, task.category),
+  }))
   return {
     ...state,
     seasonTasks: tasks,
@@ -483,6 +502,7 @@ const countTaskProgress = (state: GameState, task: SeasonTask): number => {
 }
 
 export const getSeasonTaskProgress = (state: GameState, task: SeasonTask): SeasonTaskProgress => {
+  const rewarded = (state.claimedSeasonTaskIds ?? []).includes(task.id)
   if (task.kind === 'league_position') {
     const current = currentLeaguePosition(state)
     const target = task.targetPosition ?? 1
@@ -495,6 +515,7 @@ export const getSeasonTaskProgress = (state: GameState, task: SeasonTask): Seaso
       progress: completed ? 1 : Math.max(0, Math.min(0.95, (target - current + 1) / target)),
       statusLabel: completed ? 'Выполнено' : leagueFinished(state) ? 'Провалено' : 'В процессе',
       detailLabel: `Сейчас: ${current} место, цель: ${target} место`,
+      rewarded,
     }
   }
 
@@ -510,6 +531,7 @@ export const getSeasonTaskProgress = (state: GameState, task: SeasonTask): Seaso
       progress: target > 0 ? Math.min(1, current / target) : 0,
       statusLabel: completed ? 'Выполнено' : 'В процессе',
       detailLabel: `Цель: ${cupRoundNames[task.targetCupRoundId ?? ''] ?? task.targetCupRoundId}`,
+      rewarded,
     }
   }
 
@@ -527,6 +549,28 @@ export const getSeasonTaskProgress = (state: GameState, task: SeasonTask): Seaso
       task.kind === 'weak_position_purchase' && task.weakPosition
         ? `${positionLabels[task.weakPosition]}, нужно ${task.minimumRating}+`
         : `${current}/${target}`,
+    rewarded,
+  }
+}
+
+export const settleSeasonTaskRewards = (state: GameState): GameState => {
+  const tasks = state.seasonTasks?.length ? state.seasonTasks : createSeasonTasks(state)
+  const claimedIds = new Set(state.claimedSeasonTaskIds ?? [])
+  const completed = tasks.filter(
+    (task) => !claimedIds.has(task.id) && getSeasonTaskProgress(state, task).completed,
+  )
+  if (!completed.length) return state
+
+  const totalReward = completed.reduce(
+    (sum, task) => sum + (task.reward ?? taskReward(state, task.category)),
+    0,
+  )
+  return {
+    ...state,
+    clubs: state.clubs.map((club) =>
+      club.id === state.selectedClubId ? { ...club, budget: club.budget + totalReward } : club,
+    ),
+    claimedSeasonTaskIds: [...claimedIds, ...completed.map((task) => task.id)],
   }
 }
 

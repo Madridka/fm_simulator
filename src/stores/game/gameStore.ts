@@ -72,7 +72,8 @@ export const useGameStore = defineStore('game', () => {
       return false
     }
 
-    const isUserMatch = match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId
+    const isUserMatch =
+      match.homeClubId === state.selectedClubId || match.awayClubId === state.selectedClubId
     return isUserMatch && (match.status === 'played' || nextMatch.value?.id === match.id)
   }
 
@@ -102,13 +103,16 @@ export const useGameStore = defineStore('game', () => {
   // ОПРЕДЕЛЯЕТ ДОСТУПНОСТЬ ПЕРЕХОДА К СЛЕДУЮЩЕМУ СЕЗОНУ
   const seasonCanFinish = computed<boolean>(() =>
     game.value
-      ? (careerConfig.maximumSeasons === null || game.value.season < careerConfig.maximumSeasons) && isSeasonReadyToFinish(game.value)
+      ? (careerConfig.maximumSeasons === null || game.value.season < careerConfig.maximumSeasons) &&
+        isSeasonReadyToFinish(game.value)
       : false,
   )
 
   // ПОКАЗЫВАЕТ, ДОСТИГНУТ ЛИ ЛИМИТ ПРОДОЛЖИТЕЛЬНОСТИ КАРЬЕРЫ
   const isFinalSeason = computed<boolean>(
-    () => careerConfig.maximumSeasons !== null && (game.value?.season ?? 0) >= careerConfig.maximumSeasons,
+    () =>
+      careerConfig.maximumSeasons !== null &&
+      (game.value?.season ?? 0) >= careerConfig.maximumSeasons,
   )
 
   // СОХРАНЯЕТ ТЕКУЩУЮ КАРЬЕРУ И УВЕДОМЛЯЕТ О ПЕРЕПОЛНЕНИИ ХРАНИЛИЩА
@@ -118,10 +122,7 @@ export const useGameStore = defineStore('game', () => {
       activeSlotId.value = gameSaveRepository.activeSlotId()
       saveSlots.value = gameSaveRepository.listSlots()
       if (!result.saved) {
-        toastStore.show(
-          t('app.saveStorageFull'),
-          'warning',
-        )
+        toastStore.show(t('app.saveStorageFull'), 'warning')
       }
     }
   }
@@ -195,7 +196,7 @@ export const useGameStore = defineStore('game', () => {
     gameSaveRepository.clear()
   }
 
-  // Р—РђРљР Р«Р’РђР•Рў РџР•Р Р’РР§РќР«Р™ Р”РРђР›РћР“ РЎ Р—РђР”РђР§РђРњР РќРћР’РћР“Рћ РЎР•Р—РћРќРђ
+  // ЗАКРЫТИЕ ДИАЛОГА С ЗАДАЧЕЙ НА СЕЗОН
   const closeSeasonTasksDialog = (): void => {
     seasonTasksDialogVisible.value = false
   }
@@ -341,8 +342,7 @@ export const useGameStore = defineStore('game', () => {
         return
       }
 
-      game.value = event.data.state
-      save()
+      updateGame(event.data.state)
       const resolve = completionResolve
       completionResolve = null
       completionReject = null
@@ -351,9 +351,7 @@ export const useGameStore = defineStore('game', () => {
     }
 
     matchDayWorker.onerror = (event) => {
-      rejectMatchDayWorker(
-        new Error(event.message || t('match.errors.workerStart')),
-      )
+      rejectMatchDayWorker(new Error(event.message || t('match.errors.workerStart')))
     }
 
     matchDayWorker.onmessageerror = () => {
@@ -399,9 +397,10 @@ export const useGameStore = defineStore('game', () => {
         .slice(0, 3)
         .map((player) => `${player.firstName} ${player.lastName}`)
       const hiddenCount = retiringPlayers.length - visibleNames.length
-      const players = hiddenCount > 0
-        ? `${visibleNames.join(', ')} и ещё ${hiddenCount}`
-        : visibleNames.join(', ')
+      const players =
+        hiddenCount > 0
+          ? `${visibleNames.join(', ')} и ещё ${hiddenCount}`
+          : visibleNames.join(', ')
       toastStore.show(t('squad.retirementNotice', { players }), 'info')
     }
   }
