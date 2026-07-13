@@ -70,11 +70,26 @@
     "points": 150
   },
   {
+    "id": "special-one",
+    "title": "Ты - особенный",
+    "description": "Закончить чемпионат без единого поражения, но остаться без титула.",
+    "category": "epic",
+    "points": 250
+  },
+
+  {
     "id": "arsene-knows",
     "title": "Арсен Венгер знает",
     "description": "Выиграть чемпионат без поражений.",
     "category": "epic",
-    "points": 75
+    "points": 150
+  },
+  {
+    "id": "arteta-knows",
+    "title": "Тотальная доминация",
+    "description": "Пять сезонов подряд займите второе место в лиге",
+    "category": "epic",
+    "points": 150
   },
   {
     "id": "ferguson-heir",
