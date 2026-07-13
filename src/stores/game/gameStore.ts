@@ -119,7 +119,10 @@ export const useGameStore = defineStore('game', () => {
   )
 
   const showAchievementUnlocks = (achievementIds: string[]): void => {
-    const firstAchievement = achievementById[achievementIds[0]]
+    const firstAchievementId = achievementIds[0]
+    if (!firstAchievementId) return
+
+    const firstAchievement = achievementById[firstAchievementId]
     if (!firstAchievement) return
 
     toastStore.show(`Достижение открыто: ${firstAchievement.title}`, 'success')
