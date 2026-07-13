@@ -4,6 +4,7 @@ import {
   autoSelectLineup,
   createEmptyLineup,
   defaultTeamTactics,
+  defaultRoleForPosition,
   formations,
   getFormationSlots,
   tacticalStyles,
@@ -16,6 +17,7 @@ import type {
   ClubLineup,
   Formation,
   FormationSlot,
+  PlayerRoleId,
   PlayerStats,
   TacticalStyle,
   TeamTacticsSettings,
@@ -119,6 +121,24 @@ export const useSquadStore = defineStore('squad', () => {
       ...lineup.value,
       tacticalStyle,
       tactics,
+    })
+  }
+
+  const setPlayerRole = (slotId: string, role: PlayerRoleId): void => {
+    if (!lineup.value) {
+      return
+    }
+    saveLineup({
+      ...lineup.value,
+      roles: {
+        ...Object.fromEntries(
+          getFormationSlots(lineup.value.formation).map((slot) => [
+            slot.id,
+            lineup.value?.roles?.[slot.id] ?? defaultRoleForPosition(slot.position),
+          ]),
+        ),
+        [slotId]: role,
+      },
     })
   }
 
@@ -311,6 +331,7 @@ export const useSquadStore = defineStore('squad', () => {
     setFormation,
     setTacticalStyle,
     setTactics,
+    setPlayerRole,
     assignPlayerToSlot,
     movePlayerToSlot,
     toggleSubstitute,

@@ -45,6 +45,7 @@ export const useGameStore = defineStore('game', () => {
   const activeSlotId = ref(gameSaveRepository.activeSlotId())
   const saveSlots = ref<SaveSlotSummary[]>(gameSaveRepository.listSlots())
   const activeMatchId = ref<string | null>(null)
+  const liveMatchInProgressId = ref<string | null>(null)
   const preparedMatchContext = ref<PreparedMatchContext | null>(null)
   const seasonTasksDialogVisible = ref(false)
   let matchDayWorker: Worker | null = null
@@ -236,7 +237,21 @@ export const useGameStore = defineStore('game', () => {
 
   // ЗАКРЫВАЕТ ТЕКУЩИЙ ЭКРАН МАТЧА
   const clearActiveMatch = (): void => {
+    if (liveMatchInProgressId.value) {
+      return
+    }
     activeMatchId.value = null
+  }
+
+  const startLiveMatchSession = (matchId: string): void => {
+    liveMatchInProgressId.value = matchId
+    activeMatchId.value = matchId
+  }
+
+  const finishLiveMatchSession = (matchId: string): void => {
+    if (liveMatchInProgressId.value === matchId) {
+      liveMatchInProgressId.value = null
+    }
   }
 
   // ПРИМЕНЯЕТ НОВОЕ СОСТОЯНИЕ, ВОССТАНАВЛИВАЕТ МИР И СОХРАНЯЕТ ЕГО
@@ -426,6 +441,7 @@ export const useGameStore = defineStore('game', () => {
     game,
     activeSlotId,
     saveSlots,
+    liveMatchInProgressId,
     championship,
     selectedClub,
     nextMatch,
@@ -444,6 +460,8 @@ export const useGameStore = defineStore('game', () => {
     closeSeasonTasksDialog,
     openMatch,
     clearActiveMatch,
+    startLiveMatchSession,
+    finishLiveMatchSession,
     updateGame,
     updateLineup,
     replaceClubs,

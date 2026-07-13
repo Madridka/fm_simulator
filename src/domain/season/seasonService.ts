@@ -242,6 +242,7 @@ const cloneMatch = (match: Match): Match => ({
           formation: match.lineups.home.formation,
           tacticalStyle: match.lineups.home.tacticalStyle,
           tactics: match.lineups.home.tactics ? { ...match.lineups.home.tactics } : undefined,
+          roles: match.lineups.home.roles ? { ...match.lineups.home.roles } : undefined,
           starters: [...match.lineups.home.starters],
           substitutes: [...match.lineups.home.substitutes],
         },
@@ -249,6 +250,7 @@ const cloneMatch = (match: Match): Match => ({
           formation: match.lineups.away.formation,
           tacticalStyle: match.lineups.away.tacticalStyle,
           tactics: match.lineups.away.tactics ? { ...match.lineups.away.tactics } : undefined,
+          roles: match.lineups.away.roles ? { ...match.lineups.away.roles } : undefined,
           starters: [...match.lineups.away.starters],
           substitutes: [...match.lineups.away.substitutes],
         },
@@ -579,6 +581,7 @@ const getPlayedLineup = (club: Club, stateLineup: ClubLineup | undefined): Playe
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
     tactics: lineup.tactics,
+    roles: lineup.roles,
     starters,
     substitutes: lineup.substitutes.filter((playerId) => {
       const player = playersById.get(playerId)
@@ -1563,6 +1566,7 @@ export const refreshLineupsAfterSquadChange = (state: GameState): Record<string,
       formation: existing.formation,
       tacticalStyle: existing.tacticalStyle,
       tactics: existing.tactics,
+      roles: existing.roles,
       starters,
       substitutes,
     }

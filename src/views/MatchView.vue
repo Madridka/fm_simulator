@@ -75,7 +75,7 @@ const HALF_TIME_MINUTE = 45
 const COACH_ACTION_COOLDOWN_MINUTES = 15
 const LIVE_EVENT_DIALOG_DURATION_MS = 2_000
 
-type LiveEventDialogTone = 'goal' | 'yellow-card' | 'red-card' | 'injury'
+type LiveEventDialogTone = 'goal' | 'yellow-card' | 'red-card' | 'injury' | 'half-time'
 
 interface LiveEventDialog {
   id: string
@@ -89,6 +89,7 @@ const liveEventDialog = ref<LiveEventDialog | null>(null)
 const liveEventQueue = ref<LiveEventDialog[]>([])
 const seenLiveEventKeys = ref<Set<string>>(new Set())
 const liveEventTimerId = ref<number | null>(null)
+const liveMatchSeed = ref<number | null>(null)
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -122,6 +123,15 @@ const hashString = (value: string): number => {
   return hash || 1
 }
 
+const createMatchSeed = (matchId: string, season: number): number => {
+  const base = hashString(matchId) + season * 10_000
+  const entropy =
+    typeof crypto !== 'undefined' && 'getRandomValues' in crypto
+      ? (crypto.getRandomValues(new Uint32Array(1))[0] ?? 0)
+      : Math.floor(Math.random() * 2_147_483_647)
+  return (base + Date.now() + entropy) % 2_147_483_647 || base
+}
+
 // ФОРМИРУЕТ СОСТАВ КЛУБА ДЛЯ СИМУЛЯЦИИ
 const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
   const starters = getFormationSlots(lineup.formation)
@@ -137,6 +147,7 @@ const buildPlayedLineup = (club: Club, lineup: ClubLineup): PlayedLineup => {
     formation: lineup.formation,
     tacticalStyle: lineup.tacticalStyle,
     tactics: lineup.tactics,
+    roles: lineup.roles,
     starters,
     substitutes: [...new Set(lineup.substitutes)].filter(
       (playerId) => !starters.includes(playerId),
@@ -548,6 +559,7 @@ const liveEventToneClass = (tone: LiveEventDialogTone): string => {
   if (tone === 'goal') return 'border-emerald-200 bg-emerald-50 text-emerald-950'
   if (tone === 'yellow-card') return 'border-amber-200 bg-amber-50 text-amber-950'
   if (tone === 'red-card') return 'border-rose-200 bg-rose-50 text-rose-950'
+  if (tone === 'half-time') return 'border-indigo-200 bg-indigo-50 text-indigo-950'
   return 'border-sky-200 bg-sky-50 text-sky-950'
 }
 
@@ -555,6 +567,7 @@ const liveEventIconClass = (tone: LiveEventDialogTone): string => {
   if (tone === 'goal') return 'pi pi-flag-fill text-emerald-600'
   if (tone === 'yellow-card') return 'pi pi-stop text-amber-500'
   if (tone === 'red-card') return 'pi pi-stop text-rose-600'
+  if (tone === 'half-time') return 'pi pi-clock text-indigo-600'
   return 'pi pi-plus-circle text-sky-600'
 }
 
@@ -614,11 +627,20 @@ const createInjuryDialog = (injury: InjuryEvent, index: number): LiveEventDialog
   description: `${playerName(injury.playerId)} из ${clubDisplayName(injury.clubId)} получил повреждение.`,
 })
 
+const createHalfTimeDialog = (): LiveEventDialog => ({
+  id: 'half-time-45',
+  tone: 'half-time',
+  minute: HALF_TIME_MINUTE,
+  title: 'Перерыв',
+  description:
+    'Матч поставлен на паузу. Можно сделать замены, поправить тактику и продолжить второй тайм.',
+})
+
 const showLiveEventsForMinute = (
   result: MatchResult,
   previousMinute: number,
   nextMinute: number,
-): void => {
+): boolean => {
   const isNewEvent = (minute?: number): boolean => {
     const eventMinute = minute ?? nextMinute
     return eventMinute > previousMinute && eventMinute <= nextMinute
@@ -633,6 +655,7 @@ const showLiveEventsForMinute = (
   ].sort((left, right) => left.minute - right.minute)
 
   dialogs.forEach(enqueueLiveEventDialog)
+  return dialogs.length > 0
 }
 
 // СОЗДАЁТ ИЛИ ВОЗВРАЩАЕТ УПРАВЛЯЕМОЕ СОСТОЯНИЕ МАТЧА
@@ -648,6 +671,9 @@ const ensureLiveMatch = (): LiveMatchController | undefined => {
   }
 
   if (!liveMatch.value) {
+    if (liveMatchSeed.value === null) {
+      liveMatchSeed.value = createMatchSeed(currentMatch.id, game.season)
+    }
     const playoffTie = currentMatch.playoffId
       ? game.playoffs
           ?.find((playoff) => playoff.id === currentMatch.playoffId)
@@ -663,9 +689,10 @@ const ensureLiveMatch = (): LiveMatchController | undefined => {
       neutralVenue: currentMatch.neutralVenue,
       allowPenaltyShootout:
         currentMatch.type === 'cup' || playoffTie?.matchIds.at(-1) === currentMatch.id,
-      seed: hashString(currentMatch.id) + game.season * 10_000,
+      seed: liveMatchSeed.value,
       controlledTeamId: game.selectedClubId,
     })
+    gameStore.startLiveMatchSession(currentMatch.id)
   }
 
   return liveMatch.value
@@ -690,7 +717,9 @@ const finish = async (result: MatchResult): Promise<void> => {
   matchCompletionPromise = completion
   try {
     await completion
+    gameStore.finishLiveMatchSession(currentMatch.id)
   } catch (error) {
+    gameStore.finishLiveMatchSession(currentMatch.id)
     calculationError.value = error instanceof Error ? error.message : t('match.errors.calculateDay')
   } finally {
     if (matchCompletionPromise === completion) {
@@ -715,10 +744,20 @@ const advanceOneMinute = (): void => {
   const previousMinute = currentMinute.value
   controller.advance(1)
   currentMinute.value = controller.state.minute
-  showLiveEventsForMinute(controller.result(), previousMinute, currentMinute.value)
+  const hasBlockingEvent = showLiveEventsForMinute(
+    controller.result(),
+    previousMinute,
+    currentMinute.value,
+  )
   resetExpiredCoachAction()
   revision.value += 1
+  if (hasBlockingEvent && currentMinute.value < 90 && currentMinute.value !== HALF_TIME_MINUTE) {
+    isPaused.value = true
+    stopSimulationTimer()
+    return
+  }
   if (currentMinute.value === HALF_TIME_MINUTE) {
+    enqueueLiveEventDialog(createHalfTimeDialog())
     isPaused.value = true
     stopSimulationTimer()
     return
@@ -1100,6 +1139,9 @@ const goBack = async (): Promise<void> => {
   } catch {
     return
   }
+  if (gameStore.liveMatchInProgressId) {
+    return
+  }
   gameStore.clearActiveMatch()
   await router.push('/dashboard')
 }
@@ -1112,6 +1154,7 @@ watch(
     clearLiveEventDialog()
     seenLiveEventKeys.value = new Set()
     liveMatch.value = null
+    liveMatchSeed.value = null
     currentMinute.value = 0
     isPaused.value = false
     simulationSpeed.value = 1

@@ -122,6 +122,23 @@ export type MatchCommand =
   | 'loadBox'
   | 'timeWasting'
 export type TeamTalk = 'balanced' | 'encourage' | 'calm' | 'demandMore' | 'praise'
+export type PlayerRoleId =
+  | 'keeper'
+  | 'sweeperKeeper'
+  | 'fullBack'
+  | 'wingBack'
+  | 'defensiveCenterBack'
+  | 'ballPlayingCenterBack'
+  | 'anchor'
+  | 'ballWinner'
+  | 'boxToBox'
+  | 'deepPlaymaker'
+  | 'advancedPlaymaker'
+  | 'insideForward'
+  | 'wideWinger'
+  | 'pressingForward'
+  | 'targetForward'
+  | 'poacher'
 
 export interface TeamTacticsSettings {
   mentality: MatchMentality
@@ -148,6 +165,7 @@ export interface ClubLineup {
   formation: Formation
   tacticalStyle: TacticalStyle
   tactics?: TeamTacticsSettings
+  roles?: Partial<Record<string, PlayerRoleId>>
   starters: Record<string, string | null>
   substitutes: string[]
 }
@@ -156,6 +174,7 @@ export interface PlayedLineup {
   formation: Formation
   tacticalStyle: TacticalStyle
   tactics?: TeamTacticsSettings
+  roles?: Partial<Record<string, PlayerRoleId>>
   starters: string[]
   substitutes: string[]
 }

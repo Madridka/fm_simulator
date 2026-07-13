@@ -19,10 +19,15 @@ import type {
 } from '@/types/football'
 import { clamp, createSeededRandom, type RandomGenerator } from '@/utils/random'
 import { formatPlayerName } from '@/utils/format'
-import { getPositionFit } from '@/domain/season/squadSelectionService'
+import {
+  defaultRoleForPosition,
+  getFormationSlots,
+  getPositionFit,
+} from '@/domain/season/squadSelectionService'
 import { isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import { normalizeCardEvents } from '@/domain/match/disciplineService'
 import { calculateClubRating } from '@/domain/club/teamRating'
+import { getPlayerRole } from '@/domain/tactics/playerRoles'
 
 export interface MatchSimulationInput {
   matchId: string
@@ -148,6 +153,24 @@ const getLineupPlayers = (club: Club, lineup: PlayedLineup): Player[] => {
   return players
 }
 
+const roleLineBonus = (
+  lineup: PlayedLineup,
+  players: readonly Player[],
+  line: 'attack' | 'midfield' | 'defense',
+): number => {
+  const slots = getFormationSlots(lineup.formation)
+  const values = slots.map((slot, index) => {
+    const player = players[index]
+    if (!player || positionLine[player.position] !== line) return 0
+    const roleId = lineup.roles?.[slot.id] ?? defaultRoleForPosition(slot.position)
+    const effects = getPlayerRole(roleId).effects
+    if (line === 'attack') return effects.attack * 0.32 + effects.control * 0.08
+    if (line === 'midfield') return effects.control * 0.28 + effects.pressing * 0.12
+    return effects.defense * 0.32 - Math.max(0, effects.risk) * 0.08
+  })
+  return average(values.filter((value) => value !== 0), 0)
+}
+
 // СОБИРАЕТ АТАКУ, ПОЛУЗАЩИТУ И ЗАЩИТУ КОМАНДЫ ДЛЯ СИМУЛЯЦИИ
 const createTeamMetrics = (
   club: Club,
@@ -163,11 +186,20 @@ const createTeamMetrics = (
     calculateClubRating(club, lineup),
   )
   const attack =
-    getLineAverage(players, 'attack', lineupFallback) + modifiers.attack + homeBonus * 0.45
+    getLineAverage(players, 'attack', lineupFallback) +
+    modifiers.attack +
+    roleLineBonus(lineup, players, 'attack') +
+    homeBonus * 0.45
   const midfield =
-    getLineAverage(players, 'midfield', lineupFallback) + modifiers.midfield + homeBonus * 0.25
+    getLineAverage(players, 'midfield', lineupFallback) +
+    modifiers.midfield +
+    roleLineBonus(lineup, players, 'midfield') +
+    homeBonus * 0.25
   const defense =
-    getLineAverage(players, 'defense', lineupFallback) + modifiers.defense + homeBonus * 0.3
+    getLineAverage(players, 'defense', lineupFallback) +
+    modifiers.defense +
+    roleLineBonus(lineup, players, 'defense') +
+    homeBonus * 0.3
 
   return {
     attack: clamp(attack, 1, 110),

@@ -1,7 +1,12 @@
 import { matchSimulationConfig } from '@/config/matchSimulationConfig'
 import { getSimulationSettings } from '@/domain/admin/simulationSettings'
 import { calculateClubRating } from '@/domain/club/teamRating'
-import { getPositionFit } from '@/domain/season/squadSelectionService'
+import {
+  defaultRoleForPosition,
+  getFormationSlots,
+  getPositionFit,
+} from '@/domain/season/squadSelectionService'
+import { getPlayerRole } from '@/domain/tactics/playerRoles'
 import type {
   CardEvent,
   Club,
@@ -174,6 +179,19 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
       club.squad.map((player) => [player.id, player] as const),
     ),
   )
+  const roleByPlayerId = new Map<string, ReturnType<typeof getPlayerRole>>()
+  const registerLineupRoles = (lineup: PlayedLineup): void => {
+    getFormationSlots(lineup.formation).forEach((slot, index) => {
+      const playerId = lineup.starters[index]
+      if (!playerId) return
+      roleByPlayerId.set(
+        playerId,
+        getPlayerRole(lineup.roles?.[slot.id] ?? defaultRoleForPosition(slot.position)),
+      )
+    })
+  }
+  registerLineupRoles(input.homeLineup)
+  registerLineupRoles(input.awayLineup)
   const state: LiveMatchState = {
     matchId: input.matchId,
     minute: 0,
@@ -265,7 +283,14 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     const candidates = activePlayers(teamId).filter((player) => lineByPosition[player.position] === line)
     return average(candidates.map((player) => {
       const liveFitness = state.fitness[player.id] ?? player.fitness
-      return player.rating * (0.72 + liveFitness / 360) + player.form * 0.08
+      const effects = roleByPlayerId.get(player.id)?.effects
+      const roleBonus =
+        line === 'attack'
+          ? (effects?.attack ?? 0) * 0.3 + (effects?.control ?? 0) * 0.08
+          : line === 'midfield'
+            ? (effects?.control ?? 0) * 0.26 + (effects?.pressing ?? 0) * 0.1
+            : (effects?.defense ?? 0) * 0.3 - Math.max(0, effects?.risk ?? 0) * 0.08
+      return player.rating * (0.72 + liveFitness / 360) + player.form * 0.08 + roleBonus
     }), calculateClubRating(clubs.get(teamId)!))
   }
 
@@ -446,6 +471,10 @@ export const createLiveMatch = (input: LiveMatchInput): LiveMatchController => {
     bench.splice(inIndex, 1)
     runtime.exitedAt.set(playerOutId, state.minute)
     runtime.enteredAt.set(playerInId, state.minute)
+    const playerIn = players.get(playerInId)
+    if (playerIn) {
+      roleByPlayerId.set(playerInId, getPlayerRole(defaultRoleForPosition(playerIn.position)))
+    }
     if (isHome(teamId)) state.homeSubstitutionsUsed += 1
     else state.awaySubstitutionsUsed += 1
     const event = { minute: state.minute, clubId: teamId, playerOutId, playerInId }

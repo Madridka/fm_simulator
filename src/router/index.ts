@@ -128,5 +128,9 @@ router.beforeEach((to) => {
     return { name: 'select-club' }
   }
 
+  if (gameStore.liveMatchInProgressId && to.name !== 'match') {
+    return { name: 'match' }
+  }
+
   return true
 })

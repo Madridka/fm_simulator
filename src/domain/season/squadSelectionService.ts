@@ -4,6 +4,7 @@ import type {
   ClubLineup,
   Formation,
   FormationSlot,
+  PlayerRoleId,
   Player,
   PlayerPosition,
   TacticalStyle,
@@ -360,6 +361,22 @@ export const defaultTeamTactics = (
   teamTalk: 'balanced',
 })
 
+const defaultRoleByPosition: Record<PlayerPosition, PlayerRoleId> = {
+  GK: 'keeper',
+  LB: 'fullBack',
+  CB: 'defensiveCenterBack',
+  RB: 'fullBack',
+  CDM: 'anchor',
+  CM: 'boxToBox',
+  CAM: 'advancedPlaymaker',
+  LW: 'wideWinger',
+  RW: 'wideWinger',
+  ST: 'pressingForward',
+}
+
+export const defaultRoleForPosition = (position: PlayerPosition): PlayerRoleId =>
+  defaultRoleByPosition[position]
+
 // ВОЗВРАЩАЕТ НАБОР ПОЗИЦИЙ ДЛЯ ВЫБРАННОЙ СХЕМЫ
 export const getFormationSlots = (formation: Formation): FormationSlot[] =>
   formationSlots[formation]
@@ -382,6 +399,9 @@ export const createEmptyLineup = (
     formation,
     tacticalStyle,
     tactics,
+    roles: Object.fromEntries(
+      getFormationSlots(formation).map((slot) => [slot.id, defaultRoleForPosition(slot.position)]),
+    ),
     starters,
     substitutes: [],
   }

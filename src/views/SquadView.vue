@@ -4,14 +4,23 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
+import { useClubStore } from '@/stores/clubs/clubsStore'
+import { useGameStore } from '@/stores/game/gameStore'
 import type {
+  Club,
   Formation,
   Player,
   PlayerPosition,
+  PlayerRoleId,
   PlayerStats,
   TeamTacticsSettings,
 } from '@/types/football'
-import { defaultTeamTactics } from '@/domain/season/squadSelectionService'
+import {
+  defaultRoleForPosition,
+  defaultTeamTactics,
+} from '@/domain/season/squadSelectionService'
+import { getPlayerRole, rolesForPosition } from '@/domain/tactics/playerRoles'
+import { calculateClubRating } from '@/domain/club/teamRating'
 import { formatMoney } from '@/utils/format'
 import { isPlayerSuspended, isPlayerUnavailable } from '@/domain/season/playerAvailability'
 import SectionHero from '@/components/ui/SectionHero.vue'
@@ -58,9 +67,27 @@ interface PlayerContractRow {
   retirementSeasons: number
 }
 
+interface TacticalIndicator {
+  key: string
+  label: string
+  value: number
+  description: string
+  tone: string
+}
+
+interface StarterRoleRow {
+  slotId: string
+  slotLabel: string
+  player: Player
+  roleId: PlayerRoleId
+  options: ReturnType<typeof rolesForPosition>
+}
+
 // ХРАНИЛИЩА СОСТАВА И ПОЛЬЗОВАТЕЛЬСКИХ УВЕДОМЛЕНИЙ
 const squadStore = useSquadStore()
 const toastStore = useToastStore()
+const clubStore = useClubStore()
+const gameStore = useGameStore()
 const { t } = useI18n()
 // СОСТОЯНИЕ МЫШИ, КАСАНИЯ И ЦЕЛИ ПЕРЕТАСКИВАНИЯ ИГРОКА
 const draggingPlayerId = ref<string | null>(null)
@@ -204,6 +231,241 @@ const currentTactics = computed<TeamTacticsSettings>(() => ({
   ...squadStore.lineup?.tactics,
 }))
 
+const clampValue = (value: number, min = 0, max = 100): number =>
+  Math.min(max, Math.max(min, Math.round(value)))
+
+const nextOpponent = computed<Club | undefined>(() => {
+  const game = gameStore.game
+  const nextMatch = gameStore.nextMatch
+  if (!game || !nextMatch) return undefined
+  const opponentId =
+    nextMatch.homeClubId === game.selectedClubId ? nextMatch.awayClubId : nextMatch.homeClubId
+  return clubStore.getClubById(opponentId)
+})
+
+const nextMatchVenue = computed(() => {
+  const game = gameStore.game
+  const nextMatch = gameStore.nextMatch
+  if (!game || !nextMatch) return ''
+  return nextMatch.homeClubId === game.selectedClubId ? 'дома' : 'в гостях'
+})
+
+const slotRoleId = (slotId: string, position: PlayerPosition): PlayerRoleId => {
+  const roleId = squadStore.lineup?.roles?.[slotId]
+  const available = rolesForPosition(position)
+  return roleId && available.some((role) => role.id === roleId)
+    ? roleId
+    : defaultRoleForPosition(position)
+}
+
+const roleShortLabel = (slotId: string, position: PlayerPosition): string =>
+  getPlayerRole(slotRoleId(slotId, position)).shortLabel
+
+const starterRoleRows = computed<StarterRoleRow[]>(() =>
+  squadStore.slots
+    .map((slot) => {
+      const player = slotPlayer(slot.id)
+      if (!player) return undefined
+      const options = rolesForPosition(slot.position)
+      return {
+        slotId: slot.id,
+        slotLabel: positionLabels[slot.position],
+        player,
+        roleId: slotRoleId(slot.id, slot.position),
+        options,
+      }
+    })
+    .filter((row): row is StarterRoleRow => Boolean(row)),
+)
+
+const selectedRoleEffects = computed(() => {
+  const base = { attack: 0, control: 0, defense: 0, pressing: 0, width: 0, risk: 0, fatigue: 0 }
+  for (const row of starterRoleRows.value) {
+    const effects = getPlayerRole(row.roleId).effects
+    base.attack += effects.attack
+    base.control += effects.control
+    base.defense += effects.defense
+    base.pressing += effects.pressing
+    base.width += effects.width
+    base.risk += effects.risk
+    base.fatigue += effects.fatigue
+  }
+  const divider = Math.max(1, starterRoleRows.value.length)
+  return Object.fromEntries(
+    Object.entries(base).map(([key, value]) => [key, value / divider]),
+  ) as typeof base
+})
+
+const formationProfile = computed(() => {
+  const slots = squadStore.slots
+  const defenders = slots.filter((slot) => ['LB', 'CB', 'RB'].includes(slot.position)).length
+  const midfielders = slots.filter((slot) => ['CDM', 'CM', 'CAM'].includes(slot.position)).length
+  const forwards = slots.filter((slot) => ['LW', 'RW', 'ST'].includes(slot.position)).length
+  const widePlayers = slots.filter((slot) => ['LB', 'RB', 'LW', 'RW'].includes(slot.position)).length
+  const centerPlayers = slots.filter((slot) => ['CDM', 'CM', 'CAM', 'ST'].includes(slot.position)).length
+  return { defenders, midfielders, forwards, widePlayers, centerPlayers }
+})
+
+const tacticalIndicators = computed<TacticalIndicator[]>(() => {
+  const tactics = currentTactics.value
+  const roles = selectedRoleEffects.value
+  const formation = formationProfile.value
+  const mentalityAttack = {
+    parkTheBus: -18,
+    defensive: -9,
+    balanced: 0,
+    attacking: 9,
+    allOutAttack: 18,
+  }[tactics.mentality]
+  const tempoAttack = tactics.tempo === 'fast' ? 8 : tactics.tempo === 'slow' ? -6 : 0
+  const pressing = tactics.pressing === 'high' ? 18 : tactics.pressing === 'low' ? -10 : 3
+  const lineRisk = tactics.defensiveLine === 'high' ? 13 : tactics.defensiveLine === 'low' ? -7 : 2
+  const tacklingRisk = tactics.tackling === 'hard' ? 8 : tactics.tackling === 'cautious' ? -5 : 1
+  const width = tactics.width === 'wide' ? 15 : tactics.width === 'narrow' ? -8 : 3
+  const attackPlanControl =
+    tactics.attackPlan === 'shortPassing'
+      ? 14
+      : tactics.attackPlan === 'centralPlay'
+        ? 8
+        : tactics.attackPlan === 'directPassing' || tactics.attackPlan === 'earlyCrosses'
+          ? -5
+          : 2
+  const attackPlanChance =
+    tactics.attackPlan === 'throughBalls'
+      ? 12
+      : tactics.attackPlan === 'earlyCrosses'
+        ? 9
+        : tactics.attackPlan === 'widePlay'
+          ? 7
+          : tactics.attackPlan === 'centralPlay'
+            ? 5
+            : 3
+
+  const chanceCreation = clampValue(
+    48 + mentalityAttack + tempoAttack + attackPlanChance + roles.attack * 2 + formation.forwards * 3,
+  )
+  const control = clampValue(
+    50 + attackPlanControl + roles.control * 2 + formation.midfielders * 4 - (tactics.tempo === 'fast' ? 6 : 0),
+  )
+  const defensiveSecurity = clampValue(
+    48 +
+      roles.defense * 2 +
+      formation.defenders * 5 -
+      mentalityAttack * 0.65 -
+      lineRisk -
+      (tactics.defensiveShape === 'compact' ? -6 : tactics.defensiveShape === 'wide' ? 3 : 0),
+  )
+  const pressingPower = clampValue(38 + pressing + roles.pressing * 2 + (tactics.tempo === 'fast' ? 5 : 0))
+  const attackingWidth = clampValue(42 + width + roles.width * 2 + formation.widePlayers * 4)
+  const transitionRisk = clampValue(
+    38 + Math.max(0, mentalityAttack) + lineRisk + tacklingRisk + roles.risk * 2 - formation.defenders * 2,
+  )
+  const workload = clampValue(
+    35 +
+      roles.fatigue * 2 +
+      (tactics.pressing === 'high' ? 18 : tactics.pressing === 'low' ? -6 : 4) +
+      (tactics.tempo === 'fast' ? 14 : tactics.tempo === 'slow' ? -5 : 3) +
+      (tactics.tackling === 'hard' ? 7 : 0),
+  )
+
+  return [
+    {
+      key: 'chance',
+      label: 'Создание моментов',
+      value: chanceCreation,
+      description: 'Насколько план помогает регулярно доводить атаки до ударов.',
+      tone: 'bg-emerald-500',
+    },
+    {
+      key: 'control',
+      label: 'Контроль мяча',
+      value: control,
+      description: 'Способность держать темп и не отдавать матч хаосу.',
+      tone: 'bg-sky-500',
+    },
+    {
+      key: 'defense',
+      label: 'Защита',
+      value: defensiveSecurity,
+      description: 'Насколько команда защищена от позиционных атак и провалов.',
+      tone: 'bg-indigo-500',
+    },
+    {
+      key: 'pressing',
+      label: 'Прессинг',
+      value: pressingPower,
+      description: 'Агрессия без мяча и шанс вернуть владение высоко.',
+      tone: 'bg-lime-500',
+    },
+    {
+      key: 'width',
+      label: 'Ширина',
+      value: attackingWidth,
+      description: 'Насколько активно команда растягивает фланги.',
+      tone: 'bg-cyan-500',
+    },
+    {
+      key: 'risk',
+      label: 'Риск контратак',
+      value: transitionRisk,
+      description: 'Чем выше, тем больше пространства можно оставить сопернику.',
+      tone: 'bg-amber-500',
+    },
+    {
+      key: 'workload',
+      label: 'Нагрузка',
+      value: workload,
+      description: 'Сколько сил план будет забирать у стартового состава.',
+      tone: 'bg-rose-500',
+    },
+  ]
+})
+
+const indicatorText = (value: number): string => {
+  if (value >= 72) return 'Высоко'
+  if (value >= 48) return 'Средне'
+  return 'Низко'
+}
+
+const scoutReportItems = computed<string[]>(() => {
+  const opponent = nextOpponent.value
+  const own = squadStore.club
+  if (!opponent || !own) {
+    return ['Следующий соперник пока не определён — настройте базовую модель игры под сильные стороны состава.']
+  }
+  const ownRating = calculateClubRating(own, squadStore.lineup)
+  const opponentRating = calculateClubRating(opponent)
+  const ratingGap = Number((ownRating - opponentRating).toFixed(1))
+  const opponentDefense = opponent.defenseRating
+  const opponentMidfield = opponent.midfieldRating
+  const opponentAttack = opponent.attackRating
+  const items: string[] = []
+
+  if (ratingGap >= 5) {
+    items.push(`${opponent.shortName} заметно слабее по общему рейтингу — можно играть смелее и давить выше.`)
+  } else if (ratingGap <= -5) {
+    items.push(`${opponent.shortName} сильнее по рейтингу — лучше заранее закрыть центр и снизить риск потерь.`)
+  } else {
+    items.push(`${opponent.shortName} близок по силе — детали плана и роли игроков могут решить матч.`)
+  }
+
+  if (opponentDefense <= opponentMidfield - 3 || opponentDefense <= opponentAttack - 3) {
+    items.push('Защита соперника выглядит слабее остальных линий: быстрый темп и роли под завершение могут дать шанс.')
+  } else if (opponentDefense >= opponentAttack + 4) {
+    items.push('Оборона соперника крепкая: пригодятся плеймейкеры, ширина и терпеливое владение.')
+  }
+
+  if (opponentAttack >= opponentDefense + 4 || opponentAttack >= opponentMidfield + 4) {
+    items.push('Атака соперника — главная угроза. Высокая линия и жёсткий прессинг будут рискованнее обычного.')
+  }
+
+  if (opponentMidfield < opponentAttack && opponentMidfield < opponentDefense) {
+    items.push('Центр поля соперника уязвим: можно перегружать середину и играть через плеймейкера.')
+  }
+
+  return items.slice(0, 4)
+})
+
 // ВОЗВРАЩАЕТ ЦВЕТОВОЙ КЛАСС РЕЙТИНГА
 const ratingClass = (rating: number): string => {
   if (rating >= 75) {
@@ -255,6 +517,10 @@ const conditionWithAgeLabel = (player: Player): string =>
 // ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
 const setFormation = (event: Event): void => {
   squadStore.setFormation((event.target as HTMLSelectElement).value as Formation)
+}
+
+const setRole = (slotId: string, event: Event): void => {
+  squadStore.setPlayerRole(slotId, (event.target as HTMLSelectElement).value as PlayerRoleId)
 }
 
 // ИЗВЛЕКАЕТ ДАННЫЕ ИГРОКА ИЗ СОБЫТИЯ ПЕРЕТАСКИВАНИЯ
@@ -775,6 +1041,11 @@ onBeforeRouteLeave(() => {
                 {{ slotPlayer(slot.id)?.lastName }}
               </span>
               <span
+                class="hidden rounded-full bg-emerald-400/15 px-1.5 py-0.5 text-[0.55rem] font-black uppercase text-emerald-100 sm:inline-flex"
+              >
+                {{ roleShortLabel(slot.id, slot.position) }}
+              </span>
+              <span
                 class="hidden w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[0.68rem] font-bold text-slate-200/75 sm:block"
               >
                 <template v-if="isPlayerUnavailable(slotPlayer(slot.id)!)">
@@ -996,11 +1267,139 @@ onBeforeRouteLeave(() => {
         <h2 class="text-lg font-black text-slate-950">Тактика</h2>
         <p class="mt-1 text-sm text-slate-500">Подробная настройка тактики команды</p>
       </div>
-      <TacticsPanel
-        :model-value="currentTactics"
-        :exclude-keys="['matchCommand', 'teamTalk']"
-        @change="squadStore.setTactics"
-      />
+      <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="space-y-4">
+          <section class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+                  Скаутский отчёт
+                </h3>
+                <p class="mt-1 text-sm text-slate-500">
+                  <template v-if="nextOpponent">
+                    Следующий матч: {{ nextOpponent.name }} · {{ nextMatchVenue }}
+                  </template>
+                  <template v-else>Следующий соперник пока не выбран.</template>
+                </p>
+              </div>
+              <div
+                v-if="nextOpponent"
+                class="rounded-lg bg-white px-3 py-2 text-right text-xs font-bold text-slate-500"
+              >
+                <div class="text-[10px] uppercase tracking-wide">Рейтинг соперника</div>
+                <div class="text-lg font-black text-slate-950">
+                  {{ calculateClubRating(nextOpponent) }}
+                </div>
+              </div>
+            </div>
+            <ul class="mt-3 grid gap-2">
+              <li
+                v-for="item in scoutReportItems"
+                :key="item"
+                class="rounded-lg bg-white px-3 py-2 text-sm font-semibold leading-snug text-slate-700"
+              >
+                {{ item }}
+              </li>
+            </ul>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-4">
+            <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+              Эффект тактического плана
+            </h3>
+            <div class="mt-3 grid gap-3 md:grid-cols-2">
+              <div
+                v-for="indicator in tacticalIndicators"
+                :key="indicator.key"
+                class="rounded-lg border border-slate-100 bg-slate-50 p-3"
+              >
+                <div class="flex items-center justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="text-sm font-black text-slate-900">{{ indicator.label }}</div>
+                    <div class="mt-0.5 text-xs leading-snug text-slate-500">
+                      {{ indicator.description }}
+                    </div>
+                  </div>
+                  <span class="shrink-0 text-xs font-black text-slate-600">
+                    {{ indicatorText(indicator.value) }}
+                  </span>
+                </div>
+                <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+                  <div
+                    class="h-full rounded-full"
+                    :class="indicator.tone"
+                    :style="{ width: `${indicator.value}%` }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-4">
+            <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+              Командные инструкции
+            </h3>
+            <TacticsPanel
+              class="mt-3"
+              :model-value="currentTactics"
+              :exclude-keys="['matchCommand', 'teamTalk']"
+              @change="squadStore.setTactics"
+            />
+          </section>
+        </div>
+
+        <aside class="rounded-xl border border-slate-200 bg-slate-950 p-4 text-white">
+          <div>
+            <h3 class="text-sm font-black uppercase tracking-wide text-emerald-100">
+              Роли игроков
+            </h3>
+            <p class="mt-1 text-xs leading-snug text-slate-300">
+              Роль уточняет, что игрок делает в своей позиции: держит ширину, страхует, прессингует
+              или ищет последний пас.
+            </p>
+          </div>
+          <div class="mt-4 grid gap-2">
+            <label
+              v-for="row in starterRoleRows"
+              :key="row.slotId"
+              class="grid gap-1 rounded-lg border border-white/10 bg-white/5 p-3"
+            >
+              <span class="flex min-w-0 items-center justify-between gap-2">
+                <span class="min-w-0">
+                  <span class="block truncate text-sm font-black">
+                    {{ row.player.firstName }} {{ row.player.lastName }}
+                  </span>
+                  <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                    {{ row.slotLabel }} · {{ row.player.rating }} · форма {{ row.player.form }}
+                  </span>
+                </span>
+                <span
+                  class="inline-grid h-7 min-w-7 place-items-center rounded-full bg-emerald-400/15 px-2 text-[10px] font-black text-emerald-200"
+                >
+                  {{ getPlayerRole(row.roleId).shortLabel }}
+                </span>
+              </span>
+              <select
+                class="mt-1 h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm font-semibold text-white outline-none focus:border-emerald-400"
+                :value="row.roleId"
+                @change="setRole(row.slotId, $event)"
+              >
+                <option
+                  v-for="role in row.options"
+                  :key="role.id"
+                  :value="role.id"
+                  class="bg-slate-950 text-white"
+                >
+                  {{ role.label }}
+                </option>
+              </select>
+              <span class="text-xs leading-snug text-slate-400">
+                {{ getPlayerRole(row.roleId).description }}
+              </span>
+            </label>
+          </div>
+        </aside>
+      </div>
     </article>
     <article
       v-else-if="activeSection === 'stats'"
