@@ -43,7 +43,7 @@ const { t } = useI18n()
 
     <!-- СТРОКИ ТУРНИРНОЙ ТАБЛИЦЫ -->
     <div
-      class="min-h-0 flex-1 overflow-x-hidden overflow-y-visible px-1 pb-3 sm:overflow-y-auto sm:px-3"
+      class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-1 pb-3 sm:px-3"
     >
       <table class="w-full table-fixed border-collapse text-left sm:table-auto">
         <thead>
