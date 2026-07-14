@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { onBeforeRouteLeave } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import { useSquadStore } from '@/stores/squad/squadStore'
 import { useToastStore } from '@/stores/ui/toastStore'
 import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type {
   Club,
+  Formation,
   Player,
   PlayerPosition,
   PlayerRoleId,
@@ -87,15 +88,40 @@ const squadStore = useSquadStore()
 const toastStore = useToastStore()
 const clubStore = useClubStore()
 const gameStore = useGameStore()
+const route = useRoute()
 const { t } = useI18n()
+const squadSections = ['lineup', 'roles', 'tactics', 'stats', 'contracts'] as const
+type SquadSection = (typeof squadSections)[number]
+
+const sectionFromRoute = (): SquadSection => {
+  const tab = route.query.tab
+  return typeof tab === 'string' && squadSections.includes(tab as SquadSection)
+    ? (tab as SquadSection)
+    : 'lineup'
+}
 // СОСТОЯНИЕ МЫШИ, КАСАНИЯ И ЦЕЛИ ПЕРЕТАСКИВАНИЯ ИГРОКА
 const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)
 const selectedTouchPayload = ref<DragPayload | null>(null)
-const activeSection = ref<'lineup' | 'roles' | 'tactics' | 'stats' | 'contracts'>('lineup')
+const activeSection = ref<SquadSection>(sectionFromRoute())
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
+
+watch(
+  () => route.query.tab,
+  () => {
+    activeSection.value = sectionFromRoute()
+  },
+)
+
+const updateFormation = (event: Event): void => {
+  const target = event.target as HTMLSelectElement | null
+  if (!target) {
+    return
+  }
+  squadStore.setFormation(target.value as Formation)
+}
 
 // СОЗДАЁТ КАРТУ ИГРОКОВ ПО ИДЕНТИФИКАТОРАМ
 const playersById = computed(() => {
@@ -876,11 +902,11 @@ onBeforeRouteLeave(() => {
       :subtitle="`${squadStore.club.name} ${t('common.separator')} ${t('common.playersCount', { count: squadStore.club.squad.length })} ${t('common.separator')} ${formatMoney(totalValue)}`"
     >
       <template #actions>
-        <div class="flex flex-wrap items-end gap-2">
-          <div class="flex h-9 rounded-lg bg-emerald-950/60 p-1 text-xs font-black">
+        <div class="flex w-full min-w-0 items-stretch">
+          <div class="flex h-9 max-w-full min-w-0 overflow-x-auto rounded-lg bg-emerald-950/60 p-1 text-xs font-black [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
               type="button"
-              class="rounded-md px-3"
+              class="shrink-0 whitespace-nowrap rounded-md px-3"
               :class="activeSection === 'lineup' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
               @click="activeSection = 'lineup'"
             >
@@ -888,7 +914,7 @@ onBeforeRouteLeave(() => {
             </button>
             <button
               type="button"
-              class="rounded-md px-3"
+              class="shrink-0 whitespace-nowrap rounded-md px-3"
               :class="activeSection === 'roles' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
               @click="activeSection = 'roles'"
             >
@@ -896,7 +922,7 @@ onBeforeRouteLeave(() => {
             </button>
             <button
               type="button"
-              class="rounded-md px-3"
+              class="shrink-0 whitespace-nowrap rounded-md px-3"
               :class="
                 activeSection === 'tactics' ? 'bg-white text-emerald-900' : 'text-emerald-100'
               "
@@ -906,7 +932,7 @@ onBeforeRouteLeave(() => {
             </button>
             <button
               type="button"
-              class="rounded-md px-3"
+              class="shrink-0 whitespace-nowrap rounded-md px-3"
               :class="activeSection === 'stats' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
               @click="activeSection = 'stats'"
             >
@@ -914,7 +940,7 @@ onBeforeRouteLeave(() => {
             </button>
             <button
               type="button"
-              class="rounded-md px-3"
+              class="shrink-0 whitespace-nowrap rounded-md px-3"
               :class="
                 activeSection === 'contracts' ? 'bg-white text-emerald-900' : 'text-emerald-100'
               "
@@ -923,15 +949,6 @@ onBeforeRouteLeave(() => {
               {{ t('squad.contracts') }}
             </button>
           </div>
-          <div
-            class="flex h-9 items-center gap-1 self-end rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm font-black text-white"
-          >
-            <span class="text-xs font-bold text-emerald-100/70">
-              {{ t('dashboard.rating') }}
-            </span>
-            <span>{{ squadStore.teamRating }}</span>
-            <span class="text-[10px] text-emerald-100/50">/ 100</span>
-          </div>
         </div>
       </template>
     </SectionHero>
@@ -939,12 +956,55 @@ onBeforeRouteLeave(() => {
     <!-- ТАКТИЧЕСКАЯ СХЕМА И СПИСОК КОМАНДЫ -->
     <div
       v-if="activeSection === 'lineup'"
-      class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]"
+      class="flex flex-col gap-3 xl:min-h-0 xl:flex-1"
     >
+      <div
+        class="flex min-w-0 flex-col gap-2 rounded-lg border border-white/70 bg-white/90 px-3 py-2 shadow-[0_8px_22px_rgba(20,46,38,0.06)] sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="flex min-w-0 flex-wrap items-center gap-2">
+          <label class="flex min-w-0 items-center gap-2">
+            <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">
+              {{ t('squad.formation') }}
+            </span>
+            <select
+              :value="squadStore.lineup?.formation"
+              class="h-8 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-black text-slate-800 outline-none transition focus:border-emerald-500"
+              @change="updateFormation"
+            >
+              <option
+                v-for="formation in squadStore.formations"
+                :key="formation"
+                :value="formation"
+              >
+                {{ formation }}
+              </option>
+            </select>
+          </label>
+          <button
+            type="button"
+            class="h-8 rounded-lg border border-emerald-700 bg-emerald-700 px-3 text-xs font-black text-white transition hover:bg-emerald-800"
+            @click="squadStore.resetLineup()"
+          >
+            {{ t('squad.autoLineup') }}
+          </button>
+        </div>
+        <div
+          class="flex h-8 w-fit items-center gap-1 rounded-lg border border-emerald-700 bg-emerald-900 px-2.5 text-xs font-black text-white"
+        >
+          <span class="font-bold text-emerald-100/70">
+            {{ t('dashboard.rating') }}
+          </span>
+          <span>{{ squadStore.teamRating }}</span>
+          <span class="text-[10px] text-emerald-100/50">/ 100</span>
+        </div>
+      </div>
       <!-- СТАРТОВЫЙ СОСТАВ И ЗАПАСНЫЕ -->
       <div
-        class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
+        class="grid gap-4 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,340px)]"
       >
+        <div
+          class="grid grid-rows-[520px_112px] gap-3 overflow-hidden xl:min-h-0 xl:grid-rows-[minmax(0,1fr)_112px]"
+        >
         <!-- ТАКТИЧЕСКОЕ ПОЛЕ -->
         <div
           class="relative min-h-0 overflow-hidden rounded-lg border border-white/15 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_16%,transparent_16%_100%),linear-gradient(90deg,rgba(255,255,255,0.04)_50%,transparent_50%),linear-gradient(180deg,#152233,#101928)] shadow-[0_22px_60px_rgba(15,23,42,0.18)]"
@@ -1251,6 +1311,7 @@ onBeforeRouteLeave(() => {
           </div>
         </div>
       </aside>
+    </div>
     </div>
     <article
       v-else-if="activeSection === 'roles'"

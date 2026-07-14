@@ -9,7 +9,7 @@ const { items, nextMatchVenue, nextOpponent, nextOpponentRating } = useScoutRepo
 
 <template>
   <RouterLink
-    to="/squad"
+    :to="{ name: 'squad', query: { tab: 'tactics' } }"
     class="block rounded-xl border border-emerald-200/80 bg-white p-3 shadow-[0_12px_30px_rgba(24,51,43,0.06)] transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_16px_40px_rgba(24,51,43,0.1)]"
   >
     <header class="flex items-start justify-between gap-3">
