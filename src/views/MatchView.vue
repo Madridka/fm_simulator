@@ -68,6 +68,8 @@ const selectedBenchPlayerId = ref('')
 const selectedLineupSlotId = ref('')
 const matchSlotPlayerIds = ref<Record<string, Record<string, string | null>>>({})
 const activeLineupView = ref<'user' | 'opponent'>('user')
+type MobileMatchTab = 'overview' | 'lineups' | 'tactics'
+const activeMobileMatchTab = ref<MobileMatchTab>('overview')
 const lastCoachActionMinute = ref<number | null>(null)
 const coachActionResetMinute = ref<number | null>(null)
 let matchCompletionPromise: Promise<void> | null = null
@@ -89,7 +91,13 @@ const liveEventDialog = ref<LiveEventDialog | null>(null)
 const liveEventQueue = ref<LiveEventDialog[]>([])
 const seenLiveEventKeys = ref<Set<string>>(new Set())
 const liveEventTimerId = ref<number | null>(null)
+const isLiveEventPause = ref(false)
 const liveMatchSeed = ref<number | null>(null)
+const mobileMatchTabs: { id: MobileMatchTab; label: string }[] = [
+  { id: 'overview', label: 'События / статистика' },
+  { id: 'lineups', label: 'Составы' },
+  { id: 'tactics', label: 'Тактика' },
+]
 
 // ВОЗВРАЩАЕТ АКТИВНЫЙ МАТЧ
 const match = computed((): Match | undefined => gameStore.activeMatch)
@@ -578,12 +586,32 @@ const clearLiveEventDialog = (): void => {
   }
   liveEventDialog.value = null
   liveEventQueue.value = []
+  isLiveEventPause.value = false
+}
+
+const resumeAfterLiveEventPause = (): void => {
+  if (
+    !isLiveEventPause.value ||
+    liveEventDialog.value ||
+    liveEventQueue.value.length ||
+    currentMinute.value === HALF_TIME_MINUTE ||
+    currentMinute.value >= 90
+  ) {
+    return
+  }
+
+  isLiveEventPause.value = false
+  isPaused.value = false
+  startSimulationTimer()
 }
 
 const showNextLiveEventDialog = (): void => {
   if (liveEventTimerId.value !== null || liveEventDialog.value) return
   const next = liveEventQueue.value.shift()
-  if (!next) return
+  if (!next) {
+    resumeAfterLiveEventPause()
+    return
+  }
 
   liveEventDialog.value = next
   liveEventTimerId.value = window.setTimeout(() => {
@@ -752,12 +780,14 @@ const advanceOneMinute = (): void => {
   resetExpiredCoachAction()
   revision.value += 1
   if (hasBlockingEvent && currentMinute.value < 90 && currentMinute.value !== HALF_TIME_MINUTE) {
+    isLiveEventPause.value = true
     isPaused.value = true
     stopSimulationTimer()
     return
   }
   if (currentMinute.value === HALF_TIME_MINUTE) {
     enqueueLiveEventDialog(createHalfTimeDialog())
+    isLiveEventPause.value = false
     isPaused.value = true
     stopSimulationTimer()
     return
@@ -788,6 +818,7 @@ const setSimulationSpeed = (speed: LiveMatchSpeedMultiplier): void => {
 
 // СТАВИТ МАТЧ НА ПАУЗУ ИЛИ ПРОДОЛЖАЕТ ЕГО
 const togglePause = (): void => {
+  isLiveEventPause.value = false
   isPaused.value = !isPaused.value
   if (isPaused.value) stopSimulationTimer()
   else startSimulationTimer()
@@ -1157,6 +1188,7 @@ watch(
     liveMatchSeed.value = null
     currentMinute.value = 0
     isPaused.value = false
+    isLiveEventPause.value = false
     simulationSpeed.value = 1
     activeLineupView.value = 'user'
     clearLineupSelection()
@@ -1205,43 +1237,45 @@ onBeforeUnmount(() => {
     v-if="match && homeClub && awayClub"
     class="space-y-5 xl:flex xl:h-full xl:min-h-0 xl:flex-col xl:gap-3 xl:space-y-0"
   >
-    <Transition name="live-event-dialog">
-      <div
-        v-if="liveEventDialog"
-        :key="liveEventDialog.id"
-        role="status"
-        aria-live="polite"
-        class="fixed left-1/2 top-4 z-50 w-[calc(100vw-1.5rem)] max-w-sm -translate-x-1/2 overflow-hidden rounded-lg border shadow-[0_18px_45px_rgba(15,23,42,0.22)] sm:top-6 sm:w-full"
-        :class="liveEventToneClass(liveEventDialog.tone)"
-      >
-        <div class="flex items-start gap-3 px-4 py-3">
-          <span
-            class="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/80 text-base shadow-sm"
-          >
-            <i :class="liveEventIconClass(liveEventDialog.tone)"></i>
-          </span>
-          <div class="min-w-0 flex-1 text-left">
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black uppercase tracking-wide opacity-70">
-                {{ liveEventDialog.minute }}'
-              </span>
-              <h2 class="truncate text-sm font-black sm:text-base">
-                {{ liveEventDialog.title }}
-              </h2>
+    <Teleport to="body">
+      <Transition name="live-event-dialog">
+        <div
+          v-if="liveEventDialog"
+          :key="liveEventDialog.id"
+          role="status"
+          aria-live="polite"
+          class="fixed left-1/2 top-4 z-[120] w-[calc(100vw-1.5rem)] max-w-sm -translate-x-1/2 overflow-hidden rounded-lg border shadow-[0_18px_45px_rgba(15,23,42,0.22)] sm:top-6 sm:w-full"
+          :class="liveEventToneClass(liveEventDialog.tone)"
+        >
+          <div class="flex items-start gap-3 px-4 py-3">
+            <span
+              class="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/80 text-base shadow-sm"
+            >
+              <i :class="liveEventIconClass(liveEventDialog.tone)"></i>
+            </span>
+            <div class="min-w-0 flex-1 text-left">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-black uppercase tracking-wide opacity-70">
+                  {{ liveEventDialog.minute }}'
+                </span>
+                <h2 class="truncate text-sm font-black sm:text-base">
+                  {{ liveEventDialog.title }}
+                </h2>
+              </div>
+              <p class="mt-0.5 text-xs font-semibold leading-snug sm:text-sm">
+                {{ liveEventDialog.description }}
+              </p>
             </div>
-            <p class="mt-0.5 text-xs font-semibold leading-snug sm:text-sm">
-              {{ liveEventDialog.description }}
-            </p>
+          </div>
+          <div class="h-1 bg-black/10">
+            <div
+              class="live-event-dialog-progress h-full bg-current opacity-70"
+              :style="{ animationDuration: `${LIVE_EVENT_DIALOG_DURATION_MS}ms` }"
+            ></div>
           </div>
         </div>
-        <div class="h-1 bg-black/10">
-          <div
-            class="live-event-dialog-progress h-full bg-current opacity-70"
-            :style="{ animationDuration: `${LIVE_EVENT_DIALOG_DURATION_MS}ms` }"
-          ></div>
-        </div>
-      </div>
-    </Transition>
+      </Transition>
+    </Teleport>
     <!-- ТАБЛО И УПРАВЛЕНИЕ СИМУЛЯЦИЕЙ -->
     <Teleport to="#match-simulation-controls">
       <div
@@ -1405,9 +1439,32 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.35fr_1fr_0.85fr] xl:gap-3">
+      <div
+        class="grid grid-cols-3 gap-1 rounded-lg border border-white/70 bg-white/90 p-1 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:hidden"
+        role="tablist"
+        aria-label="Информация матча"
+      >
+        <button
+          v-for="tab in mobileMatchTabs"
+          :key="tab.id"
+          type="button"
+          class="min-h-10 rounded-md px-2 text-center text-[11px] font-black leading-tight transition"
+          :class="
+            activeMobileMatchTab === tab.id
+              ? 'bg-emerald-700 text-white shadow-sm'
+              : 'text-slate-500'
+          "
+          role="tab"
+          :aria-selected="activeMobileMatchTab === tab.id"
+          @click="activeMobileMatchTab = tab.id"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
       <!-- СОСТАВЫ -->
       <div
-        class="flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        class="match-info-panel flex flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        :class="{ 'is-mobile-active': activeMobileMatchTab === 'lineups' }"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.lineups') }}
@@ -1619,7 +1676,10 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- СТАТИСТИКА -->
-      <div class="flex min-h-0 flex-col gap-3">
+      <div
+        class="match-info-panel flex min-h-0 flex-col gap-3"
+        :class="{ 'is-mobile-active': activeMobileMatchTab === 'overview' }"
+      >
         <section
           class="flex min-h-[260px] flex-1 flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:p-3"
         >
@@ -1790,7 +1850,8 @@ onBeforeUnmount(() => {
         <!-- ТАКТИКА -->
       </div>
       <div
-        class="flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        class="match-info-panel flex min-h-[320px] flex-col rounded-lg border border-white/70 bg-white/90 p-5 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:min-h-0 xl:overflow-auto xl:p-3"
+        :class="{ 'is-mobile-active': activeMobileMatchTab === 'tactics' }"
       >
         <h2 class="text-lg text-center font-semibold text-slate-950 xl:text-base">
           {{ t('match.tactics') }}
@@ -1884,6 +1945,16 @@ onBeforeUnmount(() => {
   animation-timing-function: linear;
   animation-fill-mode: forwards;
   transform-origin: left center;
+}
+
+@media (max-width: 1279px) {
+  .match-info-panel {
+    display: none;
+  }
+
+  .match-info-panel.is-mobile-active {
+    display: flex;
+  }
 }
 
 @keyframes live-event-dialog-countdown {

@@ -16,6 +16,12 @@ const { t } = useI18n()
 
 const toastMessage: Ref<string> = ref('')
 let toastTimer: number | undefined
+type TransferMobileTab = 'sell' | 'buy'
+const activeTransferMobileTab = ref<TransferMobileTab>('sell')
+const transferMobileTabs: { id: TransferMobileTab; label: string }[] = [
+  { id: 'sell', label: 'Продажа' },
+  { id: 'buy', label: 'Покупка' },
+]
 
 const academyPlayersCount = computed(() => {
   const game = gameStore.game
@@ -83,8 +89,14 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
               label: t('transfers.availableBudget'),
               value: formatMoney(gameStore.selectedClub.budget),
             },
-          { label: t('transfers.clubPlayers'), value: `${gameStore.selectedClub.squad.length}/${careerConfig.maximumSquadSize}` },
-          { label: t('transfers.academyPlayers'), value: `${academyPlayersCount}/${academyLimits.reserveMaximumSquadSize}` },
+            {
+              label: t('transfers.clubPlayers'),
+              value: `${gameStore.selectedClub.squad.length}/${careerConfig.maximumSquadSize}`,
+            },
+            {
+              label: t('transfers.academyPlayers'),
+              value: `${academyPlayersCount}/${academyLimits.reserveMaximumSquadSize}`,
+            },
           ]"
           :key="item.label"
           class="min-w-28 border-l border-white/15 px-3"
@@ -108,9 +120,32 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
 
     <!-- ПАНЕЛИ ПОКУПКИ И ПРОДАЖИ ИГРОКОВ -->
     <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.1fr_0.9fr]">
+      <div
+        class="grid grid-cols-2 gap-1 rounded-lg border border-white/70 bg-white/90 p-1 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:hidden"
+        role="tablist"
+        aria-label="Раздел трансферов"
+      >
+        <button
+          v-for="tab in transferMobileTabs"
+          :key="tab.id"
+          type="button"
+          class="min-h-10 rounded-md px-3 text-center text-sm font-black transition"
+          :class="
+            activeTransferMobileTab === tab.id
+              ? 'bg-emerald-700 text-white shadow-sm'
+              : 'text-slate-500'
+          "
+          role="tab"
+          :aria-selected="activeTransferMobileTab === tab.id"
+          @click="activeTransferMobileTab = tab.id"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
       <!-- РЫНОК ИГРОКОВ ДЛЯ ПОКУПКИ -->
       <div
-        class="order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
+        class="transfer-mobile-panel order-2 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-1"
+        :class="{ 'is-mobile-active': activeTransferMobileTab === 'buy' }"
       >
         <div class="grid shrink-0 gap-2 2xl:grid-cols-[auto_minmax(0,1fr)] 2xl:items-end">
           <div class="grid w-full grid-cols-2 gap-2 2xl:grid-cols-[1fr_1.15fr_1.15fr_0.8fr_0.8fr]">
@@ -245,10 +280,10 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
 
       <!-- СОСТАВ КЛУБА ДЛЯ ПРОДАЖИ -->
       <div
-        class="order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
+        class="transfer-mobile-panel order-1 flex min-h-0 flex-col rounded-lg border border-white/70 bg-white/90 p-4 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:order-2"
+        :class="{ 'is-mobile-active': activeTransferMobileTab === 'sell' }"
       >
         <div class="flex shrink-0 items-end justify-between gap-3">
-          <h2 class="text-lg font-semibold text-slate-950">{{ t('transfers.sales') }}</h2>
           <div class="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 2xl:w-auto">
             <label class="flex min-w-0 flex-col gap-1 text-xs font-medium text-slate-700">
               {{ t('transfers.position') }}
@@ -313,3 +348,15 @@ onBeforeUnmount(() => window.clearTimeout(toastTimer))
     </div>
   </section>
 </template>
+
+<style scoped>
+@media (max-width: 1279px) {
+  .transfer-mobile-panel {
+    display: none;
+  }
+
+  .transfer-mobile-panel.is-mobile-active {
+    display: flex;
+  }
+}
+</style>

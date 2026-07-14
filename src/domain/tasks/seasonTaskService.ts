@@ -55,7 +55,10 @@ const rewardRateByCategory: Record<SeasonTaskCategory, number> = {
 const taskReward = (state: GameState, category: SeasonTaskCategory): number => {
   const club = state.clubs.find((item) => item.id === state.selectedClubId)
   const baseBudget = state.initialClubBudget ?? club?.budget ?? 0
-  return Math.max(50_000, Math.round((baseBudget * rewardRateByCategory[category]) / 50_000) * 50_000)
+  return Math.max(
+    50_000,
+    Math.round((baseBudget * rewardRateByCategory[category]) / 50_000) * 50_000,
+  )
 }
 
 const secondaryTaskKinds = new Set<SeasonTaskKind>([
@@ -514,7 +517,7 @@ export const getSeasonTaskProgress = (state: GameState, task: SeasonTask): Seaso
       target,
       progress: completed ? 1 : Math.max(0, Math.min(0.95, (target - current + 1) / target)),
       statusLabel: completed ? 'Выполнено' : leagueFinished(state) ? 'Провалено' : 'В процессе',
-      detailLabel: `Сейчас: ${current} место, цель: ${target} место`,
+      detailLabel: `Сейчас: ${current}, цель: ${target}`,
       rewarded,
     }
   }

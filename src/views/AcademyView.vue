@@ -109,7 +109,82 @@ const reservePlayerRows = computed<AcademyPlayerRow[]>(() =>
         class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-white/70 bg-white/90 p-5 shadow-sm"
       >
         <h2 class="text-lg font-bold text-slate-950">{{ t('academy.players') }}</h2>
-        <div class="mt-4 min-h-0 flex-1 overflow-hidden">
+        <div class="mt-4 grid min-h-0 flex-1 content-start gap-3 overflow-auto pr-1 md:hidden">
+          <article
+            v-for="player in reservePlayerRows"
+            :key="player.id"
+            class="rounded-lg border border-slate-200 bg-white p-3 shadow-sm"
+          >
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+              <div class="min-w-0">
+                <h3 class="truncate text-sm font-black text-slate-950">{{ player.name }}</h3>
+                <p class="mt-0.5 text-xs font-semibold text-slate-500">
+                  {{ t('common.age', { age: player.age }) }}
+                </p>
+              </div>
+              <span
+                class="grid h-9 min-w-9 place-items-center rounded-full bg-slate-900 px-2 text-xs font-black text-white"
+              >
+                {{ player.position }}
+              </span>
+            </div>
+
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              <div class="rounded-md bg-slate-50 px-2 py-2 text-center">
+                <div class="text-[10px] font-black uppercase text-slate-400">
+                  {{ t('selectClub.rating') }}
+                </div>
+                <div class="mt-0.5 text-lg font-black leading-none text-slate-950">
+                  {{ player.rating }}
+                </div>
+              </div>
+              <div class="rounded-md bg-emerald-50 px-2 py-2 text-center">
+                <div class="text-[10px] font-black uppercase text-emerald-600">
+                  {{ t('academy.potential') }}
+                </div>
+                <div class="mt-0.5 text-lg font-black leading-none text-emerald-700">
+                  {{ player.potential }}
+                </div>
+              </div>
+              <div class="rounded-md bg-slate-50 px-2 py-2 text-center">
+                <div class="text-[10px] font-black uppercase text-slate-400">
+                  {{ t('academy.value') }}
+                </div>
+                <div class="mt-0.5 truncate text-xs font-black leading-5 text-slate-950">
+                  {{ formatMoney(player.value) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              <Button
+                size="small"
+                class="!px-2"
+                :label="t('academy.promote')"
+                @click="academyStore.promote(player.id)"
+              />
+              <Button
+                size="small"
+                severity="secondary"
+                class="!px-2"
+                :label="t('transfers.sell')"
+                @click="academyStore.sell(player.id)"
+              />
+              <Button
+                size="small"
+                severity="secondary"
+                class="!px-2"
+                :label="t('academy.release')"
+                @click="academyStore.release(player.id)"
+              />
+            </div>
+          </article>
+          <p v-if="!reservePlayerRows.length" class="py-4 text-sm text-slate-500">
+            {{ t('academy.noPlayers') }}
+          </p>
+        </div>
+
+        <div class="mt-4 hidden min-h-0 flex-1 overflow-hidden md:block">
           <DataTable
             :value="reservePlayerRows"
             data-key="id"
