@@ -54,7 +54,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
   <!-- ОСНОВНОЕ СОДЕРЖИМОЕ ДАШБОРДА -->
   <section
     v-if="club && gameStore.game"
-    class="mx-auto flex max-w-[1600px] flex-col gap-5 xl:h-full xl:overflow-hidden"
+    class="mx-auto flex max-w-[1600px] flex-col gap-3 xl:h-full xl:overflow-hidden"
   >
     <!-- СВОДКА ПО ВЫБРАННОМУ КЛУБУ -->
     <DashboardHero
@@ -71,7 +71,9 @@ const leagueRows = computed((): LeagueTableRow[] =>
     />
 
     <!-- ИНФОРМАЦИОННЫЕ ПАНЕЛИ КЛУБА -->
-    <div class="grid gap-5 xl:min-h-0 xl:flex-1 xl:grid-cols-[1.05fr_0.95fr_0.95fr]">
+    <div
+      class="grid gap-3 xl:min-h-0 xl:flex-1 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,0.72fr)_minmax(0,0.96fr)]"
+    >
       <div
         class="grid grid-cols-3 gap-1 rounded-lg border border-white/70 bg-white/90 p-1 shadow-[0_18px_50px_rgba(20,46,38,0.1)] xl:hidden"
         role="tablist"
@@ -95,7 +97,7 @@ const leagueRows = computed((): LeagueTableRow[] =>
         </button>
       </div>
       <div
-        class="dashboard-mobile-panel order-2 min-h-0 xl:order-none"
+        class="dashboard-mobile-panel order-2 min-h-0 xl:order-none xl:h-full"
         :class="{ 'is-mobile-active': activeDashboardMobileTab === 'table' }"
       >
         <DashboardLeaguePanel
@@ -105,13 +107,13 @@ const leagueRows = computed((): LeagueTableRow[] =>
         />
       </div>
       <div
-        class="dashboard-mobile-panel order-1 min-h-0 xl:order-none"
+        class="dashboard-mobile-panel order-1 min-h-0 xl:order-none xl:h-full"
         :class="{ 'is-mobile-active': activeDashboardMobileTab === 'lineup' }"
       >
         <DashboardLineupPanel />
       </div>
       <div
-        class="dashboard-mobile-panel order-3 min-h-0 xl:order-none"
+        class="dashboard-mobile-panel order-3 min-h-0 xl:order-none xl:h-full"
         :class="{ 'is-mobile-active': activeDashboardMobileTab === 'matches' }"
       >
         <DashboardMatchesColumn

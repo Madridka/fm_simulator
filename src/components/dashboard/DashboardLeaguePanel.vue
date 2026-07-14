@@ -19,7 +19,7 @@ const { t } = useI18n()
 <template>
   <!-- КРАТКАЯ ТУРНИРНАЯ ТАБЛИЦА -->
   <article
-    class="flex h-auto min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] sm:h-[420px] xl:h-auto"
+    class="flex h-auto min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)] sm:h-[420px] xl:h-full"
   >
     <!-- ЗАГОЛОВОК ТУРНИРНОЙ ТАБЛИЦЫ -->
     <header

@@ -25,10 +25,10 @@ const openMatch = (match: Match): void => {
 <template>
   <!-- ПАНЕЛЬ БЛИЖАЙШИХ МАТЧЕЙ -->
   <article
-    class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+    class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-[0_12px_30px_rgba(24,51,43,0.06)]"
   >
     <!-- ЗАГОЛОВОК РАСПИСАНИЯ -->
-    <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
+    <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-4 py-3">
       <div>
         <h2 class="mt-0.5 text-lg font-black tracking-tight text-slate-950">
           {{ t('dashboard.schedule') }}
@@ -36,19 +36,19 @@ const openMatch = (match: Match): void => {
       </div>
       <RouterLink
         to="/calendar"
-        class="rounded-lg bg-slate-100 px-3 py-2 text-xs font-black text-slate-600 transition hover:bg-amber-100 hover:text-amber-800"
+        class="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-black text-slate-600 transition hover:bg-amber-100 hover:text-amber-800"
       >
         {{ t('dashboard.calendar') }}
       </RouterLink>
     </header>
 
-    <div v-if="matches.length" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-auto px-4">
+    <div v-if="matches.length" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-auto px-3">
       <component
         :is="index === 0 ? RouterLink : 'div'"
         v-for="(match, index) in props.matches"
         :key="match.id"
         :to="index === 0 ? '/match' : undefined"
-        class="group flex items-center gap-3 px-1 py-3.5"
+        class="group flex items-center gap-3 px-1 py-2.5"
         @click="index === 0 && openMatch(match)"
       >
         <div class="w-20 shrink-0 text-center">

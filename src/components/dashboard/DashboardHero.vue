@@ -27,7 +27,7 @@ const { t } = useI18n()
 <template>
   <!-- ГЛАВНАЯ КАРТОЧКА КЛУБА -->
   <article
-    class="relative isolate shrink-0 overflow-hidden rounded-2xl bg-[#14241f] text-white shadow-[0_22px_55px_rgba(15,42,32,0.18)]"
+    class="relative isolate shrink-0 overflow-hidden rounded-xl bg-[#14241f] text-white shadow-[0_16px_38px_rgba(15,42,32,0.16)]"
   >
     <div
       class="absolute inset-0 -z-10 opacity-80"
@@ -41,61 +41,61 @@ const { t } = useI18n()
 
     <!-- ОСНОВНАЯ ИНФОРМАЦИЯ И ПОКАЗАТЕЛИ КЛУБА -->
     <div
-      class="grid gap-4 p-3 sm:gap-6 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:p-8"
+      class="grid gap-3 p-3 sm:p-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:px-5 lg:py-4"
     >
-      <div class="flex items-center gap-3 sm:gap-5">
+      <div class="flex items-center gap-3 sm:gap-4">
         <ClubBadge
           :club="club"
-          size="lg"
+          size="md"
           class="shadow-[0_14px_35px_rgba(0,0,0,0.25)] ring-4 ring-white/10"
         />
         <div>
           <div
-            class="mb-2 flex flex-wrap items-center gap-2 text-[11px] font-black uppercase tracking-[0.14em] text-emerald-200/70"
+            class="mb-1 flex flex-wrap items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200/70"
           >
             <span>{{ divisionName }}</span>
             <span class="h-1 w-1 rounded-full bg-emerald-300/50"></span>
             <span>{{ club.city }}</span>
           </div>
-          <h1 class="text-2xl font-black tracking-tight sm:text-3xl">{{ club.name }}</h1>
+          <h1 class="text-xl font-black tracking-tight sm:text-2xl">{{ club.name }}</h1>
         </div>
       </div>
 
       <div class="grid min-w-0 grid-cols-3 gap-1.5 sm:gap-3">
         <div
-          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2 backdrop-blur sm:min-w-28 sm:px-3"
         >
           <div
             class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
           >
             {{ t('dashboard.place') }}
           </div>
-          <div class="mt-1 truncate text-base font-black sm:text-xl">
+          <div class="mt-0.5 truncate text-base font-black sm:text-lg">
             {{ position ?? t('common.dash')
             }}<span class="text-[9px] text-slate-400 sm:text-xs"> / {{ leagueRowsCount }}</span>
           </div>
         </div>
         <div
-          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2 backdrop-blur sm:min-w-28 sm:px-3"
         >
           <div
             class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
           >
             {{ t('dashboard.budget') }}
           </div>
-          <div class="mt-1 truncate text-sm font-black text-emerald-300 sm:text-lg">
+          <div class="mt-0.5 truncate text-sm font-black text-emerald-300 sm:text-base">
             {{ formatMoney(club.budget) }}
           </div>
         </div>
         <div
-          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2.5 backdrop-blur sm:min-w-28 sm:rounded-xl sm:px-4 sm:py-3"
+          class="min-w-0 rounded-lg border border-white/10 bg-white/[0.07] px-2 py-2 backdrop-blur sm:min-w-28 sm:px-3"
         >
           <div
             class="truncate text-[8px] font-black uppercase tracking-[0.08em] text-slate-400 sm:text-[9px] sm:tracking-widest"
           >
             {{ t('dashboard.rating') }}
           </div>
-          <div class="mt-1 flex items-baseline gap-0.5 truncate text-base font-black sm:gap-1 sm:text-xl">
+          <div class="mt-0.5 flex items-baseline gap-0.5 truncate text-base font-black sm:gap-1 sm:text-lg">
             {{ teamRating }}<span class="text-[9px] text-slate-400 sm:text-xs">/ 100</span>
           </div>
         </div>
@@ -104,7 +104,7 @@ const { t } = useI18n()
 
     <!-- СТАТУС КУБКА И СЕЗОНА -->
     <div
-      class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/10 bg-black/10 px-5 py-3 text-xs font-semibold text-slate-300 sm:px-7 lg:px-8"
+      class="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-white/10 bg-black/10 px-5 py-1.5 text-xs font-semibold text-slate-300"
     >
       <span
         >{{ t('dashboard.cup') }}: <strong class="text-white">{{ cupProgress }}</strong></span

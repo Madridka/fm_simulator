@@ -25,10 +25,10 @@ const openMatch = (match: Match): void => {
 <template>
   <!-- ПАНЕЛЬ ПОСЛЕДНИХ РЕЗУЛЬТАТОВ -->
   <article
-    class="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_14px_40px_rgba(24,51,43,0.07)]"
+    class="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-[0_12px_30px_rgba(24,51,43,0.06)]"
   >
     <!-- ЗАГОЛОВОК РЕЗУЛЬТАТОВ -->
-    <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-4">
+    <header class="flex shrink-0 items-center justify-between border-b border-slate-100 px-4 py-3">
       <div>
         <div class="text-[10px] font-black uppercase tracking-[0.14em] text-sky-600">
           {{ t('dashboard.teamForm') }}
@@ -42,12 +42,12 @@ const openMatch = (match: Match): void => {
       }}</span>
     </header>
 
-    <div v-if="matches.length" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-auto px-4">
+    <div v-if="matches.length" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-auto px-3">
       <RouterLink
         v-for="match in props.matches"
         :key="match.id"
         to="/match"
-        class="group flex items-center gap-3 px-1 py-3.5"
+        class="group flex items-center gap-3 px-1 py-2.5"
         @click="openMatch(match)"
       >
         <span

@@ -133,7 +133,7 @@ const resetGame = (): void => {
         />
 
         <!-- СОДЕРЖИМОЕ ТЕКУЩЕГО РАЗДЕЛА -->
-        <main class="flex-1 p-4 sm:p-6 lg:p-8 xl:min-h-0 xl:overflow-hidden">
+        <main class="flex-1 p-4 sm:p-5 lg:p-5 xl:min-h-0 xl:overflow-hidden xl:p-4">
           <RouterView />
         </main>
       </div>

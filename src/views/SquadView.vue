@@ -8,7 +8,6 @@ import { useClubStore } from '@/stores/clubs/clubsStore'
 import { useGameStore } from '@/stores/game/gameStore'
 import type {
   Club,
-  Formation,
   Player,
   PlayerPosition,
   PlayerRoleId,
@@ -94,7 +93,7 @@ const draggingPlayerId = ref<string | null>(null)
 const dragOverSlotId = ref<string | null>(null)
 const dragOverGroup = ref<'substitutes' | 'reserve' | null>(null)
 const selectedTouchPayload = ref<DragPayload | null>(null)
-const activeSection = ref<'lineup' | 'tactics' | 'stats' | 'contracts'>('lineup')
+const activeSection = ref<'lineup' | 'roles' | 'tactics' | 'stats' | 'contracts'>('lineup')
 let pointerDragState: PointerDragState | null = null
 let suppressNextSlotClick = false
 
@@ -431,7 +430,9 @@ const scoutReportItems = computed<string[]>(() => {
   const opponent = nextOpponent.value
   const own = squadStore.club
   if (!opponent || !own) {
-    return ['Следующий соперник пока не определён — настройте базовую модель игры под сильные стороны состава.']
+    return [
+      'Следующий соперник пока не определён — настройте базовую модель игры под сильные стороны состава.',
+    ]
   }
   const ownRating = calculateClubRating(own, squadStore.lineup)
   const opponentRating = calculateClubRating(opponent)
@@ -442,25 +443,37 @@ const scoutReportItems = computed<string[]>(() => {
   const items: string[] = []
 
   if (ratingGap >= 5) {
-    items.push(`${opponent.shortName} заметно слабее по общему рейтингу — можно играть смелее и давить выше.`)
+    items.push(
+      `${opponent.shortName} заметно слабее по общему рейтингу — можно играть смелее и давить выше.`,
+    )
   } else if (ratingGap <= -5) {
-    items.push(`${opponent.shortName} сильнее по рейтингу — лучше заранее закрыть центр и снизить риск потерь.`)
+    items.push(
+      `${opponent.shortName} сильнее по рейтингу — лучше заранее закрыть центр и снизить риск потерь.`,
+    )
   } else {
-    items.push(`${opponent.shortName} близок по силе — детали плана и роли игроков могут решить матч.`)
+    items.push(
+      `${opponent.shortName} близок по силе — детали плана и роли игроков могут решить матч.`,
+    )
   }
 
   if (opponentDefense <= opponentMidfield - 3 || opponentDefense <= opponentAttack - 3) {
-    items.push('Защита соперника выглядит слабее остальных линий: быстрый темп и роли под завершение могут дать шанс.')
+    items.push(
+      'Защита соперника выглядит слабее остальных линий: быстрый темп и роли под завершение могут дать шанс.',
+    )
   } else if (opponentDefense >= opponentAttack + 4) {
     items.push('Оборона соперника крепкая: пригодятся плеймейкеры, ширина и терпеливое владение.')
   }
 
   if (opponentAttack >= opponentDefense + 4 || opponentAttack >= opponentMidfield + 4) {
-    items.push('Атака соперника — главная угроза. Высокая линия и жёсткий прессинг будут рискованнее обычного.')
+    items.push(
+      'Атака соперника — главная угроза. Высокая линия и жёсткий прессинг будут рискованнее обычного.',
+    )
   }
 
   if (opponentMidfield < opponentAttack && opponentMidfield < opponentDefense) {
-    items.push('Центр поля соперника уязвим: можно перегружать середину и играть через плеймейкера.')
+    items.push(
+      'Центр поля соперника уязвим: можно перегружать середину и играть через плеймейкера.',
+    )
   }
 
   return items.slice(0, 4)
@@ -513,11 +526,6 @@ const conditionWithAgeLabel = (player: Player): string =>
     fitness: player.fitness.toFixed(0),
     age: t('common.age', { age: player.age }),
   })
-
-// ИЗМЕНЯЕТ ТАКТИЧЕСКУЮ СХЕМУ
-const setFormation = (event: Event): void => {
-  squadStore.setFormation((event.target as HTMLSelectElement).value as Formation)
-}
 
 const setRole = (slotId: string, event: Event): void => {
   squadStore.setPlayerRole(slotId, (event.target as HTMLSelectElement).value as PlayerRoleId)
@@ -881,10 +889,10 @@ onBeforeRouteLeave(() => {
             <button
               type="button"
               class="rounded-md px-3"
-              :class="activeSection === 'stats' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
-              @click="activeSection = 'stats'"
+              :class="activeSection === 'roles' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              @click="activeSection = 'roles'"
             >
-              Статистика
+              Роли игроков
             </button>
             <button
               type="button"
@@ -895,6 +903,14 @@ onBeforeRouteLeave(() => {
               @click="activeSection = 'tactics'"
             >
               Тактика
+            </button>
+            <button
+              type="button"
+              class="rounded-md px-3"
+              :class="activeSection === 'stats' ? 'bg-white text-emerald-900' : 'text-emerald-100'"
+              @click="activeSection = 'stats'"
+            >
+              Статистика
             </button>
             <button
               type="button"
@@ -916,29 +932,6 @@ onBeforeRouteLeave(() => {
             <span>{{ squadStore.teamRating }}</span>
             <span class="text-[10px] text-emerald-100/50">/ 100</span>
           </div>
-          <label class="flex flex-col gap-1 text-xs font-bold text-emerald-100/70">
-            {{ t('squad.formation') }}
-            <select
-              class="h-9 rounded-lg border border-emerald-700 bg-emerald-900 px-3 text-sm text-white outline-none focus:border-emerald-400"
-              :value="squadStore.lineup.formation"
-              @change="setFormation"
-            >
-              <option
-                v-for="formation in squadStore.formations"
-                :key="formation"
-                :value="formation"
-                class="bg-emerald-950 text-white"
-              >
-                {{ formation }}
-              </option>
-            </select>
-          </label>
-          <Button
-            class="!h-9 self-end"
-            severity="secondary"
-            :label="t('squad.autoLineup')"
-            @click="squadStore.resetLineup"
-          />
         </div>
       </template>
     </SectionHero>
@@ -1260,6 +1253,58 @@ onBeforeRouteLeave(() => {
       </aside>
     </div>
     <article
+      v-else-if="activeSection === 'roles'"
+      class="min-h-0 flex-1 overflow-auto rounded-xl border border-slate-200 bg-slate-950 p-4 text-white shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
+    >
+      <div class="mb-4">
+        <h2 class="text-lg font-black text-white">Роли игроков</h2>
+        <p class="mt-1 text-sm text-slate-300">
+          Роль уточняет, что игрок делает в своей позиции: держит ширину, страхует, прессингует
+          или ищет последний пас.
+        </p>
+      </div>
+      <div class="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+        <label
+          v-for="row in starterRoleRows"
+          :key="row.slotId"
+          class="grid gap-1 rounded-lg border border-white/10 bg-white/5 p-3"
+        >
+          <span class="flex min-w-0 items-center justify-between gap-2">
+            <span class="min-w-0">
+              <span class="block truncate text-sm font-black">
+                {{ row.player.firstName }} {{ row.player.lastName }}
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                {{ row.slotLabel }} · {{ row.player.rating }} · форма {{ row.player.form }}
+              </span>
+            </span>
+            <span
+              class="inline-grid h-7 min-w-7 place-items-center rounded-full bg-emerald-400/15 px-2 text-[10px] font-black text-emerald-200"
+            >
+              {{ getPlayerRole(row.roleId).shortLabel }}
+            </span>
+          </span>
+          <select
+            class="mt-1 h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm font-semibold text-white outline-none focus:border-emerald-400"
+            :value="row.roleId"
+            @change="setRole(row.slotId, $event)"
+          >
+            <option
+              v-for="role in row.options"
+              :key="role.id"
+              :value="role.id"
+              class="bg-slate-950 text-white"
+            >
+              {{ role.label }}
+            </option>
+          </select>
+          <span class="text-xs leading-snug text-slate-400">
+            {{ getPlayerRole(row.roleId).description }}
+          </span>
+        </label>
+      </div>
+    </article>
+    <article
       v-else-if="activeSection === 'tactics'"
       class="min-h-0 flex-1 overflow-auto rounded-xl border border-slate-200 bg-white p-4 shadow-[0_12px_32px_rgba(20,46,38,0.08)] sm:p-5"
     >
@@ -1267,138 +1312,84 @@ onBeforeRouteLeave(() => {
         <h2 class="text-lg font-black text-slate-950">Тактика</h2>
         <p class="mt-1 text-sm text-slate-500">Подробная настройка тактики команды</p>
       </div>
-      <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div class="space-y-4">
-          <section class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div class="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
-                  Скаутский отчёт
-                </h3>
-                <p class="mt-1 text-sm text-slate-500">
-                  <template v-if="nextOpponent">
-                    Следующий матч: {{ nextOpponent.name }} · {{ nextMatchVenue }}
-                  </template>
-                  <template v-else>Следующий соперник пока не выбран.</template>
-                </p>
-              </div>
-              <div
-                v-if="nextOpponent"
-                class="rounded-lg bg-white px-3 py-2 text-right text-xs font-bold text-slate-500"
-              >
-                <div class="text-[10px] uppercase tracking-wide">Рейтинг соперника</div>
-                <div class="text-lg font-black text-slate-950">
-                  {{ calculateClubRating(nextOpponent) }}
-                </div>
-              </div>
+      <div class="space-y-4">
+        <section class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+                Скаутский отчёт
+              </h3>
+              <p class="mt-1 text-sm text-slate-500">
+                <template v-if="nextOpponent">
+                  Следующий матч: {{ nextOpponent.name }} · {{ nextMatchVenue }}
+                </template>
+                <template v-else>Следующий соперник пока не выбран.</template>
+              </p>
             </div>
-            <ul class="mt-3 grid gap-2">
-              <li
-                v-for="item in scoutReportItems"
-                :key="item"
-                class="rounded-lg bg-white px-3 py-2 text-sm font-semibold leading-snug text-slate-700"
-              >
-                {{ item }}
-              </li>
-            </ul>
-          </section>
-
-          <section class="rounded-xl border border-slate-200 bg-white p-4">
-            <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
-              Эффект тактического плана
-            </h3>
-            <div class="mt-3 grid gap-3 md:grid-cols-2">
-              <div
-                v-for="indicator in tacticalIndicators"
-                :key="indicator.key"
-                class="rounded-lg border border-slate-100 bg-slate-50 p-3"
-              >
-                <div class="flex items-center justify-between gap-3">
-                  <div class="min-w-0">
-                    <div class="text-sm font-black text-slate-900">{{ indicator.label }}</div>
-                    <div class="mt-0.5 text-xs leading-snug text-slate-500">
-                      {{ indicator.description }}
-                    </div>
-                  </div>
-                  <span class="shrink-0 text-xs font-black text-slate-600">
-                    {{ indicatorText(indicator.value) }}
-                  </span>
-                </div>
-                <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    class="h-full rounded-full"
-                    :class="indicator.tone"
-                    :style="{ width: `${indicator.value}%` }"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="rounded-xl border border-slate-200 bg-white p-4">
-            <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
-              Командные инструкции
-            </h3>
-            <TacticsPanel
-              class="mt-3"
-              :model-value="currentTactics"
-              :exclude-keys="['matchCommand', 'teamTalk']"
-              @change="squadStore.setTactics"
-            />
-          </section>
-        </div>
-
-        <aside class="rounded-xl border border-slate-200 bg-slate-950 p-4 text-white">
-          <div>
-            <h3 class="text-sm font-black uppercase tracking-wide text-emerald-100">
-              Роли игроков
-            </h3>
-            <p class="mt-1 text-xs leading-snug text-slate-300">
-              Роль уточняет, что игрок делает в своей позиции: держит ширину, страхует, прессингует
-              или ищет последний пас.
-            </p>
-          </div>
-          <div class="mt-4 grid gap-2">
-            <label
-              v-for="row in starterRoleRows"
-              :key="row.slotId"
-              class="grid gap-1 rounded-lg border border-white/10 bg-white/5 p-3"
+            <div
+              v-if="nextOpponent"
+              class="rounded-lg bg-white px-3 py-2 text-right text-xs font-bold text-slate-500"
             >
-              <span class="flex min-w-0 items-center justify-between gap-2">
-                <span class="min-w-0">
-                  <span class="block truncate text-sm font-black">
-                    {{ row.player.firstName }} {{ row.player.lastName }}
-                  </span>
-                  <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                    {{ row.slotLabel }} · {{ row.player.rating }} · форма {{ row.player.form }}
-                  </span>
-                </span>
-                <span
-                  class="inline-grid h-7 min-w-7 place-items-center rounded-full bg-emerald-400/15 px-2 text-[10px] font-black text-emerald-200"
-                >
-                  {{ getPlayerRole(row.roleId).shortLabel }}
-                </span>
-              </span>
-              <select
-                class="mt-1 h-9 rounded-lg border border-slate-700 bg-slate-900 px-2 text-sm font-semibold text-white outline-none focus:border-emerald-400"
-                :value="row.roleId"
-                @change="setRole(row.slotId, $event)"
-              >
-                <option
-                  v-for="role in row.options"
-                  :key="role.id"
-                  :value="role.id"
-                  class="bg-slate-950 text-white"
-                >
-                  {{ role.label }}
-                </option>
-              </select>
-              <span class="text-xs leading-snug text-slate-400">
-                {{ getPlayerRole(row.roleId).description }}
-              </span>
-            </label>
+              <div class="text-[10px] uppercase tracking-wide">Рейтинг соперника</div>
+              <div class="text-lg font-black text-slate-950">
+                {{ calculateClubRating(nextOpponent) }}
+              </div>
+            </div>
           </div>
-        </aside>
+          <ul class="mt-3 grid gap-2">
+            <li
+              v-for="item in scoutReportItems"
+              :key="item"
+              class="rounded-lg bg-white px-3 py-2 text-sm font-semibold leading-snug text-slate-700"
+            >
+              {{ item }}
+            </li>
+          </ul>
+        </section>
+
+        <section class="rounded-xl border border-slate-200 bg-white p-4">
+          <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+            Эффект тактического плана
+          </h3>
+          <div class="mt-3 grid gap-3 md:grid-cols-2">
+            <div
+              v-for="indicator in tacticalIndicators"
+              :key="indicator.key"
+              class="rounded-lg border border-slate-100 bg-slate-50 p-3"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-sm font-black text-slate-900">{{ indicator.label }}</div>
+                  <div class="mt-0.5 text-xs leading-snug text-slate-500">
+                    {{ indicator.description }}
+                  </div>
+                </div>
+                <span class="shrink-0 text-xs font-black text-slate-600">
+                  {{ indicatorText(indicator.value) }}
+                </span>
+              </div>
+              <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+                <div
+                  class="h-full rounded-full"
+                  :class="indicator.tone"
+                  :style="{ width: `${indicator.value}%` }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="rounded-xl border border-slate-200 bg-white p-4">
+          <h3 class="text-sm font-black uppercase tracking-wide text-slate-800">
+            Командные инструкции
+          </h3>
+          <TacticsPanel
+            class="mt-3"
+            :model-value="currentTactics"
+            :exclude-keys="['matchCommand', 'teamTalk']"
+            @change="squadStore.setTactics"
+          />
+        </section>
       </div>
     </article>
     <article
